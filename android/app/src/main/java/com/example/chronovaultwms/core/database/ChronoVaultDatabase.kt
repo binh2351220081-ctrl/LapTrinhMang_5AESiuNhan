@@ -5,9 +5,14 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [ProductEntity::class], version = 1, exportSchema = false)
+@Database(
+    entities = [ProductEntity::class, SerialEntity::class],
+    version = 2,
+    exportSchema = false
+)
 abstract class ChronoVaultDatabase : RoomDatabase() {
     abstract fun productDao(): ProductDao
+    abstract fun serialDao(): SerialDao
 
     companion object {
         @Volatile
@@ -19,11 +24,12 @@ abstract class ChronoVaultDatabase : RoomDatabase() {
                     context.applicationContext,
                     ChronoVaultDatabase::class.java,
                     "chronovault_wms.db"
-                ).build()
+                )
+                .fallbackToDestructiveMigration()
+                .build()
                 INSTANCE = instance
                 instance
             }
         }
     }
 }
-
