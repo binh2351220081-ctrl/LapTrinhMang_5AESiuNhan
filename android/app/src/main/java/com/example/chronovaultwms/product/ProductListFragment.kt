@@ -28,6 +28,7 @@ import com.example.chronovaultwms.databinding.DialogLoginBinding
 import com.example.chronovaultwms.databinding.DialogProductAddBinding
 import com.example.chronovaultwms.databinding.DialogProductSerialTimelineBinding
 import com.example.chronovaultwms.databinding.DialogSystemManagementBinding
+import com.example.chronovaultwms.databinding.DialogUserEditBinding
 import com.example.chronovaultwms.databinding.FragmentProductListBinding
 import com.example.chronovaultwms.databinding.ItemAuditLogBinding
 import com.example.chronovaultwms.databinding.ItemProductTimelineStepBinding
@@ -45,7 +46,7 @@ import java.util.Locale
  * Phụ trách: TV1 - Phan Bá Hải Bình
  * Chức năng: 
  *   - Phần A: F1.1 (Thêm sản phẩm), F1.2 & F1.3 (Timeline Serial Lifecycle)
- *   - Phần B: F1.6 (Xác thực đăng nhập), F1.7 (Phân quyền RBAC), F1.8 (Audit Log Trail)
+ *   - Phần B: F1.6 (Xác thực đăng nhập), F1.7 (Phân quyền RBAC), F1.8 (Audit Log Trail), F1.9 (Đổi Gmail / Sửa hồ sơ)
  */
 class ProductListFragment : Fragment() {
 
@@ -126,6 +127,17 @@ class ProductListFragment : Fragment() {
             showSystemManagementDialog()
         }
 
+        // Bấm vào tên người dùng ở Header để đổi ngay Gmail / Hồ sơ cá nhân
+        binding.tvLoggedInUser.setOnClickListener {
+            viewLifecycleOwner.lifecycleScope.launch {
+                val currentUserId = sessionManager.getUserId() ?: "USR-001"
+                val currentUser = withContext(Dispatchers.IO) { userDao.getUserById(currentUserId) }
+                if (currentUser != null) {
+                    showEditUserDialog(currentUser)
+                }
+            }
+        }
+
         binding.btnLogout.setOnClickListener {
             sessionManager.clearSession()
             Toast.makeText(requireContext(), "Đã đăng xuất khỏi hệ thống", Toast.LENGTH_SHORT).show()
@@ -148,7 +160,6 @@ class ProductListFragment : Fragment() {
 
             // Kiểm tra trạng thái phiên đăng nhập
             if (!sessionManager.isLoggedIn()) {
-                // Tự động gán mặc định phiên của Trưởng nhóm Bình nếu chưa đăng nhập lần đầu
                 sessionManager.saveSession("jwt_token_demo", "USR-001", "Phan Bá Hải Bình", "DIRECTOR")
             }
             updateUserHeader()
@@ -166,7 +177,7 @@ class ProductListFragment : Fragment() {
             "WAREHOUSE_MANAGER" -> "Trưởng Kho"
             else -> role
         }
-        binding.tvLoggedInUser.text = "👤 $name ($roleTitle)"
+        binding.tvLoggedInUser.text = "👤 $name ($roleTitle) • ✏️ Đổi Gmail"
     }
 
     private fun filterProducts(query: String?) {
@@ -276,6 +287,37 @@ class ProductListFragment : Fragment() {
             .setView(dialogBinding.root)
             .create()
 
+        fun loadAccountsList() {
+            viewLifecycleOwner.lifecycleScope.launch {
+                val users = withContext(Dispatchers.IO) { userDao.getAllUsers() }
+                dialogBinding.containerAccountsList.removeAllViews()
+                users.forEach { user ->
+                    val userItemBinding = ItemUserAccountBinding.inflate(layoutInflater, dialogBinding.containerAccountsList, false)
+                    userItemBinding.tvUserFullName.text = user.fullName
+                    userItemBinding.tvUserUsername.text = "@${user.username} • Mã ${user.userId}"
+                    userItemBinding.tvUserRoleBadge.text = user.role
+                    userItemBinding.tvUserDepartment.text = "🏢 ${user.department}"
+                    userItemBinding.tvUserEmail.text = "✉️ ${user.email}"
+                    userItemBinding.tvUserIcon.text = when (user.role) {
+                        "DIRECTOR" -> "👑"
+                        "INBOUND_STAFF" -> "📦"
+                        "OUTBOUND_STAFF" -> "🚚"
+                        "INVENTORY_AUDITOR" -> "🔍"
+                        else -> "📊"
+                    }
+
+                    // Bấm nút sửa để đổi Gmail/Hồ sơ tài khoản
+                    userItemBinding.btnEditAccount.setOnClickListener {
+                        showEditUserDialog(user) {
+                            loadAccountsList()
+                        }
+                    }
+
+                    dialogBinding.containerAccountsList.addView(userItemBinding.root)
+                }
+            }
+        }
+
         // Tab Switching Logic
         fun switchTab(selectedTab: String) {
             dialogBinding.layoutSectionAccounts.visibility = if (selectedTab == "accounts") View.VISIBLE else View.GONE
@@ -302,29 +344,9 @@ class ProductListFragment : Fragment() {
 
         // Load Dữ liệu Người Dùng & Audit Logs từ Room Database
         viewLifecycleOwner.lifecycleScope.launch {
-            val users = withContext(Dispatchers.IO) { userDao.getAllUsers() }
+            loadAccountsList()
+
             val logs = withContext(Dispatchers.IO) { auditLogDao.getAllLogs() }
-
-            // Render Tab 1: Danh sách Người Dùng
-            dialogBinding.containerAccountsList.removeAllViews()
-            users.forEach { user ->
-                val userItemBinding = ItemUserAccountBinding.inflate(layoutInflater, dialogBinding.containerAccountsList, false)
-                userItemBinding.tvUserFullName.text = user.fullName
-                userItemBinding.tvUserUsername.text = "@${user.username} • Mã ${user.userId}"
-                userItemBinding.tvUserRoleBadge.text = user.role
-                userItemBinding.tvUserDepartment.text = "🏢 ${user.department}"
-                userItemBinding.tvUserEmail.text = "✉️ ${user.email}"
-                userItemBinding.tvUserIcon.text = when (user.role) {
-                    "DIRECTOR" -> "👑"
-                    "INBOUND_STAFF" -> "📦"
-                    "OUTBOUND_STAFF" -> "🚚"
-                    "INVENTORY_AUDITOR" -> "🔍"
-                    else -> "📊"
-                }
-                dialogBinding.containerAccountsList.addView(userItemBinding.root)
-            }
-
-            // Render Tab 3: Danh sách Audit Logs
             dialogBinding.containerLogsList.removeAllViews()
             logs.forEach { logItem ->
                 val logBinding = ItemAuditLogBinding.inflate(layoutInflater, dialogBinding.containerLogsList, false)
@@ -342,6 +364,83 @@ class ProductListFragment : Fragment() {
         }
 
         dialog.show()
+    }
+
+    /**
+     * F1.9: Hộp thoại Chỉnh Sửa Hồ Sơ, Đổi Gmail, Họ Tên, Mật Khẩu trực tiếp trong app
+     */
+    private fun showEditUserDialog(user: UserEntity, onUpdated: (() -> Unit)? = null) {
+        val editBinding = DialogUserEditBinding.inflate(layoutInflater)
+        val editDialog = AlertDialog.Builder(requireContext())
+            .setView(editBinding.root)
+            .create()
+
+        editBinding.tvEditSubtitle.text = "Tài khoản: @${user.username} (${user.role}) • Mã ${user.userId}"
+        editBinding.etEditFullName.setText(user.fullName)
+        editBinding.etEditEmail.setText(user.email)
+        editBinding.etEditDepartment.setText(user.department)
+
+        editBinding.btnCancelEdit.setOnClickListener {
+            editDialog.dismiss()
+        }
+
+        editBinding.btnSaveUserEdit.setOnClickListener {
+            val newFullName = editBinding.etEditFullName.text.toString().trim()
+            val newEmail = editBinding.etEditEmail.text.toString().trim()
+            val newDept = editBinding.etEditDepartment.text.toString().trim()
+            val newPass = editBinding.etEditPassword.text.toString().trim()
+
+            if (newFullName.isEmpty()) {
+                editBinding.tilEditFullName.error = "Vui lòng nhập họ và tên"
+                return@setOnClickListener
+            }
+            if (newEmail.isEmpty() || !newEmail.contains("@")) {
+                editBinding.tilEditEmail.error = "Địa chỉ Gmail không hợp lệ (cần có @)"
+                return@setOnClickListener
+            }
+
+            val updatedUser = user.copy(
+                fullName = newFullName,
+                email = newEmail,
+                department = newDept.ifEmpty { user.department },
+                password = if (newPass.isNotEmpty()) newPass else user.password
+            )
+
+            viewLifecycleOwner.lifecycleScope.launch {
+                withContext(Dispatchers.IO) {
+                    userDao.updateUser(updatedUser)
+
+                    // Ghi nhận Audit Log
+                    val currentTime = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault()).format(Date())
+                    val log = AuditLogEntity(
+                        timestamp = currentTime,
+                        actorName = sessionManager.getFullName() ?: user.fullName,
+                        role = sessionManager.getRole() ?: user.role,
+                        action = "CẬP_NHẬT_HỒ_SƠ",
+                        details = "Cập nhật Gmail thành '$newEmail', Họ tên: '$newFullName' cho tài khoản @${user.username}.",
+                        ipAddress = "192.168.1.100 - Mobile Terminal"
+                    )
+                    auditLogDao.insertLog(log)
+                }
+
+                // Nếu đang chỉnh sửa tài khoản hiện tại, cập nhật lại Session & Header
+                if (sessionManager.getUserId() == user.userId) {
+                    sessionManager.saveSession(
+                        sessionManager.getToken() ?: "jwt_${user.userId}",
+                        user.userId,
+                        newFullName,
+                        user.role
+                    )
+                    updateUserHeader()
+                }
+
+                editDialog.dismiss()
+                Toast.makeText(requireContext(), "✅ Đã đổi Gmail thành công: $newEmail", Toast.LENGTH_LONG).show()
+                onUpdated?.invoke()
+            }
+        }
+
+        editDialog.show()
     }
 
     private fun showProductDetailDialog(product: ProductEntity) {
@@ -377,7 +476,6 @@ class ProductListFragment : Fragment() {
             .setView(dialogBinding.root)
             .create()
 
-        // Dropdown Thương hiệu
         val brands = arrayOf(
             "Rolex", "Omega", "Patek Philippe", "Audemars Piguet",
             "Cartier", "Grand Seiko", "Tudor", "IWC Schaffhausen", "Hublot", "Breitling"
@@ -386,7 +484,6 @@ class ProductListFragment : Fragment() {
         dialogBinding.actvBrand.setAdapter(brandAdapter)
         dialogBinding.actvBrand.setText(brands[0], false)
 
-        // Dropdown Phân loại
         val categories = arrayOf("Diver", "Chronograph", "Dress", "Luxury Sports", "Complications", "Pilot", "GMT")
         val categoryAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, categories)
         dialogBinding.actvCategory.setAdapter(categoryAdapter)
@@ -409,7 +506,6 @@ class ProductListFragment : Fragment() {
             val movement = dialogBinding.etMovement.text.toString().trim()
             val waterResistance = dialogBinding.etWaterResistance.text.toString().trim()
 
-            // Validate dữ liệu
             if (sku.isEmpty()) {
                 dialogBinding.tilSku.error = "Vui lòng nhập mã SKU"
                 return@setOnClickListener
@@ -440,7 +536,6 @@ class ProductListFragment : Fragment() {
                 waterResistance = waterResistance.ifEmpty { "100m" }
             )
 
-            // Tự động tạo 1 Serial khởi tạo cho đồng hồ mới này
             val currentTime = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault()).format(Date())
             val cleanSku = sku.replace(Regex("[^A-Za-z0-9]"), "")
             val newSerial = SerialEntity(

@@ -98,6 +98,28 @@
                 android:text="✉️ binh_2351220081@dau.edu.vn"
                 android:textColor="@color/text_secondary"
                 android:textSize="10sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:layout_marginTop="6dp">
+
+                <TextView
+                    android:id="@+id/btnEditAccount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_search_input"
+                    android:backgroundTint="@color/accent_gold_light"
+                    android:paddingStart="10dp"
+                    android:paddingTop="4dp"
+                    android:paddingEnd="10dp"
+                    android:paddingBottom="4dp"
+                    android:text="✏️ Đổi Gmail / Sửa Hồ Sơ"
+                    android:textColor="@color/text_gold"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 </LinearLayout>
