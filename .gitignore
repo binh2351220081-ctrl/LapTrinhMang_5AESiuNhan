@@ -21,3 +21,10 @@ Thumbs.db
 # Microsoft Office temporary lock files
 ~$*
 *.tmp
+
+# Android build & local files
+.gradle/
+**/build/
+**/local.properties
+*.iml
+.cxx/
