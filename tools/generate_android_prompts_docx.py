@@ -650,7 +650,7 @@ YÊU CẦU ĐẦU RA:
             "1. Quy tắc phân nhánh Git bắt buộc:",
             "   • TV1 (Bình): Tạo repo gốc trên GitHub `LapTrinhMang_5AESiuNhan`, commit phần Core Architecture + Master Data Contract lên nhánh `main` trước.",
             "   • Các thành viên clone repo về máy và tạo nhánh riêng:",
-            "     - TV1: git checkout -b feature/tv1-core-product",
+            "     - TV1: git checkout -b feature/product",
             "     - TV2 (Quân): git checkout -b feature/tv2-inbound-supplier",
             "     - TV3 (Thảo): git checkout -b feature/tv3-outbound-dealer",
             "     - TV4 (Tâm): git checkout -b feature/tv4-inventory-audit",
@@ -668,8 +668,43 @@ YÊU CẦU ĐẦU RA:
         bg_color="FEF9C3"
     )
 
+    # =========================================================================
+    # PHẦN IV: CHECKLIST NHIỆM VỤ BẮT BUỘC NGOÀI CODE CỦA 5 THÀNH VIÊN
+    # =========================================================================
+    h4 = doc.add_heading("IV. BẢNG PHÂN CÔNG NHIỆM VỤ NGOÀI CODE (TEST DATA, VIẾT BÁO CÁO & DEMO VẤN ĐÁP)", level=1)
+    h4.paragraph_format.space_before = Pt(14)
+    h4.paragraph_format.space_after = Pt(6)
+    for r in h4.runs:
+        r.font.name = "Arial"; r.font.size = Pt(13); r.font.bold = True; r.font.color.rgb = C_NAVY
+
+    add_callout(
+        doc,
+        [
+            "Lập trình (Code) chỉ chiếm khoảng 40% - 50% khối lượng đồ án. Để cả nhóm đạt điểm tối đa khi thầy cô chấm bài, 4 thành viên bắt buộc phải hoàn thành đầy đủ 3 nhiệm vụ ngoài code dưới đây:",
+            "",
+            "1. Chuẩn bị Dữ liệu mẫu (Test Data) thực tế cho phân hệ của mình:",
+            "   • TV2 (Quân): Chuẩn bị hồ sơ 3 Nhà cung cấp (Rolex Geneva SA, Omega Bienne...), 2 PO hóa đơn nhập khẩu và dải mã Serial mẫu.",
+            "   • TV3 (Thảo): Chuẩn bị hồ sơ 5 Đại lý sỉ (Hải Triều, Galle Watch, Boss Luxury...), phân hạng VIP/Bạc/Đồng, hạn mức nợ và chiết khấu.",
+            "   • TV4 (Tâm): Chuẩn bị danh sách vị trí ngăn kệ Bin [K1-A01, K1-A02...], quy định kho Mới / Trưng bày / Lỗi kỹ thuật.",
+            "   • TV5 (Tú): Chuẩn bị bảng số liệu doanh thu 6 tháng, bảng đối soát sổ nợ 2 chiều và công thức giá vốn đích danh.",
+            "",
+            "2. Viết tài liệu Báo cáo Đồ án (File Word nộp Khoa):",
+            "   • Mỗi thành viên tự chụp ảnh màn hình giao diện (Screenshots) của phân hệ mình, chú thích chi tiết từng chức năng.",
+            "   • Vẽ sơ đồ ca sử dụng Use Case và Sơ đồ tuần tự (Sequence Diagram) mô tả luồng nghiệp vụ của phân hệ mình phụ trách.",
+            "   • Trình bày giải thích các thuật toán, cơ chế ràng buộc logic (như quy đổi ĐVT, khóa giữ chỗ, kiểm soát hạn mức nợ).",
+            "",
+            "3. Chuẩn bị Kịch bản Demo & Vấn đáp trực tiếp với Giảng viên:",
+            "   • Thầy/cô sẽ chấm điểm trực tiếp trên máy tính/máy ảo Android: Từng bạn phải tự tay mở app và thao tác một chu trình nghiệp vụ hoàn chỉnh của mình.",
+            "   • Hiểu rõ đoạn code mình viết: Khi thầy cô chỉ vào hàm hoặc bảng Room Database nào thì phải giải thích được luồng dữ liệu chạy ra sao.",
+            "   • Đảm bảo lịch sử Git Commit: Tự commit từ tài khoản GitHub cá nhân để thầy cô kiểm tra lịch sử đóng góp thực tế trên Repository."
+        ],
+        title="CHECKLIST 3 NHIỆM VỤ QUAN TRỌNG NGOÀI CODE CỦA CÁC THÀNH VIÊN",
+        border_color="1B365D",
+        bg_color="F1F5F9"
+    )
+
     # Save to disk
-    output_filename = "HUONG_DAN_TRIEN_KHAI_ANDROID_STUDIO_5_THANH_VIEN.docx"
+    output_filename = "Document/KE_HOACH_CHI_TIET_VA_BO_PROMPT_TOAN_DIEN_5_THANH_VIEN.docx"
     output_path = os.path.join(r"D:\cntt\pbhb", output_filename)
     doc.save(output_path)
     print(f"SUCCESS: Created document at {output_path}")
