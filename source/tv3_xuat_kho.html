@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phân Hệ 3: Bán Sỉ & Xuất Hàng - ChronoVault B2B</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header class="desktop-controls-bar" style="max-width:960px;">
+    <div class="controls-badge">
+      <span class="live-dot"></span>
+      <span>PHÂN HỆ 3 • THÀNH VIÊN 3: KHÁCH HÀNG SỈ & BÁN SỈ - XUẤT HÀNG</span>
+    </div>
+    <div style="display:flex; gap:8px;">
+      <a href="index.html" class="btn-toggle-view" style="text-decoration:none;">🏠 Cổng Trung Tâm</a>
+      <a href="tv4_ton_kho.html" class="btn-toggle-view" style="text-decoration:none;">📦 TV4: Tồn Kho</a>
+    </div>
+  </header>
+
+  <main class="phone-wrapper full-screen-mode" style="max-width:960px; height:auto; min-height:88vh; padding-bottom:30px;">
+    <div class="toast-container" id="toastContainer"></div>
+
+    <header class="app-header">
+      <div class="header-top-row">
+        <div class="brand-section">
+          <div class="brand-logo-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="17 8 12 3 7 8"/>
+              <line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+          </div>
+          <div class="brand-info">
+            <h1>ĐƠN BÁN SỈ, XUẤT KHO & QUẢN LÝ ĐẠI LÝ B2B</h1>
+            <span>ĐẶC TẢ NGHIỆP VỤ OUTBOUND • THÀNH VIÊN 3</span>
+          </div>
+        </div>
+        <div class="header-actions">
+          <button class="btn-primary-action" style="width:auto; padding:6px 14px; font-size:12px;" onclick="openCreateOrderModal()">
+            + Lên Đơn Sỉ Mới
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <div style="padding:16px 20px; flex:1; overflow-y:auto;">
+      
+      <!-- Section 1: Orders -->
+      <div class="section-title-wrap">
+        <div class="section-title">
+          <span class="title-accent"></span> Danh Sách Đơn Bán Sỉ & Phân Phối
+        </div>
+      </div>
+      <div id="outboundOrdersList"></div>
+
+      <!-- Section 2: Dealers -->
+      <div class="section-title-wrap" style="margin-top:24px;">
+        <div class="section-title">
+          <span class="title-accent"></span> Danh Sách Đại Lý & Hạn Mức Tín Dụng
+        </div>
+      </div>
+      <div id="dealersOverviewList"></div>
+
+    </div>
+
+    <!-- Create Order Modal -->
+    <div class="modal-backdrop" id="createOrderModal">
+      <div class="modal-sheet" style="max-width:650px; margin:0 auto; width:100%;">
+        <div class="modal-drag-handle"></div>
+        <div class="modal-header">
+          <h2>📤 Khởi Tạo Đơn Bán Sỉ Cho Đại Lý B2B</h2>
+          <button class="modal-close-btn" onclick="closeModal('createOrderModal')">✕</button>
+        </div>
+        <div class="modal-body-scroll">
+          <div class="form-group">
+            <label class="form-label">Đại Lý Mua Hàng Sỉ (B2B)</label>
+            <select class="form-select" id="orderDealerSelect" onchange="updateOrderCalculationPreview()"></select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Chọn Mẫu Đồng Hồ Đặt Hàng</label>
+            <select class="form-select" id="orderWatchSelect" onchange="updateOrderCalculationPreview()"></select>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">ĐVT Đặt Hàng</label>
+              <select class="form-select" id="orderUnitSelect" onchange="updateOrderCalculationPreview()">
+                <option value="PIECE">Cái / Chiếc lẻ</option>
+                <option value="BOX">Thùng / Kiện sỉ</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Số Lượng Đặt</label>
+              <input type="number" id="orderQtyInput" class="form-input" min="1" value="2" oninput="updateOrderCalculationPreview()">
+            </div>
+          </div>
+          <div id="orderCalculationPreview" style="margin-bottom:12px;"></div>
+          <div class="form-group">
+            <label class="form-label">Số Tiền Đặt Cọc Thu Trước (VND)</label>
+            <input type="number" id="orderDepositInput" class="form-input" step="10000000">
+          </div>
+          <button class="btn-primary-action" onclick="submitCreateOrder()">✓ Duyệt Đơn & Khóa Giữ Chỗ (Reserved)</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- General Detail Modal -->
+    <div class="modal-backdrop" id="generalDetailModal">
+      <div class="modal-sheet" style="max-width:650px; margin:0 auto; width:100%;">
+        <div class="modal-drag-handle"></div>
+        <div class="modal-header">
+          <h2 id="generalModalTitle">Chi Tiết</h2>
+          <button class="modal-close-btn" onclick="closeModal('generalDetailModal')">✕</button>
+        </div>
+        <div class="modal-body-scroll" id="generalModalBody"></div>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/data.js"></script>
+  <script src="js/tv3_outbound.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      renderOutboundTab();
+    });
+  </script>
+</body>
+</html>

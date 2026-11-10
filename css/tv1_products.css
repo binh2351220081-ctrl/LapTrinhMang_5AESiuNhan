@@ -1,0 +1,419 @@
+/* ==========================================================================
+   CHRONO VAULT B2B - PHÂN HỆ 1 STYLES (TV1)
+   Hàng hóa, Thương hiệu, Vòng đời Serial & Quản trị Hệ thống
+   ========================================================================== */
+
+/* Search Filter Box */
+.search-filter-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 8px 14px;
+  margin-bottom: 12px;
+}
+
+.search-filter-box svg {
+  width: 18px;
+  height: 18px;
+  color: var(--text-muted);
+}
+
+.search-filter-box input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-size: 13px;
+  outline: none;
+}
+
+/* Brand Filter Scroll Pills */
+.filter-tags-scroll {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  margin-bottom: 14px;
+}
+
+.filter-tags-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.tag-pill {
+  padding: 6px 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+  color: var(--text-secondary);
+  font-size: 11.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tag-pill:hover, .tag-pill.active {
+  background: rgba(212, 175, 55, 0.15);
+  border-color: var(--gold-primary);
+  color: var(--gold-light);
+}
+
+/* Serial Lookup Card */
+.serial-lookup-card {
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.08) 0%, rgba(18, 20, 28, 0.8) 100%);
+  border: 1px solid var(--border-gold);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  margin-bottom: 16px;
+}
+
+.serial-result-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  animation: fadeIn 0.3s ease;
+}
+
+.result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 10px;
+  margin-bottom: 12px;
+}
+
+.result-serial-code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--gold-primary);
+}
+
+.result-meta-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  font-size: 11.5px;
+  margin-bottom: 14px;
+}
+
+.timeline-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--gold-light);
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+}
+
+.timeline-stepper {
+  position: relative;
+  padding-left: 18px;
+}
+
+.timeline-stepper::before {
+  content: '';
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 6px;
+  width: 2px;
+  background: var(--border-subtle);
+}
+
+.timeline-step-item {
+  position: relative;
+  margin-bottom: 12px;
+}
+
+.timeline-step-item .step-dot {
+  position: absolute;
+  left: -18px;
+  top: 3px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--gold-primary);
+  box-shadow: 0 0 6px var(--gold-primary);
+}
+
+.step-time {
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+.step-heading {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.step-desc {
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+/* Watch Product Cards Grid */
+.products-grid-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.watch-product-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  transition: all 0.2s ease;
+}
+
+.watch-product-card:hover {
+  border-color: rgba(212, 175, 55, 0.4);
+  transform: translateY(-1px);
+}
+
+.watch-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.watch-brand-pill {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--gold-light);
+  background: rgba(212, 175, 55, 0.1);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-gold);
+}
+
+.watch-card-body {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.watch-visual-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold-primary);
+  flex-shrink: 0;
+}
+
+.watch-visual-icon svg {
+  width: 28px;
+  height: 28px;
+}
+
+.watch-info-wrap {
+  flex: 1;
+}
+
+.watch-title {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-bottom: 3px;
+  cursor: pointer;
+}
+
+.watch-title:hover {
+  color: var(--gold-light);
+}
+
+.watch-sku-barcode {
+  font-size: 11px;
+  color: var(--text-secondary);
+  font-family: 'JetBrains Mono', monospace;
+  margin-bottom: 4px;
+}
+
+.watch-spec-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 10.5px;
+  color: var(--text-muted);
+}
+
+.watch-pricing-matrix {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  margin-bottom: 8px;
+}
+
+.price-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.price-lbl {
+  font-size: 10px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.price-val {
+  font-size: 12.5px;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.price-val.cost { color: var(--text-primary); }
+.price-val.wholesale { color: var(--success); }
+
+.watch-stock-conversion {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+}
+
+.watch-card-actions {
+  display: flex;
+  gap: 6px;
+  justify-content: flex-end;
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 10px;
+}
+
+/* Serials Tag Cloud */
+.serials-tag-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 8px 0;
+}
+
+.serial-chip {
+  background: var(--bg-card-subtle);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 4px 8px;
+  font-size: 11px;
+  font-family: 'JetBrains Mono', monospace;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.2s ease;
+}
+
+.serial-chip:hover {
+  border-color: var(--gold-primary);
+  color: var(--gold-light);
+}
+
+.serial-chip small {
+  font-size: 9px;
+  color: var(--text-muted);
+}
+
+/* System Admin & Role Matrix (1.2) */
+.accounts-cards-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.account-item-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--bg-card-subtle);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
+}
+
+.acc-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--gold-gradient);
+  color: #0F1117;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12.5px;
+}
+
+.acc-meta {
+  flex: 1;
+}
+
+.acc-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.acc-username {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.acc-role {
+  font-size: 11px;
+  color: var(--gold-light);
+}
+
+.acc-login {
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+.role-matrix-table-wrap {
+  overflow-x: auto;
+}
+
+.role-matrix-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11.5px;
+}
+
+.role-matrix-table th, .role-matrix-table td {
+  border: 1px solid var(--border-subtle);
+  padding: 8px 10px;
+  text-align: center;
+}
+
+.role-matrix-table th {
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-secondary);
+}
+
+.role-matrix-table td:first-child {
+  text-align: left;
+}
+
+.perm-tag {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.perm-tag.full { background: var(--success-bg); color: var(--success); }
+.perm-tag.write { background: var(--warning-bg); color: var(--warning); }
+.perm-tag.read { background: rgba(59, 130, 246, 0.15); color: var(--accent-blue); }
+.perm-tag.none { background: rgba(255, 255, 255, 0.05); color: var(--text-muted); }

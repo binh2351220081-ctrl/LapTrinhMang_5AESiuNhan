@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ChronoVault B2B - Hệ Thống Quản Lý Kho Đồng Hồ</title>
+  
+  <!-- Favicon & Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+  
+  <!-- ZXing Barcode & QR Code Scanning Library -->
+  <script src="https://unpkg.com/@zxing/library@latest/umd/index.min.js"></script>
+  
+  <meta name="description" content="Hệ thống Quản lý Kho Hàng Hóa Cửa Hàng Đồng Hồ chuyên nghiệp - Mô hình B2B Wholesale Distribution với quản lý định danh Serial/IMEI và quy đổi đơn vị tính đa cấp.">
+</head>
+<body>
+
+  <!-- Top Desktop Control Bar (Cho phép c huyển đổi giữa Khung Mobile và Toàn màn hình) -->
+  <header class="desktop-controls-bar">
+    <div class="controls-badge">
+      <span class="live-dot"></span>
+      <span>CHRONO VAULT B2B • Quản Lý Kho Đồng Hồ</span>
+    </div>
+    <button class="btn-toggle-view" id="btnToggleView" onclick="toggleViewportMode()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+        <line x1="8" y1="21" x2="16" y2="21"/>
+        <line x1="12" y1="17" x2="12" y2="21"/>
+      </svg>
+      <span id="btnToggleViewText">Toàn màn hình Tablet/PC</span>
+    </button>
+  </header>
+
+  <!-- Mobile Simulator Phone Container -->
+  <main class="phone-wrapper" id="phoneWrapper">
+
+    <!-- Toast Notifications Layer -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- iPhone Dynamic Island -->
+    <div class="dynamic-island-container" id="dynamicIsland">
+      <div class="island-camera"></div>
+      <span class="island-status" id="islandStatus">Hệ thống sẵn sàng</span>
+      <div class="island-speaker"></div>
+    </div>
+
+    <!-- Phone Native Status Bar -->
+    <div class="phone-status-bar">
+      <div class="status-time" id="phoneClock">12:00</div>
+      <div class="status-icons">
+        <!-- 5G / Signal Icon -->
+        <svg viewBox="0 0 24 24"><path d="M2 20h20L12 4 2 20z"/></svg>
+        <!-- Wifi Icon -->
+        <svg viewBox="0 0 24 24"><path d="M12 18a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm-7.07-5.93a10 10 0 0 1 14.14 0l-1.42 1.41a8 8 0 0 0-11.3 0l-1.42-1.41zm-3.54-3.54a15 15 0 0 1 21.22 0l-1.42 1.41a13 13 0 0 0-18.38 0L1.39 8.53z"/></svg>
+        <!-- Battery Icon -->
+        <svg viewBox="0 0 24 24"><rect x="2" y="7" width="16" height="10" rx="2"/><path d="M20 11v2"/></svg>
+      </div>
+    </div>
+
+    <!-- Mobile App Header -->
+    <header class="app-header">
+      <div class="header-top-row">
+        <!-- Drawer Menu Button & Brand -->
+        <div class="brand-section">
+          <button class="btn-icon-head" onclick="toggleDrawer()" title="Menu Quản Trị Hệ Thống">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="3" y1="12" x2="21" y2="12"/>
+              <line x1="3" y1="6" x2="21" y2="6"/>
+              <line x1="3" y1="18" x2="21" y2="18"/>
+            </svg>
+          </button>
+          <div class="brand-logo-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <circle cx="12" cy="12" r="7"/>
+              <polyline points="12 9 12 12 14 14"/>
+              <path d="M16 3v3M8 3v3M16 18v3M8 18v3"/>
+            </svg>
+          </div>
+          <div class="brand-info">
+            <h1>CHRONO VAULT</h1>
+            <span>B2B HOROLOGY WMS</span>
+          </div>
+        </div>
+
+        <!-- Header Action Icons -->
+        <div class="header-actions">
+          <button class="btn-icon-head" onclick="openScannerModal('LOOKUP')" title="Quét Barcode / Serial Camera">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/>
+              <line x1="7" y1="12" x2="17" y2="12" stroke="#EF4444" stroke-width="2.5"/>
+            </svg>
+          </button>
+          <button class="btn-icon-head" onclick="showToast('Chưa có thông báo cảnh báo mới.', 'info')" title="Thông báo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+            </svg>
+            <span class="badge-count">2</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Warehouse Location Selector -->
+      <div class="warehouse-selector-row">
+        <div class="wh-label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>
+          <span>Kho trực thuộc:</span>
+        </div>
+        <select class="wh-select" id="warehouseSelect" onchange="showToast('Đã chuyển sang: ' + this.value, 'info')">
+          <option value="Kho Tổng Tân Bình - TP.HCM">Kho Tổng Tân Bình - TP.HCM</option>
+          <option value="Kho Phân Phối Cầu Giấy - Hà Nội">Kho Phân Phối Cầu Giấy - Hà Nội</option>
+          <option value="Kho Ngoại Quan Hải Phòng">Kho Ngoại Quan Hải Phòng</option>
+        </select>
+      </div>
+    </header>
+
+    <!-- Scrollable Content Area -->
+    <div class="phone-content" id="phoneContent">
+
+      <!-- ==================================================================
+           TAB 1: TỔNG QUAN & DASHBOARD ĐIỀU HÀNH (PHÂN HỆ 5 - TV5)
+           ================================================================== -->
+      <section class="tab-view active" id="tab-dashboard">
+        <!-- Main Valuation Highlight Card -->
+        <div class="kpi-grid">
+          <div class="kpi-card highlight">
+            <div class="kpi-header">
+              <span class="kpi-label">Tổng Giá Trị Tồn Kho Đích Danh (Theo Serial)</span>
+              <div class="kpi-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              </div>
+            </div>
+            <div class="kpi-value" id="kpiTotalValuation">0 ₫</div>
+            <div class="kpi-subtext">
+              <span class="trend-up">●</span>
+              <span>Cộng dồn 100% giá vốn đích danh từng mã Serial trong kho</span>
+            </div>
+          </div>
+
+          <!-- Secondary KPI Cards -->
+          <div class="kpi-card">
+            <div class="kpi-header">
+              <span class="kpi-label">Doanh Thu Sỉ B2B</span>
+              <div class="kpi-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+              </div>
+            </div>
+            <div class="kpi-value" id="kpiRevenue">0 ₫</div>
+            <div class="kpi-subtext trend-up">↑ 18.5% so với tháng trước</div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-header">
+              <span class="kpi-label">Đơn Hàng Sỉ</span>
+              <div class="kpi-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+              </div>
+            </div>
+            <div class="kpi-value" id="kpiOrdersCount">0</div>
+            <div class="kpi-subtext" style="color:var(--gold-light);">Đại lý B2B đối tác</div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-header">
+              <span class="kpi-label">Tồn Khả Dụng</span>
+              <div class="kpi-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+              </div>
+            </div>
+            <div class="kpi-value" id="kpiInStockCount">0</div>
+            <div class="kpi-subtext" style="color:var(--success);">Khớp 100% mã Serial</div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-header">
+              <span class="kpi-label">Tỷ Lệ Đổi Trả</span>
+              <div class="kpi-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+              </div>
+            </div>
+            <div class="kpi-value" style="color:var(--warning);">0.85%</div>
+            <div class="kpi-subtext" style="color:var(--text-muted);">Ngưỡng an toàn &lt; 2.0%</div>
+          </div>
+        </div>
+
+        <!-- Quick Operational Shortcuts -->
+        <div class="section-title-wrap">
+          <div class="section-title">
+            <span class="title-accent"></span> Thao Tác Nhanh
+          </div>
+        </div>
+
+        <div class="quick-actions-carousel">
+          <button class="quick-action-btn" onclick="openCreateInboundModal()">
+            <div class="quick-action-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+            </div>
+            <span class="quick-action-text">Nhập Hàng</span>
+          </button>
+
+          <button class="quick-action-btn" onclick="openCreateOrderModal()">
+            <div class="quick-action-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+            </div>
+            <span class="quick-action-text">Lên Đơn Sỉ</span>
+          </button>
+
+          <button class="quick-action-btn" onclick="openScannerModal('LOOKUP')">
+            <div class="quick-action-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/></svg>
+            </div>
+            <span class="quick-action-text">Quét Serial</span>
+          </button>
+
+          <button class="quick-action-btn" onclick="openStockCountModal()">
+            <div class="quick-action-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            </div>
+            <span class="quick-action-text">Kiểm Kê Kho</span>
+          </button>
+
+          <button class="quick-action-btn" onclick="openSupplierPaymentModal('NCC01')">
+            <div class="quick-action-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+            </div>
+            <span class="quick-action-text">Chi Trả NCC</span>
+          </button>
+        </div>
+
+        <!-- Revenue Trend Visual Canvas Chart -->
+        <div class="chart-card">
+          <div class="chart-header">
+            <h3>Doanh Số Phân Phối Sỉ (6 Tháng Gần Nhất)</h3>
+            <span class="chart-badge">Tăng trưởng +32%</span>
+          </div>
+          <div class="chart-canvas-wrap">
+            <canvas id="revenueCanvas"></canvas>
+          </div>
+        </div>
+
+        <!-- Realtime Activity Log Timeline -->
+        <div class="section-title-wrap">
+          <div class="section-title">
+            <span class="title-accent"></span> Hoạt Động Gần Đây (Audit Log)
+          </div>
+          <span class="section-action-link" onclick="toggleDrawer()">Xem tất cả</span>
+        </div>
+        <div class="timeline-flow" id="dashboardActivityLogs"></div>
+      </section>
+
+      <!-- ==================================================================
+           TAB 2: HÀNG HÓA & SERIAL (PHÂN HỆ 1 - TV1)
+           ================================================================== -->
+      <section class="tab-view" id="tab-products">
+        <!-- Search Bar -->
+        <div class="search-filter-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input type="text" id="productsSearchInput" placeholder="Tìm tên đồng hồ, SKU, Barcode...">
+        </div>
+
+        <!-- Brand Filter Scroll -->
+        <div class="filter-tags-scroll">
+          <button class="tag-pill active" onclick="setBrandFilter('ALL', this)">Tất cả hãng</button>
+          <button class="tag-pill" onclick="setBrandFilter('Rolex', this)">Rolex</button>
+          <button class="tag-pill" onclick="setBrandFilter('Omega', this)">Omega</button>
+          <button class="tag-pill" onclick="setBrandFilter('Seiko', this)">Seiko</button>
+          <button class="tag-pill" onclick="setBrandFilter('Tissot', this)">Tissot</button>
+          <button class="tag-pill" onclick="setBrandFilter('Casio', this)">Casio</button>
+          <button class="tag-pill" onclick="setBrandFilter('Citizen', this)">Citizen</button>
+        </div>
+
+        <!-- Serial Timeline Lookup Feature -->
+        <div class="serial-lookup-card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <div style="font-size:12px; font-weight:700; color:var(--gold-light); display:flex; align-items:center; gap:6px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+              Truy Vết Vòng Đời Serial / IMEI
+            </div>
+            <button class="btn-toggle-view" style="padding:2px 8px; font-size:10px;" onclick="openScannerModal('LOOKUP')">Quét Camera</button>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <input type="text" id="serialSearchInput" class="form-input" style="font-family:'JetBrains Mono',monospace; font-size:12px;" placeholder="Nhập mã Serial (VD: RLX-SUB-2026-9901)">
+            <button class="btn-primary-action" style="width:auto; padding:0 14px; font-size:12px;" onclick="lookupSerial()">Tra Cứu</button>
+          </div>
+          <!-- Result Container -->
+          <div id="serialLookupResult" style="display:none; margin-top:12px;"></div>
+        </div>
+
+        <!-- Products List -->
+        <div class="section-title-wrap">
+          <div class="section-title">
+            <span class="title-accent"></span> Danh Mục Đồng Hồ Phân Phối
+          </div>
+          <div style="display:flex; gap:6px;">
+            <button class="btn-primary-action" style="width:auto; padding:5px 12px; font-size:11px;" onclick="openAddWatchModal()">+ Thêm Mới</button>
+            <button class="btn-toggle-view" style="font-size:11px;" onclick="exportProductsToCSV()">📥 Xuất CSV</button>
+          </div>
+        </div>
+        <div id="productsListContainer"></div>
+      </section>
+
+      <!-- ==================================================================
+           TAB 3: ĐỐI TÁC NCC & NHẬP HÀNG (PHÂN HỆ 2 - TV2)
+           ================================================================== -->
+      <section class="tab-view" id="tab-inbound">
+        <!-- Action Header -->
+        <div class="section-title-wrap">
+          <div class="section-title">
+            <span class="title-accent"></span> Quản Lý Nhập Kho (Inbound)
+          </div>
+          <button class="btn-primary-action" style="width:auto; padding:6px 14px; font-size:12px;" onclick="openCreateInboundModal()">
+            + Lập Phiếu Nhập
+          </button>
+        </div>
+
+        <!-- Receipts List -->
+        <div id="inboundReceiptsList"></div>
+
+        <!-- Suppliers & Debt Balance Overview -->
+        <div class="section-title-wrap" style="margin-top:18px;">
+          <div class="section-title">
+            <span class="title-accent"></span> Công Nợ Phải Trả Nhà Cung Cấp
+          </div>
+          <button class="btn-toggle-view" style="font-size:11px;" onclick="openSupplierPaymentModal('NCC01')">
+            + Lập Phiếu Chi NCC
+          </button>
+        </div>
+        <div id="suppliersDebtOverview"></div>
+      </section>
+
+      <!-- ==================================================================
+           TAB 4: ĐẠI LÝ B2B & XUẤT HÀNG (PHÂN HỆ 3 - TV3)
+           ================================================================== -->
+      <section class="tab-view" id="tab-outbound">
+        <!-- Action Header -->
+        <div class="section-title-wrap">
+          <div class="section-title">
+            <span class="title-accent"></span> Đơn Bán Sỉ & Phân Phối (Outbound)
+          </div>
+          <button class="btn-primary-action" style="width:auto; padding:6px 14px; font-size:12px;" onclick="openCreateOrderModal()">
+            + Lên Đơn Sỉ
+          </button>
+        </div>
+
+        <!-- Orders List -->
+        <div id="outboundOrdersList"></div>
+
+        <!-- Wholesale Dealers Overview -->
+        <div class="section-title-wrap" style="margin-top:18px;">
+          <div class="section-title">
+            <span class="title-accent"></span> Danh Sách Đại Lý & Hạn Mức Tín Dụng
+          </div>
+          <button class="btn-toggle-view" style="font-size:11px;" onclick="openDealerReceiptModal('DL01')">
+            + Thu Tiền Sỉ
+          </button>
+        </div>
+        <div id="dealersOverviewList"></div>
+      </section>
+
+      <!-- ==================================================================
+           TAB 5: TỒN KHO & VỊ TRÍ KỆ (PHÂN HỆ 4 - TV4)
+           ================================================================== -->
+      <section class="tab-view" id="tab-warehouse">
+        <!-- Warehouse Quality Status Tabs (Kho Mới, Trưng Bày, Kho Lỗi) -->
+        <div class="warehouse-status-tabs">
+          <div class="wh-status-tab-btn active" onclick="setWarehouseQualityTab('NEW', this)">
+            <span class="tab-count" id="whCountNew" style="color:var(--success);">0</span>
+            <span class="tab-name">Kho Hàng Mới</span>
+          </div>
+          <div class="wh-status-tab-btn" onclick="setWarehouseQualityTab('DISPLAY', this)">
+            <span class="tab-count" id="whCountDisplay" style="color:var(--gold-light);">0</span>
+            <span class="tab-name">Kho Trưng Bày</span>
+          </div>
+          <div class="wh-status-tab-btn" onclick="setWarehouseQualityTab('DEFECT', this)">
+            <span class="tab-count" id="whCountDefect" style="color:var(--danger);">0</span>
+            <span class="tab-name">Kho Hàng Lỗi</span>
+          </div>
+        </div>
+
+        <!-- Physical Shelves Layout Visual -->
+        <div class="section-title-wrap">
+          <div class="section-title">
+            <span class="title-accent"></span> Sơ Đồ Vị Trí Kệ Vật Lý
+          </div>
+          <span class="section-action-link" onclick="openStockCountModal()">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            Kiểm Kê Kệ
+          </span>
+        </div>
+        <div class="shelf-visual-grid" id="shelvesVisualGrid"></div>
+
+        <!-- Multi-Unit Stock Summary (Thùng + Chiếc lẻ) -->
+        <div class="section-title-wrap">
+          <div class="section-title">
+            <span class="title-accent"></span> Bảng Tồn Kho Đa Đơn Vị (Thùng + Chiếc)
+          </div>
+        </div>
+        <div id="multiUnitStockSummary"></div>
+      </section>
+
+    </div><!-- End phone-content -->
+
+    <!-- Floating Action Center Scanner Button -->
+    <div class="floating-scan-btn" onclick="openScannerModal('LOOKUP')" title="Quét Nhanh Camera">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/>
+        <line x1="7" y1="12" x2="17" y2="12" stroke="#EF4444" stroke-width="2.5"/>
+      </svg>
+    </div>
+
+    <!-- Bottom Navigation Bar (5 Primary Subsystems) -->
+    <nav class="bottom-nav-bar">
+      <!-- Tab 1: Tổng quan (Phân hệ 5) -->
+      <button class="nav-item-btn active" data-tab="dashboard" onclick="switchTab('dashboard')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+          <polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+        <span>Tổng quan</span>
+      </button>
+
+      <!-- Tab 2: Hàng hóa (Phân hệ 1) -->
+      <button class="nav-item-btn" data-tab="products" onclick="switchTab('products')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="7"/>
+          <polyline points="12 9 12 12 13.5 13.5"/>
+          <path d="M16.51 17.35l-.85 3.83a2 2 0 0 1-2 1.82H10.34a2 2 0 0 1-2-1.82l-.85-3.83"/>
+          <path d="M7.49 6.65l.85-3.83a2 2 0 0 1 2-1.82h3.32a2 2 0 0 1 2 1.82l.85 3.83"/>
+        </svg>
+        <span>Hàng hóa</span>
+      </button>
+
+      <!-- Tab 3: Nhập kho (Phân hệ 2) -->
+      <button class="nav-item-btn" data-tab="inbound" onclick="switchTab('inbound')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        <span>Nhập kho</span>
+      </button>
+
+      <!-- Tab 4: Xuất sỉ (Phân hệ 3) -->
+      <button class="nav-item-btn" data-tab="outbound" onclick="switchTab('outbound')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="17 8 12 3 7 8"/>
+          <line x1="12" y1="3" x2="12" y2="15"/>
+        </svg>
+        <span>Xuất sỉ</span>
+      </button>
+
+      <!-- Tab 5: Kho & Kệ (Phân hệ 4) -->
+      <button class="nav-item-btn" data-tab="warehouse" onclick="switchTab('warehouse')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="18" height="18" rx="2"/>
+          <line x1="3" y1="9" x2="21" y2="9"/>
+          <line x1="9" y1="21" x2="9" y2="9"/>
+        </svg>
+        <span>Kho & Kệ</span>
+        <span class="nav-badge-dot"></span>
+      </button>
+    </nav>
+
+    <!-- ==================================================================
+         MODAL 1: CAMERA SCANNER VỚI VIDEO STREAM TRỰC TIẾP
+         ================================================================== -->
+    <div class="modal-backdrop" id="scannerModal">
+      <div class="modal-sheet">
+        <div class="modal-drag-handle"></div>
+        <div class="modal-header">
+          <h2>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gold-primary)" stroke-width="2"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/></svg>
+            Camera Quét Barcode & Serial
+          </h2>
+          <button class="modal-close-btn" onclick="closeScannerModal()">✕</button>
+        </div>
+
+        <div class="modal-body-scroll">
+          <!-- Real Live Camera Viewport -->
+          <div class="scanner-viewport" id="scannerViewport">
+            <!-- Actual Video Stream from WebCam / Mobile Camera -->
+            <video id="scannerVideo" autoplay playsinline muted></video>
+            <canvas id="scannerCanvas" style="display:none;"></canvas>
+
+            <!-- Scanning Reticle with Gold Corner Brackets -->
+            <div class="scanner-reticle" id="scannerReticle">
+              <div class="reticle-corner tl"></div>
+              <div class="reticle-corner tr"></div>
+              <div class="reticle-corner bl"></div>
+              <div class="reticle-corner br"></div>
+              <div class="scanner-laser"></div>
+            </div>
+
+            <!-- Camera Loading / Permission Status Overlay -->
+            <div class="scanner-status-overlay" id="scannerStatusOverlay">
+              <div class="camera-loader-spinner" id="cameraSpinner"></div>
+              <span id="cameraStatusText">Đang khởi động Camera...</span>
+              <button id="btnGrantCam" class="btn-toggle-view" style="display:none; margin-top:8px;" onclick="startCameraStream()">Cho Phép Camera</button>
+            </div>
+
+            <div class="scanner-hint" id="scannerHint">Đưa mã vạch / Serial / QR vào khung ngắm để tự động nhận diện</div>
+          </div>
+
+          <!-- Camera Controls Toolbar -->
+          <div class="camera-controls-toolbar">
+            <button type="button" class="btn-cam-tool" onclick="switchCameraFacing()">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 16v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-4"/><path d="M4 8V4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v4"/><circle cx="12" cy="12" r="3"/><path d="m16 12 2-2-2-2"/><path d="m8 12-2 2 2 2"/></svg>
+              Đổi Camera (Trước / Sau)
+            </button>
+            <button type="button" class="btn-cam-tool" id="btnToggleFlash" onclick="toggleCameraFlash()">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              Bật Đèn Flash
+            </button>
+          </div>
+
+          <!-- Sample Codes for instant test -->
+          <div style="font-size:11.5px; color:var(--text-secondary); margin-bottom:8px;">
+            Hoặc nhấp nhanh mã mẫu trong kho:
+          </div>
+          <div style="display:flex; flex-direction:column; gap:6px; margin-bottom:14px;">
+            <button class="btn-secondary-action" style="text-align:left; font-size:11px; padding:8px;" onclick="onBarcodeDetected('RLX-SUB-2026-9901')">
+              👉 [Rolex Submariner] Serial: <b>RLX-SUB-2026-9901</b> (Trong kho)
+            </button>
+            <button class="btn-secondary-action" style="text-align:left; font-size:11px; padding:8px;" onclick="onBarcodeDetected('RLX-SUB-2026-9902')">
+              👉 [Rolex Submariner] Serial: <b>RLX-SUB-2026-9902</b> (Giữ chỗ đơn sỉ)
+            </button>
+            <button class="btn-secondary-action" style="text-align:left; font-size:11px; padding:8px;" onclick="onBarcodeDetected('TIS-PRX-2026-1102')">
+              👉 [Tissot PRX] Serial: <b>TIS-PRX-2026-1102</b> (Kho Hàng Lỗi)
+            </button>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Hoặc nhập thủ công mã Serial / Barcode:</label>
+            <div style="display:flex; gap:8px;">
+              <input type="text" id="manualScanInput" class="form-input" placeholder="Ví dụ: OMG-SEA-2026-4401">
+              <button class="btn-primary-action" style="width:auto; padding:0 14px;" onclick="onBarcodeDetected(document.getElementById('manualScanInput').value.trim())">Xác Nhận</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================================================================
+         MODAL 2: LẬP PHIẾU NHẬP KHO (PHÂN HỆ 2 - 2.2)
+         ================================================================== -->
+    <div class="modal-backdrop" id="createInboundModal">
+      <div class="modal-sheet">
+        <div class="modal-drag-handle"></div>
+        <div class="modal-header">
+          <h2>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gold-primary)" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Lập Phiếu Nhập Kho Chính Hãng
+          </h2>
+          <button class="modal-close-btn" onclick="closeModal('createInboundModal')">✕</button>
+        </div>
+
+        <div class="modal-body-scroll">
+          <div class="form-group">
+            <label class="form-label">Nhà Cung Cấp Đối Tác (B2B)</label>
+            <select class="form-select" id="inboundSupplierSelect"></select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Chọn Sản Phẩm Đồng Hồ Nhập</label>
+            <select class="form-select" id="inboundWatchSelect" onchange="updateInboundConversionPreview()"></select>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Đơn Vị Tính Nhập</label>
+              <select class="form-select" id="inboundUnitSelect" onchange="updateInboundConversionPreview()">
+                <option value="BOX">ĐVT Sỉ (Thùng/Kiện)</option>
+                <option value="PIECE">Chiếc lẻ</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Số Lượng Nhập</label>
+              <input type="number" id="inboundQtyInput" class="form-input" min="1" value="1" oninput="updateInboundConversionPreview()">
+            </div>
+          </div>
+
+          <!-- Dynamic Multi-unit Conversion Alert -->
+          <div id="inboundConversionPreview" style="background:rgba(212,175,55,0.08); border:1px solid var(--border-gold); border-radius:8px; padding:10px; font-size:12px; margin-bottom:12px;"></div>
+
+          <div class="form-group">
+            <label class="form-label">
+              <span>Nạp Dải Mã Serial (Mỗi mã 1 dòng)</span>
+              <div>
+                <span style="color:var(--gold-light); cursor:pointer; margin-right:10px;" onclick="document.getElementById('inboundSerialTextarea').dataset.autoGen='false'; updateInboundConversionPreview();">Tự động sinh</span>
+                <span style="color:var(--accent-blue); cursor:pointer; font-weight:700;" onclick="openScannerModal('INBOUND')">📷 Quét Camera</span>
+              </div>
+            </label>
+            <textarea id="inboundSerialTextarea" class="form-textarea" rows="4" style="font-family:'JetBrains Mono',monospace; font-size:11px;"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Chi Phí Vận Chuyển & Hải Quan Phân Bổ (VND)</label>
+            <input type="number" id="inboundAllocatedCost" class="form-input" value="15000000" step="500000">
+          </div>
+        </div>
+
+        <button class="btn-primary-action" onclick="submitCreateInbound()">
+          ✓ Phê Duyệt & Nhập Kho Vật Lý
+        </button>
+      </div>
+    </div>
+
+    <!-- ==================================================================
+         MODAL 3: KHỞI TẠO ĐƠN BÁN SỈ B2B (PHÂN HỆ 3 - 3.2)
+         ================================================================== -->
+    <div class="modal-backdrop" id="createOrderModal">
+      <div class="modal-sheet">
+        <div class="modal-drag-handle"></div>
+        <div class="modal-header">
+          <h2>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gold-primary)" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            Khởi Tạo Đơn Bán Sỉ Cho Đại Lý
+          </h2>
+          <button class="modal-close-btn" onclick="closeModal('createOrderModal')">✕</button>
+        </div>
+
+        <div class="modal-body-scroll">
+          <div class="form-group">
+            <label class="form-label">Đại Lý Mua Hàng Sỉ (B2B)</label>
+            <select class="form-select" id="orderDealerSelect" onchange="updateOrderCalculationPreview()"></select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Chọn Mẫu Đồng Hồ Đặt Hàng</label>
+            <select class="form-select" id="orderWatchSelect" onchange="updateOrderCalculationPreview()"></select>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">ĐVT Đặt Hàng</label>
+              <select class="form-select" id="orderUnitSelect" onchange="updateOrderCalculationPreview()">
+                <option value="PIECE">Cái / Chiếc lẻ</option>
+                <option value="BOX">Thùng / Kiện sỉ</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Số Lượng Đặt</label>
+              <input type="number" id="orderQtyInput" class="form-input" min="1" value="2" oninput="updateOrderCalculationPreview()">
+            </div>
+          </div>
+
+          <!-- Calculation Preview Box -->
+          <div id="orderCalculationPreview" style="margin-bottom:12px;"></div>
+
+          <div class="form-group">
+            <label class="form-label">Số Tiền Đặt Cọc Thu Trước (VND)</label>
+            <input type="number" id="orderDepositInput" class="form-input" step="10000000">
+          </div>
+        </div>
+
+        <button class="btn-primary-action" onclick="submitCreateOrder()">
+          ✓ Duyệt Đơn & Khóa Giữ Chỗ (Reserved)
+        </button>
+      </div>
+    </div>
+
+    <!-- ==================================================================
+         MODAL 4: KIỂM KÊ KHO VÀ ĐỐI SOÁT (PHÂN HỆ 4 - 4.1)
+         ================================================================== -->
+    <div class="modal-backdrop" id="stockCountModal">
+      <div class="modal-sheet">
+        <div class="modal-drag-handle"></div>
+        <div class="modal-header">
+          <h2>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gold-primary)" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            Kiểm Kê Kho & Cân Bằng Lệch
+          </h2>
+          <button class="modal-close-btn" onclick="closeModal('stockCountModal')">✕</button>
+        </div>
+
+        <div class="modal-body-scroll">
+          <div class="form-group">
+            <label class="form-label">Chọn Vị Trí Kệ Kiểm Kê</label>
+            <select class="form-select" id="auditShelfSelect">
+              <option value="A-01">Kệ A-01 (Đồng hồ Thụy Sỹ - Sổ sách: 28 chiếc)</option>
+              <option value="A-02">Kệ A-02 (Đồng hồ Thể thao - Sổ sách: 35 chiếc)</option>
+              <option value="B-01">Kệ B-01 (Đồng hồ Nhật Bản - Sổ sách: 64 chiếc)</option>
+              <option value="C-01">Kệ C-01 (Kho Hàng Lỗi - Sổ sách: 12 chiếc)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Số Lượng Thực Tế Đếm Được Tại Kệ</label>
+            <input type="number" id="auditScannedQty" class="form-input" value="28">
+          </div>
+
+          <div style="background:rgba(255,255,255,0.03); border:1px solid var(--border-subtle); border-radius:8px; padding:10px; font-size:11.5px; color:var(--text-secondary); margin-bottom:12px;">
+            Hệ thống sẽ tự động so sánh số lượng thực tế với số liệu tồn kho đích danh. Nếu phát sinh chênh lệch thừa/thiếu, phiếu cân bằng kho sẽ được lập và ghi nhật ký Audit Log.
+          </div>
+        </div>
+
+        <button class="btn-primary-action" onclick="processStockAudit()">
+          ✓ Xác Nhận Kiểm Kê & Cân Bằng Kho
+        </button>
+      </div>
+    </div>
+
+    <!-- ==================================================================
+         MODAL 5: GENERAL DETAIL BOTTOM SHEET MODAL
+         ================================================================== -->
+    <div class="modal-backdrop" id="generalDetailModal">
+      <div class="modal-sheet">
+        <div class="modal-drag-handle"></div>
+        <div class="modal-header">
+          <h2 id="generalModalTitle">Chi Tiết</h2>
+          <button class="modal-close-btn" onclick="closeModal('generalDetailModal')">✕</button>
+        </div>
+        <div class="modal-body-scroll" id="generalModalBody"></div>
+      </div>
+    </div>
+
+    <!-- ==================================================================
+         SIDE DRAWER: QUẢN TRỊ HỆ THỐNG & TÀI KHOẢN (PHÂN HỆ 1 - 1.2)
+         ================================================================== -->
+    <div class="modal-backdrop" id="drawerBackdrop" onclick="toggleDrawer()"></div>
+    <aside class="side-drawer" id="sideDrawer">
+      <!-- User Account Meta -->
+      <div class="drawer-user-card">
+        <div class="user-avatar-circle">TB</div>
+        <div class="user-meta">
+          <h3>Trần Bảo (Admin)</h3>
+          <span>Quản Trị Viên Kho Tổng</span>
+        </div>
+      </div>
+
+      <!-- Menu Items -->
+      <ul class="drawer-menu-list">
+        <li class="drawer-menu-item active" onclick="toggleDrawer(); switchTab('dashboard')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          <span>Dashboard Điều Hành</span>
+        </li>
+        <li class="drawer-menu-item" onclick="toggleDrawer(); openSystemAdminModal()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span>Tài Khoản & Phân Quyền</span>
+        </li>
+        <li class="drawer-menu-item" onclick="toggleDrawer(); openSystemAdminModal(); switchSystemSubTab('audit')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          <span>Nhật Ký Hệ Thống (Audit Log)</span>
+        </li>
+        <li class="drawer-menu-item" onclick="toggleDrawer(); openDebtLedgerModal()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+          <span>Sổ Chi Tiết Công Nợ B2B</span>
+        </li>
+        <li class="drawer-menu-item" onclick="toggleDrawer(); openCashflowReportModal()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+          <span>Dòng Tiền Thu / Chi Thực Tế</span>
+        </li>
+      </ul>
+
+      <!-- Standalone Member Demo Pages Navigation -->
+      <div style="margin: 16px 0 8px; font-size:11px; font-weight:700; color:var(--gold-light); text-transform:uppercase; letter-spacing:0.5px; border-top:1px solid var(--border-subtle); padding-top:14px;">
+        Trang Độc Lập Demo / Nộp Bài
+      </div>
+      <ul class="drawer-menu-list">
+        <li class="drawer-menu-item" onclick="window.location.href='tv1_hang_hoa.html'">
+          <span>🏷️ TV1: Hàng Hóa & Serial</span>
+        </li>
+        <li class="drawer-menu-item" onclick="window.location.href='tv1_he_thong.html'">
+          <span>🛡️ TV1: Hệ Thống & Quyền</span>
+        </li>
+        <li class="drawer-menu-item" onclick="window.location.href='tv2_nhap_kho.html'">
+          <span>📥 TV2: NCC & Nhập Hàng</span>
+        </li>
+        <li class="drawer-menu-item" onclick="window.location.href='tv3_xuat_kho.html'">
+          <span>📤 TV3: Bán Sỉ & Xuất Hàng</span>
+        </li>
+        <li class="drawer-menu-item" onclick="window.location.href='tv4_ton_kho.html'">
+          <span>📦 TV4: Tồn Kho & Kệ</span>
+        </li>
+        <li class="drawer-menu-item" onclick="window.location.href='tv5_bao_cao.html'">
+          <span>📊 TV5: Báo Cáo Điều Hành</span>
+        </li>
+      </ul>
+
+      <div style="margin-top:auto; padding-top:14px; border-top:1px solid var(--border-subtle); font-size:11px; color:var(--text-muted); text-align:center;">
+        ChronoVault WMS B2B v2.4<br>
+        <span style="color:var(--gold-primary);">Đồng Hồ & Phân Phối Sỉ</span>
+      </div>
+    </aside>
+
+  </main><!-- End phone-wrapper -->
+
+  <!-- Modular Scripts theo 5 Phân Hệ -->
+  <script src="js/data.js"></script>
+  <script src="js/scanner.js"></script>
+  <script src="js/tv1_products.js"></script>
+  <script src="js/tv1_system.js"></script>
+  <script src="js/tv2_inbound.js"></script>
+  <script src="js/tv3_outbound.js"></script>
+  <script src="js/tv4_warehouse.js"></script>
+  <script src="js/tv5_reports.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

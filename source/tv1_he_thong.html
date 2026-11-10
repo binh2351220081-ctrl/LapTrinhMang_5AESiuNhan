@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phân Hệ 1.2: Quản Trị Hệ Thống & Phân Quyền - ChronoVault B2B</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header class="desktop-controls-bar" style="max-width:960px;">
+    <div class="controls-badge">
+      <span class="live-dot"></span>
+      <span>PHÂN HỆ 1.2 • THÀNH VIÊN 1: TÀI KHOẢN, PHÂN QUYỀN & AUDIT LOG</span>
+    </div>
+    <div style="display:flex; gap:8px;">
+      <a href="index.html" class="btn-toggle-view" style="text-decoration:none;">🏠 Cổng Trung Tâm</a>
+      <a href="tv1_hang_hoa.html" class="btn-toggle-view" style="text-decoration:none;">🏷️ TV1: Hàng Hóa</a>
+    </div>
+  </header>
+
+  <main class="phone-wrapper full-screen-mode" style="max-width:960px; height:auto; min-height:88vh; padding-bottom:30px;">
+    <div class="toast-container" id="toastContainer"></div>
+
+    <header class="app-header">
+      <div class="header-top-row">
+        <div class="brand-section">
+          <div class="brand-logo-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+          </div>
+          <div class="brand-info">
+            <h1>QUẢN TRỊ TÀI KHOẢN & MA TRẬN PHÂN QUYỀN</h1>
+            <span>HỆ THỐNG AN NINH & NHẬT KÝ AUDIT TRAIL • THÀNH VIÊN 1</span>
+          </div>
+        </div>
+        <button class="btn-primary-action" style="width:auto; padding:6px 14px; font-size:12px;" onclick="openAddAccountModal()">
+          + Cấp Mới Tài Khoản
+        </button>
+      </div>
+    </header>
+
+    <div style="padding:16px 20px; flex:1; overflow-y:auto;">
+      
+      <!-- Sub Tab Bar -->
+      <div class="sub-tab-bar" style="margin-bottom:18px;">
+        <button class="sub-tab-btn active" id="btnPageAccounts" onclick="showSystemSection('accounts')">👥 Danh Sách Tài Khoản</button>
+        <button class="sub-tab-btn" id="btnPageRoles" onclick="showSystemSection('roles')">🔐 Ma Trận Quyền (Role Matrix)</button>
+        <button class="sub-tab-btn" id="btnPageLogs" onclick="showSystemSection('logs')">📜 Nhật Ký Thao Tác (Audit Log)</button>
+      </div>
+
+      <!-- Section 1: Accounts -->
+      <div id="sectionAccounts">
+        <div class="section-title-wrap">
+          <div class="section-title">
+            <span class="title-accent"></span> Danh Sách Người Dùng Hệ Thống
+          </div>
+        </div>
+        <div id="pageAccountsContainer" class="accounts-cards-list"></div>
+      </div>
+
+      <!-- Section 2: Roles Matrix -->
+      <div id="sectionRoles" style="display:none;">
+        <div class="section-title-wrap">
+          <div class="section-title">
+            <span class="title-accent"></span> Ma Trận Phân Quyền Chi Tiết (Role Matrix)
+          </div>
+        </div>
+        <div class="role-matrix-table-wrap">
+          <table class="role-matrix-table">
+            <thead>
+              <tr>
+                <th>Nhóm Vai Trò</th>
+                <th>Phân Hệ 1 (Hàng Hóa)</th>
+                <th>Phân Hệ 2 (Nhập NCC)</th>
+                <th>Phân Hệ 3 (Bán Sỉ)</th>
+                <th>Phân Hệ 4 (Kho Kệ)</th>
+                <th>Phân Hệ 5 (Báo Cáo)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><b>🛡️ Quản trị hệ thống</b><br><small>Quản lý tài khoản, vai trò & nhật ký</small></td>
+                <td><span class="perm-tag write">Quản lý danh mục hệ thống</span></td>
+                <td><span class="perm-tag read">Xem, không xử lý phiếu</span></td>
+                <td><span class="perm-tag read">Xem, không xử lý đơn</span></td>
+                <td><span class="perm-tag read">Xem nhật ký</span></td>
+                <td><span class="perm-tag read">Xem báo cáo</span></td>
+              </tr>
+              <tr>
+                <td><b>👑 Chủ cửa hàng</b><br><small>Điều hành & duyệt ngoại lệ</small></td>
+                <td><span class="perm-tag read">Xem</span></td>
+                <td><span class="perm-tag write">Duyệt chi vượt ngưỡng</span></td>
+                <td><span class="perm-tag write">Duyệt ngoại lệ tín dụng</span></td>
+                <td><span class="perm-tag write">Duyệt cân bằng vượt ngưỡng</span></td>
+                <td><span class="perm-tag full">Dashboard, báo cáo, xuất</span></td>
+              </tr>
+              <tr>
+                <td><b>📦 Thủ kho (quản lý điều hành)</b><br><small>Vật lý, Kệ & Kiểm kê</small></td>
+                <td><span class="perm-tag read">Chỉ xem</span></td>
+                <td><span class="perm-tag write">Xác nhận nhận hàng</span></td>
+                <td><span class="perm-tag write">Xác nhận xuất vật lý</span></td>
+                <td><span class="perm-tag full">Kệ, kiểm kê, cân bằng trong ngưỡng</span></td>
+                <td><span class="perm-tag read">Báo cáo tồn kho</span></td>
+              </tr>
+              <tr>
+                <td><b>📥📤 Nhân viên nhập - xuất kho</b><br><small>Tác nghiệp giao dịch</small></td>
+                <td><span class="perm-tag read">Tra cứu sản phẩm</span></td>
+                <td><span class="perm-tag full">Lập phiếu, quét Serial</span></td>
+                <td><span class="perm-tag full">Lập đơn nháp, soạn và xuất</span></td>
+                <td><span class="perm-tag read">Tra cứu, đề nghị điều chuyển</span></td>
+                <td><span class="perm-tag read">Báo cáo nghiệp vụ</span></td>
+              </tr>
+              <tr>
+                <td><b>📊 Kế toán</b><br><small>Thu Chi & Sổ Nợ</small></td>
+                <td><span class="perm-tag read">Chỉ xem</span></td>
+                <td><span class="perm-tag write">Phân bổ chi phí, đối soát</span></td>
+                <td><span class="perm-tag write">Kiểm tra công nợ</span></td>
+                <td><span class="perm-tag read">Đối soát thẻ kho</span></td>
+                <td><span class="perm-tag full">Thu chi, công nợ, tài chính</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Section 3: Audit Trail -->
+      <div id="sectionLogs" style="display:none;">
+        <div class="section-title-wrap">
+          <div class="section-title">
+            <span class="title-accent"></span> Dòng Vết Thao Tác Hệ Thống (Audit Log Viewer)
+          </div>
+          <select class="wh-select" onchange="filterPageAuditLogs(this.value)">
+            <option value="ALL">Tất cả hành động</option>
+            <option value="TẠO_ĐƠN_SỈ">Tạo đơn sỉ</option>
+            <option value="THU_TIỀN_SỈ">Thu tiền sỉ</option>
+            <option value="CHI_TRẢ_NCC">Chi trả NCC</option>
+            <option value="KIỂM_KÊ_KHO">Kiểm kê kho</option>
+            <option value="NHẬP_TRẢ_HÀNG">Đổi trả hàng</option>
+          </select>
+        </div>
+        <div class="timeline-flow" id="pageLogsContainer"></div>
+      </div>
+
+    </div>
+
+    <!-- General Detail Modal -->
+    <div class="modal-backdrop" id="generalDetailModal">
+      <div class="modal-sheet" style="max-width:650px; margin:0 auto; width:100%;">
+        <div class="modal-drag-handle"></div>
+        <div class="modal-header">
+          <h2 id="generalModalTitle">Chi Tiết</h2>
+          <button class="modal-close-btn" onclick="closeModal('generalDetailModal')">✕</button>
+        </div>
+        <div class="modal-body-scroll" id="generalModalBody"></div>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/data.js"></script>
+  <script src="js/tv1_system.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    function renderPageAccounts() {
+      const accounts = ChronoDB.getAccounts();
+      const container = document.getElementById('pageAccountsContainer');
+      if (!container) return;
+      container.innerHTML = accounts.map(acc => `
+        <div class="account-item-card">
+          <div class="acc-avatar">${acc.avatar || 'US'}</div>
+          <div class="acc-meta">
+            <div class="acc-name">${acc.fullName} <span class="acc-username">(@${acc.username})</span></div>
+            <div class="acc-role">${acc.roleName} • ${acc.email}</div>
+            <div class="acc-login">Lần đăng nhập cuối: ${acc.lastLogin || 'Chưa ghi nhận'}</div>
+          </div>
+          <div class="acc-actions">
+            <span class="badge-status ${acc.status === 'ACTIVE' ? 'status-completed' : 'status-danger'}">
+              ${acc.status === 'ACTIVE' ? 'Hoạt Động' : 'Đã Khóa'}
+            </span>
+            <button class="btn-action-small" onclick="toggleAccountStatus('${acc.id}'); renderPageAccounts();" style="margin-top:6px;">
+              ${acc.status === 'ACTIVE' ? '🔒 Khóa' : '🔓 Mở Khóa'}
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderPageLogs(filter = 'ALL') {
+      const logs = ChronoDB.getLogs();
+      const filtered = (filter === 'ALL') ? logs : logs.filter(l => l.action === filter);
+      const container = document.getElementById('pageLogsContainer');
+      if (!container) return;
+      container.innerHTML = filtered.map(log => `
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-time">${log.time}</div>
+            <div class="timeline-user">👤 ${log.user}</div>
+            <div class="timeline-action">
+              <span class="log-badge-action">${log.action}</span>: ${log.target}
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function showSystemSection(sec) {
+      document.getElementById('btnPageAccounts').classList.remove('active');
+      document.getElementById('btnPageRoles').classList.remove('active');
+      document.getElementById('btnPageLogs').classList.remove('active');
+
+      document.getElementById('sectionAccounts').style.display = 'none';
+      document.getElementById('sectionRoles').style.display = 'none';
+      document.getElementById('sectionLogs').style.display = 'none';
+
+      if (sec === 'accounts') {
+        document.getElementById('btnPageAccounts').classList.add('active');
+        document.getElementById('sectionAccounts').style.display = 'block';
+        renderPageAccounts();
+      } else if (sec === 'roles') {
+        document.getElementById('btnPageRoles').classList.add('active');
+        document.getElementById('sectionRoles').style.display = 'block';
+      } else if (sec === 'logs') {
+        document.getElementById('btnPageLogs').classList.add('active');
+        document.getElementById('sectionLogs').style.display = 'block';
+        renderPageLogs();
+      }
+    }
+
+    function filterPageAuditLogs(val) {
+      renderPageLogs(val);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      renderPageAccounts();
+    });
+  </script>
+</body>
+</html>

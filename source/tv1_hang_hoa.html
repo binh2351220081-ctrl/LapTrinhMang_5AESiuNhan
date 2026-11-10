@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phân Hệ 1.1: Quản Lý Hàng Hóa & Serial - ChronoVault B2B</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://unpkg.com/@zxing/library@latest/umd/index.min.js"></script>
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header class="desktop-controls-bar" style="max-width:960px;">
+    <div class="controls-badge">
+      <span class="live-dot"></span>
+      <span>PHÂN HỆ 1 • THÀNH VIÊN 1: QUẢN LÝ HÀNG HÓA & SERIAL</span>
+    </div>
+    <div style="display:flex; gap:8px;">
+      <a href="index.html" class="btn-toggle-view" style="text-decoration:none;">🏠 Cổng Trung Tâm</a>
+      <a href="tv1_he_thong.html" class="btn-toggle-view" style="text-decoration:none;">🛡️ TV1: Hệ Thống</a>
+    </div>
+  </header>
+
+  <!-- Main Standalone Container -->
+  <main class="phone-wrapper full-screen-mode" style="max-width:960px; height:auto; min-height:88vh; padding-bottom:30px;">
+    
+    <!-- Toast Layer -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Page Header Bar -->
+    <header class="app-header">
+      <div class="header-top-row">
+        <div class="brand-section">
+          <div class="brand-logo-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <circle cx="12" cy="12" r="7"/>
+              <polyline points="12 9 12 12 14 14"/>
+            </svg>
+          </div>
+          <div class="brand-info">
+            <h1>DANH MỤC ĐỒNG HỒ & TRUY VẾT SERIAL</h1>
+            <span>ĐẶC TẢ NGHIỆP VỤ B2B • THÀNH VIÊN 1</span>
+          </div>
+        </div>
+        <div class="header-actions">
+          <button class="btn-primary-action" style="width:auto; padding:6px 14px; font-size:12px;" onclick="openAddWatchModal()">
+            + Thêm Mới Đồng Hồ
+          </button>
+          <button class="btn-toggle-view" onclick="exportProductsToCSV()">
+            📥 Xuất CSV / Excel
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Page Body -->
+    <div style="padding:16px 20px; flex:1; overflow-y:auto;">
+      
+      <!-- Top Filters -->
+      <div style="display:grid; grid-template-columns: 2fr 1fr; gap:12px; margin-bottom:14px;">
+        <div class="search-filter-box" style="margin-bottom:0;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input type="text" id="productsSearchInput" placeholder="Tìm tên đồng hồ, mã SKU, Barcode, Hãng...">
+        </div>
+
+        <button class="btn-secondary-action" style="display:flex; align-items:center; justify-content:center; gap:8px;" onclick="openScannerModal('LOOKUP')">
+          📷 Quét Mã Camera ZXing
+        </button>
+      </div>
+
+      <!-- Brand Filter Tags -->
+      <div class="filter-tags-scroll">
+        <button class="tag-pill active" onclick="setBrandFilter('ALL', this)">Tất cả hãng</button>
+        <button class="tag-pill" onclick="setBrandFilter('Rolex', this)">Rolex</button>
+        <button class="tag-pill" onclick="setBrandFilter('Omega', this)">Omega</button>
+        <button class="tag-pill" onclick="setBrandFilter('Tissot', this)">Tissot</button>
+        <button class="tag-pill" onclick="setBrandFilter('Seiko', this)">Seiko</button>
+        <button class="tag-pill" onclick="setBrandFilter('Casio', this)">Casio</button>
+        <button class="tag-pill" onclick="setBrandFilter('Citizen', this)">Citizen</button>
+      </div>
+
+      <!-- Serial Lifecycle Search Box -->
+      <div class="serial-lookup-card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <div style="font-size:12px; font-weight:700; color:var(--gold-light); display:flex; align-items:center; gap:6px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+            Truy Vết Vòng Đời Mã Serial / IMEI (1.1)
+          </div>
+          <span style="font-size:11px; color:var(--text-muted);">Mẫu: RLX-SUB-2026-9901, TIS-PRX-2026-1102</span>
+        </div>
+        <div style="display:flex; gap:8px;">
+          <input type="text" id="serialSearchInput" class="form-input" style="font-family:'JetBrains Mono',monospace; font-size:12px;" placeholder="Nhập mã Serial để truy xuất nguồn gốc...">
+          <button class="btn-primary-action" style="width:auto; padding:0 18px; font-size:12px;" onclick="lookupSerial()">Tra Cứu</button>
+        </div>
+        <div id="serialLookupResult" style="display:none; margin-top:12px;"></div>
+      </div>
+
+      <!-- Products Grid List -->
+      <div class="section-title-wrap">
+        <div class="section-title">
+          <span class="title-accent"></span> Danh Mục Đồng Hồ Chi Tiết
+        </div>
+      </div>
+      <div id="productsListContainer"></div>
+
+    </div>
+
+    <!-- Scanner Modal -->
+    <div class="modal-backdrop" id="scannerModal">
+      <div class="modal-sheet" style="max-width:500px; margin:0 auto; width:100%;">
+        <div class="modal-header">
+          <h2>📷 Quét Mã Barcode / Serial Camera</h2>
+          <button class="modal-close-btn" onclick="closeScannerModal()">✕</button>
+        </div>
+        <div class="modal-body-scroll">
+          <div class="scanner-viewport">
+            <video id="scannerVideo" autoplay playsinline muted></video>
+            <div class="scanner-reticle" id="scannerReticle">
+              <div class="reticle-corner tl"></div><div class="reticle-corner tr"></div>
+              <div class="reticle-corner bl"></div><div class="reticle-corner br"></div>
+              <div class="scanner-laser"></div>
+            </div>
+            <div class="scanner-status-overlay" id="scannerStatusOverlay">
+              <div class="camera-loader-spinner" id="cameraSpinner"></div>
+              <span id="cameraStatusText">Đang khởi động Camera...</span>
+            </div>
+          </div>
+          <div class="form-group" style="margin-top:10px;">
+            <input type="text" id="manualScanInput" class="form-input" placeholder="Hoặc nhập mã Serial...">
+            <button class="btn-primary-action" style="margin-top:8px;" onclick="onBarcodeDetected(document.getElementById('manualScanInput').value)">Xác Nhận</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- General Detail Modal -->
+    <div class="modal-backdrop" id="generalDetailModal">
+      <div class="modal-sheet" style="max-width:650px; margin:0 auto; width:100%;">
+        <div class="modal-drag-handle"></div>
+        <div class="modal-header">
+          <h2 id="generalModalTitle">Chi Tiết</h2>
+          <button class="modal-close-btn" onclick="closeModal('generalDetailModal')">✕</button>
+        </div>
+        <div class="modal-body-scroll" id="generalModalBody"></div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Modular Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/scanner.js"></script>
+  <script src="js/tv1_products.js"></script>
+  <script src="js/tv1_system.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      renderProductsList();
+    });
+  </script>
+</body>
+</html>

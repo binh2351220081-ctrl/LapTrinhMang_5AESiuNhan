@@ -1,4 +1,4 @@
-# Đề tài: Lập Trình Mạng - Nhóm FourSiuNhan
+# Đề tài: Lập Trình Mạng - Nhóm 5 AE Siu Nhân
 ### Hệ Thống Quản Lý Kho Hàng Hóa Cửa Hàng Đồng Hồ (ChronoVault B2B Wholesale WMS)
 
 ---
@@ -26,6 +26,8 @@ Hệ thống phần mềm quản lý kho chuyên biệt cho mô hình **B2B Whol
 ## 📁 Tài liệu đính kèm
 Các tệp tài liệu và báo cáo chính thức của đề tài được lưu trữ trực tiếp trong thư mục dự án:
 
+- **Kế hoạch toàn diện & Bộ Prompt chuẩn mực 5 thành viên (MỚI):**
+  - 📄 [KE_HOACH_CHI_TIET_VA_BO_PROMPT_TOAN_DIEN_5_THANH_VIEN.docx](KE_HOACH_CHI_TIET_VA_BO_PROMPT_TOAN_DIEN_5_THANH_VIEN.docx) *(Bản đặc tả chi tiết 5 giai đoạn: PTTK, Web Client, Lập trình Mạng/API/Socket, App Android Studio và Kiểm thử tích hợp)*
 - **Báo cáo phân tích thiết kế hệ thống:**
   - 📄 [BAO_CAO_PHAN_TICH_THIET_KE_HE_THONG.docx](BAO_CAO_PHAN_TICH_THIET_KE_HE_THONG.docx) (Bản Word nộp bài)
   - 📝 [BAO_CAO_PHAN_TICH_THIET_KE_HE_THONG.md](BAO_CAO_PHAN_TICH_THIET_KE_HE_THONG.md) (Bản Markdown kỹ thuật)
@@ -83,4 +85,4 @@ Các tệp tài liệu và báo cáo chính thức của đề tài được lư
 4. Nhóm trưởng (**Phan Bá Hải Bình**) sẽ review code, kiểm tra xung đột và thực hiện merge vào nhánh `main`.
 
 ---
-*FourSiuNhan Team • Đồ án môn học Lập Trình Mạng*
+*Nhóm 5 AE Siu Nhân • Đồ án môn học Lập Trình Mạng*

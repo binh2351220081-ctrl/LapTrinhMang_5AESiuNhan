@@ -1,0 +1,417 @@
+/* ==========================================================================
+   CHRONO VAULT B2B - BASE & THEME VARIABLES
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap');
+
+:root {
+  /* Luxury Horology Dark Theme Palette */
+  --bg-app: #08090D;
+  --bg-card: #12141C;
+  --bg-card-subtle: #181B26;
+  --bg-input: #1C202E;
+  --bg-hover: #222738;
+  
+  /* Brand Luxury Gold Accents */
+  --gold-primary: #D4AF37;
+  --gold-light: #F3E5AB;
+  --gold-dark: #997A15;
+  --gold-gradient: linear-gradient(135deg, #ECC86A 0%, #D4AF37 50%, #A6811E 100%);
+  --gold-glow: rgba(212, 175, 55, 0.22);
+  
+  /* Status Colors */
+  --success: #10B981;
+  --success-bg: rgba(16, 185, 129, 0.12);
+  --warning: #F59E0B;
+  --warning-bg: rgba(245, 158, 11, 0.12);
+  --danger: #EF4444;
+  --danger-bg: rgba(239, 68, 68, 0.12);
+  --accent-blue: #3B82F6;
+  --accent-purple: #8B5CF6;
+  
+  /* Typography Colors */
+  --text-primary: #F8FAFC;
+  --text-secondary: #94A3B8;
+  --text-muted: #64748B;
+  --text-gold: #F3E5AB;
+  
+  /* Borders & Dividers */
+  --border-gold: rgba(212, 175, 55, 0.3);
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-light: rgba(255, 255, 255, 0.14);
+  
+  /* Radius & Shadows */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+  
+  --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.45);
+  --shadow-gold: 0 0 25px rgba(212, 175, 55, 0.25);
+  --shadow-modal: 0 -10px 40px rgba(0, 0, 0, 0.85);
+}
+
+/* Reset & Box Sizing */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: #030406;
+  background-image: 
+    radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.07) 0%, transparent 60%),
+    radial-gradient(circle at 100% 100%, rgba(30, 41, 59, 0.2) 0%, transparent 50%);
+  color: var(--text-primary);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 10px 0 30px;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Top Desktop Control Bar */
+.desktop-controls-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 440px;
+  padding: 6px 14px;
+  margin-bottom: 8px;
+  z-index: 100;
+}
+
+.controls-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--gold-light);
+  text-transform: uppercase;
+}
+
+.live-dot {
+  width: 8px;
+  height: 8px;
+  background-color: var(--success);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--success);
+  animation: pulseLive 2s infinite;
+}
+
+@keyframes pulseLive {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.85); }
+}
+
+.btn-toggle-view {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border-light);
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-toggle-view:hover {
+  background: rgba(212, 175, 55, 0.15);
+  border-color: var(--gold-primary);
+  color: var(--gold-light);
+}
+
+/* Phone Simulator Frame */
+.phone-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 428px; /* iPhone 15 Pro Max width */
+  height: 890px;
+  background-color: var(--bg-app);
+  border: 10px solid #1F232F;
+  border-radius: 50px;
+  box-shadow: 
+    0 0 0 2px rgba(212, 175, 55, 0.25),
+    0 25px 60px rgba(0, 0, 0, 0.9),
+    inset 0 0 20px rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Fullscreen Tablet/PC Mode */
+.phone-wrapper.full-screen-mode {
+  max-width: 950px;
+  height: 94vh;
+  border-radius: 20px;
+  border-width: 4px;
+}
+
+/* iPhone Native Status Bar */
+.phone-status-bar {
+  height: 44px;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  z-index: 50;
+  user-select: none;
+}
+
+.status-icons {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-icons svg {
+  width: 15px;
+  height: 15px;
+  fill: currentColor;
+}
+
+/* Dynamic Island */
+.dynamic-island-container {
+  position: absolute;
+  top: 11px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 125px;
+  height: 32px;
+  background-color: #000000;
+  border-radius: 20px;
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+  cursor: pointer;
+}
+
+.dynamic-island-container.expanded {
+  width: 310px;
+  height: 48px;
+  background: #11141D;
+  border: 1px solid var(--border-gold);
+}
+
+.island-camera {
+  width: 11px;
+  height: 11px;
+  background: #090B10;
+  border-radius: 50%;
+  box-shadow: inset 0 0 3px #1E293B;
+}
+
+.island-status {
+  font-size: 11px;
+  color: var(--gold-light);
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 220px;
+}
+
+.island-speaker {
+  width: 6px;
+  height: 6px;
+  background: #1E293B;
+  border-radius: 50%;
+}
+
+/* App Header */
+.app-header {
+  padding: 8px 18px 12px;
+  background: linear-gradient(180deg, rgba(18, 20, 28, 0.95) 0%, rgba(8, 9, 13, 0.95) 100%);
+  border-bottom: 1px solid var(--border-subtle);
+  backdrop-filter: blur(10px);
+  z-index: 40;
+}
+
+.header-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.brand-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-icon-head {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.btn-icon-head svg {
+  width: 18px;
+  height: 18px;
+}
+
+.btn-icon-head:hover {
+  background: rgba(212, 175, 55, 0.15);
+  border-color: var(--border-gold);
+  color: var(--gold-light);
+}
+
+.badge-count {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: var(--danger);
+  color: #FFF;
+  font-size: 10px;
+  font-weight: 700;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--bg-app);
+}
+
+.brand-logo-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-sm);
+  background: var(--gold-gradient);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0F1117;
+  box-shadow: 0 2px 10px rgba(212, 175, 55, 0.4);
+}
+
+.brand-logo-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.brand-info h1 {
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  color: #FFFFFF;
+  line-height: 1.1;
+}
+
+.brand-info span {
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  color: var(--gold-primary);
+  text-transform: uppercase;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.warehouse-selector-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 4px 10px;
+  font-size: 11.5px;
+}
+
+.wh-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-secondary);
+}
+
+.wh-label svg {
+  width: 13px;
+  height: 13px;
+  color: var(--gold-primary);
+}
+
+.wh-select {
+  background: transparent;
+  border: none;
+  color: var(--gold-light);
+  font-size: 11.5px;
+  font-weight: 600;
+  outline: none;
+  cursor: pointer;
+}
+
+.wh-select option {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+}
+
+/* Scrollable Main Content Area */
+.phone-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 14px 16px 85px;
+  scroll-behavior: smooth;
+}
+
+.phone-content::-webkit-scrollbar {
+  width: 4px;
+}
+
+.phone-content::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+}
+
+/* Tab Views Container */
+.tab-view {
+  display: none;
+  animation: fadeInTab 0.25s ease-out;
+}
+
+.tab-view.active {
+  display: block;
+}
+
+@keyframes fadeInTab {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}

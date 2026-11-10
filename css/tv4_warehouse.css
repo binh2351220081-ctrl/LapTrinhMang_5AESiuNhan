@@ -1,0 +1,123 @@
+/* ==========================================================================
+   CHRONO VAULT B2B - PHÂN HỆ 4 STYLES (TV4)
+   Tồn Kho Đa Trạng Thái, Vị Trí Kệ, Kiểm Kê & Thẻ Kho
+   ========================================================================== */
+
+/* Warehouse Quality Tabs */
+.warehouse-status-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.wh-status-tab-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 10px 8px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.wh-status-tab-btn:hover, .wh-status-tab-btn.active {
+  background: var(--bg-card-subtle);
+  border-color: var(--gold-primary);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+.tab-count {
+  display: block;
+  font-size: 18px;
+  font-weight: 800;
+  font-family: 'JetBrains Mono', monospace;
+  margin-bottom: 2px;
+}
+
+.tab-name {
+  font-size: 11px;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+/* Shelves Visual Grid */
+.shelves-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.shelf-box-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.shelf-box-card:hover {
+  border-color: var(--gold-primary);
+  transform: translateY(-2px);
+}
+
+.shelf-box-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.shelf-code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--gold-primary);
+}
+
+.shelf-zone {
+  font-size: 9.5px;
+  color: var(--text-muted);
+}
+
+.shelf-name {
+  font-size: 11px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 8px;
+}
+
+.shelf-capacity-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.shelf-progress-track {
+  width: 100%;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.shelf-progress-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.4s ease;
+}
+
+/* Multi-unit Table */
+.multi-unit-table-wrap, .stock-cards-table-wrap {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 12px;
+  overflow-x: auto;
+}

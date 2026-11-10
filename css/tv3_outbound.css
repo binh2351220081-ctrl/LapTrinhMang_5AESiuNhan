@@ -1,0 +1,157 @@
+/* ==========================================================================
+   CHRONO VAULT B2B - PHÂN HỆ 3 STYLES (TV3)
+   Khách Hàng Sỉ, Đơn Bán Sỉ, Xuất Kho Quét Serial & Thu Tiền Sỉ
+   ========================================================================== */
+
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.order-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  transition: all 0.2s ease;
+}
+
+.order-card:hover {
+  border-color: rgba(212, 175, 55, 0.4);
+}
+
+.order-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 8px;
+  margin-bottom: 10px;
+}
+
+.order-code-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.order-code-badge .code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--gold-primary);
+}
+
+.order-code-badge .date {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.order-card-body {
+  margin-bottom: 12px;
+}
+
+.order-dealer {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+.order-summary-line {
+  font-size: 11.5px;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+
+.order-amount-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: var(--radius-sm);
+  padding: 6px 10px;
+  font-size: 12px;
+  margin-bottom: 6px;
+}
+
+.order-amount-line .amount-val {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--gold-light);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.order-debt-detail {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--text-muted);
+  padding: 0 4px;
+}
+
+.order-card-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 10px;
+}
+
+/* Wholesale Dealers Grid */
+.dealers-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dealer-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 14px;
+}
+
+.dealer-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.dealer-shop {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 3px;
+}
+
+.dealer-meta, .dealer-address {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.dealer-credit-bar {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 11.5px;
+}
+
+.credit-row {
+  display: flex;
+  justify-content: space-between;
+  color: var(--text-secondary);
+}
+
+.dealer-card-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
