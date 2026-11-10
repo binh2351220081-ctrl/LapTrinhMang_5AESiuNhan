@@ -248,7 +248,7 @@ class ProductListFragment : Fragment() {
 
             viewLifecycleOwner.lifecycleScope.launch {
                 withContext(Dispatchers.IO) {
-                    productDao.insert(newProduct)
+                    productDao.insertProduct(newProduct)
                     serialDao.insert(newSerial)
                     allProducts = productDao.getAllProducts()
                 }
