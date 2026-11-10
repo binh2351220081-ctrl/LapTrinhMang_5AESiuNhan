@@ -184,7 +184,6 @@ YÊU CẦU ĐẦU RA:
 ---
 
 ## PROMPT THÀNH VIÊN 4: VÕ CÔNG TÂM
-*Copy toàn bộ phần code dưới đây và dán vào AI (ChatGPT / Claude / DeepSeek / Gemini):*
 
 ```text
 BẠN LÀ LẬP TRÌNH VIÊN ANDROID CHUYÊN TRÁCH PHÂN HỆ QUẢN LÝ KHO NỘI BỘ, VỊ TRÍ VÀ KIỂM KÊ. HÃY PHÁT TRIỂN MODULE TRONG PACKAGE `com.example.chronovaultwms.inventory` BẰNG KOTLIN:
