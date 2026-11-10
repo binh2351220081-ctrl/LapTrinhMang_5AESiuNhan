@@ -3,32 +3,44 @@
 
 ---
 
-## 📌 1. Thành viên nhóm & Phân công nhiệm vụ 5 Phân hệ
+## 📌 1. Thành viên nhóm & Phân công 5 Tác Nhân Nghiệp Vụ (5 Actors & Subsystems)
 
-1. **Phan Bá Hải Bình** (Nhóm trưởng) - *Phụ trách TV1: Quản lý Hàng hóa & Quản trị Hệ thống* (Nhánh: `feature/product`)
-2. **Nguyễn Đắc Quân** - *Phụ trách TV2: Đối tác Nhà cung cấp & Quản lý Nhập kho* (Nhánh: `feature/inbound`)
-3. **Tô Đức Thảo** - *Phụ trách TV3: Khách sỉ & Bán sỉ - Phân phối xuất hàng* (Nhánh: `feature/outbound`)
-4. **Võ Công Tâm** - *Phụ trách TV4: Quản lý Tồn kho, Vị trí kệ & Kiểm kê* (Nhánh: `feature/inventory`)
-5. **Trần Công Tú** - *Phụ trách TV5: Báo cáo thống kê & Dashboard điều hành* (Nhánh: `feature/dashboard`)
+1. **Phan Bá Hải Bình** (Nhóm trưởng) — **🛡️ Quản Trị Hệ Thống (`SYSTEM_ADMIN`)**
+   - **Phân hệ phụ trách (TV1):** Quản lý Danh mục Hàng hóa, Cấu hình Ma trận RBAC, Truy vết Vòng đời Serial & Nhật ký Audit Log.
+   - **Tài khoản Demo:** `@binh_admin` (Mật khẩu: `admin123`) • **Nhánh Git:** `feature/product`
+
+2. **Nguyễn Đắc Quân** & **Tô Đức Thảo** — **📦 Nhân Viên Nhập - Xuất Kho (`OPERATIONS_STAFF`)**
+   - **Phân hệ phụ trách (TV2 & TV3):** 
+     - *TV2 (Quân):* Đối tác Nhà cung cấp & Quản lý Nhập kho (Nhánh `feature/inbound`).
+     - *TV3 (Thảo):* Khách sỉ & Phân phối xuất hàng B2B (Nhánh `feature/outbound`).
+     - *Nghiệp vụ tiền tuyến:* Cầm máy quét Barcode Serial nạp kho, soạn hàng, đóng kiện xuất bến.
+   - **Tài khoản Demo:** `@quan_thao_ops` (Mật khẩu: `123`)
+
+3. **Võ Công Tâm** — **🏢 Thủ Kho Điều Hành (`WAREHOUSE_MANAGER`)**
+   - **Phân hệ phụ trách (TV4):** Quản lý Tồn kho, Sơ đồ ngăn kệ Bin/Rack, Ký xác nhận giao nhận vật lý, Chủ trì kiểm kê & Cân bằng kho.
+   - **Tài khoản Demo:** `@tam_manager` (Mật khẩu: `123`) • **Nhánh Git:** `feature/inventory`
+
+4. **Trần Công Tú** — **💰 Kế Toán Kho & Công Nợ (`ACCOUNTANT`)**
+   - **Phân hệ phụ trách (TV5):** Báo cáo thống kê & Dashboard, Phân bổ giá vốn đích danh từng Serial, Quản lý công nợ đại lý 2 chiều, Lập phiếu thu/chi.
+   - **Tài khoản Demo:** `@tu_accountant` (Mật khẩu: `123`) • **Nhánh Git:** `feature/dashboard`
+
+5. **Ban Điều Hành Tối Cao** — **👑 Chủ Cửa Hàng (`STORE_OWNER`)**
+   - **Vai trò điều hành tối cao:** Giám sát Dashboard KPI doanh thu, dòng tiền; Phê duyệt các ngoại lệ vượt trần (đại lý nợ quá hạn mức tín dụng, chi phí phát sinh lớn, cân bằng kiểm kê giá trị cao).
+   - **Tài khoản Demo:** `@owner_boss` (Mật khẩu: `admin123`)
 
 ---
 
-## 🎯 2. Phân định rõ: "5 Phân Hệ Lập Trình" vs "5 Tác Nhân Nghiệp Vụ"
+## 🎯 2. Nguyên tắc Bất Kiêm Nhiệm Vụ (Segregation of Duties - SoD)
 
-Để tránh nhầm lẫn giữa **việc phân chia code cho sinh viên** và **nhân sự thực tế ngoài đời**, đồ án tách bạch rõ 2 khái niệm theo tài liệu đặc tả [`DAC_TA_NHIEM_VU_CONG_VIEC_5_ACTOR.md`](DAC_TA_NHIEM_VU_CONG_VIEC_5_ACTOR.md):
+Hệ thống áp dụng triệt để nguyên tắc **Kiểm soát bốn mắt (Four-Eyes Principle)** và **Bất kiêm nhiệm vụ** theo tài liệu đặc tả [`DAC_TA_NHIEM_VU_CONG_VIEC_5_ACTOR.md`](DAC_TA_NHIEM_VU_CONG_VIEC_5_ACTOR.md):
 
-* **5 Phân Hệ (Modules):** Là cách phân chia khối lượng công việc lập trình cho 5 sinh viên trong nhóm để nộp bài và chấm điểm cá nhân (PH1 $\rightarrow$ PH5).
-* **5 Tác Nhân (Actors):** Là các chức danh nghề nghiệp thực tế của một doanh nghiệp phân phối đồng hồ xa xỉ (Role RBAC), tuân thủ nguyên tắc **Bất kiêm nhiệm vụ (Segregation of Duties - SoD)**.
-
-### Bảng Ánh Xạ Giữa 5 Phân Hệ Của Sinh Viên & 5 Tác Nhân Nghiệp Vụ Thực Tế:
-
-| STT | Phân hệ Sinh viên đảm nhận (Developer Subsystem) | Tác nhân thực tế sử dụng (Business Actor) | Tài khoản Demo (1-Chạm) | Phạm vi quyền hạn thực tế (RBAC) |
-| :---: | :--- | :--- | :--- | :--- |
-| **1** | **TV1 (Phan Bá Hải Bình):** Hàng hóa & Khung hệ thống | 🛡️ **Quản Trị Hệ Thống (`SYSTEM_ADMIN`)** | `@binh_admin` | Cấu hình tham số, cấp tài khoản, thiết lập ma trận RBAC, giám sát Audit Log. Không tự duyệt tiền hoặc phiếu xuất/nhập. |
-| **2** | **Ban Điều Hành Tối Cao** (Quyền hạn chủ quản) | 👑 **Chủ Cửa Hàng (`STORE_OWNER`)** | `@owner_boss` | Theo dõi Dashboard KPI doanh thu, dòng tiền; phê duyệt ngoại lệ công nợ đại lý vượt trần, chi phí lớn. |
-| **3** | **TV4 (Võ Công Tâm):** Tồn kho & Kệ Bin | 🏢 **Thủ Kho Điều Hành (`WAREHOUSE_MANAGER`)** | `@tam_manager` | Quản lý sơ đồ kệ Bin/Rack, xác nhận giao nhận vật lý, chủ trì kiểm kê & ký biên bản cân bằng kho. |
-| **4** | **TV2 (Nguyễn Đắc Quân)** & **TV3 (Tô Đức Thảo):** Nhập & Xuất kho | 📦 **NV Nhập - Xuất Kho (`OPERATIONS_STAFF`)** | `@quan_thao_ops` | Tác nghiệp tiền tuyến: cầm máy quét Barcode/Serial nhập hàng từ NCC, soạn hàng và đóng gói xuất bán sỉ B2B. |
-| **5** | **TV5 (Trần Công Tú):** Báo cáo & Tài chính | 💰 **Kế Toán Kho & Công Nợ (`ACCOUNTANT`)** | `@tu_accountant` | Phân bổ chi phí logistics/thuế vào Giá vốn đích danh từng Serial, quản lý công nợ 2 chiều, lập phiếu thu/chi. |
+| Tác Nhân (Actor) | Tên Vai Trò Hệ Thống | Phạm Vi Quyền Hạn Thực Tế (RBAC) | Ranh Giới Thẩm Quyền (Không Được Làm) |
+| :--- | :--- | :--- | :--- |
+| **1. Quản trị hệ thống** 🛡️ | `SYSTEM_ADMIN` | Cấu hình tham số, cấp tài khoản, thiết lập ma trận RBAC, giám sát Audit Log. | Không thao tác hoặc phê duyệt các chứng từ nhập/xuất kho, phiếu thu/chi hay công nợ. |
+| **2. Chủ cửa hàng** 👑 | `STORE_OWNER` | Giám sát KPI doanh thu, dòng tiền; phê duyệt ngoại lệ công nợ vượt hạn mức, chi phí lớn. | Không can thiệp cấu hình kỹ thuật, không làm các thao tác nhập xuất thường nhật. |
+| **3. Thủ kho điều hành** 🏢 | `WAREHOUSE_MANAGER` | Quản lý sơ đồ kệ Bin/Rack, xác nhận giao nhận vật lý, chủ trì kiểm kê & cân bằng kho. | Không lập chứng từ thu/chi tiền, không can thiệp giá bán & hạn mức nợ sỉ. |
+| **4. NV Nhập - Xuất kho** 📦 | `OPERATIONS_STAFF` | Tác nghiệp quét Barcode Serial nạp kho, soạn hàng, đóng kiện xuất bán sỉ B2B. | Không duyệt thu/chi tiền, không tự duyệt đơn bán sỉ vượt hạn mức nợ. |
+| **5. Kế toán kho** 💰 | `ACCOUNTANT` | Phân bổ giá vốn đích danh, kiểm soát công nợ 2 chiều, lập phiếu thu/chi tiền. | Không ký nhận bàn giao vật lý thay Thủ kho, không tự duyệt chi vượt ngưỡng. |
 
 ---
 

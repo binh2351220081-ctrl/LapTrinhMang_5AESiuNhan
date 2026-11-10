@@ -274,7 +274,13 @@ def build_android_prompts_document():
     contract_code = """// ==========================================
 // 1. CÁC ENUM CHUẨN HOÁ DÙNG CHUNG TOÀN HỆ THỐNG
 // ==========================================
-enum class UserRole { QUAN_TRI_HE_THONG, CHU_CUA_HANG, THU_KHO, NHAN_VIEN_NHAP_XUAT, KE_TOAN }
+enum class UserRole(val roleName: String) {
+    SYSTEM_ADMIN("Quản trị hệ thống"),
+    STORE_OWNER("Chủ cửa hàng"),
+    WAREHOUSE_MANAGER("Thủ kho (quản lý điều hành)"),
+    OPERATIONS_STAFF("Nhân viên nhập - xuất kho"),
+    ACCOUNTANT("Kế toán kho")
+}
 enum class MovementType { AUTOMATIC, QUARTZ, SOLAR_ECODRIVE }
 enum class SerialLifecycleStatus { TRONG_KHO, DA_BAN, BAO_HANH, DA_TRA_NCC, DA_TIEU_HUY }
 enum class QualityStatus { HANG_MOI, HANG_TRUNG_BAY, HANG_LOI }
