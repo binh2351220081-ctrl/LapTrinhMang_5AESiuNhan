@@ -19,3 +19,4 @@ interface AuditLogDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(logs: List<AuditLogEntity>)
 }
+

@@ -89,7 +89,7 @@ Toàn bộ file giao diện XML nằm trong thư mục `res/layout/`. Để **kh
 2. **Tạo nhánh riêng của mình trước khi code:**
    ```bash
    git checkout -b feature/ten-thanh-vien-chuc-nang
-   ```
+   ```''
    *Ví dụ:* `feature/tv1-product`, `feature/tv2-inbound`, `feature/tv3-outbound`, `feature/tv4-inventory`, `feature/tv5-dashboard`.
 3. **Tuyệt đối KHÔNG commit và push trực tiếp lên nhánh `main`.**
 4. Sau khi hoàn thành chức năng trên nhánh riêng:

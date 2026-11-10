@@ -19,3 +19,4 @@ data class AuditLogEntity(
     val details: String,         // Mô tả chi tiết hành động
     val ipAddress: String = "192.168.1.100 - Mobile Terminal"
 )
+

@@ -19,3 +19,4 @@ data class UserEntity(
     val email: String,           // Email liên hệ
     val status: String = "ACTIVE"// Trạng thái: ACTIVE (Đang hoạt động), LOCKED (Khóa)
 )
+
