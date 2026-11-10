@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">ChronoVault WMS</string>
+    <string name="dashboard_reports">Báo cáo</string>
+    <string name="dashboard_products">Danh mục TV1</string>
+    <string name="dashboard_from_date">Từ ngày</string>
+    <string name="dashboard_to_date">Đến ngày</string>
+    <string name="dashboard_choose_report">Chọn báo cáo</string>
+    <string name="dashboard_export_csv">Xuất CSV</string>
+    <string name="dashboard_print_a4">In A4</string>
 </resources>

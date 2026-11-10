@@ -2,7 +2,7 @@ package com.example.chronovaultwms
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.chronovaultwms.product.ProductListFragment
+import com.example.chronovaultwms.dashboard.DashboardOverviewFragment
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -11,7 +11,7 @@ class MainActivity : AppCompatActivity() {
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainer, ProductListFragment())
+                .replace(R.id.fragmentContainer, DashboardOverviewFragment())
                 .commit()
         }
     }

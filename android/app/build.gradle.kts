@@ -66,6 +66,7 @@ dependencies {
         implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
         implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
         implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
+        implementation("androidx.recyclerview:recyclerview:1.4.0")
 
         // --- 5. BẢO MẬT LƯU TRỮ (Lưu Token đăng nhập mã hóa) ---
         implementation("androidx.security:security-crypto:1.1.0-alpha06")
