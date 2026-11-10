@@ -228,55 +228,55 @@ object DatabaseSeeder {
         )
     )
 
-    // 5 Người dùng đại diện cho 5 Thành viên nhóm tương ứng 5 Vai trò WMS
+    // 5 Người dùng đại diện chuẩn xác cho 5 Tác Nhân Nghiệp Vụ (5 Actors) theo tài liệu đồ án
     val sampleUsers = listOf(
         UserEntity(
             userId = "USR-001",
-            username = "binh_director",
+            username = "binh_admin",
             password = "admin123",
             fullName = "Phan Bá Hải Bình",
-            role = "DIRECTOR",
-            department = "Ban Giám Đốc Kho & Quản Trị Hệ Thống (TV1)",
+            role = "SYSTEM_ADMIN",
+            department = "Tác nhân 1: Quản Trị Hệ Thống & Bảo Mật (TV1)",
             email = "binh_2351220081@dau.edu.vn",
             status = "ACTIVE"
         ),
         UserEntity(
             userId = "USR-002",
-            username = "quan_inbound",
-            password = "123",
-            fullName = "Nguyễn Đắc Quân",
-            role = "INBOUND_STAFF",
-            department = "Phân hệ 2: Đối tác NCC & Nhập Kho (TV2)",
-            email = "quan_ltm@dau.edu.vn",
+            username = "owner_boss",
+            password = "admin123",
+            fullName = "Chủ Cửa Hàng (Store Owner)",
+            role = "STORE_OWNER",
+            department = "Tác nhân 2: Chủ Cửa Hàng / Ban Điều Hành Tối Cao",
+            email = "owner_chronovault@gmail.com",
             status = "ACTIVE"
         ),
         UserEntity(
             userId = "USR-003",
-            username = "thao_outbound",
-            password = "123",
-            fullName = "Tô Đức Thảo",
-            role = "OUTBOUND_STAFF",
-            department = "Phân hệ 3: Khách Sỉ & Xuất Hàng (TV3)",
-            email = "thao_ltm@dau.edu.vn",
-            status = "ACTIVE"
-        ),
-        UserEntity(
-            userId = "USR-004",
-            username = "tam_inventory",
+            username = "tam_manager",
             password = "123",
             fullName = "Võ Công Tâm",
-            role = "INVENTORY_AUDITOR",
-            department = "Phân hệ 4: Tồn Kho & Kệ Bin (TV4)",
+            role = "WAREHOUSE_MANAGER",
+            department = "Tác nhân 3: Thủ Kho (Quản Lý Điều Hành Kho Kệ) (TV4)",
             email = "tam_ltm@dau.edu.vn",
             status = "ACTIVE"
         ),
         UserEntity(
+            userId = "USR-004",
+            username = "quan_thao_ops",
+            password = "123",
+            fullName = "Nguyễn Đắc Quân & Tô Đức Thảo",
+            role = "OPERATIONS_STAFF",
+            department = "Tác nhân 4: Nhân Viên Nhập - Xuất Kho (TV2 & TV3)",
+            email = "ops_ltm@dau.edu.vn",
+            status = "ACTIVE"
+        ),
+        UserEntity(
             userId = "USR-005",
-            username = "tu_dashboard",
+            username = "tu_accountant",
             password = "123",
             fullName = "Trần Công Tú",
-            role = "WAREHOUSE_MANAGER",
-            department = "Phân hệ 5: Báo Cáo & Dashboard (TV5)",
+            role = "ACCOUNTANT",
+            department = "Tác nhân 5: Kế Toán Kho, Giá Vốn & Công Nợ (TV5)",
             email = "tu_ltm@dau.edu.vn",
             status = "ACTIVE"
         )
@@ -286,15 +286,15 @@ object DatabaseSeeder {
         AuditLogEntity(
             timestamp = "10/11/2026 08:00:12",
             actorName = "Phan Bá Hải Bình",
-            role = "DIRECTOR",
+            role = "SYSTEM_ADMIN",
             action = "KHỞI_TẠO_HỆ_THỐNG",
-            details = "Khởi tạo thành công cơ sở dữ liệu Room v3 với đầy đủ 5 phân hệ WMS.",
+            details = "Khởi tạo thành công cơ sở dữ liệu Room v3 với chuẩn hóa 5 Tác Nhân Nghiệp Vụ.",
             ipAddress = "192.168.1.100 - Master Terminal"
         ),
         AuditLogEntity(
             timestamp = "10/11/2026 08:35:40",
             actorName = "Phan Bá Hải Bình",
-            role = "DIRECTOR",
+            role = "SYSTEM_ADMIN",
             action = "NẠP_DANH_MỤC",
             details = "Nạp danh mục 10 mẫu đồng hồ xa xỉ (Rolex, Omega, Patek Philippe, Audemars Piguet...).",
             ipAddress = "192.168.1.100 - Master Terminal"
@@ -302,26 +302,26 @@ object DatabaseSeeder {
         AuditLogEntity(
             timestamp = "10/11/2026 09:15:22",
             actorName = "Phan Bá Hải Bình",
-            role = "DIRECTOR",
+            role = "SYSTEM_ADMIN",
             action = "CẤU_HÌNH_RBAC",
-            details = "Kích hoạt ma trận phân quyền RBAC 5 vai trò cho 5 thành viên nhóm 5 AE Siêu Nhân.",
+            details = "Kích hoạt ma trận phân quyền 5 Tác Nhân: Admin, Chủ Cửa Hàng, Thủ Kho, NV Kho, Kế Toán.",
             ipAddress = "192.168.1.100 - Master Terminal"
         ),
         AuditLogEntity(
             timestamp = "10/11/2026 10:20:05",
             actorName = "Nguyễn Đắc Quân",
-            role = "INBOUND_STAFF",
+            role = "OPERATIONS_STAFF",
             action = "NHẬP_KHO_LÔ_HÀNG",
             details = "Xác nhận phiếu nhập khẩu PN-2026-01: 5 chiếc Rolex Submariner từ Rolex Geneva SA.",
             ipAddress = "192.168.1.102 - Inbound Terminal"
         ),
         AuditLogEntity(
             timestamp = "10/11/2026 11:05:48",
-            actorName = "Tô Đức Thảo",
-            role = "OUTBOUND_STAFF",
-            action = "KHÓA_GIỮ_CHỖ",
-            details = "Khóa hàng giữ chỗ Serial RLX-SUB-2026-002 theo Đơn sỉ #SO-2026-88 cho LuxWatch Sài Gòn.",
-            ipAddress = "192.168.1.103 - Outbound Terminal"
+            actorName = "Trần Công Tú",
+            role = "ACCOUNTANT",
+            action = "PHÂN_BỔ_GIÁ_VỐN",
+            details = "Hạch toán chi phí logistics và gán giá vốn đích danh cho Serial RLX-SUB-2026-002.",
+            ipAddress = "192.168.1.105 - Accounting Terminal"
         )
     )
 

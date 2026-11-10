@@ -118,7 +118,7 @@
                 android:textSize="12sp"
                 android:textStyle="bold" />
 
-            <!-- Role Card 1: Giám đốc -->
+            <!-- Role Card 1: Quản trị hệ thống -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -138,7 +138,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="👑 Giám Đốc Kho / Quản Trị Viên (DIRECTOR)"
+                        android:text="🛡️ 1. Quản Trị Hệ Thống (SYSTEM_ADMIN)"
                         android:textColor="@color/primary"
                         android:textSize="12sp"
                         android:textStyle="bold" />
@@ -147,13 +147,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="3dp"
-                        android:text="• Quyền hạn: TOÀN QUYỀN (Full Access 5 Phân Hệ).\n• Thao tác: Duyệt ngoại lệ tín dụng sỉ, cấp tài khoản, xem toàn bộ báo cáo doanh thu &amp; dòng tiền."
+                        android:text="• Trách nhiệm: Quản trị người dùng, thiết lập RBAC, cấu hình tham số, giám sát Audit Log, bảo mật dữ liệu.\n• Ranh giới: Không lập hoặc duyệt chứng từ nhập/xuất kho hay thu/chi tiền."
                         android:textColor="@color/text_secondary"
                         android:textSize="11sp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Role Card 2: NV Nhập kho -->
+            <!-- Role Card 2: Chủ cửa hàng -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -173,7 +173,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="📦 Nhân Viên Nhập Kho (INBOUND_STAFF - TV2)"
+                        android:text="👑 2. Chủ Cửa Hàng (STORE_OWNER)"
                         android:textColor="@color/primary"
                         android:textSize="12sp"
                         android:textStyle="bold" />
@@ -182,13 +182,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="3dp"
-                        android:text="• Quyền hạn: Lập phiếu nhập kho, quy đổi Thùng sang Chiếc, nạp &amp; quét dải Serial, gán giá vốn đích danh lô hàng."
+                        android:text="• Trách nhiệm: Giám sát Dashboard KPI, doanh thu, dòng tiền; phê duyệt ngoại lệ nợ đại lý, chi phí lớn &amp; cân bằng kho.\n• Ranh giới: Không can thiệp cấu hình kỹ thuật và không thao tác nhập/xuất thường nhật."
                         android:textColor="@color/text_secondary"
                         android:textSize="11sp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Role Card 3: NV Xuất kho -->
+            <!-- Role Card 3: Thủ kho điều hành -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -208,7 +208,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="🚚 Nhân Viên Xuất Kho Sỉ (OUTBOUND_STAFF - TV3)"
+                        android:text="🏢 3. Thủ Kho - Quản Lý Điều Hành (WAREHOUSE_MANAGER)"
                         android:textColor="@color/primary"
                         android:textSize="12sp"
                         android:textStyle="bold" />
@@ -217,13 +217,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="3dp"
-                        android:text="• Quyền hạn: Khởi tạo đơn bán sỉ, khóa hàng giữ chỗ, quét Barcode Serial đóng gói xuất bến, in phiếu xuất kho B2B."
+                        android:text="• Trách nhiệm: Quản lý sơ đồ kệ Bin/Rack, xác nhận giao nhận vật lý, chủ trì kiểm kê &amp; cân bằng trong hạn mức.\n• Ranh giới: Không lập phiếu thu/chi tiền, không can thiệp giá bán và hạn mức nợ sỉ."
                         android:textColor="@color/text_secondary"
                         android:textSize="11sp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Role Card 4: Kiểm kê kho -->
+            <!-- Role Card 4: Nhân viên nhập - xuất kho -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -243,7 +243,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="🔍 Chuyên Viên Kiểm Kê (INVENTORY_AUDITOR - TV4)"
+                        android:text="📦 4. Nhân Viên Nhập - Xuất Kho (OPERATIONS_STAFF)"
                         android:textColor="@color/primary"
                         android:textSize="12sp"
                         android:textStyle="bold" />
@@ -252,7 +252,42 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="3dp"
-                        android:text="• Quyền hạn: Quản lý sơ đồ ngăn kệ Bin/Rack, phân loại 3 kho chất lượng (Mới / Trưng Bày / Lỗi), kiểm kê đối soát."
+                        android:text="• Trách nhiệm: Tác nghiệp tiền tuyến: quét Barcode nạp Serial nhập kho, soạn hàng, đóng gói xuất bán sỉ B2B.\n• Ranh giới: Không có quyền duyệt thu/chi, không tự duyệt đơn vượt hạn mức nợ."
+                        android:textColor="@color/text_secondary"
+                        android:textSize="11sp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Role Card 5: Kế toán kho -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                app:cardBackgroundColor="@color/bg_light"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="0dp"
+                app:strokeColor="@color/border_color"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="💰 5. Kế Toán Kho &amp; Công Nợ (ACCOUNTANT)"
+                        android:textColor="@color/primary"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:text="• Trách nhiệm: Phân bổ chi phí logistics/thuế vào Giá Vốn Đích Danh, quản lý công nợ 2 chiều, lập phiếu thu/chi.\n• Ranh giới: Không thay thế Thủ kho xác nhận giao nhận vật lý, không tự duyệt chi vượt ngưỡng."
                         android:textColor="@color/text_secondary"
                         android:textSize="11sp" />
                 </LinearLayout>

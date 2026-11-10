@@ -54,7 +54,7 @@
                         android:id="@+id/tvUserUsername"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@binh_director • USR-001"
+                        android:text="@binh_admin • USR-001"
                         android:textColor="@color/text_secondary"
                         android:textSize="11sp" />
                 </LinearLayout>
@@ -69,7 +69,7 @@
                     android:paddingTop="3dp"
                     android:paddingEnd="8dp"
                     android:paddingBottom="3dp"
-                    android:text="DIRECTOR"
+                    android:text="SYSTEM_ADMIN"
                     android:textColor="@color/text_gold"
                     android:textSize="10sp"
                     android:textStyle="bold" />

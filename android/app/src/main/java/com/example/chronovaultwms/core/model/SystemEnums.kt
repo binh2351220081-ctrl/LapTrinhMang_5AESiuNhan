@@ -1,11 +1,11 @@
 package com.example.chronovaultwms.core.model
 
 enum class UserRole(val roleName: String) {
-    DIRECTOR("Giám đốc Kho / Quản trị viên"),
-    WAREHOUSE_MANAGER("Trưởng kho vận hành"),
-    INBOUND_STAFF("Nhân viên Nhập kho"),
-    OUTBOUND_STAFF("Nhân viên Xuất kho"),
-    INVENTORY_AUDITOR("Chuyên viên Kiểm kê")
+    SYSTEM_ADMIN("Quản trị hệ thống"),
+    STORE_OWNER("Chủ cửa hàng"),
+    WAREHOUSE_MANAGER("Thủ kho (quản lý điều hành)"),
+    OPERATIONS_STAFF("Nhân viên nhập - xuất kho"),
+    ACCOUNTANT("Kế toán kho")
 }
 
 enum class MovementType(val typeName: String) {

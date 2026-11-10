@@ -160,7 +160,7 @@ class ProductListFragment : Fragment() {
 
             // Kiểm tra trạng thái phiên đăng nhập
             if (!sessionManager.isLoggedIn()) {
-                sessionManager.saveSession("jwt_token_demo", "USR-001", "Phan Bá Hải Bình", "DIRECTOR")
+                sessionManager.saveSession("jwt_token_demo", "USR-001", "Phan Bá Hải Bình", "SYSTEM_ADMIN")
             }
             updateUserHeader()
         }
@@ -168,13 +168,13 @@ class ProductListFragment : Fragment() {
 
     private fun updateUserHeader() {
         val name = sessionManager.getFullName() ?: "Phan Bá Hải Bình"
-        val role = sessionManager.getRole() ?: "DIRECTOR"
+        val role = sessionManager.getRole() ?: "SYSTEM_ADMIN"
         val roleTitle = when (role) {
-            "DIRECTOR" -> "Giám Đốc Kho"
-            "INBOUND_STAFF" -> "NV Nhập Kho"
-            "OUTBOUND_STAFF" -> "NV Xuất Kho"
-            "INVENTORY_AUDITOR" -> "Kiểm Kê Kho"
-            "WAREHOUSE_MANAGER" -> "Trưởng Kho"
+            "SYSTEM_ADMIN" -> "Quản Trị Hệ Thống"
+            "STORE_OWNER" -> "Chủ Cửa Hàng"
+            "WAREHOUSE_MANAGER" -> "Thủ Kho"
+            "OPERATIONS_STAFF" -> "NV Kho"
+            "ACCOUNTANT" -> "Kế Toán Kho"
             else -> role
         }
         binding.tvLoggedInUser.text = "👤 $name ($roleTitle) • ✏️ Đổi Gmail"
@@ -258,21 +258,21 @@ class ProductListFragment : Fragment() {
             }
         }
 
-        // 5 Nút Đăng Nhập Nhanh 1-Chạm cho 5 thành viên nhóm
+        // 5 Nút Đăng Nhập Nhanh 1-Chạm cho 5 Tác Nhân Chuẩn Hóa
         dialogBinding.btnQuickBinh.setOnClickListener {
-            performLogin("binh_director", "admin123")
+            performLogin("binh_admin", "admin123")
         }
-        dialogBinding.btnQuickQuan.setOnClickListener {
-            performLogin("quan_inbound", "123")
-        }
-        dialogBinding.btnQuickThao.setOnClickListener {
-            performLogin("thao_outbound", "123")
+        dialogBinding.btnQuickOwner.setOnClickListener {
+            performLogin("owner_boss", "admin123")
         }
         dialogBinding.btnQuickTam.setOnClickListener {
-            performLogin("tam_inventory", "123")
+            performLogin("tam_manager", "123")
+        }
+        dialogBinding.btnQuickOps.setOnClickListener {
+            performLogin("quan_thao_ops", "123")
         }
         dialogBinding.btnQuickTu.setOnClickListener {
-            performLogin("tu_dashboard", "123")
+            performLogin("tu_accountant", "123")
         }
 
         dialog.show()
@@ -299,17 +299,19 @@ class ProductListFragment : Fragment() {
                     userItemBinding.tvUserDepartment.text = "🏢 ${user.department}"
                     userItemBinding.tvUserEmail.text = "✉️ ${user.email}"
                     userItemBinding.tvUserIcon.text = when (user.role) {
-                        "DIRECTOR" -> "👑"
-                        "INBOUND_STAFF" -> "📦"
-                        "OUTBOUND_STAFF" -> "🚚"
-                        "INVENTORY_AUDITOR" -> "🔍"
-                        else -> "📊"
+                        "SYSTEM_ADMIN" -> "🛡️"
+                        "STORE_OWNER" -> "👑"
+                        "WAREHOUSE_MANAGER" -> "🏢"
+                        "OPERATIONS_STAFF" -> "📦"
+                        "ACCOUNTANT" -> "💰"
+                        else -> "👤"
                     }
 
-                    // Phân quyền RBAC: Chỉ Giám Đốc (DIRECTOR) hoặc chính chủ tài khoản mới có quyền sửa
-                    val currentRole = sessionManager.getRole() ?: "DIRECTOR"
+                    // Phân quyền RBAC: Quản trị hệ thống (SYSTEM_ADMIN) hoặc Chủ cửa hàng (STORE_OWNER) hoặc chính chủ tài khoản mới có quyền sửa
+                    val currentRole = sessionManager.getRole() ?: "SYSTEM_ADMIN"
                     val currentUserId = sessionManager.getUserId() ?: "USR-001"
-                    val canEdit = (currentRole == "DIRECTOR") || (currentUserId == user.userId)
+                    val isAdmin = (currentRole == "SYSTEM_ADMIN" || currentRole == "STORE_OWNER")
+                    val canEdit = isAdmin || (currentUserId == user.userId)
 
                     if (canEdit) {
                         userItemBinding.btnEditAccount.visibility = View.VISIBLE
@@ -379,9 +381,10 @@ class ProductListFragment : Fragment() {
      * F1.9: Hộp thoại Chỉnh Sửa Hồ Sơ, Đổi Gmail, Họ Tên, Mật Khẩu trực tiếp trong app
      */
     private fun showEditUserDialog(user: UserEntity, onUpdated: (() -> Unit)? = null) {
-        val currentRole = sessionManager.getRole() ?: "DIRECTOR"
+        val currentRole = sessionManager.getRole() ?: "SYSTEM_ADMIN"
         val currentUserId = sessionManager.getUserId() ?: "USR-001"
-        if (currentRole != "DIRECTOR" && currentUserId != user.userId) {
+        val isAdmin = (currentRole == "SYSTEM_ADMIN" || currentRole == "STORE_OWNER")
+        if (!isAdmin && currentUserId != user.userId) {
             Toast.makeText(
                 requireContext(),
                 "⛔ Bạn không có quyền quản trị để sửa tài khoản của người khác!",
@@ -571,7 +574,7 @@ class ProductListFragment : Fragment() {
             )
 
             val actorName = sessionManager.getFullName() ?: "Phan Bá Hải Bình"
-            val actorRole = sessionManager.getRole() ?: "DIRECTOR"
+            val actorRole = sessionManager.getRole() ?: "SYSTEM_ADMIN"
             val auditLog = AuditLogEntity(
                 timestamp = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault()).format(Date()),
                 actorName = actorName,

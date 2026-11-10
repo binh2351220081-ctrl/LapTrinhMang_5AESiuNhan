@@ -67,7 +67,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"
-                android:text="binh_director" />
+                android:text="binh_admin" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Password Input -->
@@ -132,7 +132,7 @@
                 android:background="@color/border_color" />
         </LinearLayout>
 
-        <!-- Quick 1-Click Login Chips for 5 Members -->
+        <!-- Quick 1-Click Login Chips for 5 Business Actors -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -145,37 +145,24 @@
                 android:layout_height="40dp"
                 android:layout_marginBottom="6dp"
                 android:gravity="start|center_vertical"
-                android:text="👑 Phan Bá Hải Bình (Giám Đốc Kho / TV1)"
+                android:text="🛡️ 1. Quản Trị Hệ Thống (Phan Bá Hải Bình)"
                 android:textColor="@color/primary"
                 android:textSize="12sp"
                 app:cornerRadius="6dp"
                 app:strokeColor="@color/accent_gold" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnQuickQuan"
+                android:id="@+id/btnQuickOwner"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginBottom="6dp"
                 android:gravity="start|center_vertical"
-                android:text="📦 Nguyễn Đắc Quân (NV Nhập Kho / TV2)"
+                android:text="👑 2. Chủ Cửa Hàng (Store Owner / Toàn Quyền)"
                 android:textColor="@color/primary"
                 android:textSize="12sp"
                 app:cornerRadius="6dp"
-                app:strokeColor="@color/border_color" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnQuickThao"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginBottom="6dp"
-                android:gravity="start|center_vertical"
-                android:text="🚚 Tô Đức Thảo (NV Xuất Kho Sỉ / TV3)"
-                android:textColor="@color/primary"
-                android:textSize="12sp"
-                app:cornerRadius="6dp"
-                app:strokeColor="@color/border_color" />
+                app:strokeColor="@color/accent_gold" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnQuickTam"
@@ -184,7 +171,20 @@
                 android:layout_height="40dp"
                 android:layout_marginBottom="6dp"
                 android:gravity="start|center_vertical"
-                android:text="🔍 Võ Công Tâm (Chuyên Viên Kiểm Kê / TV4)"
+                android:text="🏢 3. Thủ Kho - Quản Lý Điều Hành (Võ Công Tâm)"
+                android:textColor="@color/primary"
+                android:textSize="12sp"
+                app:cornerRadius="6dp"
+                app:strokeColor="@color/border_color" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnQuickOps"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginBottom="6dp"
+                android:gravity="start|center_vertical"
+                android:text="📦 4. Nhân Viên Nhập - Xuất Kho (Quân &amp; Thảo)"
                 android:textColor="@color/primary"
                 android:textSize="12sp"
                 app:cornerRadius="6dp"
@@ -196,7 +196,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:gravity="start|center_vertical"
-                android:text="📊 Trần Công Tú (Trưởng Kho &amp; Dashboard / TV5)"
+                android:text="💰 5. Kế Toán Kho &amp; Công Nợ (Trần Công Tú)"
                 android:textColor="@color/primary"
                 android:textSize="12sp"
                 app:cornerRadius="6dp"
