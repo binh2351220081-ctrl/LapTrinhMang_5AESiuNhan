@@ -6,13 +6,20 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 @Database(
-    entities = [ProductEntity::class, SerialEntity::class],
-    version = 2,
+    entities = [
+        ProductEntity::class,
+        SerialEntity::class,
+        UserEntity::class,
+        AuditLogEntity::class
+    ],
+    version = 3,
     exportSchema = false
 )
 abstract class ChronoVaultDatabase : RoomDatabase() {
     abstract fun productDao(): ProductDao
     abstract fun serialDao(): SerialDao
+    abstract fun userDao(): UserDao
+    abstract fun auditLogDao(): AuditLogDao
 
     companion object {
         @Volatile

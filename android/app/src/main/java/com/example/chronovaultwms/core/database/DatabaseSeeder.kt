@@ -138,7 +138,6 @@ object DatabaseSeeder {
     )
 
     private val sampleSerials = listOf(
-        // Serials cho Rolex Submariner (RLX-126610LN)
         SerialEntity(
             serialNumber = "RLX-SUB-2026-001",
             productCode = "RLX-126610LN",
@@ -172,8 +171,6 @@ object DatabaseSeeder {
             dealerName = "Đồng Hồ Hải Triều (Đơn #SO-2026-45)",
             qcNotes = "Bàn giao thành công, kích hoạt BH điện tử chính hãng"
         ),
-
-        // Serials cho Rolex Daytona (RLX-116500LN)
         SerialEntity(
             serialNumber = "RLX-DTN-2026-001",
             productCode = "RLX-116500LN",
@@ -196,8 +193,6 @@ object DatabaseSeeder {
             dealerName = "Đại lý Galle Watch Hà Nội",
             qcNotes = "Đã nhận cọc 50%, kiểm định seal hoàn hảo"
         ),
-
-        // Serials cho Omega Speedmaster Moonwatch (OMG-310304250)
         SerialEntity(
             serialNumber = "OMG-SPD-2026-001",
             productCode = "OMG-310304250",
@@ -210,19 +205,6 @@ object DatabaseSeeder {
             qcNotes = "METAS Master Chronometer kháng từ 15,000 Gauss"
         ),
         SerialEntity(
-            serialNumber = "OMG-SPD-2026-002",
-            productCode = "OMG-310304250",
-            status = "IN_STOCK",
-            currentLocation = "Kệ K2-B04",
-            importDate = "10/10/2026 08:45",
-            unitCost = 145000000.0,
-            supplierName = "Omega Bienne HQ (Thụy Sĩ)",
-            dealerName = null,
-            qcNotes = "Đạt chuẩn NASA Qualification, phụ kiện kính lúp & dây velcro đầy đủ"
-        ),
-
-        // Serials cho Patek Philippe Nautilus (PP-57111R001)
-        SerialEntity(
             serialNumber = "PP-NAU-2026-001",
             productCode = "PP-57111R001",
             status = "IN_STOCK",
@@ -233,8 +215,6 @@ object DatabaseSeeder {
             dealerName = null,
             qcNotes = "Patek Philippe Seal, Chứng chỉ bảo tàng Geneva chính hiệu"
         ),
-
-        // Serials cho Audemars Piguet Royal Oak (AP-16202ST)
         SerialEntity(
             serialNumber = "AP-RO-2026-001",
             productCode = "AP-16202ST",
@@ -245,28 +225,123 @@ object DatabaseSeeder {
             supplierName = "Audemars Piguet Le Brassus",
             dealerName = null,
             qcNotes = "Họa tiết Petite Tapisserie thủ công, Calibre 7121 siêu mỏng"
-        ),
-
-        // Serials cho Grand Seiko Snowflake (GS-SBGA211)
-        SerialEntity(
-            serialNumber = "GS-SNO-2026-001",
-            productCode = "GS-SBGA211",
-            status = "IN_STOCK",
-            currentLocation = "Kệ K3-A05",
-            importDate = "28/10/2026 09:00",
-            unitCost = 125000000.0,
-            supplierName = "Grand Seiko Shinshu Studio (Nhật Bản)",
-            dealerName = null,
-            qcNotes = "Bộ máy Spring Drive trôi tuyệt đối, đánh bóng Zaratsu hoàn hảo"
         )
     )
 
-    suspend fun checkAndSeed(productDao: ProductDao, serialDao: SerialDao) = withContext(Dispatchers.IO) {
+    // 5 Người dùng đại diện cho 5 Thành viên nhóm tương ứng 5 Vai trò WMS
+    val sampleUsers = listOf(
+        UserEntity(
+            userId = "USR-001",
+            username = "binh_director",
+            password = "admin123",
+            fullName = "Phan Bá Hải Bình",
+            role = "DIRECTOR",
+            department = "Ban Giám Đốc Kho & Quản Trị Hệ Thống (TV1)",
+            email = "binh_2351220081@dau.edu.vn",
+            status = "ACTIVE"
+        ),
+        UserEntity(
+            userId = "USR-002",
+            username = "quan_inbound",
+            password = "123",
+            fullName = "Nguyễn Đắc Quân",
+            role = "INBOUND_STAFF",
+            department = "Phân hệ 2: Đối tác NCC & Nhập Kho (TV2)",
+            email = "quan_ltm@dau.edu.vn",
+            status = "ACTIVE"
+        ),
+        UserEntity(
+            userId = "USR-003",
+            username = "thao_outbound",
+            password = "123",
+            fullName = "Tô Đức Thảo",
+            role = "OUTBOUND_STAFF",
+            department = "Phân hệ 3: Khách Sỉ & Xuất Hàng (TV3)",
+            email = "thao_ltm@dau.edu.vn",
+            status = "ACTIVE"
+        ),
+        UserEntity(
+            userId = "USR-004",
+            username = "tam_inventory",
+            password = "123",
+            fullName = "Võ Công Tâm",
+            role = "INVENTORY_AUDITOR",
+            department = "Phân hệ 4: Tồn Kho & Kệ Bin (TV4)",
+            email = "tam_ltm@dau.edu.vn",
+            status = "ACTIVE"
+        ),
+        UserEntity(
+            userId = "USR-005",
+            username = "tu_dashboard",
+            password = "123",
+            fullName = "Trần Công Tú",
+            role = "WAREHOUSE_MANAGER",
+            department = "Phân hệ 5: Báo Cáo & Dashboard (TV5)",
+            email = "tu_ltm@dau.edu.vn",
+            status = "ACTIVE"
+        )
+    )
+
+    private val sampleAuditLogs = listOf(
+        AuditLogEntity(
+            timestamp = "10/11/2026 08:00:12",
+            actorName = "Phan Bá Hải Bình",
+            role = "DIRECTOR",
+            action = "KHỞI_TẠO_HỆ_THỐNG",
+            details = "Khởi tạo thành công cơ sở dữ liệu Room v3 với đầy đủ 5 phân hệ WMS.",
+            ipAddress = "192.168.1.100 - Master Terminal"
+        ),
+        AuditLogEntity(
+            timestamp = "10/11/2026 08:35:40",
+            actorName = "Phan Bá Hải Bình",
+            role = "DIRECTOR",
+            action = "NẠP_DANH_MỤC",
+            details = "Nạp danh mục 10 mẫu đồng hồ xa xỉ (Rolex, Omega, Patek Philippe, Audemars Piguet...).",
+            ipAddress = "192.168.1.100 - Master Terminal"
+        ),
+        AuditLogEntity(
+            timestamp = "10/11/2026 09:15:22",
+            actorName = "Phan Bá Hải Bình",
+            role = "DIRECTOR",
+            action = "CẤU_HÌNH_RBAC",
+            details = "Kích hoạt ma trận phân quyền RBAC 5 vai trò cho 5 thành viên nhóm 5 AE Siêu Nhân.",
+            ipAddress = "192.168.1.100 - Master Terminal"
+        ),
+        AuditLogEntity(
+            timestamp = "10/11/2026 10:20:05",
+            actorName = "Nguyễn Đắc Quân",
+            role = "INBOUND_STAFF",
+            action = "NHẬP_KHO_LÔ_HÀNG",
+            details = "Xác nhận phiếu nhập khẩu PN-2026-01: 5 chiếc Rolex Submariner từ Rolex Geneva SA.",
+            ipAddress = "192.168.1.102 - Inbound Terminal"
+        ),
+        AuditLogEntity(
+            timestamp = "10/11/2026 11:05:48",
+            actorName = "Tô Đức Thảo",
+            role = "OUTBOUND_STAFF",
+            action = "KHÓA_GIỮ_CHỖ",
+            details = "Khóa hàng giữ chỗ Serial RLX-SUB-2026-002 theo Đơn sỉ #SO-2026-88 cho LuxWatch Sài Gòn.",
+            ipAddress = "192.168.1.103 - Outbound Terminal"
+        )
+    )
+
+    suspend fun checkAndSeed(
+        productDao: ProductDao,
+        serialDao: SerialDao,
+        userDao: UserDao,
+        auditLogDao: AuditLogDao
+    ) = withContext(Dispatchers.IO) {
         if (productDao.getProductCount() == 0) {
             productDao.insertAll(sampleProducts)
         }
         if (serialDao.countSerials() == 0) {
             serialDao.insertAll(sampleSerials)
+        }
+        if (userDao.countUsers() == 0) {
+            userDao.insertAll(sampleUsers)
+        }
+        if (auditLogDao.countLogs() == 0) {
+            auditLogDao.insertAll(sampleAuditLogs)
         }
     }
 }

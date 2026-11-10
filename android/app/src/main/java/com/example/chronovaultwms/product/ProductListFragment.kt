@@ -13,16 +13,25 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.chronovaultwms.R
+import com.example.chronovaultwms.core.auth.SessionManager
+import com.example.chronovaultwms.core.database.AuditLogDao
+import com.example.chronovaultwms.core.database.AuditLogEntity
 import com.example.chronovaultwms.core.database.ChronoVaultDatabase
 import com.example.chronovaultwms.core.database.DatabaseSeeder
 import com.example.chronovaultwms.core.database.ProductDao
 import com.example.chronovaultwms.core.database.ProductEntity
 import com.example.chronovaultwms.core.database.SerialDao
 import com.example.chronovaultwms.core.database.SerialEntity
+import com.example.chronovaultwms.core.database.UserDao
+import com.example.chronovaultwms.core.database.UserEntity
+import com.example.chronovaultwms.databinding.DialogLoginBinding
 import com.example.chronovaultwms.databinding.DialogProductAddBinding
 import com.example.chronovaultwms.databinding.DialogProductSerialTimelineBinding
+import com.example.chronovaultwms.databinding.DialogSystemManagementBinding
 import com.example.chronovaultwms.databinding.FragmentProductListBinding
+import com.example.chronovaultwms.databinding.ItemAuditLogBinding
 import com.example.chronovaultwms.databinding.ItemProductTimelineStepBinding
+import com.example.chronovaultwms.databinding.ItemUserAccountBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -32,9 +41,11 @@ import java.util.Date
 import java.util.Locale
 
 /**
- * Phân hệ Quản lý Danh mục Hàng hóa & Serial Number
+ * Phân hệ 1: Quản trị Hàng hóa, Hệ thống & Serial Number
  * Phụ trách: TV1 - Phan Bá Hải Bình
- * Chức năng: F1.1 (Thêm sản phẩm mới), F1.2 & F1.3 (Tra cứu vòng đời Serial Number Timeline)
+ * Chức năng: 
+ *   - Phần A: F1.1 (Thêm sản phẩm), F1.2 & F1.3 (Timeline Serial Lifecycle)
+ *   - Phần B: F1.6 (Xác thực đăng nhập), F1.7 (Phân quyền RBAC), F1.8 (Audit Log Trail)
  */
 class ProductListFragment : Fragment() {
 
@@ -43,6 +54,10 @@ class ProductListFragment : Fragment() {
 
     private lateinit var productDao: ProductDao
     private lateinit var serialDao: SerialDao
+    private lateinit var userDao: UserDao
+    private lateinit var auditLogDao: AuditLogDao
+    private lateinit var sessionManager: SessionManager
+
     private lateinit var adapter: ProductAdapter
     private var allProducts: List<ProductEntity> = emptyList()
 
@@ -58,17 +73,20 @@ class ProductListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Khởi tạo Database DAO
+        // Khởi tạo Database DAO & Session
         val database = ChronoVaultDatabase.getInstance(requireContext())
         productDao = database.productDao()
         serialDao = database.serialDao()
+        userDao = database.userDao()
+        auditLogDao = database.auditLogDao()
+        sessionManager = SessionManager(requireContext())
 
         setupRecyclerView()
         setupSearch()
         setupListeners()
 
-        // Tải dữ liệu từ Room Database
-        loadProducts()
+        // Nạp CSDL và kiểm tra phiên đăng nhập
+        loadProductsAndCheckAuth()
     }
 
     private fun setupRecyclerView() {
@@ -103,12 +121,22 @@ class ProductListFragment : Fragment() {
         binding.fabAddProduct.setOnClickListener {
             showAddProductDialog()
         }
+
+        binding.btnSystemSettings.setOnClickListener {
+            showSystemManagementDialog()
+        }
+
+        binding.btnLogout.setOnClickListener {
+            sessionManager.clearSession()
+            Toast.makeText(requireContext(), "Đã đăng xuất khỏi hệ thống", Toast.LENGTH_SHORT).show()
+            showLoginDialog()
+        }
     }
 
-    private fun loadProducts() {
+    private fun loadProductsAndCheckAuth() {
         viewLifecycleOwner.lifecycleScope.launch {
-            // Nạp dữ liệu mẫu gồm 10 mẫu đồng hồ và Serial nếu cơ sở dữ liệu rỗng
-            DatabaseSeeder.checkAndSeed(productDao, serialDao)
+            // Nạp dữ liệu mẫu ban đầu gồm Sản phẩm, Serials, 5 Tài khoản và Nhật ký nếu CSDL rỗng
+            DatabaseSeeder.checkAndSeed(productDao, serialDao, userDao, auditLogDao)
 
             // Lấy danh sách sản phẩm từ Room
             allProducts = withContext(Dispatchers.IO) {
@@ -117,7 +145,28 @@ class ProductListFragment : Fragment() {
 
             adapter.updateList(allProducts)
             binding.tvTotalCount.text = "Tổng danh mục: ${allProducts.size} mẫu đồng hồ"
+
+            // Kiểm tra trạng thái phiên đăng nhập
+            if (!sessionManager.isLoggedIn()) {
+                // Tự động gán mặc định phiên của Trưởng nhóm Bình nếu chưa đăng nhập lần đầu
+                sessionManager.saveSession("jwt_token_demo", "USR-001", "Phan Bá Hải Bình", "DIRECTOR")
+            }
+            updateUserHeader()
         }
+    }
+
+    private fun updateUserHeader() {
+        val name = sessionManager.getFullName() ?: "Phan Bá Hải Bình"
+        val role = sessionManager.getRole() ?: "DIRECTOR"
+        val roleTitle = when (role) {
+            "DIRECTOR" -> "Giám Đốc Kho"
+            "INBOUND_STAFF" -> "NV Nhập Kho"
+            "OUTBOUND_STAFF" -> "NV Xuất Kho"
+            "INVENTORY_AUDITOR" -> "Kiểm Kê Kho"
+            "WAREHOUSE_MANAGER" -> "Trưởng Kho"
+            else -> role
+        }
+        binding.tvLoggedInUser.text = "👤 $name ($roleTitle)"
     }
 
     private fun filterProducts(query: String?) {
@@ -133,6 +182,166 @@ class ProductListFragment : Fragment() {
             adapter.updateList(filtered)
             binding.tvTotalCount.text = "Tìm thấy: ${filtered.size} kết quả"
         }
+    }
+
+    /**
+     * F1.6: Hộp thoại Đăng Nhập & Đăng Nhập Nhanh 1-Chạm Demo
+     */
+    private fun showLoginDialog() {
+        val dialogBinding = DialogLoginBinding.inflate(layoutInflater)
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(dialogBinding.root)
+            .setCancelable(false)
+            .create()
+
+        fun performLogin(usernameInput: String, passwordInput: String) {
+            viewLifecycleOwner.lifecycleScope.launch {
+                val user = withContext(Dispatchers.IO) {
+                    userDao.login(usernameInput, passwordInput)
+                }
+
+                if (user != null) {
+                    sessionManager.saveSession(
+                        token = "jwt_${user.userId}",
+                        userId = user.userId,
+                        fullName = user.fullName,
+                        role = user.role
+                    )
+
+                    // Ghi vết vào Audit Log
+                    val currentTime = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault()).format(Date())
+                    val log = AuditLogEntity(
+                        timestamp = currentTime,
+                        actorName = user.fullName,
+                        role = user.role,
+                        action = "ĐĂNG_NHẬP",
+                        details = "Đăng nhập thành công với chức danh ${user.department}.",
+                        ipAddress = "192.168.1.100 - Mobile Terminal"
+                    )
+                    withContext(Dispatchers.IO) {
+                        auditLogDao.insertLog(log)
+                    }
+
+                    updateUserHeader()
+                    dialog.dismiss()
+                    Toast.makeText(
+                        requireContext(),
+                        "Xin chào ${user.fullName} (${user.role})!",
+                        Toast.LENGTH_LONG
+                    ).show()
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        "Sai tên đăng nhập hoặc mật khẩu!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
+
+        dialogBinding.btnLoginSubmit.setOnClickListener {
+            val u = dialogBinding.etLoginUsername.text.toString().trim()
+            val p = dialogBinding.etLoginPassword.text.toString().trim()
+            if (u.isNotEmpty() && p.isNotEmpty()) {
+                performLogin(u, p)
+            }
+        }
+
+        // 5 Nút Đăng Nhập Nhanh 1-Chạm cho 5 thành viên nhóm
+        dialogBinding.btnQuickBinh.setOnClickListener {
+            performLogin("binh_director", "admin123")
+        }
+        dialogBinding.btnQuickQuan.setOnClickListener {
+            performLogin("quan_inbound", "123")
+        }
+        dialogBinding.btnQuickThao.setOnClickListener {
+            performLogin("thao_outbound", "123")
+        }
+        dialogBinding.btnQuickTam.setOnClickListener {
+            performLogin("tam_inventory", "123")
+        }
+        dialogBinding.btnQuickTu.setOnClickListener {
+            performLogin("tu_dashboard", "123")
+        }
+
+        dialog.show()
+    }
+
+    /**
+     * F1.7 & F1.8: Hộp thoại Quản trị Hệ Thống: 3 Tab (Tài khoản, Ma trận RBAC, Audit Log Trail)
+     */
+    private fun showSystemManagementDialog() {
+        val dialogBinding = DialogSystemManagementBinding.inflate(layoutInflater)
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(dialogBinding.root)
+            .create()
+
+        // Tab Switching Logic
+        fun switchTab(selectedTab: String) {
+            dialogBinding.layoutSectionAccounts.visibility = if (selectedTab == "accounts") View.VISIBLE else View.GONE
+            dialogBinding.layoutSectionRoles.visibility = if (selectedTab == "roles") View.VISIBLE else View.GONE
+            dialogBinding.layoutSectionLogs.visibility = if (selectedTab == "logs") View.VISIBLE else View.GONE
+
+            dialogBinding.btnTabAccounts.backgroundTintList = ContextCompat.getColorStateList(
+                requireContext(),
+                if (selectedTab == "accounts") R.color.accent_gold else android.R.color.transparent
+            )
+            dialogBinding.btnTabRoles.backgroundTintList = ContextCompat.getColorStateList(
+                requireContext(),
+                if (selectedTab == "roles") R.color.accent_gold else android.R.color.transparent
+            )
+            dialogBinding.btnTabLogs.backgroundTintList = ContextCompat.getColorStateList(
+                requireContext(),
+                if (selectedTab == "logs") R.color.accent_gold else android.R.color.transparent
+            )
+        }
+
+        dialogBinding.btnTabAccounts.setOnClickListener { switchTab("accounts") }
+        dialogBinding.btnTabRoles.setOnClickListener { switchTab("roles") }
+        dialogBinding.btnTabLogs.setOnClickListener { switchTab("logs") }
+
+        // Load Dữ liệu Người Dùng & Audit Logs từ Room Database
+        viewLifecycleOwner.lifecycleScope.launch {
+            val users = withContext(Dispatchers.IO) { userDao.getAllUsers() }
+            val logs = withContext(Dispatchers.IO) { auditLogDao.getAllLogs() }
+
+            // Render Tab 1: Danh sách Người Dùng
+            dialogBinding.containerAccountsList.removeAllViews()
+            users.forEach { user ->
+                val userItemBinding = ItemUserAccountBinding.inflate(layoutInflater, dialogBinding.containerAccountsList, false)
+                userItemBinding.tvUserFullName.text = user.fullName
+                userItemBinding.tvUserUsername.text = "@${user.username} • Mã ${user.userId}"
+                userItemBinding.tvUserRoleBadge.text = user.role
+                userItemBinding.tvUserDepartment.text = "🏢 ${user.department}"
+                userItemBinding.tvUserEmail.text = "✉️ ${user.email}"
+                userItemBinding.tvUserIcon.text = when (user.role) {
+                    "DIRECTOR" -> "👑"
+                    "INBOUND_STAFF" -> "📦"
+                    "OUTBOUND_STAFF" -> "🚚"
+                    "INVENTORY_AUDITOR" -> "🔍"
+                    else -> "📊"
+                }
+                dialogBinding.containerAccountsList.addView(userItemBinding.root)
+            }
+
+            // Render Tab 3: Danh sách Audit Logs
+            dialogBinding.containerLogsList.removeAllViews()
+            logs.forEach { logItem ->
+                val logBinding = ItemAuditLogBinding.inflate(layoutInflater, dialogBinding.containerLogsList, false)
+                logBinding.tvLogAction.text = logItem.action
+                logBinding.tvLogTimestamp.text = logItem.timestamp
+                logBinding.tvLogActor.text = logItem.actorName
+                logBinding.tvLogDetails.text = logItem.details
+                logBinding.tvLogTerminal.text = "Địa chỉ: ${logItem.ipAddress}"
+                dialogBinding.containerLogsList.addView(logBinding.root)
+            }
+        }
+
+        dialogBinding.btnCloseSystemMgmt.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 
     private fun showProductDetailDialog(product: ProductEntity) {
@@ -246,10 +455,22 @@ class ProductListFragment : Fragment() {
                 qcNotes = "Nhập mới nguyên hộp, thẻ bảo hành điện tử chính hãng"
             )
 
+            val actorName = sessionManager.getFullName() ?: "Phan Bá Hải Bình"
+            val actorRole = sessionManager.getRole() ?: "DIRECTOR"
+            val auditLog = AuditLogEntity(
+                timestamp = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault()).format(Date()),
+                actorName = actorName,
+                role = actorRole,
+                action = "THÊM_ĐỒNG_HỒ",
+                details = "Thêm mới mẫu $name (SKU: $sku) với số lượng $stock chiếc vào kho.",
+                ipAddress = "192.168.1.100 - Mobile Terminal"
+            )
+
             viewLifecycleOwner.lifecycleScope.launch {
                 withContext(Dispatchers.IO) {
                     productDao.insertProduct(newProduct)
                     serialDao.insert(newSerial)
+                    auditLogDao.insertLog(auditLog)
                     allProducts = productDao.getAllProducts()
                 }
 
@@ -268,7 +489,6 @@ class ProductListFragment : Fragment() {
      */
     private fun showSerialTimelineDialog(product: ProductEntity) {
         viewLifecycleOwner.lifecycleScope.launch {
-            // Truy vấn toàn bộ Serial của đồng hồ này từ Room
             val serialList = withContext(Dispatchers.IO) {
                 serialDao.getSerialsByProduct(product.productCode)
             }
@@ -290,7 +510,6 @@ class ProductListFragment : Fragment() {
             dialogBinding.tvTimelineWatchName.text = product.name
             dialogBinding.tvTimelineSku.text = "Mã SKU: ${product.productCode} • ${product.brand}"
 
-            // Dropdown chọn số Serial
             val serialDisplayList = serialList.map { "${it.serialNumber} (${it.status})" }
             val serialDropdownAdapter = ArrayAdapter(
                 requireContext(),
@@ -300,9 +519,7 @@ class ProductListFragment : Fragment() {
             dialogBinding.actvSerialSelector.setAdapter(serialDropdownAdapter)
             dialogBinding.actvSerialSelector.setText(serialDisplayList[0], false)
 
-            // Hàm hiển thị Timeline chi tiết cho Serial được chọn
             fun renderTimelineForSerial(serial: SerialEntity) {
-                // Badge trạng thái
                 when (serial.status) {
                     "IN_STOCK" -> {
                         dialogBinding.tvSerialStatusBadge.text = "IN_STOCK (Đang lưu kho)"
@@ -335,7 +552,6 @@ class ProductListFragment : Fragment() {
                     "💰 Giá vốn đích danh: %,.0f ₫ (gồm thuế + BH)".format(serial.unitCost)
                 dialogBinding.tvSerialQc.text = "🛡️ Thẩm định QC: ${serial.qcNotes}"
 
-                // Dựng 6 bước Timeline vận hành WMS
                 dialogBinding.layoutTimelineSteps.removeAllViews()
 
                 val steps = listOf(
@@ -381,12 +597,10 @@ class ProductListFragment : Fragment() {
                     stepBinding.tvStepTime.text = time
                     stepBinding.tvStepDesc.text = desc
 
-                    // Ẩn đường kẻ ở bước cuối cùng
                     if (index == steps.size - 1) {
                         stepBinding.viewTimelineLine.visibility = View.INVISIBLE
                     }
 
-                    // Đổi màu bước đã hoàn thành
                     val isCompleted = when (index) {
                         0, 1, 2 -> true
                         3 -> serial.status == "ALLOCATED" || serial.status == "DELIVERED"
@@ -412,10 +626,8 @@ class ProductListFragment : Fragment() {
                 }
             }
 
-            // Render mặc định cho Serial đầu tiên
             renderTimelineForSerial(serialList[0])
 
-            // Lắng nghe sự kiện chọn Serial khác trong Dropdown
             dialogBinding.actvSerialSelector.setOnItemClickListener { _, _, position, _ ->
                 renderTimelineForSerial(serialList[position])
             }
