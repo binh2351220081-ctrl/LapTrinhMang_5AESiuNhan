@@ -129,37 +129,42 @@ def build_android_prompts_document():
         tbl = doc.add_table(rows=1, cols=1)
         tbl.alignment = WD_TABLE_ALIGNMENT.CENTER
         cell = tbl.cell(0, 0)
-        set_cell_background(cell, "0F172A") # Dark Navy Black
-        set_cell_margins(cell, top=120, bottom=120, left=140, right=140)
+        set_cell_background(cell, "F8FAFC") # Soft clean light slate
+        set_cell_margins(cell, top=140, bottom=140, left=160, right=160)
         
         tcPr = cell._tc.get_or_add_tcPr()
         borders = parse_xml(f'''
             <w:tcBorders {nsdecls("w")}>
-                <w:top w:val="single" w:sz="12" w:space="0" w:color="C59B27"/>
-                <w:left w:val="single" w:sz="18" w:space="0" w:color="C59B27"/>
-                <w:bottom w:val="single" w:sz="12" w:space="0" w:color="C59B27"/>
-                <w:right w:val="single" w:sz="12" w:space="0" w:color="C59B27"/>
+                <w:top w:val="single" w:sz="8" w:space="0" w:color="CBD5E1"/>
+                <w:left w:val="single" w:sz="24" w:space="0" w:color="1B365D"/>
+                <w:bottom w:val="single" w:sz="8" w:space="0" w:color="CBD5E1"/>
+                <w:right w:val="single" w:sz="8" w:space="0" w:color="CBD5E1"/>
             </w:tcBorders>
         ''')
         tcPr.append(borders)
         
-        p = cell.paragraphs[0]
-        p.paragraph_format.space_before = Pt(0)
-        p.paragraph_format.space_after = Pt(2)
-        p.paragraph_format.line_spacing = 1.15
-        
-        r_t = p.add_run(f"📋 BẢN PROMPT COPY-PASTE (DÙNG CHO AI / ANDROID STUDIO COPILOT):\n{prompt_title}\n\n")
-        r_t.font.name = "Courier New"
-        r_t.font.size = Pt(9.5)
+        # Header title
+        p_head = cell.paragraphs[0]
+        p_head.paragraph_format.space_before = Pt(0)
+        p_head.paragraph_format.space_after = Pt(6)
+        r_t = p_head.add_run(f"📋 BẢN PROMPT COPY-PASTE (DÙNG CHO AI / ANDROID STUDIO COPILOT):\n{prompt_title}")
+        r_t.font.name = "Arial"
+        r_t.font.size = Pt(10)
         r_t.font.bold = True
-        r_t.font.color.rgb = RGBColor(212, 175, 55) # Gold
+        r_t.font.color.rgb = RGBColor(27, 54, 93) # Navy
         
-        r_body = p.add_run(prompt_text)
-        r_body.font.name = "Courier New"
-        r_body.font.size = Pt(8)
-        r_body.font.color.rgb = RGBColor(226, 232, 240) # Light Slate Text
-        
-        doc.add_paragraph().paragraph_format.space_after = Pt(8)
+        # Body text - Split line by line so Word NEVER truncates or clips Vietnamese accents
+        for line in prompt_text.strip().splitlines():
+            p_line = cell.add_paragraph()
+            p_line.paragraph_format.space_before = Pt(0)
+            p_line.paragraph_format.space_after = Pt(2)
+            p_line.paragraph_format.line_spacing = 1.15
+            r = p_line.add_run(line if line.strip() else " ")
+            r.font.name = "Consolas"
+            r.font.size = Pt(9)
+            r.font.color.rgb = RGBColor(15, 23, 42) # Slate 900
+            
+        doc.add_paragraph().paragraph_format.space_after = Pt(10)
 
     # =========================================================================
     # TRANG TIÊU ĐỀ & TỔNG QUAN
@@ -219,11 +224,11 @@ def build_android_prompts_document():
         r.font.name = "Arial"; r.font.size = Pt(8.5); r.font.bold = True; r.font.color.rgb = RGBColor(255, 255, 255)
         
     team_data = [
-        ("TV1: Phan Bá Hải Bình\n(Nhóm trưởng)", "Core Framework, Auth & Quản lý Hàng hóa Master", "com.chronovault.wms.core\ncom.chronovault.wms.auth\ncom.chronovault.wms.product", "Khởi tạo Architecture MVVM, Room DB, Navigation, Master Đồng hồ, ĐVT Thùng/Chiếc, MOQ, Tra cứu Serial Timeline, Audit Log."),
-        ("TV2: Nguyễn Đắc Quân", "Đối tác Nhà Cung Cấp & Quản lý Nhập Kho", "com.chronovault.wms.supplier\ncom.chronovault.wms.inbound", "Hồ sơ NCC, Phiếu nhập kho, Tích hợp Camera Barcode/ZXing nạp Serial, Quy đổi ĐVT, Tính Giá vốn đích danh, Phiếu Chi nợ NCC."),
-        ("TV3: Tô Đức Thảo", "Khách Sỉ & Bán Sỉ - Phân Phối Xuất Hàng", "com.chronovault.wms.dealer\ncom.chronovault.wms.outbound", "Hồ sơ đại lý B2B, Hạn mức tín dụng, Đơn bán sỉ, Duyệt khóa giữ chỗ (Reserved), Quét Serial đóng kiện xuất sỉ, Phiếu Thu sỉ, Đổi trả sỉ."),
-        ("TV4: Võ Công Tâm", "Tồn Kho, Vị Trí Kệ Vật Lý & Kiểm Kê", "com.chronovault.wms.inventory\ncom.chronovault.wms.audit", "Tồn kho đa đơn vị, 3 kho chất lượng (Mới/Trưng bày/Lỗi), Sơ đồ kệ Bin [Khu-Dãy-Tầng-Ngăn], Quét kiểm kê Camera, Phiếu cân bằng kho, Sổ Thẻ kho."),
-        ("TV5: Trần Công Tú", "Dashboard Điều Hành & Báo Cáo Thống Kê", "com.chronovault.wms.dashboard\ncom.chronovault.wms.reports", "Executive Dashboard KPI, Vẽ biểu đồ MPAndroidChart doanh số/chi phí 6 tháng, Top sản phẩm bán chạy, 9 Báo cáo chuyên sâu, Sổ nợ 2 chiều, Dòng tiền.")
+        ("TV1: Phan Bá Hải Bình\n(Nhóm trưởng)", "Core Framework, Auth & Quản lý Hàng hóa Master", "com.example.chronovaultwms.core\ncom.example.chronovaultwms.product", "Khởi tạo Architecture MVVM, Room DB, Navigation, Master Đồng hồ, ĐVT Thùng/Chiếc, MOQ, Tra cứu Serial Timeline, Audit Log."),
+        ("TV2: Nguyễn Đắc Quân", "Đối tác Nhà Cung Cấp & Quản lý Nhập Kho", "com.example.chronovaultwms.inbound", "Hồ sơ NCC, Phiếu nhập kho, Tích hợp Camera Barcode/ZXing nạp Serial, Quy đổi ĐVT, Tính Giá vốn đích danh, Phiếu Chi nợ NCC."),
+        ("TV3: Tô Đức Thảo", "Khách Sỉ & Bán Sỉ - Phân Phối Xuất Hàng", "com.example.chronovaultwms.outbound", "Hồ sơ đại lý B2B, Hạn mức tín dụng, Đơn bán sỉ, Duyệt khóa giữ chỗ (Reserved), Quét Serial đóng kiện xuất sỉ, Phiếu Thu sỉ, Đổi trả sỉ."),
+        ("TV4: Võ Công Tâm", "Tồn Kho, Vị Trí Kệ Vật Lý & Kiểm Kê", "com.example.chronovaultwms.inventory", "Tồn kho đa đơn vị, 3 kho chất lượng (Mới/Trưng bày/Lỗi), Sơ đồ kệ Bin [Khu-Dãy-Tầng-Ngăn], Quét kiểm kê Camera, Phiếu cân bằng kho, Sổ Thẻ kho."),
+        ("TV5: Trần Công Tú", "Dashboard Điều Hành & Báo Cáo Thống Kê", "com.example.chronovaultwms.dashboard", "Executive Dashboard KPI, Vẽ biểu đồ MPAndroidChart doanh số/chi phí 6 tháng, Top sản phẩm bán chạy, 9 Báo cáo chuyên sâu, Sổ nợ 2 chiều, Dòng tiền.")
     ]
     
     for r_i, r_vals in enumerate(team_data, start=1):
@@ -381,30 +386,29 @@ data class StockCardEntity(
     p1_text = """BẠN LÀ LẬP TRÌNH VIÊN ANDROID CAO CẤP VÀ NHÓM TRƯỞNG DỰ ÁN. HÃY THỰC HIỆN CÁC NHIỆM VỤ DƯỚI ĐÂY BẰNG KOTLIN VÀ ANDROID STUDIO THEO KIẾN TRÚC MVVM:
 
 1. KHỞI TẠO DỰ ÁN VÀ KIẾN TRÚC CHUNG (CORE ARCHITECTURE):
-   - Package gốc: com.chronovault.wms
+   - Package gốc: com.example.chronovaultwms
    - Cấu trúc thư mục chuẩn:
-     + core/ (data, database, di, network, utils, base)
-     + auth/ (login, session, rbac, auditlog)
-     + product/ (ui, viewmodel, repository, adapter)
-   - Thiết lập Room Database (ChronoVaultDatabase) chứa đủ các bảng: products, serials, suppliers, dealers, orders, receipts, shelves, stock_audits, stock_cards, vouchers, audit_logs.
-   - Định nghĩa toàn bộ Enums và Data Contract dùng chung như trong tài liệu Master Data Contract.
-   - Cung cấp sẵn cơ chế Seed Data (khởi tạo dữ liệu mẫu 10 sản phẩm đồng hồ cao cấp: Rolex Submariner, Omega Speedmaster, Tissot Le Locle, Seiko Prospex... kèm các mã Serial mẫu để các thành viên khác có dữ liệu test ngay lập tức).
+     + core/ (database, model, auth, utils)
+     + product/ (ui, viewmodel, adapter)
+   - Thiết lập Room Database (ChronoVaultDatabase, version = 4) chứa các bảng cốt lõi: products, serials, users, audit_logs.
+   - Định nghĩa toàn bộ Enums chuẩn: UserRole (SYSTEM_ADMIN, STORE_OWNER, WAREHOUSE_MANAGER, OPERATIONS_STAFF, ACCOUNTANT), MovementType, SerialLifecycleStatus, QualityStatus.
+   - Cung cấp sẵn cơ chế Seed Data (DatabaseSeeder): nạp 10 mẫu đồng hồ cao cấp (Rolex, Omega, Patek Philippe...), 10 mã Serial thực tế và 5 tài khoản mẫu cho 5 tác nhân.
 
 2. PHÂN HỆ XÁC THỰC, PHÂN QUYỀN RBAC & AUDIT LOG:
-   - Xây dựng màn hình Đăng nhập (LoginActivity) xác thực tài khoản và gán đúng 1 trong 5 vai trò (QUAN_TRI_HE_THONG, CHU_CUA_HANG, THU_KHO, NHAN_VIEN_NHAP_XUAT, KE_TOAN).
-   - Xây dựng SessionManager (sử dụng EncryptedSharedPreferences) để lưu phiên đăng nhập và token an toàn.
-   - Tạo ma trận phân quyền (RolePermissionManager): Kiểm tra quyền trước khi người dùng truy cập vào các chức năng (Thêm, Sửa, Xóa, Duyệt chi, Duyệt xuất kho).
-   - Xây dựng tính năng Audit Log (AuditLogManager): Mỗi thao tác thêm/sửa/xóa/duyệt đều tự động ghi 1 dòng log bất biến gồm: timestamp, username, role, action, targetEntity, ip/deviceInfo.
+   - Xây dựng hộp thoại Đăng nhập (dialog_login.xml) hỗ trợ Quick Login 1-chạm cho 5 tác nhân nghiệp vụ: binh_admin, owner_boss, tam_manager, quan_thao_ops, tu_accountant.
+   - Xây dựng SessionManager lưu phiên đăng nhập và vai trò người dùng vào SharedPreferences.
+   - Tạo hộp thoại Quản trị hệ thống (dialog_system_management.xml): Tab Tài khoản, Tab Ma trận phân quyền RBAC Matrix, Tab Nhật ký kiểm toán Audit Log Trail.
+   - Chức năng Đổi Gmail / Sửa hồ sơ cá nhân có kiểm tra quyền hạn (Admin hoặc chính chủ).
 
 3. QUẢN LÝ HÀNG HÓA MASTER & TRA CỨU SERIAL TIMELINE:
-   - Xây dựng ProductListFragment / Activity: Hiển thị danh sách đồng hồ dạng RecyclerView CardView cao cấp (nền đen Onyx #0B0F17, viền vàng Gold #D4AF37), hiển thị hình ảnh, SKU, Barcode, thương hiệu, giá sỉ, tồn kho thực tế; hỗ trợ phân trang và tìm kiếm theo cơ chế Debounce.
-   - Xây dựng AddEditProductDialog / Activity: Form khai báo đầy đủ 6 thông số kỹ thuật ngành xa xỉ (loại máy, chất liệu kính, dây đeo, size mặt số, độ chịu nước, thời hạn bảo hành).
-   - Cấu hình đóng gói sỉ: Thiết lập ĐVT cơ bản (Chiếc), ĐVT sỉ (Thùng), hệ số quy đổi (conversionRate, VD: 1 Thùng = 10 Chiếc), cấu hình ngưỡng Min/Max tồn kho và số lượng đặt hàng tối thiểu (MOQ >= 5 chiếc).
-   - Xây dựng SerialTimelineActivity (Tra cứu vòng đời Serial): Người dùng nhập hoặc quét 1 mã Serial bất kỳ -> Hệ thống hiển thị trực quan toàn bộ dòng thời gian: Ngày nhập kho -> NCC cung cấp -> Vị trí kệ lưu trữ -> Đơn bán sỉ xuất kho -> Đại lý sở hữu -> Ngày hết hạn bảo hành.
+   - Xây dựng ProductListFragment: Hiển thị danh sách đồng hồ dạng CardView xa xỉ (Onyx Navy #1A2332, Gold #D4AF37), hiển thị SKU, Barcode, thương hiệu, giá sỉ, giá niêm yết, tồn kho; hỗ trợ tìm kiếm real-time và chip lọc hãng.
+   - Form thêm mới đồng hồ (dialog_product_add.xml): đầy đủ 12 trường thông số kỹ thuật, tự động sinh mã Serial đầu tiên vào Room Database.
+   - Quy cách đóng gói sỉ: Thiết lập ĐVT cơ bản (Chiếc lẻ), ĐVT sỉ (Thùng/Kiện), hệ số quy đổi (conversionRate = 10) và số lượng đặt tối thiểu (MOQ = 5).
+   - Truy vết vòng đời Serial (dialog_product_serial_timeline.xml): Stepper 6 bước trực quan (Nhập mới -> Kệ Bin -> Giữ chỗ -> Đóng gói -> Bàn giao -> Bảo hành).
 
 YÊU CẦU ĐẦU RA:
-- Mã nguồn Kotlin sạch, tuân thủ MVVM (ViewModel, StateFlow/LiveData, Repository, Room DAO).
-- Đóng gói đầy đủ layout XML giao diện Horology Luxury Dark Mode."""
+- Mã nguồn Kotlin sạch, chuẩn MVVM, sử dụng ViewBinding và Kotlin Coroutines (Dispatchers.IO).
+- Layout XML tuân thủ tiền tố: fragment_product_..., dialog_product_..., item_product_..."""
 
     add_prompt_box(doc, p1_text, "PROMPT TV1 (PHAN BÁ HẢI BÌNH): CORE SETUP, AUTH, RBAC & MASTER HÀNG HÓA")
 
@@ -424,38 +428,44 @@ YÊU CẦU ĐẦU RA:
         bg_color="F1F5F9"
     )
 
-    p2_text = """BẠN LÀ LẬP TRÌNH VIÊN ANDROID CHUYÊN TRÁCH PHÂN HỆ NHẬP KHO VÀ ĐỐI TÁC NHÀ CUNG CẤP. HÃY PHÁT TRIỂN MODULE TRONG PACKAGE `com.chronovault.wms.supplier` VÀ `com.chronovault.wms.inbound` BẰNG KOTLIN:
+    p2_text = """BẠN LÀ LẬP TRÌNH VIÊN ANDROID CHUYÊN TRÁCH PHÂN HỆ NHẬP KHO VÀ ĐỐI TÁC NHÀ CUNG CẤP. HÃY PHÁT TRIỂN MODULE TRONG PACKAGE `com.example.chronovaultwms.inbound` BẰNG KOTLIN:
 
-1. QUẢN LÝ HỒ SƠ NHÀ CUNG CẤP & CÔNG NỢ PHẢI TRẢ:
+1. KẾ THỪA NỀN TẢNG CORE & CƠ SỞ DỮ LIỆU:
+   - Kế thừa trực tiếp từ branch `main` của Nhóm trưởng (Phan Bá Hải Bình).
+   - Sử dụng các Entity và DAO dùng chung từ `com.example.chronovaultwms.core.database.*`: ProductEntity, SerialEntity, ChronoVaultDatabase.
+   - Sử dụng SessionManager để kiểm tra vai trò người dùng hiện tại (OPERATIONS_STAFF hoặc WAREHOUSE_MANAGER).
+
+2. QUẢN LÝ HỒ SƠ NHÀ CUNG CẤP & CÔNG NỢ PHẢI TRẢ:
    - Danh bạ Nhà Cung Cấp chính hãng (SupplierListFragment): Hiển thị mã NCC, tên công ty, mã số thuế, hotline, số tài khoản ngân hàng và tổng số dư nợ phải trả.
    - Thêm/Sửa NCC: Kiểm tra tính duy nhất của mã NCC và MST.
    - Theo dõi công nợ NCC: Tự động cộng nợ khi phiếu nhập kho được duyệt; trừ nợ khi lập Phiếu Chi thanh toán.
    - Lập Phiếu Chi thanh toán nợ (PaymentVoucherDialog): Nhập số tiền chi trả, hình thức chuyển khoản/tiền mặt, mã tham chiếu ngân hàng; cập nhật giảm số dư nợ NCC.
 
-2. LẬP PHIẾU NHẬP KHO QUY ĐỔI ĐVT & QUÉT CAMERA SERIAL (INBOUND WORKFLOW):
-   - Xây dựng CreateInboundReceiptActivity:
+3. LẬP PHIẾU NHẬP KHO QUY ĐỔI ĐVT & QUÉT CAMERA SERIAL (INBOUND WORKFLOW):
+   - Xây dựng CreateInboundReceiptActivity / Dialog:
      + Bước 1: Chọn Nhà Cung Cấp và nhập số hóa đơn / Invoice vận chuyển.
-     + Bước 2: Chọn mẫu đồng hồ (SKU) và chọn ĐVT nhập là "Thùng" hoặc "Chiếc".
-     + Bước 3: Cơ chế quy đổi tự động: Khi người dùng nhập số Thùng, hệ thống lấy conversionRate từ ProductEntity để tính ra tổng số chiếc lẻ (Ví dụ: Nhập 3 Thùng -> Yêu cầu nạp đủ 30 mã Serial).
-     + Bước 4: Tích hợp Camera Barcode Scanner (Sử dụng Google ML Kit Barcode Scanning hoặc ZXing Embedded): Quét liên tục từng mã Serial in trên hộp/tem đồng hồ. Có âm thanh 'beep' xác nhận mỗi lần quét thành công.
+     + Bước 2: Chọn mẫu đồng hồ (SKU) và chọn ĐVT nhập là "Thùng" hoặc "Chiếc lẻ".
+     + Bước 3: Cơ chế quy đổi tự động: Khi người dùng nhập số Thùng, hệ thống lấy conversionRate từ ProductEntity để tính ra tổng số chiếc lẻ (Ví dụ: Nhập 2 Thùng, hệ số 10 -> Yêu cầu nạp đủ 20 mã Serial).
+     + Bước 4: Tích hợp Camera Barcode Scanner (hoặc hỗ trợ nhập tay / dán dải mã Serial): Quét liên tục từng mã Serial in trên hộp/tem đồng hồ. Có âm thanh 'beep' xác nhận mỗi lần quét.
      + Bước 5: Kiểm tra đối soát 2 chiều nghiêm ngặt:
        * Tổng số mã Serial quét được PHẢI BẰNG CHÍNH XÁC tổng số chiếc sau quy đổi (không cho duyệt nếu thiếu/thừa).
        * Chặn hoàn toàn và báo lỗi đỏ nếu phát hiện bất kỳ mã Serial nào đã tồn tại trong bảng `serials` của Room DB (chống trùng lặp tuyệt đối).
 
-3. PHÂN BỔ CHI PHÍ & TÍNH TOÁN GIÁ VỐN ĐÍCH DANH (SPECIFIC IDENTIFICATION COSTING):
-   - Trong phiếu nhập, kế toán khai báo các chi phí phát sinh thực tế: cước vận chuyển quốc tế, thuế quan hải quan, bảo hiểm lô hàng.
+4. PHÂN BỔ CHI PHÍ & TÍNH TOÁN GIÁ VỐN ĐÍCH DANH (SPECIFIC IDENTIFICATION COSTING):
+   - Trong phiếu nhập, kế toán/nhân viên khai báo các chi phí phát sinh thực tế: cước vận chuyển quốc tế, thuế quan hải quan, bảo hiểm lô hàng.
    - Tự động phân bổ đều chi phí vào từng chiếc đồng hồ theo công thức bắt buộc:
      Giá vốn Serial = Đơn giá mua trên HĐ + (Tổng chi phí phân bổ / Tổng số chiếc)
-   - Lưu trữ từng Serial vào bảng `serials` với giá vốn đích danh này, gán trạng thái `TRONG_KHO` và chất lượng `HANG_MOI`.
-   - Cập nhật tăng tồn kho vật lý tại Room DB, ghi nhận tăng công nợ NCC và sinh bản ghi Sổ Thẻ kho (+) tương ứng.
+   - Lưu trữ từng Serial vào bảng `serials` với giá vốn đích danh này, gán trạng thái `TRONG_KHO`, vị trí mặc định `K1-A01` và chất lượng `HANG_MOI`.
+   - Cập nhật tăng tồn kho vật lý tại Room DB, ghi nhận tăng công nợ NCC.
 
-4. XUẤT TRẢ HÀNG LỖI CHO NCC (SUPPLIER RETURN):
+5. XUẤT TRẢ HÀNG LỖI CHO NCC (SUPPLIER RETURN):
    - Cho phép chọn NCC, quét/chọn các mã Serial từ Kho Hàng Lỗi (`HANG_LOI`), ghi lý do kỹ thuật (hỏng máy, hấp hơi nước, trầy xước từ hãng).
    - Sau khi duyệt: Chuyển Serial sang trạng thái `DA_TRA_NCC`, giảm tồn kho lỗi và tự động cấn trừ số tiền tương ứng vào công nợ phải trả NCC.
 
 YÊU CẦU ĐẦU RA:
-- Kết nối chính xác với Room Database do TV1 thiết kế.
-- Luồng quét camera mượt mà, hỗ trợ cả dán danh sách Serial bằng tay nếu camera không tiện."""
+- Mã nguồn Kotlin sạch, tuân thủ MVVM (ViewModel, Repository, Room DAO).
+- Đặt tên file giao diện XML bắt buộc dùng tiền tố: `fragment_inbound_...`, `dialog_inbound_...`, `item_inbound_...`
+- Tích hợp mượt mà vào luồng chung của ứng dụng."""
 
     add_prompt_box(doc, p2_text, "PROMPT TV2 (NGUYỄN ĐẮC QUÂN): NHÀ CUNG CẤP, NHẬP KHO QUÉT SERIAL & GIÁ VỐN ĐÍCH DANH")
 
@@ -475,15 +485,20 @@ YÊU CẦU ĐẦU RA:
         bg_color="F1F5F9"
     )
 
-    p3_text = """BẠN LÀ LẬP TRÌNH VIÊN ANDROID CHUYÊN TRÁCH PHÂN HỆ ĐẠI LÝ B2B VÀ BÁN SỈ XUẤT KHO. HÃY PHÁT TRIỂN MODULE TRONG PACKAGE `com.chronovault.wms.dealer` VÀ `com.chronovault.wms.outbound` BẰNG KOTLIN:
+    p3_text = """BẠN LÀ LẬP TRÌNH VIÊN ANDROID CHUYÊN TRÁCH PHÂN HỆ ĐẠI LÝ B2B VÀ BÁN SỈ XUẤT KHO. HÃY PHÁT TRIỂN MODULE TRONG PACKAGE `com.example.chronovaultwms.outbound` BẰNG KOTLIN:
 
-1. QUẢN LÝ ĐẠI LÝ B2B & HẠN MỨC CÔNG NỢ TÍN DỤNG (CREDIT LIMIT):
+1. KẾ THỪA NỀN TẢNG CORE & CƠ SỞ DỮ LIỆU:
+   - Kế thừa trực tiếp từ branch `main` của Nhóm trưởng (Phan Bá Hải Bình).
+   - Sử dụng các Entity và DAO dùng chung từ `com.example.chronovaultwms.core.database.*`: ProductEntity, SerialEntity, ChronoVaultDatabase.
+   - Sử dụng SessionManager để kiểm tra vai trò người dùng hiện tại (OPERATIONS_STAFF hoặc WAREHOUSE_MANAGER).
+
+2. QUẢN LÝ ĐẠI LÝ B2B & HẠN MỨC CÔNG NỢ TÍN DỤNG (CREDIT LIMIT):
    - Danh sách đại lý sỉ (DealerListFragment): Quản lý 100% đối tác là cửa hàng/chuỗi bán lẻ; phân loại 3 cấp bậc (VIP, BAC, DONG); hiển thị hạn mức tín dụng (Credit Limit) và số dư nợ hiện tại.
    - Thêm/Sửa hồ sơ đại lý: Cấu hình tỷ lệ chiết khấu hợp đồng và thời hạn nợ (Net 15 / Net 30).
    - Lập Phiếu Thu tiền sỉ (DealerReceiptDialog): Thu tiền cọc đơn hàng hoặc thu nợ đại lý; cập nhật giảm số dư nợ và tự động khôi phục hạn mức mua hàng khả dụng.
 
-2. LÊN ĐƠN BÁN SỈ & DUYỆT KHÓA GIỮ CHỖ TỒN KHO (RESERVED ALLOCATION):
-   - Xây dựng CreateWholesaleOrderActivity:
+3. LÊN ĐƠN BÁN SỈ & DUYỆT KHÓA GIỮ CHỖ TỒN KHO (RESERVED ALLOCATION):
+   - Xây dựng CreateWholesaleOrderActivity / Dialog:
      + Chọn đại lý B2B -> Hệ thống tự động nhận diện cấp bậc (VIP/Bạc/Đồng).
      + Thêm sản phẩm theo Thùng hoặc Chiếc lẻ.
      + Ràng buộc bắt buộc 1: Kiểm tra MOQ (Số lượng đặt phải >= MOQ quy định cho từng mẫu).
@@ -491,13 +506,13 @@ YÊU CẦU ĐẦU RA:
      + Ràng buộc bắt buộc 3: Kiểm tra tồn kho khả dụng (Available = Thực tế - Đang giữ chỗ Reserved). Chặn lên đơn nếu vượt tồn khả dụng.
      + Ràng buộc bắt buộc 4: Thẩm định hạn mức nợ tín dụng:
        Dư nợ hiện tại + Giá trị đơn mới - Tiền cọc <= Hạn mức tín dụng của đại lý.
-       Nếu vượt hạn mức, hệ thống yêu cầu cờ duyệt ngoại lệ từ Chủ cửa hàng.
+       Nếu vượt hạn mức, hệ thống yêu cầu cờ duyệt ngoại lệ từ Chủ cửa hàng (STORE_OWNER).
      + Sau khi duyệt đơn: Chuyển đơn sang trạng thái `APPROVED`, đồng thời KHÓA SỐ LƯỢNG HÀNG GIỮ CHỖ (Tăng `reservedQty`, giảm `availableQty`) để ngăn không cho đơn khác bán trùng lặp.
      + Nếu đơn hàng bị hủy: Tự động giải phóng số lượng giữ chỗ, trả lại cho tồn khả dụng ngay lập tức.
 
-3. QUÉT SERIAL ĐÓNG KIỆN & THỰC XUẤT KHO BÁN SỈ (OUTBOUND DISPATCH):
+4. QUÉT SERIAL ĐÓNG KIỆN & THỰC XUẤT KHO BÁN SỈ (OUTBOUND DISPATCH):
    - Xây dựng DispatchOrderActivity (Quét Serial đóng gói giao hàng):
-     + Dựa trên đơn bán sỉ đã duyệt, thủ kho lấy hàng trên kệ và dùng camera quét mã Serial từng chiếc đóng vào kiện.
+     + Dựa trên đơn bán sỉ đã duyệt, nhân viên lấy hàng trên kệ và dùng camera quét mã Serial từng chiếc đóng vào kiện.
      + Đối soát thời gian thực:
        * Mã Serial quét vào PHẢI thuộc đúng mã SKU yêu cầu trên đơn.
        * Serial phải đang có trạng thái `TRONG_KHO` và chất lượng `HANG_MOI`.
@@ -505,16 +520,17 @@ YÊU CẦU ĐẦU RA:
      + Khi quét đủ 100% số lượng: Bấm "Xác nhận xuất kho" -> Hệ thống thực hiện đồng thời:
        * Giảm tồn thực tế và giải phóng tồn giữ chỗ.
        * Cập nhật Serial sang trạng thái `DA_BAN`, gán mã đại lý sở hữu và tính ngày hết hạn bảo hành.
-       * Tăng số dư nợ của đại lý (trừ đi tiền cọc đã nộp) và ghi Sổ Thẻ kho (-).
+       * Tăng số dư nợ của đại lý (trừ đi tiền cọc đã nộp).
        * Sinh Biên bản bàn giao hàng hóa kiêm phiếu xuất kho B2B hiển thị danh sách 100% mã Serial đã xuất.
 
-4. TIẾP NHẬN ĐỔI TRẢ SỈ & XUẤT KHÁC (BẢO HÀNH/HỦY):
+5. TIẾP NHẬN ĐỔI TRẢ SỈ & XUẤT KHÁC (BẢO HÀNH/HỦY):
    - Tiếp nhận đổi trả: Quét mã Serial đại lý trả về để kiểm tra nguồn gốc bán ra từ hệ thống.
    - Phân loại chất lượng: Đưa về `HANG_MOI` (nguyên seal đổi mẫu) hoặc đưa về `HANG_LOI` (hỏng kỹ thuật); tự động cấn trừ tiền vào nợ đại lý.
    - Phiếu xuất khác: Cho phép lập phiếu xuất gửi về Trung tâm bảo hành của hãng hoặc xuất tiêu hủy hàng vỡ nát.
 
 YÊU CẦU ĐẦU RA:
-- Đảm bảo logic tính toán tài chính và tồn kho liên kết chuẩn xác với Room DB của TV1."""
+- Mã nguồn Kotlin sạch, chuẩn MVVM, kết nối mượt mà với Room DB của TV1.
+- Đặt tên file giao diện XML bắt buộc dùng tiền tố: `fragment_outbound_...`, `dialog_outbound_...`, `item_outbound_...`"""
 
     add_prompt_box(doc, p3_text, "PROMPT TV3 (TÔ ĐỨC THẢO): ĐẠI LÝ B2B, BÁN SỈ, KHÓA GIỮ CHỖ & QUÉT XUẤT SERIAL")
 
@@ -534,9 +550,14 @@ YÊU CẦU ĐẦU RA:
         bg_color="F1F5F9"
     )
 
-    p4_text = """BẠN LÀ LẬP TRÌNH VIÊN ANDROID CHUYÊN TRÁCH PHÂN HỆ QUẢN LÝ TỒN KHO VẬT LÝ, VỊ TRÍ KỆ VÀ KIỂM KÊ. HÃY PHÁT TRIỂN MODULE TRONG PACKAGE `com.chronovault.wms.inventory` VÀ `com.chronovault.wms.audit` BẰNG KOTLIN:
+    p4_text = """BẠN LÀ LẬP TRÌNH VIÊN ANDROID CHUYÊN TRÁCH PHÂN HỆ QUẢN LÝ TỒN KHO VẬT LÝ, VỊ TRÍ KỆ VÀ KIỂM KÊ. HÃY PHÁT TRIỂN MODULE TRONG PACKAGE `com.example.chronovaultwms.inventory` BẰNG KOTLIN:
 
-1. THEO DÕI TỒN KHO ĐA ĐƠN VỊ & 3 KHO CHẤT LƯỢNG:
+1. KẾ THỪA NỀN TẢNG CORE & CƠ SỞ DỮ LIỆU:
+   - Kế thừa trực tiếp từ branch `main` của Nhóm trưởng (Phan Bá Hải Bình).
+   - Sử dụng các Entity và DAO dùng chung từ `com.example.chronovaultwms.core.database.*`: ProductEntity, SerialEntity, ChronoVaultDatabase.
+   - Sử dụng SessionManager để kiểm tra vai trò người dùng hiện tại (WAREHOUSE_MANAGER).
+
+2. THEO DÕI TỒN KHO ĐA ĐƠN VỊ & 3 KHO CHẤT LƯỢNG:
    - Xây dựng StockOverviewFragment:
      + Hiển thị số lượng tồn kho theo cả 2 đơn vị: Đơn vị sỉ (Thùng/Kiện) và Đơn vị lẻ (Chiếc).
      + Phân tách rõ ràng 3 chỉ số quan trọng cho từng mẫu đồng hồ:
@@ -553,30 +574,31 @@ YÊU CẦU ĐẦU RA:
      * Cảnh báo màu đỏ khi tồn khả dụng = 0 (hết hàng ngừng nhận đơn).
      * Cảnh báo vượt maxStock (tránh ứ đọng vốn).
 
-2. SƠ ĐỒ VỊ TRÍ KỆ KHO VẬT LÝ (BIN LOCATION MANAGEMENT):
-   - Quản lý mã định danh vị trí kệ theo cấu trúc chuẩn: [Khu vực - Dãy kệ - Tầng kệ - Ngăn chứa] (Ví dụ: "Khu A - Dãy A-01 - Tầng 2 - Ngăn Rolex").
+3. SƠ ĐỒ VỊ TRÍ KỆ KHO VẬT LÝ (BIN LOCATION MANAGEMENT):
+   - Quản lý mã định danh vị trí kệ theo cấu trúc chuẩn: [Dãy kệ - Tầng - Ngăn] (Ví dụ: "K1-A01", "K1-A02", "K2-B01"...).
    - Trực quan hóa sơ đồ mặt bằng kệ (Grid / RecyclerView): Hiển thị sức chứa tối đa, số lượng Serial hiện lưu trên từng ngăn kệ và thanh tiến độ phần trăm lấp đầy (Capacity Progress Bar). Đổi màu đỏ khi kệ đầy 100%.
    - Chức năng điều chuyển ngăn kệ: Cho phép quét Serial và chọn vị trí kệ mới để cập nhật vị trí lưu kho của chiếc đồng hồ.
 
-3. KIỂM KÊ KHO & TỰ ĐỘNG ĐỐI SOÁT CHÊNH LỆCH SERIAL:
+4. KIỂM KÊ KHO & TỰ ĐỘNG ĐỐI SOÁT CHÊNH LỆCH SERIAL:
    - Xây dựng StockAuditActivity:
      + Khởi tạo đợt kiểm kê theo phạm vi: Toàn kho, Theo dãy kệ, hoặc Theo thương hiệu.
      + Cơ chế tạm khóa xuất nhập: Khi đợt kiểm kê kích hoạt, hệ thống tạm khóa biến động xuất/nhập trên các ngăn kệ kiểm kê để đảm bảo tính chính xác.
-     + Quét kiểm đếm thực tế bằng Camera: Thủ kho dùng camera quét nhanh toàn bộ mã Serial thực tế hiện diện trên kệ.
+     + Quét kiểm đếm thực tế bằng Camera / Nhập tay: Thủ kho quét nhanh toàn bộ mã Serial thực tế hiện diện trên kệ.
      + Đối soát tự động thời gian thực:
        * Serial Khớp đúng: Trùng khớp cả vị trí và trạng thái trong CSDL.
        * Serial Thừa: Có mặt thực tế trên kệ nhưng CSDL không ghi nhận ở kệ này.
        * Serial Thiếu: CSDL báo có nhưng thực tế quét không thấy.
      + Hiển thị bảng đối soát phân màu rõ ràng (Xanh: Khớp, Vàng: Thừa, Đỏ: Thiếu).
 
-4. PHIẾU CÂN BẰNG KHO & SỔ THẺ KHO ĐIỆN TỬ (STOCK LEDGER):
+5. PHIẾU CÂN BẰNG KHO & SỔ THẺ KHO ĐIỆN TỬ (STOCK LEDGER):
    - Lập phiếu cân bằng kho sau kiểm kê: Điều chỉnh số liệu sổ sách khớp đúng với thực tế đếm được; ghi rõ lý do và người chịu trách nhiệm. (Chênh lệch giá trị lớn > 10 triệu bắt buộc Chủ cửa hàng duyệt).
    - Xây dựng StockCardActivity (Sổ Thẻ kho điện tử):
      + Truy vấn nhật ký biến động của từng mã SKU: Ngày phát sinh, loại chứng từ (Nhập, Xuất sỉ, Đổi trả, Cân bằng kiểm kê), số lượng (+/-) và danh sách mã Serial liên quan.
      + Đảm bảo tính bất biến (Immutability): Dữ liệu Thẻ kho tuyệt đối cấm sửa/xóa; nếu sai sót phải lập phiếu điều chỉnh đối ứng.
 
 YÊU CẦU ĐẦU RA:
-- Giao diện trực quan, thao tác nhanh, hỗ trợ thủ kho làm việc linh hoạt trong môi trường kho thực tế."""
+- Mã nguồn Kotlin sạch, chuẩn MVVM, kết nối mượt mà với Room DB của TV1.
+- Đặt tên file giao diện XML bắt buộc dùng tiền tố: `fragment_inventory_...`, `dialog_inventory_...`, `item_inventory_...`"""
 
     add_prompt_box(doc, p4_text, "PROMPT TV4 (VÕ CÔNG TÂM): TỒN KHO 3 CHẤT LƯỢNG, SƠ ĐỒ KỆ BIN, KIỂM KÊ & SỔ THẺ KHO")
 
@@ -596,10 +618,15 @@ YÊU CẦU ĐẦU RA:
         bg_color="F1F5F9"
     )
 
-    p5_text = """BẠN LÀ LẬP TRÌNH VIÊN ANDROID CHUYÊN TRÁCH PHÂN HỆ BÁO CÁO VÀ DASHBOARD ĐIỀU HÀNH. HÃY PHÁT TRIỂN MODULE TRONG PACKAGE `com.chronovault.wms.dashboard` VÀ `com.chronovault.wms.reports` BẰNG KOTLIN:
+    p5_text = """BẠN LÀ LẬP TRÌNH VIÊN ANDROID CHUYÊN TRÁCH PHÂN HỆ BÁO CÁO VÀ DASHBOARD ĐIỀU HÀNH. HÃY PHÁT TRIỂN MODULE TRONG PACKAGE `com.example.chronovaultwms.dashboard` BẰNG KOTLIN:
 
-1. EXECUTIVE DASHBOARD & THẺ CHỈ SỐ KPI THỜI GIAN THỰC:
-   - Xây dựng DashboardFragment (Màn hình trung tâm điều hành):
+1. KẾ THỪA NỀN TẢNG CORE & CƠ SỞ DỮ LIỆU:
+   - Kế thừa trực tiếp từ branch `main` của Nhóm trưởng (Phan Bá Hải Bình).
+   - Sử dụng các Entity và DAO dùng chung từ `com.example.chronovaultwms.core.database.*`: ProductEntity, SerialEntity, ChronoVaultDatabase.
+   - Sử dụng SessionManager để kiểm tra vai trò người dùng hiện tại (ACCOUNTANT hoặc STORE_OWNER).
+
+2. EXECUTIVE DASHBOARD & THẺ CHỈ SỐ KPI THỜI GIAN THỰC:
+   - Xây dựng DashboardOverviewFragment (Màn hình trung tâm điều hành):
      + Hiển thị 5 thẻ chỉ số hiệu suất trọng yếu (KPI Cards) phong cách Horology Luxury:
        * Tổng giá trị tài sản tồn kho: Tính chuẩn xác theo giá vốn đích danh của từng Serial trong kho.
        * Doanh thu phân phối sỉ: Doanh số tích lũy từ các đơn hàng xuất bán cho đại lý trong kỳ.
@@ -608,14 +635,14 @@ YÊU CẦU ĐẦU RA:
        * Tỷ lệ đổi trả hàng sỉ (Cảnh báo đỏ nếu vượt ngưỡng an toàn > 2.0%).
      + Dòng thời gian hoạt động gần đây (Audit Activity Stream): Hiển thị danh sách các thao tác quan trọng vừa phát sinh trong kho (nhập mới, duyệt đơn sỉ, thu tiền nợ, kiểm kê kệ...).
 
-2. BIỂU ĐỒ TRỰC QUAN DOANH SỐ & CHI PHÍ BẰNG MPANDROIDCHART:
+3. BIỂU ĐỒ TRỰC QUAN DOANH SỐ & CHI PHÍ BẰNG MPANDROIDCHART:
    - Tích hợp thư viện `com.github.PhilJay:MPAndroidChart:v3.1.0`.
    - Biểu đồ BarChart / LineChart xu hướng doanh thu phân phối sỉ 6 tháng gần nhất kèm tỷ lệ tăng trưởng.
    - Biểu đồ PieChart cơ cấu chi phí phát sinh: Cước vận chuyển quốc tế, thuế hải quan, bảo hiểm lô hàng, phí lưu kho.
    - Bảng xếp hạng Top 5 / Top 10 mẫu đồng hồ bán chạy nhất kênh sỉ (xếp theo sản lượng chiếc bán ra và theo doanh thu).
 
-3. HỆ THỐNG 9 BÁO CÁO CHUYÊN SÂU ĐA PHÂN HỆ:
-   - Xây dựng ReportContainerFragment với bộ lọc thời gian (Từ ngày - Đến ngày) và xuất 9 báo cáo chuyên sâu:
+4. HỆ THỐNG 9 BÁO CÁO CHUYÊN SÂU ĐA PHÂN HỆ:
+   - Xây dựng ReportContainerFragment với bộ lọc thời gian (Từ ngày - Đến ngày) và hiển thị 9 báo cáo chuyên sâu:
      1. Báo cáo Nhập hàng (Inbound Report): Số lượng và giá trị nhập theo từng NCC, cơ cấu chi phí phân bổ.
      2. Báo cáo Phân phối Bán sỉ (Outbound Report): Doanh số theo từng đại lý, tỷ lệ hoàn tất đơn hàng.
      3. Báo cáo Cơ cấu xuất hàng: Tỷ trọng xuất bán sỉ vs Xuất gửi bảo hành hãng vs Xuất tiêu hủy hàng hỏng.
@@ -626,12 +653,13 @@ YÊU CẦU ĐẦU RA:
      8. Báo cáo Dòng tiền Thu / Chi thực tế (Cashflow Report): Dòng tiền thu vào (bán sỉ, thu hồi nợ) trừ Dòng tiền chi ra (trả NCC, chi phí) = Dòng tiền thuần (Net Cashflow).
      9. Báo cáo Nhật ký kiểm toán Audit Log toàn hệ thống.
 
-4. XUẤT BÁO CÁO (EXPORT CSV / PDF / IN ẤN):
-   - Hỗ trợ nút "Xuất file CSV / Excel" lưu vào thư mục Downloads của điện thoại để người dùng gửi qua Zalo / Email.
+5. XUẤT BÁO CÁO (EXPORT CSV / PDF / IN ẤN):
+   - Hỗ trợ nút "Xuất file CSV / Excel" lưu vào thư mục Downloads của điện thoại để người dùng chia sẻ qua Zalo / Email.
    - Hỗ trợ xem trước và in báo cáo định dạng chuẩn A4 qua Android PrintManager.
 
 YÊU CẦU ĐẦU RA:
-- Giao diện báo cáo trực quan, biểu đồ mượt mà, tính toán số liệu khớp đúng 100% với dữ liệu giao dịch của 4 phân hệ kia."""
+- Giao diện báo cáo trực quan, biểu đồ mượt mà, tính toán số liệu khớp đúng 100% với dữ liệu giao dịch của 4 phân hệ kia.
+- Đặt tên file giao diện XML bắt buộc dùng tiền tố: `fragment_dashboard_...`, `item_dashboard_...`"""
 
     add_prompt_box(doc, p5_text, "PROMPT TV5 (TRẦN CÔNG TÚ): DASHBOARD KPI, BIỂU ĐỒ MPANDROIDCHART & 9 BÁO CÁO CHUYÊN SÂU")
 
