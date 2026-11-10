@@ -58,31 +58,49 @@ Các tệp tài liệu và báo cáo chính thức của đề tài được lư
 
 ---
 
-## 🚀 Hướng dẫn làm việc nhóm
+## 🚀 Hướng dẫn làm việc nhóm & Quy chuẩn Code Android Studio
 
-### 1. Quy định phân nhánh Git (Branching Policy)
-- Mỗi thành viên tạo nhánh riêng khi phát triển:
-  ```bash
-  git checkout -b feature/ten-thanh-vien-chuc-nang
-  ```
-  *Ví dụ:* `feature/binh-quan-ly-hang-hoa`, `feature/quan-nhap-kho-serial`
-- **Tuyệt đối KHÔNG push trực tiếp lên nhánh `main`.**
+### 1. Cấu trúc thư mục Code Android (`android/app/src/main/java/com/example/chronovaultwms/`)
+Mỗi thành viên chỉ viết code trong đúng thư mục phân hệ của mình:
+- `core/`: **Dùng chung** (Chứa `ChronoVaultDatabase`, DAO, `RetrofitClient`, `ApiService`, `SessionManager`, `SystemEnums`).
+- `product/`: **TV1** - Quản lý Danh mục Đồng hồ & Serial Number (`ProductListFragment.kt`...).
+- `inbound/`: **TV2** - Quản lý Nhà cung cấp & Nhập kho (`InboundReceiptFragment.kt`...).
+- `outbound/`: **TV3** - Quản lý Đại lý sỉ & Xuất kho (`OutboundOrderFragment.kt`...).
+- `inventory/`: **TV4** - Quản lý Vị trí kệ Bin/Rack & Kiểm kê (`WarehouseMapFragment.kt`...).
+- `dashboard/`: **TV5** - Báo cáo thống kê, Biểu đồ & Dashboard (`DashboardOverviewFragment.kt`...).
 
-### 2. Quy chuẩn Commit Message
-Đặt tên commit rõ ràng, có tiền tố hành động:
-- `feat: thêm chức năng quét barcode camera cho phiếu nhập`
-- `fix: sửa lỗi tính giá vốn đích danh khi phân bổ chi phí`
-- `docs: cập nhật bảng phân tích phân hệ và README`
-- `style: điều chỉnh giao diện dark mode horology`
+---
 
-### 3. Quy trình Review & Merge
-1. Hoàn thành chức năng $\rightarrow$ Push nhánh của mình lên remote repository:
+### 2. Quy chuẩn vị trí & Đặt tên file giao diện XML (`android/app/src/main/res/`)
+Toàn bộ file giao diện XML nằm trong thư mục `res/layout/`. Để **không bao giờ bị trùng tên file giữa 5 người**, bắt buộc tuân thủ quy tắc tiền tố:
+- **TV1:** Bắt đầu bằng `fragment_product_...` hoặc `item_product_...` *(VD: `fragment_product_list.xml`, `item_serial_card.xml`)*
+- **TV2:** Bắt đầu bằng `fragment_inbound_...` hoặc `item_inbound_...` *(VD: `fragment_inbound_receipt.xml`, `item_po_order.xml`)*
+- **TV3:** Bắt đầu bằng `fragment_outbound_...` hoặc `item_outbound_...` *(VD: `fragment_outbound_order.xml`, `item_so_order.xml`)*
+- **TV4:** Bắt đầu bằng `fragment_inventory_...` hoặc `item_inventory_...` *(VD: `fragment_inventory_map.xml`, `item_bin_rack.xml`)*
+- **TV5:** Bắt đầu bằng `fragment_dashboard_...` *(VD: `fragment_dashboard_overview.xml`, `fragment_inventory_alert.xml`)*
+
+---
+
+### 3. Quy trình làm việc trên Git (Branching Workflow)
+1. **Kéo code mới nhất từ nhánh `main` về máy:**
    ```bash
-   git push origin feature/ten-thanh-vien-chuc-nang
+   git pull origin main
    ```
-2. Tạo **Pull Request (PR)** trên GitHub/GitLab vào nhánh `main`.
-3. Ghi rõ mô tả các việc đã làm và ảnh chụp màn hình kiểm thử.
-4. Nhóm trưởng (**Phan Bá Hải Bình**) sẽ review code, kiểm tra xung đột và thực hiện merge vào nhánh `main`.
+2. **Tạo nhánh riêng của mình trước khi code:**
+   ```bash
+   git checkout -b feature/ten-thanh-vien-chuc-nang
+   ```
+   *Ví dụ:* `feature/tv1-product`, `feature/tv2-inbound`, `feature/tv3-outbound`, `feature/tv4-inventory`, `feature/tv5-dashboard`.
+3. **Tuyệt đối KHÔNG commit và push trực tiếp lên nhánh `main`.**
+4. Sau khi hoàn thành chức năng trên nhánh riêng:
+   ```bash
+   git add .
+   git commit -m "feat: mo ta chuc nang da lam"
+   git push origin feature/ten-nhanh-cua-ban
+   ```
+5. Lên GitHub tạo **Pull Request (PR)** để Nhóm trưởng (**Phan Bá Hải Bình**) duyệt và merge vào nhánh `main`.
+
+---
 
 ---
 *Nhóm 5 AE Siu Nhân • Đồ án môn học Lập Trình Mạng*
