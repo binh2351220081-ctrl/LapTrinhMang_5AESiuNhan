@@ -14,7 +14,7 @@ function renderOutboundTab() {
   // 1. Orders List
   if (ordersContainer) {
     if (orders.length === 0) {
-      ordersContainer.innerHTML = `<div style="text-align:center; padding:20px; color:var(--text-muted); font-size:12px;">Chưa có đơn bán sỉ nào</div>`;
+      ordersContainer.innerHTML = `<div style="text-align:center; padding:20px; color:var(--text-muted); font-size:12px;">Chưa có lệnh xuất kho đại lý nào</div>`;
     } else {
       let html = `<div class="orders-list">`;
       orders.forEach(order => {
@@ -48,7 +48,7 @@ function renderOutboundTab() {
               </div>
               <div class="order-debt-detail">
                 <span>Đã cọc: <b style="color:var(--success);">${formatShortVND(order.depositAmount || 0)}</b></span>
-                <span>Công nợ sỉ còn lại: <b style="color:var(--danger);">${formatShortVND(order.remainingDebt || 0)}</b></span>
+                <span>Công nợ đại lý còn lại: <b style="color:var(--danger);">${formatShortVND(order.remainingDebt || 0)}</b></span>
               </div>
             </div>
 
@@ -110,7 +110,7 @@ function renderOutboundTab() {
 
           <div class="dealer-card-actions">
             <button class="btn-action-small primary" onclick="openDealerReceiptModal('${dealer.id}')">
-              💰 Thu Tiền Sỉ
+              💰 Thu Thu Nợ Đại Lý
             </button>
             <button class="btn-action-small" onclick="openCustomerReturnModal('${dealer.id}')">
               🔄 Tiếp Nhận Đổi Trả
@@ -251,7 +251,7 @@ function updateOrderCalculationPreview() {
   const qty = Math.max(1, parseInt(qtyInput.value) || 1);
   const totalPieces = (unit === 'BOX') ? (qty * watch.conversionRate) : qty;
 
-  // Lấy giá sỉ theo cấp đại lý
+  // Lấy giá phân phối đại lý theo cấp đại lý
   let baseWholesalePrice = watch.wholesalePriceVip;
   if (dealer.tier === 'SILVER') baseWholesalePrice = watch.wholesalePriceSilver;
   else if (dealer.tier === 'BRONZE') baseWholesalePrice = watch.wholesalePriceBronze;
@@ -273,7 +273,7 @@ function updateOrderCalculationPreview() {
   let html = `
     <div style="background:rgba(212,175,55,0.06); border:1px solid var(--border-gold); border-radius:8px; padding:10px; font-size:12px;">
       <div>Quy đổi đặt hàng: <b>${qty} ${unit === 'BOX' ? watch.wholesaleUnit : watch.baseUnit}</b> = <b style="color:var(--success); font-size:13px;">${totalPieces} Chiếc</b> (MOQ yêu cầu: ${watch.moq} Chiếc)</div>
-      <div style="margin-top:4px;">Giá sỉ niêm yết: ${formatVND(baseWholesalePrice)} • Chiết khấu ${dealer.tier}: <b style="color:var(--gold-light);">${discountPercent}%</b></div>
+      <div style="margin-top:4px;">Giá phân phối đại lý niêm yết: ${formatVND(baseWholesalePrice)} • Chiết khấu ${dealer.tier}: <b style="color:var(--gold-light);">${discountPercent}%</b></div>
       <div style="margin-top:4px;">Đơn giá sau CK: <b>${formatVND(finalUnitPrice)}/chiếc</b></div>
       <div style="margin-top:6px; font-size:13px; font-weight:700;">Tổng thanh toán đơn: <span style="color:var(--gold-primary);">${formatVND(subtotal)}</span></div>
       <div style="margin-top:6px; display:flex; justify-content:space-between;">
@@ -303,7 +303,7 @@ function submitCreateOrder() {
 
   // 1. Kiểm tra MOQ
   if (totalPieces < watch.moq) {
-    showToast(`Đơn sỉ không đạt số lượng tối thiểu MOQ (${watch.moq} Chiếc)!`, 'warning');
+    showToast(`Lệnh xuất đại lý không đạt số lượng tối thiểu MOQ (${watch.moq} Chiếc)!`, 'warning');
     return;
   }
 
@@ -344,7 +344,7 @@ function submitCreateOrder() {
     (s.timeline = s.timeline || []).push({
       date: `${dateStr} ${now.getHours()}:${now.getMinutes()}`,
       title: 'Khóa giữ chỗ (Reserved)',
-      desc: `Đơn sỉ ${orderCode} cho ${dealer.shopName}. Đã cọc ${formatShortVND(depositAmount)}`
+      desc: `Lệnh xuất đại lý ${orderCode} cho ${dealer.shopName}. Đã cọc ${formatShortVND(depositAmount)}`
     });
     ChronoDB.saveSerial(s);
   });
@@ -375,7 +375,7 @@ function submitCreateOrder() {
     depositAmount: depositAmount,
     remainingDebt: remainingDebt,
     shippingFee: 0,
-    note: `Đơn sỉ đại lý ${dealer.tier}. Đã cọc ${formatShortVND(depositAmount)}, khóa giữ chỗ ${totalPieces} chiếc.`
+    note: `Lệnh xuất đại lý đại lý ${dealer.tier}. Đã cọc ${formatShortVND(depositAmount)}, khóa giữ chỗ ${totalPieces} chiếc.`
   };
   ChronoDB.addOrder(newOrder);
 
@@ -388,17 +388,17 @@ function submitCreateOrder() {
       date: dateStr,
       amount: depositAmount,
       paymentMethod: 'CHUYEN_KHOAN',
-      referenceDoc: `Tiền cọc đơn sỉ ${orderCode}`,
+      referenceDoc: `Tiền cọc đơn xuất kho ${orderCode}`,
       createdBy: 'Kế toán (Phạm Thị Lan)',
-      note: `Đặt cọc bảo đảm đơn sỉ ${orderCode}`
+      note: `Đặt cọc bảo đảm lệnh xuất đại lý ${orderCode}`
     });
   }
 
   // Audit Log
-  ChronoDB.logAction('Thành viên 3', 'TẠO_ĐƠN_SỈ', `Lên đơn sỉ ${orderCode} cho ${dealer.shopName} (${totalPieces} chiếc, Cọc: ${formatShortVND(depositAmount)})`);
+  ChronoDB.logAction('Thành viên 3', 'TẠO_ĐƠN_SỈ', `Lên lệnh xuất đại lý ${orderCode} cho ${dealer.shopName} (${totalPieces} chiếc, Cọc: ${formatShortVND(depositAmount)})`);
 
   closeModal('createOrderModal');
-  showToast(`Đã tạo đơn sỉ ${orderCode} & Khóa giữ chỗ ${totalPieces} chiếc thành công!`, 'success');
+  showToast(`Đã tạo lệnh xuất đại lý ${orderCode} & Khóa giữ chỗ ${totalPieces} chiếc thành công!`, 'success');
   renderOutboundTab();
   if (typeof renderProductsList === 'function') renderProductsList();
   if (typeof renderWarehouseTab === 'function') renderWarehouseTab();
@@ -429,7 +429,7 @@ function confirmDispatchOrder(orderCode) {
         (s.timeline = s.timeline || []).push({
           date: `${dateStr} ${now.getHours()}:${now.getMinutes()}`,
           title: 'Xuất kho giao đại lý',
-          desc: `Xuất giao theo đơn sỉ ${order.code}. Kích hoạt bảo hành điện tử chính hãng.`
+          desc: `Xuất giao theo lệnh xuất đại lý ${order.code}. Kích hoạt bảo hành điện tử chính hãng.`
         });
         ChronoDB.saveSerial(s);
       }
@@ -463,7 +463,7 @@ function confirmDispatchOrder(orderCode) {
       balanceAfter: 0,
       serialNumber: (it.dispatchedSerials || []).join(', '),
       user: 'Thủ kho (Lê Tuấn)',
-      note: `Xuất sỉ đơn ${order.code} cho ${order.dealerName}`
+      note: `Xuất kho đại lý đơn ${order.code} cho ${order.dealerName}`
     });
   });
 
@@ -476,7 +476,7 @@ function confirmDispatchOrder(orderCode) {
   if (typeof renderDashboard === 'function') renderDashboard();
 }
 
-// Open Dealer Receipt Modal (Phiếu Thu Tiền Sỉ - 3.1)
+// Open Dealer Receipt Modal (Phiếu Thu Nợ Đại Lý - 3.1)
 function openDealerReceiptModal(dealerId) {
   const dealer = ChronoDB.getDealerById(dealerId);
   if (!dealer) return;
@@ -485,7 +485,7 @@ function openDealerReceiptModal(dealerId) {
   const bodyElem = document.getElementById('generalModalBody');
   if (!titleElem || !bodyElem) return;
 
-  titleElem.innerHTML = `💰 Lập Phiếu Thu Tiền Sỉ: ${dealer.shopName}`;
+  titleElem.innerHTML = `💰 Lập Phiếu Thu Nợ Đại Lý: ${dealer.shopName}`;
   bodyElem.innerHTML = `
     <form id="dealerReceiptForm" onsubmit="event.preventDefault(); submitDealerReceipt('${dealer.id}');">
       <div class="form-group">
@@ -520,7 +520,7 @@ function openDealerReceiptModal(dealerId) {
 
       <div class="form-group">
         <label class="form-label">Nội Dung Thu / Chứng Từ Gốc</label>
-        <input type="text" id="receiptRefDocInput" class="form-input" value="Thu hồi công nợ sỉ theo kỳ hợp đồng" required>
+        <input type="text" id="receiptRefDocInput" class="form-input" value="Thu hồi công nợ đại lý theo kỳ hợp đồng" required>
       </div>
 
       <div style="margin-top:20px; display:flex; gap:10px;">
@@ -654,7 +654,7 @@ function submitCustomerReturn(dealerId) {
 
   (serialObj.timeline = serialObj.timeline || []).push({
     date: `${dateStr} ${now.getHours()}:${now.getMinutes()}`,
-    title: 'Tiếp nhận đổi trả sỉ',
+    title: 'Tiếp nhận trả hàng đại lý',
     desc: `Đại lý ${dealer.shopName} trả lại. Phân loại: ${returnType}. Cấn trừ nợ: ${formatVND(refundAmount)}`
   });
   ChronoDB.saveSerial(serialObj);
@@ -694,7 +694,7 @@ function submitCustomerReturn(dealerId) {
     balanceAfter: 1,
     serialNumber: serialCode,
     user: 'Thủ kho (Lê Tuấn)',
-    note: `Nhận trả hàng sỉ từ ${dealer.shopName} -> ${returnType === 'DEFECT_WAREHOUSE' ? 'Kho Lỗi C-01' : 'Kho Mới'}`
+    note: `Nhận trả hàng đại lý từ ${dealer.shopName} -> ${returnType === 'DEFECT_WAREHOUSE' ? 'Kho Lỗi C-01' : 'Kho Mới'}`
   });
 
   // Audit Log
@@ -752,11 +752,11 @@ function printDispatchA4(orderCode) {
         </div>
       </div>
 
-      <div class="title">BIÊN BẢN GIAO NHẬN KIÊM PHIẾU XUẤT KHO BÁN SỈ B2B</div>
+      <div class="title">BIÊN BẢN GIAO NHẬN KIÊM PHIẾU XUẤT KHO XUẤT KHO ĐẠI LÝ B2B</div>
 
       <div class="meta-row">
         <div>Đại lý nhận hàng: <b>${order.dealerName}</b></div>
-        <div>Mã đơn sỉ: <b>${order.code}</b></div>
+        <div>Mã lệnh xuất đại lý: <b>${order.code}</b></div>
       </div>
       <div class="meta-row">
         <div>Trạng thái: <b>ĐÃ XUẤT KHO VẬT LÝ</b></div>

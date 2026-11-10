@@ -89,7 +89,7 @@
 
 ### 3. Bảng Dữ liệu Mẫu (Test Data) cần đưa vào báo cáo:
 - **Đại lý:** Chuỗi Đồng hồ Galle Watch (Hạng VIP, Chiết khấu 25%, Hạn mức nợ: 3,000,000,000 VNĐ, Dư nợ hiện tại: 1,800,000,000 VNĐ).
-- **Đơn hàng sỉ mẫu:** Đặt mua 5 chiếc Rolex Submariner (Giá niêm yết: 350,000,000 VNĐ/chiếc).
+- **Đơn hàng xuất đại lý mẫu:** Đặt mua 5 chiếc Rolex Submariner (Giá niêm yết: 350,000,000 VNĐ/chiếc).
   - Tổng tiền trước CK: 1,750,000,000 VNĐ.
   - Chiết khấu VIP 25%: -437,500,000 VNĐ.
   - Giá trị đơn hàng sau CK: 1,312,500,000 VNĐ.
@@ -149,20 +149,20 @@
 - **Nội dung 1 - Executive Dashboard & 5 Thẻ Chỉ số KPI:**
   - Trình bày 5 chỉ số trọng yếu:
     1. Tổng giá trị tài sản tồn kho: Tính chuẩn xác bằng tổng giá vốn đích danh của tất cả Serial đang trong kho.
-    2. Doanh thu phân phối bán sỉ trong kỳ.
-    3. Số lượng đơn bán sỉ mới.
+    2. Doanh thu phân phối đại lý trong kỳ.
+    3. Số lượng lệnh xuất kho đại lý mới.
     4. Tổng tồn kho khả dụng cung ứng.
-    5. Tỷ lệ đổi trả hàng sỉ (Cảnh báo đỏ nếu $> 2.0\%$).
+    5. Tỷ lệ tiếp nhận trả hàng đại lý (Cảnh báo đỏ nếu $> 2.0\%$).
   - Dòng thời gian hoạt động gần đây (Audit Activity Stream).
 - **Nội dung 2 - Trực quan hóa Biểu đồ bằng MPAndroidChart:**
-  - Biểu đồ BarChart / LineChart: Doanh thu phân phối sỉ 6 tháng gần nhất và tốc độ tăng trưởng.
+  - Biểu đồ BarChart / LineChart: Doanh thu phân phối đại lý 6 tháng gần nhất và tốc độ tăng trưởng.
   - Biểu đồ PieChart: Cơ cấu chi phí logistics (vận chuyển, thuế, bảo hiểm, lưu kho).
   - Bảng xếp hạng Top 5 / Top 10 mẫu đồng hồ bán chạy nhất kênh sỉ.
 - **Nội dung 3 - Hệ thống 9 Báo cáo Chuyên sâu Đa phân hệ:**
   - Trình bày mục đích và bảng dữ liệu của 9 báo cáo:
     1. Báo cáo Nhập hàng theo NCC & chi phí phân bổ.
-    2. Báo cáo Phân phối Bán sỉ theo từng đại lý.
-    3. Báo cáo Cơ cấu xuất hàng (Bán sỉ vs Bảo hành vs Tiêu hủy).
+    2. Báo cáo Phân phối Đại lý theo từng đại lý.
+    3. Báo cáo Cơ cấu xuất hàng (Xuất kho đại lý vs Bảo hành vs Tiêu hủy).
     4. Báo cáo Tỷ lệ đổi trả theo dòng máy (Automatic, Quartz, Solar).
     5. Báo cáo Hàng chậm luân chuyển (Dead Stock Aging $> 90$ ngày, $> 180$ ngày).
     6. Báo cáo Tài chính & Lợi nhuận gộp B2B (Doanh thu trừ Giá vốn đích danh).
@@ -187,7 +187,7 @@
 - **Câu 1:** *"Tại sao em không dùng phương pháp bình quân gia quyền mà lại tính Tổng tài sản kho theo Giá vốn đích danh?"*  
   👉 **Trả lời:** *"Thưa thầy/cô, trong ngành đồng hồ xa xỉ, cùng một dòng Rolex Submariner nhưng mỗi lô hàng nhập vào thời điểm khác nhau có giá ngoại tệ, cước vận chuyển và thuế suất khác nhau. Nếu dùng giá bình quân sẽ làm sai lệch giá trị tài sản hàng tỷ đồng và tính sai lợi nhuận gộp từng thương vụ. Do đó hệ thống SUM trực tiếp giá vốn thực tế của từng mã Serial lưu kho."*
 - **Câu 2:** *"Báo cáo Dòng tiền (Cashflow) có gì khác so với Báo cáo Doanh thu?"*  
-  👉 **Trả lời:** *"Báo cáo Doanh thu ghi nhận ngay khi xuất hóa đơn bán sỉ, dù đại lý mua nợ chưa trả tiền. Còn Báo cáo Cashflow chỉ ghi nhận tiền thực tế ra/vào tài khoản qua Phiếu Thu và Phiếu Chi, giúp Ban Giám đốc biết chính xác doanh nghiệp còn bao nhiêu tiền mặt để chi trả cho các nhà cung cấp."*
+  👉 **Trả lời:** *"Báo cáo Doanh thu ghi nhận ngay khi xuất hóa lệnh xuất kho đại lý, dù đại lý mua nợ chưa trả tiền. Còn Báo cáo Cashflow chỉ ghi nhận tiền thực tế ra/vào tài khoản qua Phiếu Thu và Phiếu Chi, giúp Ban Giám đốc biết chính xác doanh nghiệp còn bao nhiêu tiền mặt để chi trả cho các nhà cung cấp."*
 
 ---
 

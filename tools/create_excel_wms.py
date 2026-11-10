@@ -81,7 +81,7 @@ def build_wms_excel():
     ws1.views.sheetView[0].showGridLines = True
 
     style_title(ws1, "A1", "BẢNG MA TRẬN PHÂN HỆ TỔNG QUAN & PHÂN QUYỀN VAI TRÒ (CHRONOVAULT B2B WMS)")
-    style_note(ws1, "A2", "Hệ thống quản lý kho đồng hồ bán sỉ B2B: Định danh Serial 100%, Quy đổi ĐVT Thùng/Chiếc, Giá vốn đích danh và Quản lý công nợ.")
+    style_note(ws1, "A2", "Hệ thống quản lý kho đồng hồ phân phối đại lý B2B: Định danh Serial 100%, Quy đổi ĐVT Thùng/Chiếc, Giá vốn đích danh và Quản lý công nợ.")
 
     s1_headers = [
         "Phân hệ", "Module / Chức năng", "Chi tiết yêu cầu & Luồng xử lý", "Dữ liệu Đầu vào (Input)", "Dữ liệu Đầu ra (Output)",
@@ -94,8 +94,8 @@ def build_wms_excel():
         ("PH1: Hàng hóa & Hệ thống", "Đăng nhập & Xác thực", "Xác thực danh tính, kiểm tra vai trò (Role), sinh JWT session và ghi Audit Log đăng nhập.", "Tên đăng nhập / Email, mật khẩu, IP", "Phiên đăng nhập (Session token), vai trò, quyền hạn", "Toàn quyền", "Đăng nhập", "Đăng nhập", "Đăng nhập", "Đăng nhập"),
         ("PH1: Hàng hóa & Hệ thống", "Quản trị tài khoản & Ma trận quyền", "Khởi tạo tài khoản nhân viên, cấu hình 5 vai trò (RBAC), kích hoạt/khóa tài khoản, phân quyền CRUD.", "Họ tên, email, tên đăng nhập, vai trò, ma trận phân quyền", "Tài khoản kích hoạt, danh sách quyền gán", "Toàn quyền", "Xem danh sách", "Không", "Không", "Không"),
         ("PH1: Hàng hóa & Hệ thống", "Nhật ký kiểm toán (Audit Log)", "Ghi vết tự động mọi hành vi: người thực hiện, thời gian, IP, chứng từ tác động (Thêm/Sửa/Xóa/Duyệt); bất biến 100%.", "Dữ liệu thao tác người dùng, mốc thời gian, IP", "Bảng nhật ký Audit Log tra cứu lịch sử", "Toàn quyền", "Xem toàn quyền", "Không", "Không", "Xem vết tài chính"),
-        ("PH1: Hàng hóa & Hệ thống", "Danh mục Đồng hồ Master & Quy cách ĐVT", "Khai báo SKU, Barcode, thông số kỹ thuật (bộ máy, kính, size), cấu hình ĐVT sỉ/lẻ (Thùng -> Chiếc), định mức Min/Max và MOQ.", "SKU, Barcode, tên, hãng, máy, kính, ĐVT cơ bản, ĐVT sỉ, hệ số quy đổi, MOQ, Min/Max", "Hồ sơ sản phẩm chuẩn, hệ số quy đổi đóng gói", "Cấu hình / Quản trị", "Xem danh mục", "Xem danh mục", "Xem danh mục", "Xem giá áp dụng"),
-        ("PH1: Hàng hóa & Hệ thống", "Truy vết vòng đời Serial (Serial Timeline)", "Tra cứu toàn diện dòng đời của 1 chiếc đồng hồ: Ngày nhập -> NCC -> Ngăn kệ -> Đơn sỉ -> Đại lý sở hữu -> Bảo hành.", "Mã Serial / IMEI cần tra cứu", "Timeline chi tiết toàn bộ lịch sử biến động của chiếc đồng hồ", "Toàn quyền tra cứu", "Tra cứu", "Tra cứu", "Tra cứu", "Tra cứu"),
+        ("PH1: Hàng hóa & Hệ thống", "Danh mục Đồng hồ Master & Quy cách ĐVT", "Khai báo SKU, Barcode, thông số kỹ thuật (bộ máy, kính, size), cấu hình ĐVT đóng gói/lẻ (Thùng -> Chiếc), định mức Min/Max và MOQ.", "SKU, Barcode, tên, hãng, máy, kính, ĐVT cơ bản, ĐVT đóng gói, hệ số quy đổi, MOQ, Min/Max", "Hồ sơ sản phẩm chuẩn, hệ số quy đổi đóng gói", "Cấu hình / Quản trị", "Xem danh mục", "Xem danh mục", "Xem danh mục", "Xem giá áp dụng"),
+        ("PH1: Hàng hóa & Hệ thống", "Truy vết vòng đời Serial (Serial Timeline)", "Tra cứu toàn diện dòng đời của 1 chiếc đồng hồ: Ngày nhập -> NCC -> Ngăn kệ -> Lệnh xuất đại lý -> Đại lý sở hữu -> Bảo hành.", "Mã Serial / IMEI cần tra cứu", "Timeline chi tiết toàn bộ lịch sử biến động của chiếc đồng hồ", "Toàn quyền tra cứu", "Tra cứu", "Tra cứu", "Tra cứu", "Tra cứu"),
         
         # PH2
         ("PH2: NCC & Nhập kho", "Hồ sơ Nhà cung cấp & Công nợ phải trả", "Quản lý danh bạ NCC chính hãng, số tài khoản thụ hưởng ủy nhiệm chi, theo dõi công nợ mua hàng phát sinh.", "Mã NCC, tên hãng, MST, hotline, tài khoản ngân hàng", "Hồ sơ đối tác, sổ nợ phải trả NCC", "Xem cấu hình", "Xem / Giám sát", "Xem NCC", "Lập đề xuất", "Quản lý & Đối soát nợ"),
@@ -105,23 +105,23 @@ def build_wms_excel():
         ("PH2: NCC & Nhập kho", "Xuất trả hàng lỗi cho NCC", "Quét Serial lỗi kỹ thuật từ Kho Hàng Lỗi xuất trả về hãng; giảm trừ trực tiếp vào công nợ phải trả NCC.", "Mã NCC, danh sách Serial lỗi, lý do hỏng máy/hấp hơi", "Phiếu xuất trả NCC, Serial chuyển trạng thái DA_TRA_NCC, giảm nợ NCC", "Không", "Phê duyệt trả hàng", "Xác nhận xuất vật lý", "Soạn hàng lỗi", "Đối soát giảm nợ"),
 
         # PH3
-        ("PH3: Đại lý & Bán sỉ", "Hồ sơ Đại lý B2B & Hạn mức tín dụng", "Quản lý danh sách đại lý bán sỉ, phân hạng (VIP/Bạc/Đồng), chính sách chiết khấu, hạn mức nợ (Credit Limit), thời hạn nợ.", "Mã đại lý, tên shop/chuỗi, MST, hạng đại lý, hạn mức nợ, Net 15/30", "Hồ sơ đại lý, hạn mức tín dụng khả dụng", "Xem cấu hình", "Duyệt hạn mức tín dụng", "Không", "Cập nhật liên hệ", "Thẩm định công nợ"),
-        ("PH3: Đại lý & Bán sỉ", "Đơn bán sỉ & Khóa Giữ chỗ (Reserved)", "Lên đơn sỉ theo Thùng/Chiếc; kiểm tra MOQ và tồn khả dụng; áp giá sỉ theo hạng; thẩm định tín dụng; khóa giữ chỗ số lượng.", "Đại lý, SKU, số lượng thùng/chiếc đặt mua, tiền cọc", "Đơn sỉ DA_DUYET, tăng tồn giữ chỗ (Reserved), giảm tồn khả dụng", "Không", "Duyệt ngoại lệ vượt nợ", "Xác nhận hàng có sẵn", "Lập đơn bán sỉ nháp", "Thẩm định nợ & cọc"),
-        ("PH3: Đại lý & Bán sỉ", "Quét Serial đóng kiện & Thực xuất sỉ", "Thủ kho quét camera/máy quét từng Serial lấy trên kệ đóng kiện; đối soát Serial thuộc SKU và trạng thái HANG_MOI.", "Mã đơn sỉ, mã Serial quét thực tế", "Phiếu xuất B2B kèm danh sách Serial, Serial chuyển DA_BAN, trừ tồn kho, tăng nợ đại lý", "Không", "Giám sát tiến độ", "Xác nhận xuất vật lý", "Quét Serial & Đóng gói", "Ghi nhận nợ đại lý"),
-        ("PH3: Đại lý & Bán sỉ", "Phiếu thu tiền bán sỉ & Thu nợ đại lý", "Thu tiền cọc hoặc thu nợ đại lý theo hạn hợp đồng (CK/tiền mặt); tự động cấn trừ số dư nợ và khôi phục hạn mức mua.", "Mã đại lý, số tiền thu, chứng từ ngân hàng đối soát", "Phiếu thu hợp lệ, giảm nợ đại lý, khôi phục hạn mức tín dụng", "Không", "Xem báo cáo thu", "Không", "Không", "Lập phiếu & Thu tiền"),
-        ("PH3: Đại lý & Bán sỉ", "Đổi trả sỉ & Xuất khác (Bảo hành/Hủy)", "Tiếp nhận hàng đổi trả từ đại lý, quét Serial xác minh nguồn gốc xuất bán, phân loại về Kho Mới hoặc Kho Lỗi; xuất bảo hành hãng.", "Serial đổi trả, tình trạng nguyên seal hay lỗi máy", "Phiếu đổi trả sỉ, cấn trừ nợ đại lý, cập nhật tồn kho phân loại", "Không", "Duyệt đổi trả ngoại lệ", "Kiểm định & Nhập kho lại", "Tiếp nhận Serial trả", "Đối soát cấn trừ tiền"),
+        ("PH3: Đại lý & Xuất kho đại lý", "Hồ sơ Đại lý B2B & Hạn mức tín dụng", "Quản lý danh sách đại lý xuất kho đại lý, phân hạng (VIP/Bạc/Đồng), chính sách chiết khấu, hạn mức nợ (Credit Limit), thời hạn nợ.", "Mã đại lý, tên shop/chuỗi, MST, hạng đại lý, hạn mức nợ, Net 15/30", "Hồ sơ đại lý, hạn mức tín dụng khả dụng", "Xem cấu hình", "Duyệt hạn mức tín dụng", "Không", "Cập nhật liên hệ", "Thẩm định công nợ"),
+        ("PH3: Đại lý & Xuất kho đại lý", "Lệnh xuất kho đại lý & Khóa Giữ chỗ (Reserved)", "Lên lệnh xuất đại lý theo Thùng/Chiếc; kiểm tra MOQ và tồn khả dụng; áp giá đại lý theo hạng; thẩm định tín dụng; khóa giữ chỗ số lượng.", "Đại lý, SKU, số lượng thùng/chiếc đặt mua, tiền cọc", "Lệnh xuất đại lý DA_DUYET, tăng tồn giữ chỗ (Reserved), giảm tồn khả dụng", "Không", "Duyệt ngoại lệ vượt nợ", "Xác nhận hàng có sẵn", "Lập lệnh xuất kho đại lý nháp", "Thẩm định nợ & cọc"),
+        ("PH3: Đại lý & Xuất kho đại lý", "Quét Serial đóng kiện & Thực xuất kho đại lý", "Thủ kho quét camera/máy quét từng Serial lấy trên kệ đóng kiện; đối soát Serial thuộc SKU và trạng thái HANG_MOI.", "Mã lệnh xuất đại lý, mã Serial quét thực tế", "Phiếu xuất B2B kèm danh sách Serial, Serial chuyển DA_BAN, trừ tồn kho, tăng nợ đại lý", "Không", "Giám sát tiến độ", "Xác nhận xuất vật lý", "Quét Serial & Đóng gói", "Ghi nhận nợ đại lý"),
+        ("PH3: Đại lý & Xuất kho đại lý", "Phiếu thu hồi công nợ đại lý & Thu nợ đại lý", "Thu tiền cọc hoặc thu nợ đại lý theo hạn hợp đồng (CK/tiền mặt); tự động cấn trừ số dư nợ và khôi phục hạn mức mua.", "Mã đại lý, số tiền thu, chứng từ ngân hàng đối soát", "Phiếu thu hợp lệ, giảm nợ đại lý, khôi phục hạn mức tín dụng", "Không", "Xem báo cáo thu", "Không", "Không", "Lập phiếu & Thu tiền"),
+        ("PH3: Đại lý & Xuất kho đại lý", "Nhận trả hàng đại lý & Xuất khác (Bảo hành/Hủy)", "Tiếp nhận hàng đổi trả từ đại lý, quét Serial xác minh nguồn gốc xuất bán, phân loại về Kho Mới hoặc Kho Lỗi; xuất bảo hành hãng.", "Serial đổi trả, tình trạng nguyên seal hay lỗi máy", "Phiếu nhận trả hàng đại lý, cấn trừ nợ đại lý, cập nhật tồn kho phân loại", "Không", "Duyệt đổi trả ngoại lệ", "Kiểm định & Nhập kho lại", "Tiếp nhận Serial trả", "Đối soát cấn trừ tiền"),
 
         # PH4
         ("PH4: Tồn kho & Kiểm kê", "Tồn kho đa đơn vị & 3 Kho chất lượng", "Theo dõi tồn kho theo Thùng và Chiếc lẻ; phân tách Tồn thực tế, Tồn giữ chỗ, Tồn khả dụng; tách bạch 3 kho: Mới, Trưng Bày, Lỗi.", "Dữ liệu xuất/nhập/điều chuyển phân loại", "Bảng tổng hợp tồn kho đa đơn vị, giá trị tồn theo giá vốn đích danh", "Không", "Xem tổng quan tài sản", "Quản lý tồn kho thực tế", "Xem tồn khả dụng", "Xem giá trị tồn kho"),
         ("PH4: Tồn kho & Kiểm kê", "Sơ đồ Kệ kho vật lý (Bin Location)", "Quản lý mã định danh vị trí [Khu - Dãy - Tầng - Ngăn]; gán sản phẩm vào kệ cố định; trực quan hóa sức chứa và tỷ lệ lấp đầy.", "Mã vị trí kệ, SKU gán, sức chứa tối đa", "Sơ đồ kệ trực quan, vị trí lấy hàng (picking) chuẩn xác", "Không", "Xem trực quan", "Quy hoạch & Quản lý kệ", "Lấy hàng theo kệ", "Không"),
         ("PH4: Tồn kho & Kiểm kê", "Kiểm kê kho & Đối soát Serial chênh lệch", "Lập đợt kiểm kê theo kệ/toàn kho; tạm khóa xuất nhập; quét thực tế toàn bộ Serial trên kệ; hệ thống đối soát Thừa/Thiếu.", "Phạm vi kiểm kê, dải Serial quét đếm thực tế", "Biên bản đối soát kiểm kê, danh sách Serial thừa/thiếu", "Không", "Duyệt chênh lệch lớn", "Chủ trì quét kiểm kê", "Hỗ trợ quét Serial", "Đối soát sổ sách"),
         ("PH4: Tồn kho & Kiểm kê", "Phiếu cân bằng kho & Sổ Thẻ kho điện tử", "Sinh phiếu cân bằng kho điều chỉnh sổ sách khớp thực tế; ghi vết bất biến vào Sổ Thẻ kho (+/-) và nhật ký kiểm toán.", "Phiếu kiểm kê đã duyệt, lý do sai lệch", "Tồn kho được cân bằng, dòng ghi Sổ Thẻ kho (so_the_kho) bất biến", "Không", "Phê duyệt cân bằng", "Xác nhận điều chỉnh vật lý", "Không", "Đối soát chứng từ"),
-        ("PH4: Tồn kho & Kiểm kê", "Cảnh báo định mức tồn kho (Min / Max / Out)", "Tự động cảnh báo màu vàng khi tồn kho <= Min để lập PO nhập thêm; cảnh báo đỏ khi hết hàng (Out of Stock); cảnh báo vượt Max.", "Số lượng tồn khả dụng, ngưỡng Min/Max", "Thông báo cảnh báo trên màn hình điều hành, gợi ý số lượng đặt sỉ", "Không", "Xem cảnh báo", "Theo dõi cảnh báo Min", "Xem cảnh báo hết", "Không"),
+        ("PH4: Tồn kho & Kiểm kê", "Cảnh báo định mức tồn kho (Min / Max / Out)", "Tự động cảnh báo màu vàng khi tồn kho <= Min để lập PO nhập thêm; cảnh báo đỏ khi hết hàng (Out of Stock); cảnh báo vượt Max.", "Số lượng tồn khả dụng, ngưỡng Min/Max", "Thông báo cảnh báo trên màn hình điều hành, gợi ý số lượng đặt hàng đại lý", "Không", "Xem cảnh báo", "Theo dõi cảnh báo Min", "Xem cảnh báo hết", "Không"),
 
         # PH5
-        ("PH5: Báo cáo & Dashboard", "Executive Dashboard & KPI Cards", "Hiển thị chỉ số thời gian thực: Tổng giá trị tồn đích danh, Doanh thu phân phối sỉ, Số đơn sỉ, Tồn khả dụng, Tỷ lệ đổi trả.", "Dữ liệu giao dịch phát sinh từ PH1 - PH4", "Thẻ KPI trực quan thời gian thực", "Xem hệ thống", "Toàn quyền điều hành", "Xem tồn & tiến độ", "Xem tiến độ đơn", "Xem số liệu tài chính"),
-        ("PH5: Báo cáo & Dashboard", "Biểu đồ Canvas Doanh số & Chi phí", "Biểu diễn trực quan xu hướng doanh số 6 tháng gần nhất và cơ cấu chi phí nhập hàng (vận chuyển, hải quan, lưu kho).", "Số liệu đơn sỉ hoàn tất, chi phí phân bổ theo tháng", "Biểu đồ cột/đường trực quan trên nền HTML5 Canvas", "Không", "Phân tích chiến lược", "Không", "Không", "Phân tích tài chính"),
-        ("PH5: Báo cáo & Dashboard", "Hệ thống 9 Báo cáo chuyên sâu đa phân hệ", "Xuất báo cáo chi tiết: Báo cáo Nhập hàng, Phân phối sỉ, Cơ cấu xuất, Đổi trả theo loại máy, Hàng Dead Stock, Lợi nhuận gộp B2B.", "Thời khoảng lọc (Từ ngày - Đến ngày), điều kiện phân hệ", "Báo cáo chi tiết định dạng bảng biểu, hỗ trợ xuất Excel/CSV/PDF", "Xem báo cáo hệ thống", "Toàn quyền xem & xuất", "Xem báo cáo tồn/kệ", "Xem báo cáo giao dịch", "Xem báo cáo doanh thu/vốn"),
+        ("PH5: Báo cáo & Dashboard", "Executive Dashboard & KPI Cards", "Hiển thị chỉ số thời gian thực: Tổng giá trị tồn đích danh, Doanh thu phân phối đại lý, Số lệnh xuất đại lý, Tồn khả dụng, Tỷ lệ đổi trả.", "Dữ liệu giao dịch phát sinh từ PH1 - PH4", "Thẻ KPI trực quan thời gian thực", "Xem hệ thống", "Toàn quyền điều hành", "Xem tồn & tiến độ", "Xem tiến độ đơn", "Xem số liệu tài chính"),
+        ("PH5: Báo cáo & Dashboard", "Biểu đồ Canvas Doanh số & Chi phí", "Biểu diễn trực quan xu hướng doanh số 6 tháng gần nhất và cơ cấu chi phí nhập hàng (vận chuyển, hải quan, lưu kho).", "Số liệu lệnh xuất đại lý hoàn tất, chi phí phân bổ theo tháng", "Biểu đồ cột/đường trực quan trên nền HTML5 Canvas", "Không", "Phân tích chiến lược", "Không", "Không", "Phân tích tài chính"),
+        ("PH5: Báo cáo & Dashboard", "Hệ thống 9 Báo cáo chuyên sâu đa phân hệ", "Xuất báo cáo chi tiết: Báo cáo Nhập hàng, Phân phối đại lý, Cơ cấu xuất, Đổi trả theo loại máy, Hàng Dead Stock, Lợi nhuận gộp B2B.", "Thời khoảng lọc (Từ ngày - Đến ngày), điều kiện phân hệ", "Báo cáo chi tiết định dạng bảng biểu, hỗ trợ xuất Excel/CSV/PDF", "Xem báo cáo hệ thống", "Toàn quyền xem & xuất", "Xem báo cáo tồn/kệ", "Xem báo cáo giao dịch", "Xem báo cáo doanh thu/vốn"),
         ("PH5: Báo cáo & Dashboard", "Sổ chi tiết công nợ B2B & Dòng tiền Cashflow", "Đối soát chi tiết nợ 2 chiều (Đại lý & NCC): Dư đầu kỳ, phát sinh nợ (+), phát sinh có (-), dư cuối kỳ; Báo cáo dòng tiền thực tế.", "Thời khoảng kế toán, mã đối tác, phiếu thu/chi phát sinh", "Sổ chi tiết công nợ 2 chiều, Báo cáo dòng tiền thuần (Net Cashflow)", "Không", "Xem & Giám sát dòng tiền", "Không", "Không", "Toàn quyền lập & đối soát")
     ]
 
@@ -171,14 +171,14 @@ def build_wms_excel():
 
     s2_data = [
         # PH1
-        ("F1.1.1", "PH1: Hàng hóa", "Quản lý hàng hóa", "Xem danh sách đồng hồ", "Thủ kho", "NV Nhập - Xuất; Kế toán", "Đồng hồ Master", "Từ khóa tìm kiếm; Bộ lọc thương hiệu", "Khoảng giá sỉ; Loại máy; Tùy chọn sắp xếp", "Bảng danh sách mẫu đồng hồ phân trang", "Chỉ hiển thị các sản phẩm ACTIVE hoặc có cờ hiển thị."),
+        ("F1.1.1", "PH1: Hàng hóa", "Quản lý hàng hóa", "Xem danh sách đồng hồ", "Thủ kho", "NV Nhập - Xuất; Kế toán", "Đồng hồ Master", "Từ khóa tìm kiếm; Bộ lọc thương hiệu", "Khoảng giá phân phối đại lý; Loại máy; Tùy chọn sắp xếp", "Bảng danh sách mẫu đồng hồ phân trang", "Chỉ hiển thị các sản phẩm ACTIVE hoặc có cờ hiển thị."),
         ("F1.1.2", "PH1: Hàng hóa", "Quản lý hàng hóa", "Xem chi tiết thông số kỹ thuật", "NV Nhập - Xuất", "Thủ kho; Kế toán", "Đồng hồ Master", "Mã SKU hoặc ID sản phẩm", "Không", "Modal thông số 6 thuộc tính chuẩn ngành xa xỉ", "Hiển thị đầy đủ bộ máy, kính, dây, size mặt, chống nước, bảo hành."),
-        ("F1.1.3", "PH1: Hàng hóa", "Quản lý hàng hóa", "Thêm mới đồng hồ Master", "Quản trị hệ thống", "Không", "Đồng hồ; Quy đổi ĐVT", "SKU; Barcode; Tên; Hãng; Giá vốn; Giá sỉ các hạng", "Hình ảnh; Kính; Dây; Chống nước; Min/Max tồn", "Bản ghi đồng hồ mới lưu vào CSDL", "SKU và Barcode duy nhất tuyệt đối. Cờ quản lý Serial bắt buộc bật."),
-        ("F1.1.4", "PH1: Hàng hóa", "Quản lý hàng hóa", "Chỉnh sửa thông số & Cấu hình ĐVT", "Quản trị hệ thống", "Thủ kho", "Đồng hồ; Quy đổi ĐVT", "ID sản phẩm; Hệ số quy đổi (conversionRate); ĐVT sỉ", "MOQ; Giá sỉ VIP/Bạc/Đồng; Ghi chú", "Thông tin đồng hồ và tỷ lệ đóng gói cập nhật", "Hệ số quy đổi là số nguyên dương >= 1 (VD: 1 Thùng = 10 Chiếc)."),
+        ("F1.1.3", "PH1: Hàng hóa", "Quản lý hàng hóa", "Thêm mới đồng hồ Master", "Quản trị hệ thống", "Không", "Đồng hồ; Quy đổi ĐVT", "SKU; Barcode; Tên; Hãng; Giá vốn; Giá phân phối đại lý các hạng", "Hình ảnh; Kính; Dây; Chống nước; Min/Max tồn", "Bản ghi đồng hồ mới lưu vào CSDL", "SKU và Barcode duy nhất tuyệt đối. Cờ quản lý Serial bắt buộc bật."),
+        ("F1.1.4", "PH1: Hàng hóa", "Quản lý hàng hóa", "Chỉnh sửa thông số & Cấu hình ĐVT", "Quản trị hệ thống", "Thủ kho", "Đồng hồ; Quy đổi ĐVT", "ID sản phẩm; Hệ số quy đổi (conversionRate); ĐVT đóng gói", "MOQ; Giá phân phối đại lý VIP/Bạc/Đồng; Ghi chú", "Thông tin đồng hồ và tỷ lệ đóng gói cập nhật", "Hệ số quy đổi là số nguyên dương >= 1 (VD: 1 Thùng = 10 Chiếc)."),
         ("F1.1.5", "PH1: Hàng hóa", "Quản lý hàng hóa", "Ngừng kinh doanh / Xóa sản phẩm", "Quản trị hệ thống", "Chủ cửa hàng", "Đồng hồ Master", "ID sản phẩm; Xác nhận thay đổi trạng thái", "Lý do ngưng kinh doanh", "Trạng thái chuyển INACTIVE / DISCONTINUED", "Không cho phép xóa nếu sản phẩm còn tồn kho hoặc có giao dịch lịch sử."),
         ("F1.1.6", "PH1: Hàng hóa", "Quản lý hàng hóa", "Quản lý Thương hiệu & Bộ sưu tập", "Quản trị hệ thống", "Không", "Thương hiệu; Bộ sưu tập", "Tên thương hiệu; Xuất xứ (Thụy Sỹ, Nhật...)", "Logo; Mô tả bộ sưu tập", "Danh mục thương hiệu cập nhật", "Không cho xóa thương hiệu đang có sản phẩm liên kết."),
-        ("F1.1.7", "PH1: Hàng hóa", "Quản lý hàng hóa", "Tìm kiếm & Lọc nâng cao", "Mọi tác nhân", "Không", "Đồng hồ Master", "Từ khóa SKU / Tên / Hãng", "Khoảng giá sỉ; Loại máy; Vị trí kệ", "Danh sách sản phẩm thỏa mãn điều kiện lọc", "Tìm kiếm tức thì theo cơ chế debounce không làm đơ giao diện."),
-        ("F1.1.8", "PH1: Hàng hóa", "Quản lý hàng hóa", "Truy vết vòng đời Serial (Timeline)", "Mọi tác nhân", "Không", "Serial; Lịch sử giao dịch", "Mã Serial / IMEI đích danh", "Không", "Timeline vòng đời toàn vẹn từ nhập đến xuất", "Hiển thị xuyên suốt ngày nhập, NCC, vị trí kệ, đơn sỉ, đại lý và bảo hành."),
+        ("F1.1.7", "PH1: Hàng hóa", "Quản lý hàng hóa", "Tìm kiếm & Lọc nâng cao", "Mọi tác nhân", "Không", "Đồng hồ Master", "Từ khóa SKU / Tên / Hãng", "Khoảng giá phân phối đại lý; Loại máy; Vị trí kệ", "Danh sách sản phẩm thỏa mãn điều kiện lọc", "Tìm kiếm tức thì theo cơ chế debounce không làm đơ giao diện."),
+        ("F1.1.8", "PH1: Hàng hóa", "Quản lý hàng hóa", "Truy vết vòng đời Serial (Timeline)", "Mọi tác nhân", "Không", "Serial; Lịch sử giao dịch", "Mã Serial / IMEI đích danh", "Không", "Timeline vòng đời toàn vẹn từ nhập đến xuất", "Hiển thị xuyên suốt ngày nhập, NCC, vị trí kệ, lệnh xuất đại lý, đại lý và bảo hành."),
         ("F1.1.9", "PH1: Hàng hóa", "Quản lý hàng hóa", "Xuất dữ liệu danh mục hàng", "Quản trị hệ thống", "Kế toán", "Đồng hồ Master", "Tùy chọn bộ lọc cần trích xuất", "Định dạng file (CSV / Excel)", "File danh mục đồng hồ tải về máy", "Chỉ người dùng có quyền Export mới được xuất dữ liệu."),
 
         ("F1.2.1", "PH1: Hệ thống", "Quản trị hệ thống", "Xem danh sách tài khoản", "Quản trị hệ thống", "Chủ cửa hàng", "Tài khoản người dùng", "Bộ lọc vai trò; Trạng thái tài khoản", "Từ khóa tìm kiếm nhân viên", "Bảng danh sách tài khoản kèm trạng thái", "Mật khẩu luôn được băm một chiều an toàn, không hiển thị plain text."),
@@ -213,40 +213,40 @@ def build_wms_excel():
         ("F2.2.11", "PH2: Nhập kho", "Quản lý Nhập kho", "In phiếu nhập kho & Xuất PDF", "NV Nhập - Xuất", "Kế toán", "Phiếu nhập kho", "Mã phiếu nhập đã duyệt", "Mẫu in khổ A4", "Bản in A4 hoặc file PDF lưu chứng từ kế toán", "Hiển thị đầy đủ bảng kê chi tiết toàn bộ các mã Serial đã nhập."),
 
         # PH3
-        ("F3.1.1", "PH3: Bán sỉ", "Quản lý Đại lý sỉ", "Xem danh sách đại lý B2B", "NV Nhập - Xuất", "Kế toán", "Đại lý B2B", "Từ khóa tìm đại lý; Phân hạng đại lý", "Bộ lọc khu vực địa lý", "Bảng danh bạ đại lý, hạn mức nợ, dư nợ", "100% đối tác là pháp nhân/cửa hàng phân phối sỉ, không có khách lẻ."),
-        ("F3.1.2", "PH3: Bán sỉ", "Quản lý Đại lý sỉ", "Thêm mới & Cập nhật hồ sơ đại lý", "Kế toán", "NV Nhập - Xuất", "Đại lý B2B", "Mã đại lý; Tên shop/chuỗi; MST; Người đại diện", "SĐT; Địa chỉ kho nhận hàng; Hợp đồng cam kết", "Hồ sơ đại lý hoàn chỉnh được lưu trữ", "MST và mã đại lý là duy nhất trên hệ thống."),
-        ("F3.1.3", "PH3: Bán sỉ", "Quản lý Đại lý sỉ", "Cấu hình chính sách thương mại", "Chủ cửa hàng", "Kế toán", "Chính sách giá; Hạn mức", "Hạng đại lý (VIP/Bạc/Đồng); Chiết khấu (%); Hạn mức nợ", "Thời hạn nợ (Net 15 / Net 30)", "Chính sách giá sỉ được kích hoạt cho đại lý", "Đại lý hạng VIP hưởng giá sỉ tốt nhất và hạn mức nợ cao nhất."),
-        ("F3.1.4", "PH3: Bán sỉ", "Quản lý Đại lý sỉ", "Giám sát hạn mức công nợ khả dụng", "Kế toán", "NV Nhập - Xuất", "Công nợ đại lý", "Mã đại lý cần tra cứu", "Không", "Số dư nợ hiện tại, hạn mức nợ còn lại có thể mua", "Hạn mức khả dụng = Hạn mức tín dụng - Dư nợ hiện tại."),
-        ("F3.1.5", "PH3: Bán sỉ", "Quản lý Đại lý sỉ", "Lập phiếu Thu tiền sỉ / Thu nợ", "Kế toán", "Chủ cửa hàng", "Phiếu thu; Công nợ", "Mã đại lý; Số tiền thu; Hình thức (CK/Tiền mặt)", "Ủy nhiệm chi ngân hàng đối soát", "Phiếu thu hợp lệ; Giảm nợ; Khôi phục hạn mức", "Tiền thu ghi giảm nợ đại lý và khôi phục hạn mức khả dụng ngay lập tức."),
-        ("F3.1.6", "PH3: Bán sỉ", "Quản lý Đại lý sỉ", "Tiếp nhận yêu cầu đổi trả sỉ", "NV Nhập - Xuất", "Thủ kho", "Đơn đổi trả sỉ; Serial", "Mã đại lý; Mã Serial sản phẩm hoàn trả", "Lý do đổi trả (đổi mẫu / lỗi kỹ thuật)", "Kết quả xác minh nguồn gốc xuất bán của Serial", "Bắt buộc Serial phải có nguồn gốc bán đúng cho chính đại lý này."),
-        ("F3.1.7", "PH3: Bán sỉ", "Quản lý Đại lý sỉ", "Phân loại sản phẩm đổi trả", "Thủ kho", "NV Nhập - Xuất", "Serial; Trạng thái kho", "Kết quả kiểm định chất lượng sản phẩm", "Biên bản giám định lỗi đồng hồ", "Gán vào KHO_MOI (nguyên seal) hoặc KHO_LOI", "Hàng nguyên seal đưa về Kho Mới bán tiếp; hàng lỗi đưa về Kho Lỗi chờ xử lý."),
-        ("F3.1.8", "PH3: Bán sỉ", "Quản lý Đại lý sỉ", "Phê duyệt phiếu đổi trả sỉ", "Chủ cửa hàng", "Kế toán; Thủ kho", "Phiếu đổi trả; Công nợ", "Mã phiếu đổi trả", "Ghi chú duyệt cấn trừ tiền", "Cấn trừ nợ đại lý; Tăng tồn kho tương ứng", "Phiếu duyệt tự động giảm số dư nợ của đại lý tương ứng giá trị nhận trả."),
-        ("F3.1.9", "PH3: Bán sỉ", "Quản lý Đại lý sỉ", "Quản lý trạng thái đại lý", "Chủ cửa hàng", "Kế toán", "Đại lý B2B", "Mã đại lý; Trạng thái (ACTIVE/LOCKED)", "Lý do khóa (nợ quá hạn, vi phạm)", "Tài khoản đại lý bị khóa mua hàng", "Đại lý nợ quá hạn bị tạm khóa tự động, không cho phép lên đơn mới."),
+        ("F3.1.1", "PH3: Xuất kho đại lý", "Quản lý Đại lý B2B", "Xem danh sách đại lý B2B", "NV Nhập - Xuất", "Kế toán", "Đại lý B2B", "Từ khóa tìm đại lý; Phân hạng đại lý", "Bộ lọc khu vực địa lý", "Bảng danh bạ đại lý, hạn mức nợ, dư nợ", "100% đối tác là pháp nhân/cửa hàng phân phối đại lý, không có khách lẻ."),
+        ("F3.1.2", "PH3: Xuất kho đại lý", "Quản lý Đại lý B2B", "Thêm mới & Cập nhật hồ sơ đại lý", "Kế toán", "NV Nhập - Xuất", "Đại lý B2B", "Mã đại lý; Tên shop/chuỗi; MST; Người đại diện", "SĐT; Địa chỉ kho nhận hàng; Hợp đồng cam kết", "Hồ sơ đại lý hoàn chỉnh được lưu trữ", "MST và mã đại lý là duy nhất trên hệ thống."),
+        ("F3.1.3", "PH3: Xuất kho đại lý", "Quản lý Đại lý B2B", "Cấu hình chính sách thương mại", "Chủ cửa hàng", "Kế toán", "Chính sách giá; Hạn mức", "Hạng đại lý (VIP/Bạc/Đồng); Chiết khấu (%); Hạn mức nợ", "Thời hạn nợ (Net 15 / Net 30)", "Chính sách giá phân phối đại lý được kích hoạt cho đại lý", "Đại lý hạng VIP hưởng giá phân phối đại lý tốt nhất và hạn mức nợ cao nhất."),
+        ("F3.1.4", "PH3: Xuất kho đại lý", "Quản lý Đại lý B2B", "Giám sát hạn mức công nợ khả dụng", "Kế toán", "NV Nhập - Xuất", "Công nợ đại lý", "Mã đại lý cần tra cứu", "Không", "Số dư nợ hiện tại, hạn mức nợ còn lại có thể mua", "Hạn mức khả dụng = Hạn mức tín dụng - Dư nợ hiện tại."),
+        ("F3.1.5", "PH3: Xuất kho đại lý", "Quản lý Đại lý B2B", "Lập phiếu Thu hồi công nợ đại lý / Thu nợ", "Kế toán", "Chủ cửa hàng", "Phiếu thu; Công nợ", "Mã đại lý; Số tiền thu; Hình thức (CK/Tiền mặt)", "Ủy nhiệm chi ngân hàng đối soát", "Phiếu thu hợp lệ; Giảm nợ; Khôi phục hạn mức", "Tiền thu ghi giảm nợ đại lý và khôi phục hạn mức khả dụng ngay lập tức."),
+        ("F3.1.6", "PH3: Xuất kho đại lý", "Quản lý Đại lý B2B", "Tiếp nhận yêu cầu nhận trả hàng đại lý", "NV Nhập - Xuất", "Thủ kho", "Đơn nhận trả hàng đại lý; Serial", "Mã đại lý; Mã Serial sản phẩm hoàn trả", "Lý do đổi trả (đổi mẫu / lỗi kỹ thuật)", "Kết quả xác minh nguồn gốc xuất bán của Serial", "Bắt buộc Serial phải có nguồn gốc bán đúng cho chính đại lý này."),
+        ("F3.1.7", "PH3: Xuất kho đại lý", "Quản lý Đại lý B2B", "Phân loại sản phẩm đổi trả", "Thủ kho", "NV Nhập - Xuất", "Serial; Trạng thái kho", "Kết quả kiểm định chất lượng sản phẩm", "Biên bản giám định lỗi đồng hồ", "Gán vào KHO_MOI (nguyên seal) hoặc KHO_LOI", "Hàng nguyên seal đưa về Kho Mới bán tiếp; hàng lỗi đưa về Kho Lỗi chờ xử lý."),
+        ("F3.1.8", "PH3: Xuất kho đại lý", "Quản lý Đại lý B2B", "Phê duyệt phiếu nhận trả hàng đại lý", "Chủ cửa hàng", "Kế toán; Thủ kho", "Phiếu đổi trả; Công nợ", "Mã phiếu đổi trả", "Ghi chú duyệt cấn trừ tiền", "Cấn trừ nợ đại lý; Tăng tồn kho tương ứng", "Phiếu duyệt tự động giảm số dư nợ của đại lý tương ứng giá trị nhận trả."),
+        ("F3.1.9", "PH3: Xuất kho đại lý", "Quản lý Đại lý B2B", "Quản lý trạng thái đại lý", "Chủ cửa hàng", "Kế toán", "Đại lý B2B", "Mã đại lý; Trạng thái (ACTIVE/LOCKED)", "Lý do khóa (nợ quá hạn, vi phạm)", "Tài khoản đại lý bị khóa mua hàng", "Đại lý nợ quá hạn bị tạm khóa tự động, không cho phép lên đơn mới."),
 
-        ("F3.2.1", "PH3: Bán sỉ", "Bán sỉ & Xuất kho", "Khởi tạo đơn bán sỉ", "NV Nhập - Xuất", "Kế toán", "Đơn bán sỉ", "Đại lý B2B được chỉ định", "Ghi chú hợp đồng; Thời hạn giao hàng", "Bản ghi đơn bán sỉ nháp (DRAFT) được tạo", "Đại lý phải ở trạng thái ACTIVE và không bị nợ quá hạn."),
-        ("F3.2.2", "PH3: Bán sỉ", "Bán sỉ & Xuất kho", "Chọn sản phẩm theo Thùng hoặc Chiếc", "NV Nhập - Xuất", "Không", "Chi tiết đơn sỉ", "SKU; Đơn vị tính (Thùng hoặc Chiếc); Số lượng", "Không", "Dòng sản phẩm được thêm vào đơn bán sỉ", "Bắt buộc số lượng chiếc sau quy đổi phải >= MOQ quy định."),
-        ("F3.2.3", "PH3: Bán sỉ", "Bán sỉ & Xuất kho", "Kiểm tra tồn kho khả dụng thời gian thực", "Hệ thống", "NV Nhập - Xuất", "Tồn kho tổng hợp", "Mã SKU; Số lượng chiếc yêu cầu", "Không", "Xác nhận đủ hàng hoặc cảnh báo thiếu hàng", "Tồn khả dụng = Tồn thực tế - Tồn đang giữ chỗ (Reserved)."),
-        ("F3.2.4", "PH3: Bán sỉ", "Bán sỉ & Xuất kho", "Áp giá sỉ tự động theo cấp bậc", "Hệ thống", "Kế toán", "Bảng giá sỉ; Chiết khấu", "Hạng đại lý (VIP/Bạc/Đồng); Số lượng đặt", "Không", "Đơn giá sỉ chuẩn và tỷ lệ chiết khấu hợp đồng", "Tự động áp giá sỉ theo ma trận hạng đại lý đã cấu hình trước."),
-        ("F3.2.5", "PH3: Bán sỉ", "Bán sỉ & Xuất kho", "Quản lý tiền cọc & Hạn thanh toán", "Kế toán", "NV Nhập - Xuất", "Đơn bán sỉ", "Số tiền cọc thỏa thuận; Thời hạn nợ (Net 15/30)", "Chứng từ ngân hàng xác nhận cọc", "Trạng thái cọc được cập nhật vào đơn", "Đơn hàng giá trị lớn bắt buộc phải thu tối thiểu 10-30% tiền cọc."),
-        ("F3.2.6", "PH3: Bán sỉ", "Bán sỉ & Xuất kho", "Phê duyệt đơn sỉ & Khóa Giữ chỗ", "Chủ cửa hàng", "Kế toán; Thủ kho", "Đơn sỉ; Tồn kho Reserved", "Mã đơn sỉ; Xác nhận hạn mức nợ hợp lệ", "Lý do phê duyệt ngoại lệ (nếu vượt hạn mức)", "Đơn sang DA_DUYET; Tăng tồn Giữ chỗ (Reserved)", "Khóa số lượng tồn khả dụng, ngăn không cho bán trùng lặp cho đơn khác."),
-        ("F3.2.7", "PH3: Bán sỉ", "Bán sỉ & Xuất kho", "Hủy đơn bán sỉ", "NV Nhập - Xuất", "Thủ kho; Kế toán", "Đơn bán sỉ; Tồn kho", "Mã đơn sỉ cần hủy", "Lý do hủy đơn", "Đơn sang CANCELLED; Giải phóng tồn giữ chỗ", "Tự động hoàn trả số lượng đang giữ chỗ lại cho tồn khả dụng."),
-        ("F3.2.8", "PH3: Bán sỉ", "Bán sỉ & Xuất kho", "Khởi tạo phiếu xuất kho bán sỉ", "NV Nhập - Xuất", "Thủ kho", "Phiếu xuất kho", "Mã đơn bán sỉ đã được duyệt", "Thông tin đóng kiện và bàn giao", "Phiếu xuất kho bán sỉ được sinh ra", "Chỉ được tạo phiếu xuất khi đơn bán sỉ ở trạng thái DA_DUYET."),
-        ("F3.2.9", "PH3: Bán sỉ", "Bán sỉ & Xuất kho", "Đóng gói & Quét Serial xuất kho", "Thủ kho", "NV Nhập - Xuất", "Serial; Phiếu xuất", "Mã Serial quét thực tế từ trên kệ đóng kiện", "Không", "Danh sách Serial đóng gói vào kiện hàng xuất", "Serial phải thuộc đúng SKU của đơn, trạng thái TRONG_KHO và HANG_MOI."),
-        ("F3.2.10", "PH3: Bán sỉ", "Bán sỉ & Xuất kho", "Xác nhận hoàn tất xuất kho", "Thủ kho", "Kế toán", "Phiếu xuất; Tồn kho; Serial; Nợ", "Mã phiếu xuất; Chữ ký xác nhận bàn giao", "Không", "Trừ tồn thực tế; Serial sang DA_BAN; Tăng nợ đại lý", "Giảm tồn thực tế, giải phóng giữ chỗ, ghi Sổ Thẻ kho (-) và tăng nợ đại lý."),
-        ("F3.2.11", "PH3: Bán sỉ", "Bán sỉ & Xuất kho", "Lập phiếu xuất khác (Bảo hành/Hủy)", "NV Nhập - Xuất", "Thủ kho; Chủ cửa hàng", "Phiếu xuất khác; Serial", "Loại xuất (BAO_HANH / TIEU_HUY); Danh sách Serial", "Biên bản hãng yêu cầu hoặc biên bản vỡ hỏng", "Phiếu xuất khác hoàn tất; Serial chuyển trạng thái", "Xuất tiêu hủy phải có phê duyệt chính thức của Chủ cửa hàng."),
-        ("F3.2.12", "PH3: Bán sỉ", "Bán sỉ & Xuất kho", "Ghi nhận chi phí vận chuyển & Logistics", "NV Nhập - Xuất", "Kế toán", "Đơn hàng; Chi phí", "Cước vận chuyển; Chi phí đóng gói bảo hiểm; Bên chịu", "Mã đơn vị vận chuyển", "Chi phí được lưu và phân bổ vào báo cáo tài chính", "Ghi nhận rõ bên chịu chi phí (Kho tổng chịu hoặc Đại lý chịu)."),
-        ("F3.2.13", "PH3: Bán sỉ", "Bán sỉ & Xuất kho", "In biên bản bàn giao kiêm phiếu xuất", "NV Nhập - Xuất", "Thủ kho", "Phiếu xuất kho B2B", "Mã phiếu xuất kho hoàn tất", "Mẫu in khổ A4", "Biên bản giao nhận B2B A4 có bảng kê 100% Serial", "Bản in chính thức có giá trị pháp lý giao nhận và kích hoạt bảo hành."),
+        ("F3.2.1", "PH3: Xuất kho đại lý", "Đối Tác Đại Lý & Quản Lý Xuất Kho", "Khởi tạo lệnh xuất kho đại lý", "NV Nhập - Xuất", "Kế toán", "Lệnh xuất kho đại lý", "Đại lý B2B được chỉ định", "Ghi chú hợp đồng; Thời hạn giao hàng", "Bản ghi lệnh xuất kho đại lý nháp (DRAFT) được tạo", "Đại lý phải ở trạng thái ACTIVE và không bị nợ quá hạn."),
+        ("F3.2.2", "PH3: Xuất kho đại lý", "Đối Tác Đại Lý & Quản Lý Xuất Kho", "Chọn sản phẩm theo Thùng hoặc Chiếc", "NV Nhập - Xuất", "Không", "Chi tiết lệnh xuất đại lý", "SKU; Đơn vị tính (Thùng hoặc Chiếc); Số lượng", "Không", "Dòng sản phẩm được thêm vào lệnh xuất kho đại lý", "Bắt buộc số lượng chiếc sau quy đổi phải >= MOQ quy định."),
+        ("F3.2.3", "PH3: Xuất kho đại lý", "Đối Tác Đại Lý & Quản Lý Xuất Kho", "Kiểm tra tồn kho khả dụng thời gian thực", "Hệ thống", "NV Nhập - Xuất", "Tồn kho tổng hợp", "Mã SKU; Số lượng chiếc yêu cầu", "Không", "Xác nhận đủ hàng hoặc cảnh báo thiếu hàng", "Tồn khả dụng = Tồn thực tế - Tồn đang giữ chỗ (Reserved)."),
+        ("F3.2.4", "PH3: Xuất kho đại lý", "Đối Tác Đại Lý & Quản Lý Xuất Kho", "Áp giá đại lý tự động theo cấp bậc", "Hệ thống", "Kế toán", "Bảng giá phân phối đại lý; Chiết khấu", "Hạng đại lý (VIP/Bạc/Đồng); Số lượng đặt", "Không", "Đơn giá phân phối đại lý chuẩn và tỷ lệ chiết khấu hợp đồng", "Tự động áp giá đại lý theo ma trận hạng đại lý đã cấu hình trước."),
+        ("F3.2.5", "PH3: Xuất kho đại lý", "Đối Tác Đại Lý & Quản Lý Xuất Kho", "Quản lý tiền cọc & Hạn thanh toán", "Kế toán", "NV Nhập - Xuất", "Lệnh xuất kho đại lý", "Số tiền cọc thỏa thuận; Thời hạn nợ (Net 15/30)", "Chứng từ ngân hàng xác nhận cọc", "Trạng thái cọc được cập nhật vào đơn", "Đơn hàng giá trị lớn bắt buộc phải thu tối thiểu 10-30% tiền cọc."),
+        ("F3.2.6", "PH3: Xuất kho đại lý", "Đối Tác Đại Lý & Quản Lý Xuất Kho", "Phê duyệt lệnh xuất đại lý & Khóa Giữ chỗ", "Chủ cửa hàng", "Kế toán; Thủ kho", "Lệnh xuất đại lý; Tồn kho Reserved", "Mã lệnh xuất đại lý; Xác nhận hạn mức nợ hợp lệ", "Lý do phê duyệt ngoại lệ (nếu vượt hạn mức)", "Đơn sang DA_DUYET; Tăng tồn Giữ chỗ (Reserved)", "Khóa số lượng tồn khả dụng, ngăn không cho bán trùng lặp cho đơn khác."),
+        ("F3.2.7", "PH3: Xuất kho đại lý", "Đối Tác Đại Lý & Quản Lý Xuất Kho", "Hủy lệnh xuất kho đại lý", "NV Nhập - Xuất", "Thủ kho; Kế toán", "Lệnh xuất kho đại lý; Tồn kho", "Mã lệnh xuất đại lý cần hủy", "Lý do hủy đơn", "Đơn sang CANCELLED; Giải phóng tồn giữ chỗ", "Tự động hoàn trả số lượng đang giữ chỗ lại cho tồn khả dụng."),
+        ("F3.2.8", "PH3: Xuất kho đại lý", "Đối Tác Đại Lý & Quản Lý Xuất Kho", "Khởi tạo phiếu xuất kho xuất kho đại lý", "NV Nhập - Xuất", "Thủ kho", "Phiếu xuất kho", "Mã lệnh xuất kho đại lý đã được duyệt", "Thông tin đóng kiện và bàn giao", "Phiếu xuất kho xuất kho đại lý được sinh ra", "Chỉ được tạo phiếu xuất khi lệnh xuất kho đại lý ở trạng thái DA_DUYET."),
+        ("F3.2.9", "PH3: Xuất kho đại lý", "Đối Tác Đại Lý & Quản Lý Xuất Kho", "Đóng gói & Quét Serial xuất kho", "Thủ kho", "NV Nhập - Xuất", "Serial; Phiếu xuất", "Mã Serial quét thực tế từ trên kệ đóng kiện", "Không", "Danh sách Serial đóng gói vào kiện hàng xuất", "Serial phải thuộc đúng SKU của đơn, trạng thái TRONG_KHO và HANG_MOI."),
+        ("F3.2.10", "PH3: Xuất kho đại lý", "Đối Tác Đại Lý & Quản Lý Xuất Kho", "Xác nhận hoàn tất xuất kho", "Thủ kho", "Kế toán", "Phiếu xuất; Tồn kho; Serial; Nợ", "Mã phiếu xuất; Chữ ký xác nhận bàn giao", "Không", "Trừ tồn thực tế; Serial sang DA_BAN; Tăng nợ đại lý", "Giảm tồn thực tế, giải phóng giữ chỗ, ghi Sổ Thẻ kho (-) và tăng nợ đại lý."),
+        ("F3.2.11", "PH3: Xuất kho đại lý", "Đối Tác Đại Lý & Quản Lý Xuất Kho", "Lập phiếu xuất khác (Bảo hành/Hủy)", "NV Nhập - Xuất", "Thủ kho; Chủ cửa hàng", "Phiếu xuất khác; Serial", "Loại xuất (BAO_HANH / TIEU_HUY); Danh sách Serial", "Biên bản hãng yêu cầu hoặc biên bản vỡ hỏng", "Phiếu xuất khác hoàn tất; Serial chuyển trạng thái", "Xuất tiêu hủy phải có phê duyệt chính thức của Chủ cửa hàng."),
+        ("F3.2.12", "PH3: Xuất kho đại lý", "Đối Tác Đại Lý & Quản Lý Xuất Kho", "Ghi nhận chi phí vận chuyển & Logistics", "NV Nhập - Xuất", "Kế toán", "Đơn hàng; Chi phí", "Cước vận chuyển; Chi phí đóng gói bảo hiểm; Bên chịu", "Mã đơn vị vận chuyển", "Chi phí được lưu và phân bổ vào báo cáo tài chính", "Ghi nhận rõ bên chịu chi phí (Kho tổng chịu hoặc Đại lý chịu)."),
+        ("F3.2.13", "PH3: Xuất kho đại lý", "Đối Tác Đại Lý & Quản Lý Xuất Kho", "In biên bản bàn giao kiêm phiếu xuất", "NV Nhập - Xuất", "Thủ kho", "Phiếu xuất kho B2B", "Mã phiếu xuất kho hoàn tất", "Mẫu in khổ A4", "Biên bản giao nhận B2B A4 có bảng kê 100% Serial", "Bản in chính thức có giá trị pháp lý giao nhận và kích hoạt bảo hành."),
 
         # PH4
         ("F4.1.1", "PH4: Tồn kho", "Quản lý tồn kho", "Theo dõi tồn kho tổng hợp đa đơn vị", "Thủ kho", "NV Nhập - Xuất; Kế toán", "Tồn kho tổng hợp", "Bộ lọc sản phẩm; Trạng thái tồn", "Tùy chọn hiển thị theo Thùng hoặc Chiếc", "Bảng tồn kho đa đơn vị (Tồn thực, Giữ chỗ, Khả dụng)", "Hiển thị song song số Thùng quy đổi và tổng số Chiếc lẻ khả dụng."),
-        ("F4.1.2", "PH4: Tồn kho", "Quản lý tồn kho", "Quản lý 3 trạng thái phân loại chất lượng", "Thủ kho", "NV Nhập - Xuất", "Tồn kho phân loại", "Tùy chọn tab kho (Kho Mới / Trưng Bày / Kho Lỗi)", "Không", "Danh sách hàng hóa tách bạch theo 3 kho chất lượng", "Chỉ hàng thuộc Kho Hàng Mới mới đủ điều kiện xuất bán sỉ cho đại lý."),
+        ("F4.1.2", "PH4: Tồn kho", "Quản lý tồn kho", "Quản lý 3 trạng thái phân loại chất lượng", "Thủ kho", "NV Nhập - Xuất", "Tồn kho phân loại", "Tùy chọn tab kho (Kho Mới / Trưng Bày / Kho Lỗi)", "Không", "Danh sách hàng hóa tách bạch theo 3 kho chất lượng", "Chỉ hàng thuộc Kho Hàng Mới mới đủ điều kiện xuất kho đại lý cho đại lý."),
         ("F4.1.3", "PH4: Tồn kho", "Quản lý tồn kho", "Truy vấn danh mục Serial lưu kho", "Thủ kho", "NV Nhập - Xuất", "Serial trong kho", "Mã SKU; Vị trí kệ; Trạng thái Serial", "Khoảng ngày nhập kho", "Bảng danh mục chi tiết từng mã Serial có mặt trong kho", "Hiển thị đầy đủ vị trí ngăn kệ, ngày nhập và giá vốn đích danh."),
         ("F4.1.4", "PH4: Tồn kho", "Quản lý tồn kho", "Tính toán giá trị tồn theo Giá vốn đích danh", "Hệ thống", "Kế toán; Chủ cửa hàng", "Serial; Giá vốn", "Danh sách Serial đang có mặt trong kho", "Không", "Tổng giá trị tài sản kho theo Giá vốn đích danh", "Cộng dồn 100% giá vốn thực tế từng chiếc, không làm tròn hay bình quân sai lệch."),
         ("F4.1.5", "PH4: Tồn kho", "Quản lý tồn kho", "Cảnh báo định mức tồn kho (Min / Max)", "Hệ thống", "Thủ kho", "Tồn kho; Ngưỡng định mức", "Số lượng tồn khả dụng; Ngưỡng Min/Max đã cấu hình", "Không", "Tín hiệu cảnh báo màu vàng (<= Min) hoặc đỏ (>= Max)", "Tự động phát cảnh báo nhắc lập đơn đặt mua PO mới."),
-        ("F4.1.6", "PH4: Tồn kho", "Quản lý tồn kho", "Cảnh báo hết hàng (Out-of-Stock)", "Hệ thống", "NV Nhập - Xuất; Thủ kho", "Tồn kho khả dụng", "Tồn khả dụng chạm mức 0", "Không", "Cờ đánh dấu hết hàng và tự động tạm khóa nhận đơn sỉ", "Bảo vệ kho không bị âm hoặc hứa giao hàng ngoài năng lực cung ứng."),
+        ("F4.1.6", "PH4: Tồn kho", "Quản lý tồn kho", "Cảnh báo hết hàng (Out-of-Stock)", "Hệ thống", "NV Nhập - Xuất; Thủ kho", "Tồn kho khả dụng", "Tồn khả dụng chạm mức 0", "Không", "Cờ đánh dấu hết hàng và tự động tạm khóa nhận lệnh xuất đại lý", "Bảo vệ kho không bị âm hoặc hứa giao hàng ngoài năng lực cung ứng."),
 
         ("F4.2.1", "PH4: Tồn kho", "Sơ đồ vị trí kệ", "Quản lý sơ đồ vị trí kệ kho vật lý", "Thủ kho", "Không", "Sơ đồ kệ (Bins)", "Khu vực; Mã dãy kệ; Số tầng; Số ngăn", "Sức chứa tối đa (chiếc); Chủng loại lưu trữ", "Sơ đồ mặt bằng vị trí kệ được số hóa hoàn chỉnh", "Mã vị trí chuẩn hóa dạng: [Khu A - Dãy A-01 - Tầng 2 - Ngăn Rolex]."),
-        ("F4.2.2", "PH4: Tồn kho", "Sơ đồ vị trí kệ", "Phân bổ & Sắp xếp sản phẩm vào kệ", "Thủ kho", "NV Nhập - Xuất", "Vị trí kệ; Sản phẩm", "Mã SKU đồng hồ; Mã vị trí kệ chỉ định", "Ghi chú phân luồng lấy hàng", "Sản phẩm được gán cố định vào vị trí ngăn kệ", "Giúp nhân viên lấy hàng (picking) nhanh chóng khi đóng kiện đơn sỉ."),
+        ("F4.2.2", "PH4: Tồn kho", "Sơ đồ vị trí kệ", "Phân bổ & Sắp xếp sản phẩm vào kệ", "Thủ kho", "NV Nhập - Xuất", "Vị trí kệ; Sản phẩm", "Mã SKU đồng hồ; Mã vị trí kệ chỉ định", "Ghi chú phân luồng lấy hàng", "Sản phẩm được gán cố định vào vị trí ngăn kệ", "Giúp nhân viên lấy hàng (picking) nhanh chóng khi đóng kiện lệnh xuất đại lý."),
         ("F4.2.3", "PH4: Tồn kho", "Sơ đồ vị trí kệ", "Hiển thị sức chứa & Tải trọng kệ", "Hệ thống", "Thủ kho", "Sức chứa kệ", "Số lượng Serial hiện lưu trên từng ngăn kệ", "Không", "Trực quan hóa tỷ lệ lấp đầy (%) và cảnh báo đầy kệ", "Cảnh báo màu đỏ khi ngăn kệ đạt 100% sức chứa tối đa."),
 
         ("F4.3.1", "PH4: Tồn kho", "Kiểm kê & Thẻ kho", "Khởi tạo đợt kiểm kê", "Thủ kho", "Chủ cửa hàng", "Phiếu kiểm kê", "Phạm vi kiểm kê (Toàn kho / Dãy kệ / Thương hiệu)", "Ngày kiểm kê; Thành phần tham gia", "Phiếu kiểm kê kích hoạt; Tạm khóa xuất nhập khu vực", "Khoanh vùng và khóa biến động để đảm bảo tính chuẩn xác khi đếm."),
@@ -256,14 +256,14 @@ def build_wms_excel():
         ("F4.3.5", "PH4: Tồn kho", "Kiểm kê & Thẻ kho", "Truy xuất Sổ Thẻ kho điện tử", "Thủ kho", "Kế toán", "Sổ Thẻ kho (so_the_kho)", "Mã SKU đồng hồ; Khoảng thời gian tra cứu", "Loại chứng từ (Nhập/Xuất/Cân bằng)", "Sổ chi tiết xuất - nhập - tồn từng biến động", "Dữ liệu Thẻ kho có tính bất biến, đảm bảo tính toàn vẹn kiểm toán."),
 
         # PH5
-        ("F5.1.1", "PH5: Báo cáo", "Dashboard điều hành", "Thẻ chỉ số hiệu suất trọng yếu (KPI)", "Chủ cửa hàng", "Quản lý phân hệ", "Dữ liệu vận hành toàn hệ thống", "Mốc thời gian điều hành (Hôm nay / Tháng này)", "Không", "5 thẻ KPI: Giá trị tồn, Doanh thu, Đơn sỉ, Khả dụng, Đổi trả", "Cập nhật dữ liệu thời gian thực sau mỗi giao dịch hoàn tất."),
-        ("F5.1.2", "PH5: Báo cáo", "Dashboard điều hành", "Biểu đồ trực quan doanh số sỉ Canvas", "Chủ cửa hàng", "Kế toán", "Dữ liệu đơn hàng bán sỉ", "Khoảng thời gian 6 tháng gần nhất", "Tùy chọn xem doanh thu hoặc sản lượng chiếc", "Biểu đồ cột/đường vẽ bằng HTML5 Canvas", "Biểu diễn trực quan tốc độ tăng trưởng doanh số kênh sỉ."),
-        ("F5.1.3", "PH5: Báo cáo", "Dashboard điều hành", "Bảng xếp hạng Top sản phẩm bán chạy", "Chủ cửa hàng", "Kế toán", "Dữ liệu xuất bán sỉ", "Khoảng thời gian thống kê; Giới hạn Top (5, 10)", "Không", "Danh sách Top mẫu đồng hồ bán chạy nhất", "Xếp hạng song song theo tổng số lượng chiếc bán và theo doanh thu."),
+        ("F5.1.1", "PH5: Báo cáo", "Dashboard điều hành", "Thẻ chỉ số hiệu suất trọng yếu (KPI)", "Chủ cửa hàng", "Quản lý phân hệ", "Dữ liệu vận hành toàn hệ thống", "Mốc thời gian điều hành (Hôm nay / Tháng này)", "Không", "5 thẻ KPI: Giá trị tồn, Doanh thu, Lệnh xuất đại lý, Khả dụng, Đổi trả", "Cập nhật dữ liệu thời gian thực sau mỗi giao dịch hoàn tất."),
+        ("F5.1.2", "PH5: Báo cáo", "Dashboard điều hành", "Biểu đồ trực quan doanh số xuất kho đại lý Canvas", "Chủ cửa hàng", "Kế toán", "Dữ liệu đơn hàng xuất kho đại lý", "Khoảng thời gian 6 tháng gần nhất", "Tùy chọn xem doanh thu hoặc sản lượng chiếc", "Biểu đồ cột/đường vẽ bằng HTML5 Canvas", "Biểu diễn trực quan tốc độ tăng trưởng doanh số kênh sỉ."),
+        ("F5.1.3", "PH5: Báo cáo", "Dashboard điều hành", "Bảng xếp hạng Top sản phẩm bán chạy", "Chủ cửa hàng", "Kế toán", "Dữ liệu xuất kho đại lý", "Khoảng thời gian thống kê; Giới hạn Top (5, 10)", "Không", "Danh sách Top mẫu đồng hồ bán chạy nhất", "Xếp hạng song song theo tổng số lượng chiếc bán và theo doanh thu."),
         ("F5.1.4", "PH5: Báo cáo", "Dashboard điều hành", "Dòng thời gian hoạt động (Activity Stream)", "Chủ cửa hàng", "Quản trị hệ thống", "Audit Log giao dịch", "Số lượng sự kiện cần xem gần nhất", "Bộ lọc loại giao dịch", "Dòng thời gian các thao tác vừa phát sinh trong kho", "Giúp ban điều hành nắm bắt nhịp độ vận hành kho tức thời."),
 
         ("F5.2.1", "PH5: Báo cáo", "Báo cáo chuyên sâu", "Báo cáo chuyên sâu Nhập hàng (Inbound)", "Kế toán", "Chủ cửa hàng", "Phiếu nhập kho; Chi phí", "Khoảng ngày; Nhà cung cấp", "Chi tiết chi phí vận chuyển/hải quan", "Báo cáo cơ cấu giá trị hàng nhập và chi phí phân bổ", "Giúp phân tích chi phí logistics nhập khẩu theo từng hãng sản xuất."),
-        ("F5.2.2", "PH5: Báo cáo", "Báo cáo chuyên sâu", "Báo cáo Phân phối Bán sỉ (Outbound)", "Kế toán", "Chủ cửa hàng", "Đơn bán sỉ; Phiếu xuất", "Khoảng ngày; Đại lý B2B", "Bộ lọc cấp bậc đại lý (VIP/Bạc/Đồng)", "Báo cáo doanh số bán sỉ, tỷ lệ hoàn tất đơn hàng", "Đánh giá hiệu quả kinh doanh của từng đối tác đại lý."),
-        ("F5.2.3", "PH5: Báo cáo", "Báo cáo chuyên sâu", "Báo cáo Cơ cấu xuất hàng", "Thủ kho", "Kế toán", "Phiếu xuất kho các loại", "Khoảng ngày thống kê", "Không", "Biểu đồ tỷ trọng xuất sỉ vs Xuất bảo hành vs Xuất hủy", "Kiểm soát chặt chẽ tỷ lệ hàng xuất phi thương mại."),
+        ("F5.2.2", "PH5: Báo cáo", "Báo cáo chuyên sâu", "Báo cáo Phân phối Đại lý (Outbound)", "Kế toán", "Chủ cửa hàng", "Lệnh xuất kho đại lý; Phiếu xuất", "Khoảng ngày; Đại lý B2B", "Bộ lọc cấp bậc đại lý (VIP/Bạc/Đồng)", "Báo cáo doanh số xuất kho đại lý, tỷ lệ hoàn tất đơn hàng", "Đánh giá hiệu quả kinh doanh của từng đối tác đại lý."),
+        ("F5.2.3", "PH5: Báo cáo", "Báo cáo chuyên sâu", "Báo cáo Cơ cấu xuất hàng", "Thủ kho", "Kế toán", "Phiếu xuất kho các loại", "Khoảng ngày thống kê", "Không", "Biểu đồ tỷ trọng xuất kho đại lý vs Xuất bảo hành vs Xuất hủy", "Kiểm soát chặt chẽ tỷ lệ hàng xuất phi thương mại."),
         ("F5.2.4", "PH5: Báo cáo", "Báo cáo chuyên sâu", "Báo cáo Đổi trả & Chất lượng bộ máy", "Thủ kho", "Chủ cửa hàng", "Phiếu đổi trả; Serial lỗi", "Khoảng ngày; Hãng đồng hồ", "Bộ lọc loại máy (Automatic / Pin Quartz / Solar)", "Tỷ lệ lỗi kỹ thuật theo từng hãng và từng bộ máy", "Cung cấp bằng chứng thực tế phục vụ đàm phán hợp đồng với NCC."),
         ("F5.2.5", "PH5: Báo cáo", "Báo cáo chuyên sâu", "Báo cáo Tồn kho & Hàng Dead Stock", "Thủ kho", "Chủ cửa hàng", "Tồn kho; Ngày nhập Serial", "Ngưỡng ngày lưu kho (ví dụ: > 90 ngày, > 180 ngày)", "Bộ lọc thương hiệu", "Danh sách mẫu đồng hồ lưu kho lâu ngày chậm luân chuyển", "Gợi ý chiến lược khuyến mãi thanh lý sỉ thu hồi vốn."),
         ("F5.2.6", "PH5: Báo cáo", "Báo cáo chuyên sâu", "Báo cáo Tài chính & Lợi nhuận gộp B2B", "Kế toán", "Chủ cửa hàng", "Doanh thu; Giá vốn đích danh", "Khoảng thời gian kỳ kế toán", "Bộ lọc nhóm sản phẩm", "Báo cáo Lợi nhuận gộp (Doanh thu - Giá vốn - Chi phí)", "Tính toán chính xác tuyệt đối nhờ phương pháp Giá vốn đích danh."),
@@ -338,14 +338,14 @@ def build_wms_excel():
         ("Đồng hồ (products)", "water_resistance", "Độ chịu nước", "Phụ", "Bắt buộc", "NVARCHAR(50) / Text", "'30m / 3ATM', '50m', '100m', '300m Diver'", "Quản trị hệ thống"),
         ("Đồng hồ (products)", "warranty_months", "Thời hạn bảo hành hãng", "Phụ", "Bắt buộc", "INT / Number", "Số nguyên dương (tháng, thường 24-60)", "Quản trị hệ thống"),
         ("Đồng hồ (products)", "base_unit", "Đơn vị tính cơ bản", "Chính", "Bắt buộc", "VARCHAR(20) / Select", "Mặc định: 'Chiếc' hoặc 'Cái'", "Quản trị hệ thống"),
-        ("Đồng hồ (products)", "wholesale_unit", "Đơn vị tính bán sỉ", "Chính", "Bắt buộc", "VARCHAR(20) / Select", "'Thùng', 'Kiện', 'Lô'", "Quản trị hệ thống"),
+        ("Đồng hồ (products)", "wholesale_unit", "Đơn vị tính đóng gói xuất kho", "Chính", "Bắt buộc", "VARCHAR(20) / Select", "'Thùng', 'Kiện', 'Lô'", "Quản trị hệ thống"),
         ("Đồng hồ (products)", "conversion_rate", "Hệ số quy đổi đóng gói", "Chính", "Bắt buộc", "INT / Number", "Số nguyên dương >= 1 (1 Thùng = N Chiếc)", "Quản trị hệ thống"),
-        ("Đồng hồ (products)", "moq", "Số lượng đặt sỉ tối thiểu", "Chính", "Bắt buộc", "INT / Number", "Số nguyên dương >= 1 (thường 5 - 10 chiếc)", "Quản trị hệ thống"),
+        ("Đồng hồ (products)", "moq", "Số lượng đặt hàng đại lý tối thiểu", "Chính", "Bắt buộc", "INT / Number", "Số nguyên dương >= 1 (thường 5 - 10 chiếc)", "Quản trị hệ thống"),
         ("Đồng hồ (products)", "min_stock", "Ngưỡng tồn kho tối thiểu", "Phụ", "Bắt buộc", "INT / Number", "Số nguyên dương; Ngưỡng cảnh báo vàng", "Thủ kho / Quản trị"),
         ("Đồng hồ (products)", "max_stock", "Ngưỡng tồn kho tối đa", "Phụ", "Bắt buộc", "INT / Number", "Số nguyên dương; Ngưỡng cảnh báo đỏ", "Thủ kho / Quản trị"),
-        ("Đồng hồ (products)", "wholesale_price_vip", "Giá bán sỉ Hạng VIP", "Chính", "Bắt buộc", "DECIMAL(18,2) / Tiền tệ", "Số dương; Chiết khấu sâu nhất", "Chủ cửa hàng / Quản trị"),
-        ("Đồng hồ (products)", "wholesale_price_silver", "Giá bán sỉ Hạng Bạc", "Chính", "Bắt buộc", "DECIMAL(18,2) / Tiền tệ", "Số dương; Cao hơn hạng VIP", "Chủ cửa hàng / Quản trị"),
-        ("Đồng hồ (products)", "wholesale_price_bronze", "Giá bán sỉ Hạng Đồng", "Chính", "Bắt buộc", "DECIMAL(18,2) / Tiền tệ", "Số dương; Giá chuẩn cho đại lý mới", "Chủ cửa hàng / Quản trị"),
+        ("Đồng hồ (products)", "wholesale_price_vip", "Giá phân phối đại lý Hạng VIP", "Chính", "Bắt buộc", "DECIMAL(18,2) / Tiền tệ", "Số dương; Chiết khấu sâu nhất", "Chủ cửa hàng / Quản trị"),
+        ("Đồng hồ (products)", "wholesale_price_silver", "Giá phân phối đại lý Hạng Bạc", "Chính", "Bắt buộc", "DECIMAL(18,2) / Tiền tệ", "Số dương; Cao hơn hạng VIP", "Chủ cửa hàng / Quản trị"),
+        ("Đồng hồ (products)", "wholesale_price_bronze", "Giá phân phối đại lý Hạng Đồng", "Chính", "Bắt buộc", "DECIMAL(18,2) / Tiền tệ", "Số dương; Giá chuẩn cho đại lý mới", "Chủ cửa hàng / Quản trị"),
         ("Đồng hồ (products)", "has_serial", "Cờ quản lý Serial đích danh", "Chính", "Bắt buộc", "BOOLEAN / Checkbox", "Luôn TRUE đối với ngành đồng hồ", "Hệ thống / Quản trị"),
 
         # Serial / IMEI
@@ -370,7 +370,7 @@ def build_wms_excel():
         ("Đại lý (dealers)", "dealer_id", "Mã Đại lý B2B", "Chính", "Bắt buộc", "VARCHAR(50) / ID", "Duy nhất; Tiền tố DL-xxxx", "Quản trị / Kế toán"),
         ("Đại lý (dealers)", "dealer_name", "Tên Đại lý / Chuỗi cửa hàng", "Chính", "Bắt buộc", "NVARCHAR(255) / Text", "Tên thương mại đại lý", "NV Nhập - Xuất"),
         ("Đại lý (dealers)", "dealer_tier", "Phân hạng đại lý", "Chính", "Bắt buộc", "ENUM / Select", "'VIP', 'BAC', 'DONG'", "Chủ cửa hàng"),
-        ("Đại lý (dealers)", "credit_limit", "Hạn mức tín dụng nợ", "Chính", "Bắt buộc", "DECIMAL(18,2) / Tiền tệ", "Hạn mức nợ tối đa được phép mua sỉ", "Chủ cửa hàng"),
+        ("Đại lý (dealers)", "credit_limit", "Hạn mức tín dụng nợ", "Chính", "Bắt buộc", "DECIMAL(18,2) / Tiền tệ", "Hạn mức nợ tối đa được phép nhập hàng đại lý", "Chủ cửa hàng"),
         ("Đại lý (dealers)", "payment_term", "Thời hạn nợ hợp đồng", "Chính", "Bắt buộc", "ENUM / Select", "'THANH_TOAN_NGAY', 'NET_15', 'NET_30'", "Chủ cửa hàng"),
         ("Đại lý (dealers)", "discount_rate", "Tỷ lệ chiết khấu hợp đồng", "Phụ", "Bắt buộc", "DECIMAL(5,2) / Phầm trăm", "Từ 0.00% đến 35.00%", "Chủ cửa hàng"),
         ("Đại lý (dealers)", "current_debt", "Số dư nợ hiện tại", "Chính", "Bắt buộc", "DECIMAL(18,2) / Tiền tệ", "Dư nợ mua hàng chưa thanh toán", "Hệ thống"),
@@ -384,13 +384,13 @@ def build_wms_excel():
         ("Phiếu nhập (receipts)", "total_receipt_amount", "Tổng giá trị phiếu nhập", "Chính", "Bắt buộc", "DECIMAL(18,2) / Tiền tệ", "Tiền hàng + Chi phí phát sinh", "Hệ thống"),
         ("Phiếu nhập (receipts)", "receipt_status", "Trạng thái phiếu nhập", "Chính", "Bắt buộc", "ENUM / Select", "'DRAFT', 'APPROVED', 'CANCELLED'", "Thủ kho / Kế toán"),
 
-        # Đơn bán sỉ
-        ("Đơn bán sỉ (orders)", "order_code", "Mã Đơn bán sỉ", "Chính", "Bắt buộc", "VARCHAR(50) / ID", "Duy nhất; Tiền tố DS-xxxx", "Hệ thống"),
-        ("Đơn bán sỉ (orders)", "dealer_id", "Mã Đại lý đặt hàng", "Chính", "Bắt buộc", "VARCHAR(50) / Select", "Khóa ngoại thuộc bảng dai_ly_b2b", "NV Nhập - Xuất"),
-        ("Đơn bán sỉ (orders)", "order_date", "Ngày lập đơn sỉ", "Chính", "Bắt buộc", "DATETIME / Timestamp", "Thời điểm phát sinh đơn", "Hệ thống"),
-        ("Đơn bán sỉ (orders)", "deposit_amount", "Số tiền đặt cọc", "Phụ", "Tùy chọn", "DECIMAL(18,2) / Tiền tệ", "Tiền cọc theo thỏa thuận hợp đồng", "Kế toán"),
-        ("Đơn bán sỉ (orders)", "shipping_fee", "Cước vận chuyển bảo đảm", "Phụ", "Tùy chọn", "DECIMAL(18,2) / Tiền tệ", "Phí logistics đóng gói chống sốc", "NV Nhập - Xuất"),
-        ("Đơn bán sỉ (orders)", "order_status", "Trạng thái đơn bán sỉ", "Chính", "Bắt buộc", "ENUM / Select", "'DRAFT', 'APPROVED', 'PACKING', 'COMPLETED', 'CANCELLED'", "Hệ thống / Chủ shop"),
+        # Lệnh xuất kho đại lý
+        ("Lệnh xuất kho đại lý (orders)", "order_code", "Mã Lệnh xuất kho đại lý", "Chính", "Bắt buộc", "VARCHAR(50) / ID", "Duy nhất; Tiền tố DS-xxxx", "Hệ thống"),
+        ("Lệnh xuất kho đại lý (orders)", "dealer_id", "Mã Đại lý đặt hàng", "Chính", "Bắt buộc", "VARCHAR(50) / Select", "Khóa ngoại thuộc bảng dai_ly_b2b", "NV Nhập - Xuất"),
+        ("Lệnh xuất kho đại lý (orders)", "order_date", "Ngày lập lệnh xuất đại lý", "Chính", "Bắt buộc", "DATETIME / Timestamp", "Thời điểm phát sinh đơn", "Hệ thống"),
+        ("Lệnh xuất kho đại lý (orders)", "deposit_amount", "Số tiền đặt cọc", "Phụ", "Tùy chọn", "DECIMAL(18,2) / Tiền tệ", "Tiền cọc theo thỏa thuận hợp đồng", "Kế toán"),
+        ("Lệnh xuất kho đại lý (orders)", "shipping_fee", "Cước vận chuyển bảo đảm", "Phụ", "Tùy chọn", "DECIMAL(18,2) / Tiền tệ", "Phí logistics đóng gói chống sốc", "NV Nhập - Xuất"),
+        ("Lệnh xuất kho đại lý (orders)", "order_status", "Trạng thái lệnh xuất kho đại lý", "Chính", "Bắt buộc", "ENUM / Select", "'DRAFT', 'APPROVED', 'PACKING', 'COMPLETED', 'CANCELLED'", "Hệ thống / Chủ shop"),
 
         # Phiếu kiểm kê & Sổ thẻ kho
         ("Kiểm kê (stock_audits)", "audit_code", "Mã Phiếu kiểm kê", "Chính", "Bắt buộc", "VARCHAR(50) / ID", "Duy nhất; Tiền tố KK-xxxx", "Hệ thống"),
@@ -465,7 +465,7 @@ def build_wms_excel():
         (
             "2. Chủ cửa hàng (Store Owner / Executive)",
             "Giám sát điều hành toàn diện, kiểm soát hiệu quả tài chính và phê duyệt ngoại lệ nghiệp vụ.",
-            "Theo dõi Executive Dashboard và hệ thống 9 báo cáo chuyên sâu; Phê duyệt chi phí nhập hàng vượt ngưỡng; Duyệt đơn sỉ vượt hạn mức tín dụng; Phê duyệt cân bằng kiểm kê giá trị cao.",
+            "Theo dõi Executive Dashboard và hệ thống 9 báo cáo chuyên sâu; Phê duyệt chi phí nhập hàng vượt ngưỡng; Duyệt lệnh xuất đại lý vượt hạn mức tín dụng; Phê duyệt cân bằng kiểm kê giá trị cao.",
             "Chỉ số KPI; Dòng tiền thu/chi; Công nợ 2 chiều; Tồn kho tài sản; Các ngoại lệ vượt hạn mức.",
             "Quyền quyết định tối cao đối với các giao dịch vượt ngưỡng thẩm quyền của nhân viên cấp dưới.",
             "Không trực tiếp can thiệp cấu hình tài khoản kỹ thuật của hệ thống; Không trực tiếp xử lý các thao tác nhập xuất, kiểm đếm vật lý thường ngày."
@@ -481,17 +481,17 @@ def build_wms_excel():
         (
             "4. Nhân viên nhập - xuất kho (Operations Staff)",
             "Thực thi tác nghiệp nhập, xuất, đóng gói, kiểm đếm và bảo hành theo đúng quy trình chuẩn.",
-            "Lập phiếu nhập kho; Tiếp nhận và quét dải Serial; Lập đơn bán sỉ nháp; Lấy hàng theo kệ; Quét Serial đóng kiện xuất sỉ; Tiếp nhận đổi trả sỉ; Hỗ trợ quét kiểm kê.",
-            "Phiếu nhập kho nháp; Đơn bán sỉ nháp; Kiện hàng đóng gói xuất sỉ; Dải Serial quét camera.",
+            "Lập phiếu nhập kho; Tiếp nhận và quét dải Serial; Lập lệnh xuất kho đại lý nháp; Lấy hàng theo kệ; Quét Serial đóng kiện xuất kho đại lý; Tiếp nhận trả hàng đại lý; Hỗ trợ quét kiểm kê.",
+            "Phiếu nhập kho nháp; Lệnh xuất kho đại lý nháp; Kiện hàng đóng gói xuất kho đại lý; Dải Serial quét camera.",
             "Quyết định ghi nhận thông tin chứng từ nháp, từ chối nạp Serial nếu phát hiện trầy xước/lỗi vật lý.",
             "Không duyệt các khoản thu/chi tài chính; Không tự phê duyệt hạn mức tín dụng công nợ đại lý; Không tự ý cân bằng kho khi có chênh lệch kiểm kê."
         ),
         (
             "5. Kế toán (Financial Accountant - Vốn, Kho & Công nợ)",
             "Kiểm soát chi phí nhập hàng, hạch toán công nợ 2 chiều và quản lý dòng tiền B2B an toàn.",
-            "Khai báo và phân bổ chi phí lô hàng hình thành Giá vốn đích danh; Thẩm định hạn mức nợ đại lý; Lập Phiếu Thu tiền sỉ; Lập Phiếu Chi NCC; Đối soát sổ nợ 2 chiều; Lập báo cáo tài chính.",
+            "Khai báo và phân bổ chi phí lô hàng hình thành Giá vốn đích danh; Thẩm định hạn mức nợ đại lý; Lập Phiếu Thu nợ đại lý; Lập Phiếu Chi NCC; Đối soát sổ nợ 2 chiều; Lập báo cáo tài chính.",
             "Công nợ NCC; Công nợ đại lý; Giá vốn đích danh từng Serial; Phiếu Thu / Phiếu Chi; Sổ chi tiết công nợ; Báo cáo dòng tiền.",
-            "Quyết định đủ điều kiện tài chính để duyệt đơn sỉ; Xác nhận tính hợp lệ của chứng từ thanh toán ngân hàng.",
+            "Quyết định đủ điều kiện tài chính để duyệt lệnh xuất đại lý; Xác nhận tính hợp lệ của chứng từ thanh toán ngân hàng.",
             "Không thay thế xác nhận giao nhận vật lý của Thủ kho; Các khoản chi và hạn mức vượt ngưỡng bắt buộc phải trình Chủ cửa hàng phê duyệt."
         )
     ]
@@ -543,7 +543,7 @@ def build_wms_excel():
         ),
         (
             "RB-02",
-            "Quy đổi ĐVT đóng gói sỉ bắt buộc",
+            "Quy đổi ĐVT đóng gói xuất kho bắt buộc",
             "Khi khai báo sản phẩm hoặc tạo phiếu nhập/xuất theo Thùng/Kiện.",
             "Tự động nhân hệ số quy đổi: Số chiếc = Số thùng x conversionRate.",
             "Quản trị hệ thống; Kế toán",
@@ -567,8 +567,8 @@ def build_wms_excel():
         ),
         (
             "RB-05",
-            "Kiểm tra số lượng đặt sỉ tối thiểu (MOQ)",
-            "Khi nhân viên lập đơn bán sỉ cho đại lý.",
+            "Kiểm tra số lượng đặt hàng đại lý tối thiểu (MOQ)",
+            "Khi nhân viên lập lệnh xuất kho đại lý cho đại lý.",
             "Kiểm tra: Số lượng chiếc đặt của từng SKU >= MOQ đã cấu hình cho mẫu đó.",
             "NV Nhập - Xuất",
             "Cảnh báo và chặn lưu đơn nếu không đạt MOQ (thường từ 5 – 10 chiếc/mẫu)."
@@ -576,23 +576,23 @@ def build_wms_excel():
         (
             "RB-06",
             "Kiểm soát Tồn kho khả dụng thời gian thực",
-            "Khi kiểm tra khả năng đáp ứng đơn bán sỉ.",
+            "Khi kiểm tra khả năng đáp ứng lệnh xuất kho đại lý.",
             "Tồn khả dụng = Tồn thực tế - Tồn đang giữ chỗ (Reserved).",
             "Hệ thống; Thủ kho",
             "Chỉ cho phép lên đơn trong phạm vi Tồn khả dụng; triệt tiêu hoàn toàn nguy cơ xuất âm kho."
         ),
         (
             "RB-07",
-            "Áp giá sỉ tự động theo cấp bậc đại lý",
-            "Khi chọn đại lý đối tác trên đơn bán sỉ.",
-            "Tự động tra cứu hạng đại lý (VIP/Bạc/Đồng) và áp đơn giá sỉ + chiết khấu tương ứng.",
+            "Áp giá đại lý tự động theo cấp bậc đại lý",
+            "Khi chọn đại lý đối tác trên lệnh xuất kho đại lý.",
+            "Tự động tra cứu hạng đại lý (VIP/Bạc/Đồng) và áp đơn giá phân phối đại lý + chiết khấu tương ứng.",
             "Hệ thống; Kế toán",
             "Đại lý VIP hưởng mức giá tốt nhất; nhân viên không được tự ý sửa giá bán sai chính sách."
         ),
         (
             "RB-08",
             "Thẩm định Hạn mức tín dụng công nợ (Credit Limit)",
-            "Trước khi phê duyệt đơn bán sỉ.",
+            "Trước khi phê duyệt lệnh xuất kho đại lý.",
             "Kiểm tra: Dư nợ hiện tại + Giá trị đơn mới - Tiền cọc <= Hạn mức tín dụng đại lý.",
             "Kế toán; Chủ cửa hàng",
             "Vượt hạn mức phải được Chủ cửa hàng phê duyệt ngoại lệ ghi rõ lý do trước khi xuất hàng."
@@ -600,18 +600,18 @@ def build_wms_excel():
         (
             "RB-09",
             "Khóa hàng Giữ chỗ (Reserved Allocation)",
-            "Khi đơn bán sỉ được phê duyệt thành công.",
+            "Khi lệnh xuất kho đại lý được phê duyệt thành công.",
             "Chuyển trạng thái số lượng hàng sang Giữ chỗ (Reserved); trừ trực tiếp vào Tồn khả dụng.",
             "Hệ thống; Thủ kho",
             "Đảm bảo hàng đã hứa bán cho đại lý này không bị bán trùng lặp cho đại lý khác."
         ),
         (
             "RB-10",
-            "Giải phóng hàng Giữ chỗ khi hủy đơn sỉ",
-            "Khi đơn bán sỉ bị hủy bỏ do đại lý không hoàn tất cọc hoặc vi phạm.",
+            "Giải phóng hàng Giữ chỗ khi hủy lệnh xuất đại lý",
+            "Khi lệnh xuất kho đại lý bị hủy bỏ do đại lý không hoàn tất cọc hoặc vi phạm.",
             "Tự động giải phóng số lượng giữ chỗ; cộng hoàn trả lại cho Tồn khả dụng.",
             "Hệ thống; NV Nhập - Xuất",
-            "Trả lại trạng thái sẵn sàng bán sỉ cho các đơn hàng tiếp theo ngay lập tức."
+            "Trả lại trạng thái sẵn sàng xuất kho đại lý cho các đơn hàng tiếp theo ngay lập tức."
         ),
         (
             "RB-11",
@@ -624,7 +624,7 @@ def build_wms_excel():
         (
             "RB-12",
             "Chuyển trạng thái Serial ĐÃ BÁN & Gán bảo hành",
-            "Khi hoàn tất xác nhận bàn giao xuất kho bán sỉ.",
+            "Khi hoàn tất xác nhận bàn giao xuất kho xuất kho đại lý.",
             "Cập nhật Serial sang DA_BAN; gán mã đại lý sở hữu; tính ngày hết hạn bảo hành.",
             "Hệ thống; Thủ kho",
             "Kích hoạt thời hạn bảo hành chính thức; trừ tồn thực tế; giải phóng tồn giữ chỗ."
@@ -665,7 +665,7 @@ def build_wms_excel():
             "RB-17",
             "Chu trình khép kín Công nợ qua Thu / Chi",
             "Khi giao nhận hàng hoàn tất hoặc phát sinh thanh toán.",
-            "Nhập kho -> Tăng nợ NCC; Phiếu Chi -> Trừ nợ NCC; Xuất sỉ -> Tăng nợ đại lý; Phiếu Thu -> Trừ nợ đại lý.",
+            "Nhập kho -> Tăng nợ NCC; Phiếu Chi -> Trừ nợ NCC; Xuất kho đại lý -> Tăng nợ đại lý; Phiếu Thu -> Trừ nợ đại lý.",
             "Kế toán; Hệ thống",
             "Dòng tiền và công nợ luôn đồng bộ tuyệt đối với luồng di chuyển vật lý của hàng hóa."
         ),
@@ -675,7 +675,7 @@ def build_wms_excel():
             "Khi nhập hàng, đổi trả hoặc phát sinh hỏng hóc kỹ thuật.",
             "Tách biệt hàng thành 3 trạng thái: Kho Hàng Mới, Kho Hàng Trưng Bày và Kho Hàng Lỗi.",
             "Thủ kho",
-            "Nghiêm cấm xuất sỉ hàng trưng bày hoặc hàng lỗi cho đại lý nếu không có phê duyệt thanh lý."
+            "Nghiêm cấm xuất kho đại lý hàng trưng bày hoặc hàng lỗi cho đại lý nếu không có phê duyệt thanh lý."
         )
     ]
 

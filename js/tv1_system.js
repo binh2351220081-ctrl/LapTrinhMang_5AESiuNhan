@@ -64,7 +64,7 @@ function openSystemAdminModal() {
                 <th>Nhóm Vai Trò (Role)</th>
                 <th>Phân Hệ 1 (Hàng Hóa)</th>
                 <th>Phân Hệ 2 (Nhập NCC)</th>
-                <th>Phân Hệ 3 (Bán Sỉ)</th>
+                <th>Phân Hệ 3 (Xuất Kho Đại Lý)</th>
                 <th>Phân Hệ 4 (Kho Kệ)</th>
                 <th>Phân Hệ 5 (Báo Cáo)</th>
               </tr>
@@ -121,8 +121,8 @@ function openSystemAdminModal() {
           <span style="font-size:12px; color:var(--text-secondary);">Nhật ký truy vết thao tác thời gian thực:</span>
           <select class="wh-select" style="font-size:11px; padding:3px 8px;" onchange="filterAuditLogsInModal(this.value)">
             <option value="ALL">Tất cả hành động</option>
-            <option value="TẠO_ĐƠN_SỈ">Đơn bán sỉ</option>
-            <option value="THU_TIỀN_SỈ">Thu tiền sỉ</option>
+            <option value="TẠO_ĐƠN_SỈ">Lệnh xuất kho đại lý</option>
+            <option value="THU_TIỀN_SỈ">Thu hồi công nợ đại lý</option>
             <option value="CHI_TRẢ_NCC">Chi trả NCC</option>
             <option value="KIỂM_KÊ_KHO">Kiểm kê kệ</option>
             <option value="NHẬP_TRẢ_HÀNG">Đổi trả hàng</option>

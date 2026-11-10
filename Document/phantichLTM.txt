@@ -1,5 +1,5 @@
 ﻿========================================================================================
-ĐẶC TẢ YÊU CẦU PHÂN TÍCH VÀ THIẾT KẾ HỆ THỐNG QUẢN LÝ KHO HÀNG HÓA CỬA HÀNG ĐỒNG HỒ (BÁN SỈ B2B)
+ĐẶC TẢ YÊU CẦU PHÂN TÍCH VÀ THIẾT KẾ HỆ THỐNG QUẢN LÝ KHO HÀNG HÓA CỬA HÀNG ĐỒNG HỒ (PHÂN PHỐI ĐẠI LÝ B2B)
 ========================================================================================
 
 PHẦN 1: CÂY PHÂN RÃ CHỨC NĂNG CHI TIẾT (FUNCTIONAL DECOMPOSITION TREE)
@@ -15,9 +15,9 @@ HỆ THỐNG QUẢN LÝ KHO ĐỒNG HỒ B2B (WHOLESALE)
 │   │   │   ├── 1.1.2.1 Phân loại theo động cơ (Pin/Quartz, Cơ/Automatic, Năng lượng mặt trời/Solar)
 │   │   │   ├── 1.1.2.2 Phân loại theo chất liệu kính (Sapphire, Kính khoáng, Hardlex)
 │   │   │   └── 1.1.2.3 Phân loại theo chất liệu dây (Kim loại, Da, Cao su, Vải)
-│   │   └── 1.1.3 Cấu hình đơn vị tính & Quy cách đóng gói sỉ
+│   │   └── 1.1.3 Cấu hình đơn vị tính & Quy cách đóng gói xuất kho
 │   │       ├── 1.1.3.1 Khai báo ĐVT cơ sở (Cái / Chiếc)
-│   │       ├── 1.1.3.2 Khai báo ĐVT bán sỉ (Hộp nguyên / Kiện / Thùng carton / Lô)
+│   │       ├── 1.1.3.2 Khai báo ĐVT đóng gói xuất kho (Hộp nguyên / Kiện / Thùng carton / Lô)
 │   │       └── 1.1.3.3 Cấu hình hệ số quy đổi đóng gói (1 Thùng = N Chiếc)
 │   ├── 1.2 Quản lý hồ sơ sản phẩm đồng hồ
 │   │   ├── 1.2.1 Thêm mới mẫu đồng hồ
@@ -25,20 +25,20 @@ HỆ THỐNG QUẢN LÝ KHO ĐỒNG HỒ B2B (WHOLESALE)
 │   │   │   ├── 1.2.1.2 Nhập thông số kỹ thuật (size mặt, độ chịu nước ATM, độ dày vỏ)
 │   │   │   ├── 1.2.1.3 Thiết lập thời hạn bảo hành chính hãng
 │   │   │   ├── 1.2.1.4 Cấu hình bật/tắt cờ bắt buộc quản lý mã Serial/Số máy
-│   │   │   └── 1.2.1.5 Cấu hình số lượng đặt sỉ tối thiểu (MOQ)
-│   │   ├── 1.2.2 Cập nhật bảng giá sỉ & Giá vốn
+│   │   │   └── 1.2.1.5 Cấu hình số lượng đặt hàng đại lý tối thiểu (MOQ)
+│   │   ├── 1.2.2 Cập nhật bảng giá phân phối đại lý & Giá vốn
 │   │   │   ├── 1.2.2.1 Cài đặt phương pháp tính giá vốn Đích danh theo Serial
-│   │   │   ├── 1.2.2.2 Thiết lập bảng giá sỉ theo cấp bậc đại lý (VIP, Cấp 1, Cấp 2)
+│   │   │   ├── 1.2.2.2 Thiết lập bảng giá phân phối đại lý theo cấp bậc đại lý (VIP, Cấp 1, Cấp 2)
 │   │   │   └── 1.2.2.3 Cài đặt ngưỡng cảnh báo tồn kho (Min tồn sỉ / Max kho)
 │   │   └── 1.2.3 Tra cứu & Truy vết vòng đời Serial (Serial Lifecycle Lookup)
 │   │       ├── 1.2.3.1 Quét hoặc nhập mã Serial tra cứu
 │   │       ├── 1.2.3.2 Lấy thông tin nguồn gốc (NCC, ngày nhập kho, giá vốn)
 │   │       ├── 1.2.3.3 Lấy thông tin vị trí lưu trữ thực tế (Ngăn kệ hiện tại)
-│   │       ├── 1.2.3.4 Lấy thông tin đại lý xuất mua (Mã đơn sỉ, ngày bàn giao)
+│   │       ├── 1.2.3.4 Lấy thông tin đại lý xuất mua (Mã lệnh xuất đại lý, ngày bàn giao)
 │   │       └── 1.2.3.5 Lấy lịch sử tiếp nhận bảo hành, đổi trả sửa chữa
 │   └── 1.3 Xuất nhập dữ liệu Master Data
 │       ├── 1.3.1 Import danh mục sản phẩm từ file Excel nhà sản xuất
-│       └── 1.3.2 Export bảng thông số kỹ thuật & Bảng giá sỉ ra file PDF / Excel
+│       └── 1.3.2 Export bảng thông số kỹ thuật & Bảng giá phân phối đại lý ra file PDF / Excel
 │
 ├── 2. QUẢN TRỊ HỆ THỐNG & PHÂN QUYỀN (THÀNH VIÊN 1)
 │   ├── 2.1 Quản trị tài khoản người dùng & Xác thực
@@ -84,30 +84,30 @@ HỆ THỐNG QUẢN LÝ KHO ĐỒNG HỒ B2B (WHOLESALE)
 │       ├── 3.3.2 Quét chọn danh sách Serial từ "Kho hàng lỗi" xuất trả
 │       └── 3.3.3 Duyệt trả hàng: Giảm trừ công nợ phải trả NCC & Xuất kho lỗi (gửi TV4)
 │
-├── 4. KHÁCH HÀNG SỈ, BÁN SỈ & XUẤT KHO ĐA NĂNG (THÀNH VIÊN 3)
-│   ├── 4.1 Quản lý đại lý phân phối khách sỉ (B2B Partners)
+├── 4. ĐỐI TÁC ĐẠI LÝ & QUẢN LÝ XUẤT KHO ĐA NĂNG (THÀNH VIÊN 3)
+│   ├── 4.1 Quản lý đại lý phân phối đối tác đại lý (B2B Partners)
 │   │   ├── 4.1.1 Quản lý hồ sơ đại lý (Tên shop/công ty, MST, giấy phép, người đại diện)
 │   │   ├── 4.1.2 Cấu hình chính sách thương mại & Hạn mức nợ
 │   │   │   ├── 4.1.2.1 Thiết lập cấp bậc đại lý (VIP, Cấp 1, Cấp 2)
 │   │   │   ├── 4.1.2.2 Cài đặt tỷ lệ chiết khấu sỉ theo hợp đồng B2B
 │   │   │   └── 4.1.2.3 Thiết lập hạn mức công nợ tối đa & Thời hạn nợ (Net 15, Net 30)
-│   │   └── 4.1.3 Lập phiếu Thu tiền sỉ & Thu hồi công nợ đại lý
+│   │   └── 4.1.3 Lập phiếu Thu hồi công nợ đại lý & Thu hồi công nợ đại lý
 │   │       ├── 4.1.3.1 Tạo phiếu thu tiền (Chuyển khoản / Tiền mặt)
-│   │       ├── 4.1.3.2 Ghi nhận tiền đặt cọc đơn hàng sỉ
+│   │       ├── 4.1.3.2 Ghi nhận tiền đặt cọc đơn hàng xuất đại lý
 │   │       └── 4.1.3.3 Giảm trừ số dư nợ & Khôi phục hạn mức tín dụng khả dụng của đại lý
-│   ├── 4.2 Tiếp nhận & Xử lý đơn bán sỉ
-│   │   ├── 4.2.1 Khởi tạo đơn bán sỉ
+│   ├── 4.2 Tiếp nhận & Xử lý lệnh xuất kho đại lý
+│   │   ├── 4.2.1 Khởi tạo lệnh xuất kho đại lý
 │   │   │   ├── 4.2.1.1 Chọn đại lý đặt hàng & hợp đồng nguyên tắc
 │   │   │   ├── 4.2.1.2 Chọn mã đồng hồ theo Thùng/Lô hoặc Chiếc lẻ
 │   │   │   ├── 4.2.1.3 Kiểm tra điều kiện số lượng đặt tối thiểu (MOQ)
 │   │   │   ├── 4.2.1.4 Tự động kiểm tra số lượng tồn kho khả dụng từ TV4
-│   │   │   └── 4.2.1.5 Tự động áp dụng đơn giá sỉ và tỷ lệ chiết khấu theo cấp đại lý
+│   │   │   └── 4.2.1.5 Tự động áp dụng đơn giá phân phối đại lý và tỷ lệ chiết khấu theo cấp đại lý
 │   │   ├── 4.2.2 Thẩm định điều kiện thanh toán & Duyệt đơn
 │   │   │   ├── 4.2.2.1 Kiểm tra hạn mức nợ còn lại của đại lý
 │   │   │   ├── 4.2.2.2 Kiểm tra xác nhận tiền đặt cọc tối thiểu
 │   │   │   ├── 4.2.2.3 Duyệt đơn: Khóa số lượng hàng sang trạng thái "Giữ chỗ" (Reserved)
-│   │   │   └── 4.2.2.4 Hủy đơn sỉ: Giải phóng hàng giữ chỗ hoàn lại tồn khả dụng
-│   │   └── 4.2.3 Đóng gói & Thực xuất kho bán sỉ
+│   │   │   └── 4.2.2.4 Hủy lệnh xuất đại lý: Giải phóng hàng giữ chỗ hoàn lại tồn khả dụng
+│   │   └── 4.2.3 Đóng gói & Thực xuất kho phân phối đại lý
 │   │       ├── 4.2.3.1 Tạo phiếu xuất kho sỉ từ đơn hàng đã duyệt
 │   │       ├── 4.2.3.2 Quét thực tế mã Serial từng chiếc đồng hồ khi đóng kiện xuất
 │   │       ├── 4.2.3.3 Kiểm tra đối khớp đúng mã và đủ số lượng Serial theo đơn
@@ -118,8 +118,8 @@ HỆ THỐNG QUẢN LÝ KHO ĐỒNG HỒ B2B (WHOLESALE)
 │   │   ├── 4.3.1 Lập phiếu xuất chuyển đồng hồ đi Trung tâm bảo hành hãng
 │   │   ├── 4.3.2 Lập phiếu xuất tiêu hủy đồng hồ hỏng hóc không thể sửa chữa
 │   │   └── 4.3.3 Lập phiếu xuất bán thanh lý đồng hồ từ "Kho Hàng Trưng Bày" (Display)
-│   └── 4.4 Tiếp nhận đổi / trả hàng từ đại lý sỉ
-│       ├── 4.4.1 Lập phiếu tiếp nhận hàng sỉ hoàn trả
+│   └── 4.4 Tiếp nhận đổi / trả hàng từ đại lý B2B
+│       ├── 4.4.1 Lập phiếu tiếp nhận hàng đại lý hoàn trả
 │       ├── 4.4.2 Quét mã Serial kiểm tra nguồn gốc (Xác minh đã bán cho đúng đại lý)
 │       ├── 4.4.3 Phân loại hàng trả: Chuyển Kho hàng mới (đổi mẫu) hoặc Kho hàng lỗi (hỏng)
 │       └── 4.4.4 Duyệt phiếu: Cấn trừ công nợ đại lý & Nhập lại kho tương ứng (TV4)
@@ -128,7 +128,7 @@ HỆ THỐNG QUẢN LÝ KHO ĐỒNG HỒ B2B (WHOLESALE)
 │   ├── 5.1 Giám sát tồn kho đa trạng thái & Đa đơn vị
 │   │   ├── 5.1.1 Quản lý tồn kho hiển thị đa đơn vị (Ví dụ: 10 Thùng + 6 Chiếc = 126 Chiếc)
 │   │   ├── 5.1.2 Quản lý 3 trạng thái kho riêng biệt:
-│   │   │   ├── 5.1.2.1 Kho Hàng Mới (New/Seal - Sẵn sàng xuất sỉ)
+│   │   │   ├── 5.1.2.1 Kho Hàng Mới (New/Seal - Sẵn sàng xuất kho đại lý)
 │   │   │   ├── 5.1.2.2 Kho Hàng Trưng Bày (Display - Bán thanh lý)
 │   │   │   └── 5.1.2.3 Kho Hàng Lỗi (Defective - Chờ gửi bảo hành / Trả NCC)
 │   │   ├── 5.1.3 Phân tích số lượng: Tồn thực tế, Số lượng giữ chỗ (Reserved), Tồn khả dụng
@@ -141,7 +141,7 @@ HỆ THỐNG QUẢN LÝ KHO ĐỒNG HỒ B2B (WHOLESALE)
 │   ├── 5.3 Cảnh báo định mức tồn kho sỉ
 │   │   ├── 5.3.1 Tự động lọc danh sách sản phẩm có tồn kho khả dụng ≤ Min tồn sỉ
 │   │   ├── 5.3.2 Tự động tạo đề xuất lập kế hoạch nhập hàng gửi TV2
-│   │   └── 5.3.3 Tự động phát hiện hàng hết tồn kho (= 0) và khóa nhận đơn sỉ
+│   │   └── 5.3.3 Tự động phát hiện hàng hết tồn kho (= 0) và khóa nhận lệnh xuất đại lý
 │   ├── 5.4 Kiểm kê kho & Cân bằng chênh lệch
 │   │   ├── 5.4.1 Khởi tạo đợt kiểm kê (Toàn bộ kho, Theo kệ, hoặc Theo thương hiệu)
 │   │   ├── 5.4.2 Quét kiểm đếm thực tế bằng Barcode hoặc quét đích danh từng Serial
@@ -153,22 +153,22 @@ HỆ THỐNG QUẢN LÝ KHO ĐỒNG HỒ B2B (WHOLESALE)
 │
 └── 6. BÁO CÁO TỔNG HỢP, DÒNG TIỀN & DASHBOARD ĐIỀU HÀNH (THÀNH VIÊN 5)
     ├── 6.1 Trung tâm điều hành Dashboard
-    │   ├── 6.1.1 Hiển thị thẻ chỉ số KPI: Doanh thu bán sỉ, Giá trị kho, Chi phí, Đơn mới
-    │   ├── 6.1.2 Biểu đồ diễn biến doanh thu bán sỉ theo thời gian (Tháng/Quý/Năm)
+    │   ├── 6.1.1 Hiển thị thẻ chỉ số KPI: Doanh số xuất kho đại lý, Giá trị kho, Chi phí, Đơn mới
+    │   ├── 6.1.2 Biểu đồ diễn biến doanh số xuất kho đại lý theo thời gian (Tháng/Quý/Năm)
     │   ├── 6.1.3 Biểu đồ cơ cấu chi phí vận hành kho sỉ
     │   ├── 6.1.4 Bảng xếp hạng Top thương hiệu & Mẫu đồng hồ bán chạy nhất
     │   └── 6.1.5 Widget Timeline theo dõi hoạt động thao tác nhân viên theo thời gian thực
     ├── 6.2 Hệ thống báo cáo chuyên sâu các phân hệ
     │   ├── 6.2.1 Báo cáo nhập hàng: Tổng giá trị nhập, phân bổ chi phí, sản lượng theo NCC
-    │   ├── 6.2.2 Báo cáo bán sỉ: Doanh số theo đại lý, tỷ lệ chiết khấu, tỷ lệ hủy đơn
-    │   ├── 6.2.3 Báo cáo xuất kho: Cơ cấu tỷ trọng xuất bán sỉ, xuất bảo hành, xuất hủy
+    │   ├── 6.2.2 Báo cáo xuất kho đại lý: Doanh số theo đại lý, tỷ lệ chiết khấu, tỷ lệ hủy đơn
+    │   ├── 6.2.3 Báo cáo xuất kho: Cơ cấu tỷ trọng xuất kho đại lý, xuất bảo hành, xuất hủy
     │   ├── 6.2.4 Báo cáo chất lượng & Đổi trả: Tỷ lệ hàng lỗi theo hãng và dòng máy
     │   └── 6.2.5 Báo cáo tồn kho & Phân tích Dead Stock: Tỷ lệ quay vòng kho, hàng tồn lâu ngày
     └── 6.3 Báo cáo tài chính & Quản trị công nợ B2B
-        ├── 6.3.1 Báo cáo Sổ chi tiết công nợ đại lý sỉ (Dư đầu, Phát sinh xuất, Thu tiền, Dư cuối)
+        ├── 6.3.1 Báo cáo Sổ chi tiết công nợ đại lý B2B (Dư đầu, Phát sinh xuất, Thu tiền, Dư cuối)
         ├── 6.3.2 Báo cáo Sổ chi tiết công nợ NCC (Dư đầu, Phát sinh nhập, Chi tiền, Dư cuối)
-        ├── 6.3.3 Báo cáo dòng tiền thực tế (Thu tiền cọc/nợ sỉ - Chi tiền trả NCC & Chi phí)
-        ├── 6.3.4 Báo cáo Lợi nhuận gộp kênh phân phối sỉ
+        ├── 6.3.3 Báo cáo dòng tiền thực tế (Thu tiền cọc/nợ đại lý - Chi tiền trả NCC & Chi phí)
+        ├── 6.3.4 Báo cáo Lợi nhuận gộp kênh phân phối đại lý
         └── 6.3.5 Xuất dữ liệu báo cáo đa định dạng (Excel, PDF, CSV)
 
 ----------------------------------------------------------------------------------------
@@ -178,8 +178,8 @@ PHẦN 2: XÁC ĐỊNH CÁC CÀI ĐẶT BAN ĐẦU (INITIAL SYSTEM SETTINGS)
 * Múi giờ và ngày hệ thống: Thiết lập múi giờ GMT+7 (Asia/Ho_Chi_Minh), đồng bộ tự động thời gian hệ thống phục vụ ghi nhận thời điểm xuất nhập kho và ghi nhật ký kiểm toán (Audit Log).
 * Danh mục đơn vị tính ban đầu:
   - Đơn vị tính cơ bản: Cái, Chiếc.
-  - Đơn vị tính bán sỉ: Hộp nguyên, Kiện, Thùng carton, Lô hàng.
-* Quy tắc quy đổi đóng gói sỉ: Thiết lập hệ số đóng gói quy đổi cho từng mẫu mã đồng hồ (Ví dụ: 1 Hộp = 5 Chiếc; 1 Thùng carton = 20 Chiếc).
+  - Đơn vị tính đóng gói xuất kho: Hộp nguyên, Kiện, Thùng carton, Lô hàng.
+* Quy tắc quy đổi đóng gói xuất kho: Thiết lập hệ số đóng gói quy đổi cho từng mẫu mã đồng hồ (Ví dụ: 1 Hộp = 5 Chiếc; 1 Thùng carton = 20 Chiếc).
 * Danh mục thương hiệu và phân loại kỹ thuật ban đầu:
   - Thương hiệu sản xuất: Rolex, Omega, Seiko, Citizen, Casio, Tissot, Longines, Orient...
   - Loại máy động cơ: Pin (Quartz), Cơ tự động (Automatic), Năng lượng ánh sáng (Solar/Eco-Drive).
@@ -189,12 +189,12 @@ PHẦN 2: XÁC ĐỊNH CÁC CÀI ĐẶT BAN ĐẦU (INITIAL SYSTEM SETTINGS)
   - Khu vực kho vật lý: Kho Hàng Mới (New/Seal), Kho Hàng Trưng Bày (Display), Kho Hàng Lỗi/Bảo Hành (Defective).
   - Cấu trúc vị trí chi tiết: Phân khu (Khu A, Khu B), Dãy kệ (Dãy 01-10), Tầng kệ (Tầng 1-4), Ngăn/Hộc chứa (Hộc A1-01 đến A1-20).
 * Phương pháp tính giá vốn hàng tồn: Thiết lập phương pháp Đích danh theo Serial Number (Specific Identification) cho toàn bộ sản phẩm đồng hồ quản lý theo Serial.
-* Ngưỡng cảnh báo tồn kho tối thiểu (Min Quantity Threshold): Thiết lập mức số lượng tồn kho khả dụng tối thiểu cho kênh bán sỉ để kích hoạt cảnh báo đề xuất nhập hàng.
+* Ngưỡng cảnh báo tồn kho tối thiểu (Min Quantity Threshold): Thiết lập mức số lượng tồn kho khả dụng tối thiểu cho kênh xuất kho đại lý để kích hoạt cảnh báo đề xuất nhập hàng.
 * Quy tắc phân hạng đại lý & Chính sách thương mại B2B:
   - Hạng VIP: Chiết khấu 30% - Hạn mức nợ tối đa: 1.000.000.000 VNĐ - Hạn nợ: Net 30.
   - Hạng Bạc (Cấp 1): Chiết khấu 25% - Hạn mức nợ tối đa: 500.000.000 VNĐ - Hạn nợ: Net 15.
   - Hạng Đồng (Cấp 2): Chiết khấu 20% - Hạn mức nợ tối đa: 100.000.000 VNĐ - Thanh toán ngay.
-* Quy tắc số lượng đặt hàng sỉ tối thiểu (MOQ): Cài đặt MOQ mặc định khi đại lý tạo đơn sỉ (tối thiểu 5 - 10 chiếc/mẫu mã).
+* Quy tắc số lượng đặt hàng đại lý tối thiểu (MOQ): Cài đặt MOQ mặc định khi đại lý tạo lệnh xuất đại lý (tối thiểu 5 - 10 chiếc/mẫu mã).
 
 ----------------------------------------------------------------------------------------
 
@@ -212,23 +212,23 @@ PHẦN 3: XÁC ĐỊNH CÁC INPUT VÀ KIỂU DỮ LIỆU (INPUTS & DATA TYPES)
 - thời hạn bảo hành              | Số nguyên (tháng)
 - cờ bắt buộc quản lý Serial     | Kiểu Logic (Boolean / Bit)
 - đơn vị tính cơ bản             | Chuỗi / Varchar(20) (Cái / Chiếc)
-- đơn vị tính bán sỉ             | Chuỗi / Varchar(20) (Thùng / Kiện / Hộp)
+- đơn vị tính đóng gói xuất kho             | Chuỗi / Varchar(20) (Thùng / Kiện / Hộp)
 - hệ số quy đổi đóng gói         | Số nguyên
 - số lượng đặt tối thiểu (MOQ)   | Số nguyên
 - ngưỡng tồn kho Min / Max       | Số nguyên
 - hình ảnh đồng hồ / chứng từ    | Tệp tin / Nhị phân (Blob / URL)
 
-2. Nhóm dữ liệu Đối tác (Nhà cung cấp & Đại lý sỉ B2B):
+2. Nhóm dữ liệu Đối tác (Nhà cung cấp & Đại lý B2B):
 - mã nhà cung cấp                | Chuỗi / Varchar(50) (Khóa ngoại)
 - tên nhà cung cấp               | Chuỗi / Nvarchar(255)
-- mã đại lý khách sỉ             | Chuỗi / Varchar(50) (Khóa ngoại)
-- tên đại lý khách sỉ            | Chuỗi / Nvarchar(255)
+- mã đại lý đối tác đại lý             | Chuỗi / Varchar(50) (Khóa ngoại)
+- tên đại lý đối tác đại lý            | Chuỗi / Nvarchar(255)
 - mã số thuế (MST) đối tác       | Chuỗi / Varchar(20)
 - người đại diện & số điện thoại | Chuỗi / Nvarchar(150)
 - địa chỉ đối tác                | Chuỗi / Nvarchar(255)
 - số tài khoản & tên ngân hàng   | Chuỗi / Varchar(150)
 - hạng đại lý                    | Danh mục liệt kê ('VIP', 'BAC', 'DONG')
-- hạn mức công nợ sỉ             | Số thập phân tiền tệ Decimal(18,2)
+- hạn mức công nợ đại lý             | Số thập phân tiền tệ Decimal(18,2)
 - thời hạn nợ (Payment Term)     | Danh mục liệt kê ('THANH_TOAN_NGAY', 'NET_15', 'NET_30')
 - tỷ lệ chiết khấu sỉ (%)        | Số thực / Số thập phân
 
@@ -238,10 +238,10 @@ PHẦN 3: XÁC ĐỊNH CÁC INPUT VÀ KIỂU DỮ LIỆU (INPUTS & DATA TYPES)
 - số lượng giao dịch             | Số thực / Số thập phân / Số nguyên
 - số lượng chiếc quy đổi         | Số nguyên
 - đơn giá vốn nhập               | Số thập phân tiền tệ Decimal(18,2)
-- bảng giá bán sỉ                | Số thập phân tiền tệ Decimal(18,2)
+- bảng giá phân phối đại lý                | Số thập phân tiền tệ Decimal(18,2)
 - chi phí phân bổ lô hàng        | Số thập phân tiền tệ Decimal(18,2)
 - chi phí vận chuyển xuất hàng   | Số thập phân tiền tệ Decimal(18,2)
-- số tiền đặt cọc đơn sỉ         | Số thập phân tiền tệ Decimal(18,2)
+- số tiền đặt cọc lệnh xuất đại lý         | Số thập phân tiền tệ Decimal(18,2)
 - số tiền thanh toán nợ          | Số thập phân tiền tệ Decimal(18,2)
 - hình thức thanh toán           | Danh mục liệt kê ('CHUYEN_KHOAN', 'TIEN_MAT')
 - trạng thái phiếu               | Danh mục liệt kê ('LUU_NHAP', 'DA_DUYET', 'DA_HUY')
@@ -273,37 +273,37 @@ PHẦN 4: XÁC ĐỊNH CÁC ĐẦU RA CỦA HỆ THỐNG (OUTPUTS)
 - Phiếu chi tiền thanh toán công nợ NCC: Chứng từ chi tiền giảm trừ số dư công nợ phải trả cho nhà cung cấp.
 - Phiếu xuất trả hàng lỗi cho NCC: Biên bản ghi nhận số lượng và danh sách mã Serial bị lỗi (hỏng máy, đọng sương, nứt kính) xuất trả lại cho hãng.
 
-2. Đầu ra của Phân hệ Đơn bán sỉ & Xuất kho phân phối (B2B):
-- Kết quả kiểm tra tồn kho & MOQ: Thông báo số lượng khả dụng trong kho và xác nhận đơn hàng sỉ có đạt ngưỡng đặt hàng tối thiểu hay không.
-- Đơn bán sỉ hoàn chỉnh: Bảng chi tiết đơn sỉ tự động áp bảng giá sỉ và tỷ lệ chiết khấu theo phân hạng đại lý (VIP, Cấp 1, Cấp 2).
+2. Đầu ra của Phân hệ Lệnh xuất kho đại lý & Xuất kho phân phối (B2B):
+- Kết quả kiểm tra tồn kho & MOQ: Thông báo số lượng khả dụng trong kho và xác nhận đơn hàng xuất đại lý có đạt ngưỡng đặt hàng tối thiểu hay không.
+- Lệnh xuất kho đại lý hoàn chỉnh: Bảng chi tiết lệnh xuất đại lý tự động áp bảng giá phân phối đại lý và tỷ lệ chiết khấu theo phân hạng đại lý (VIP, Cấp 1, Cấp 2).
 - Số lượng hàng giữ chỗ (Reserved Quantity): Cập nhật số lượng đồng hồ bị khóa giữ chỗ sau khi duyệt đơn hoặc giải phóng lại tồn khả dụng khi đơn bị hủy.
 - Phiếu xuất kho kiêm biên bản giao nhận sỉ: Chứng từ in ấn thể hiện đầy đủ danh sách mã Serial thực tế đóng thùng giao cho đại lý kèm điều khoản bảo hành B2B.
-- Phiếu thu tiền bán sỉ: Ghi nhận tiền đặt cọc hoặc tiền thanh toán nợ của đại lý, tự động khôi phục hạn mức công nợ khả dụng.
+- Phiếu thu hồi công nợ đại lý: Ghi nhận tiền đặt cọc hoặc tiền thanh toán nợ của đại lý, tự động khôi phục hạn mức công nợ khả dụng.
 - Phiếu xuất khác: Chứng từ xuất đồng hồ đi bảo hành hãng, xuất bán thanh lý hàng trưng bày (Display) hoặc xuất hủy hàng hỏng vỡ.
-- Phiếu nhận hàng sỉ hoàn trả: Kết quả quét kiểm tra Serial đối soát nguồn gốc bán hàng và phân loại trả về kho mới (đổi mẫu) hoặc kho lỗi.
+- Phiếu nhận hàng đại lý hoàn trả: Kết quả quét kiểm tra Serial đối soát nguồn gốc bán hàng và phân loại trả về kho mới (đổi mẫu) hoặc kho lỗi.
 
 3. Đầu ra của Phân hệ Quản lý & Theo dõi Tồn kho:
 - Danh sách tồn kho tổng hợp đa đơn vị (Danh sách tồn kho): Bảng danh sách đang quản lý hiển thị song song số lượng quy đổi (Thùng/Kiện) và tổng số chiếc lẻ khả dụng, vị trí ngăn kệ lưu trữ.
-- Chi tiết hồ sơ đồng hồ & Tra cứu vòng đời Serial (Serial Timeline): Toàn bộ thông tin chi tiết một chiếc đồng hồ cụ thể (ảnh, thông số, thương hiệu, giá sỉ, ngày nhập, NCC, vị trí kệ, đại lý đã mua, lịch sử bảo hành).
+- Chi tiết hồ sơ đồng hồ & Tra cứu vòng đời Serial (Serial Timeline): Toàn bộ thông tin chi tiết một chiếc đồng hồ cụ thể (ảnh, thông số, thương hiệu, giá phân phối đại lý, ngày nhập, NCC, vị trí kệ, đại lý đã mua, lịch sử bảo hành).
 - Kết quả tìm kiếm và bộ lọc: Danh sách đồng hồ thỏa mãn từ khóa tìm kiếm hoặc các điều kiện lọc (theo hãng, loại máy Pin/Cơ/Solar, khoảng giá, vị trí kệ).
-- Số lượng tồn kho cập nhật: Giá trị tồn kho mới sau mỗi lần duyệt nhập, xuất sỉ, đổi trả hoặc kiểm kê điều chỉnh.
+- Số lượng tồn kho cập nhật: Giá trị tồn kho mới sau mỗi lần duyệt nhập, xuất kho đại lý, đổi trả hoặc kiểm kê điều chỉnh.
 - Trạng thái phân loại kho & Phiếu điều chuyển nội bộ: Các cờ trạng thái tự động cập nhật phân theo Kho Hàng Mới, Kho Hàng Trưng Bày, Kho Hàng Lỗi kèm chứng từ điều chuyển ngăn kệ hoặc chuyển đổi trạng thái chất lượng.
-- Lịch sử biến động thẻ kho (Stock Ledger / Audit Log): Bảng nhật ký ghi lại chi tiết các lần nhập kho (+), xuất sỉ (-), trả hàng (±), kiểm đếm lệch kho kèm theo mã Serial tương ứng.
+- Lịch sử biến động thẻ kho (Stock Ledger / Audit Log): Bảng nhật ký ghi lại chi tiết các lần nhập kho (+), xuất kho đại lý (-), trả hàng (±), kiểm đếm lệch kho kèm theo mã Serial tương ứng.
 - Phiếu cân bằng kiểm kê kho: Bảng tự động tính chênh lệch thừa/thiếu giữa số lượng quét thực tế tại kệ và số lượng trên hệ thống để điều chỉnh lại tồn chuẩn.
 - Giá trị tồn kho quy đổi: Tổng giá trị hàng tồn tính chính xác theo phương pháp Giá vốn Đích danh của từng mã Serial.
 
 4. Đầu ra của Phân hệ Cảnh báo định mức:
-- Cảnh báo hàng sắp hết cho kênh sỉ: (Đầu vào: Tồn khả dụng, Ngưỡng Min tồn sỉ) → Danh sách đồng hồ sắp hết hàng kèm đề xuất số lượng cần nhập thêm cho các đơn sỉ lớn.
-- Cảnh báo hàng hết: (Đầu vào: Tồn khả dụng = 0) → Danh sách đồng hồ hết hàng và tự động bật cờ ngưng nhận đơn sỉ.
+- Cảnh báo hàng sắp hết cho kênh sỉ: (Đầu vào: Tồn khả dụng, Ngưỡng Min tồn sỉ) → Danh sách đồng hồ sắp hết hàng kèm đề xuất số lượng cần nhập thêm cho các lệnh xuất đại lý lớn.
+- Cảnh báo hàng hết: (Đầu vào: Tồn khả dụng = 0) → Danh sách đồng hồ hết hàng và tự động bật cờ ngưng nhận lệnh xuất đại lý.
 - Cảnh báo công nợ quá hạn: Danh sách đại lý có số dư nợ vượt hạn mức tín dụng hoặc quá hạn thanh toán hợp đồng (Net 15 / Net 30).
 
 5. Đầu ra của Phân hệ Báo cáo & Dashboard Điều hành:
-- Thẻ chỉ số điều hành (KPI Cards): Hiển thị theo thời gian thực Doanh thu bán sỉ, Tổng chi phí phân phối, Tổng giá trị tồn kho sỉ, Số đơn sỉ mới, Tỷ lệ đổi trả.
-- Biểu đồ trực quan: Diễn biến doanh thu sỉ theo ngày/tháng/quý, biểu đồ cơ cấu chi phí lô hàng (vận chuyển, hải quan, lưu kho).
-- Bảng xếp hạng Top sản phẩm bán sỉ: Top mẫu đồng hồ và thương hiệu được các đại lý nhập nhiều nhất (theo số lượng bán và theo doanh thu).
+- Thẻ chỉ số điều hành (KPI Cards): Hiển thị theo thời gian thực Doanh số xuất kho đại lý, Tổng chi phí phân phối, Tổng giá trị tồn kho sỉ, Số lệnh xuất đại lý mới, Tỷ lệ đổi trả.
+- Biểu đồ trực quan: Diễn biến doanh số xuất kho đại lý theo ngày/tháng/quý, biểu đồ cơ cấu chi phí lô hàng (vận chuyển, hải quan, lưu kho).
+- Bảng xếp hạng Top sản phẩm xuất kho đại lý: Top mẫu đồng hồ và thương hiệu được các đại lý nhập nhiều nhất (theo số lượng bán và theo doanh thu).
 - Báo cáo chất lượng hàng hóa: Thống kê tỷ lệ lỗi kỹ thuật theo từng hãng sản xuất và dòng máy (Pin, Cơ, Solar).
-- Báo cáo Sổ chi tiết công nợ: Sổ theo dõi công nợ chi tiết của từng đại lý sỉ và nhà cung cấp (Dư nợ đầu kỳ, Phát sinh Nợ, Phát sinh Có, Dư nợ cuối kỳ).
-- Báo cáo dòng tiền thực tế: Tổng hợp dòng tiền thu vào (bán sỉ, thu hồi nợ) trừ dòng tiền chi ra (trả NCC, chi phí vận hành).
+- Báo cáo Sổ chi tiết công nợ: Sổ theo dõi công nợ chi tiết của từng đại lý B2B và nhà cung cấp (Dư nợ đầu kỳ, Phát sinh Nợ, Phát sinh Có, Dư nợ cuối kỳ).
+- Báo cáo dòng tiền thực tế: Tổng hợp dòng tiền thu vào (xuất kho đại lý, thu hồi nợ) trừ dòng tiền chi ra (trả NCC, chi phí vận hành).
 
 ----------------------------------------------------------------------------------------
 
@@ -319,9 +319,9 @@ MODULE 1: QUẢN LÝ HÀNG HÓA, SERIAL & ĐƠN VỊ TÍNH (THÀNH VIÊN 1)
   + 1.1.2.1. Phân loại theo động cơ: Khai báo và gán phân loại dòng máy gồm Pin (Quartz), Cơ tự động (Automatic), Năng lượng mặt trời (Solar/Eco-Drive).
   + 1.1.2.2. Phân loại theo chất liệu kính: Cấu hình chất liệu kính gồm Sapphire chống trầy, Kính khoáng (Mineral), Hardlex, Acrylic.
   + 1.1.2.3. Phân loại theo chất liệu dây: Cấu hình chất liệu dây đeo gồm Kim loại (Thép 316L), Da thật, Cao su silicone, Vải NATO.
-- 1.1.3. Cấu hình đơn vị tính & Quy cách đóng gói sỉ:
+- 1.1.3. Cấu hình đơn vị tính & Quy cách đóng gói xuất kho:
   + 1.1.3.1. Khai báo ĐVT cơ sở: Thiết lập đơn vị tính cơ bản (Varchar(20)) là Cái hoặc Chiếc.
-  + 1.1.3.2. Khai báo ĐVT bán sỉ: Thiết lập đơn vị tính bán sỉ (Varchar(20)) gồm Hộp nguyên, Kiện, Thùng carton, Lô hàng.
+  + 1.1.3.2. Khai báo ĐVT đóng gói xuất kho: Thiết lập đơn vị tính đóng gói xuất kho (Varchar(20)) gồm Hộp nguyên, Kiện, Thùng carton, Lô hàng.
   + 1.1.3.3. Cấu hình hệ số quy đổi đóng gói: Nhập hệ số quy đổi theo quy tắc 1 Thùng = N Chiếc (ví dụ: 1 Hộp = 5 Chiếc; 1 Thùng = 20 Chiếc).
 
 1.2. Quản lý hồ sơ sản phẩm đồng hồ
@@ -330,21 +330,21 @@ MODULE 1: QUẢN LÝ HÀNG HÓA, SERIAL & ĐƠN VỊ TÍNH (THÀNH VIÊN 1)
   + 1.2.1.2. Nhập thông số kỹ thuật: Nhập size mặt, độ chịu nước ATM, độ dày vỏ (Text / Nvarchar(Max)).
   + 1.2.1.3. Thiết lập thời hạn bảo hành chính hãng: Nhập số tháng bảo hành.
   + 1.2.1.4. Cấu hình bật/tắt cờ bắt buộc quản lý mã Serial/Số máy: Thiết lập cờ bắt buộc định danh Serial (Varchar(100) - Duy nhất).
-  + 1.2.1.5. Cấu hình số lượng đặt sỉ tối thiểu (MOQ): Thiết lập MOQ (mặc định 5 - 10 chiếc/mẫu).
-- 1.2.2. Cập nhật bảng giá sỉ & Giá vốn:
+  + 1.2.1.5. Cấu hình số lượng đặt hàng đại lý tối thiểu (MOQ): Thiết lập MOQ (mặc định 5 - 10 chiếc/mẫu).
+- 1.2.2. Cập nhật bảng giá phân phối đại lý & Giá vốn:
   + 1.2.2.1. Cài đặt phương pháp tính giá vốn Đích danh theo Serial: Thiết lập Specific Identification theo từng mã Serial.
-  + 1.2.2.2. Thiết lập bảng giá sỉ theo cấp bậc đại lý: Khai báo bảng giá bán sỉ cho cấp VIP, Cấp 1, Cấp 2.
+  + 1.2.2.2. Thiết lập bảng giá phân phối đại lý theo cấp bậc đại lý: Khai báo bảng giá phân phối đại lý cho cấp VIP, Cấp 1, Cấp 2.
   + 1.2.2.3. Cài đặt ngưỡng cảnh báo tồn kho: Thiết lập Min tồn sỉ và Max kho.
 - 1.2.3. Tra cứu & Truy vết vòng đời Serial (Serial Lifecycle Lookup):
   + 1.2.3.1. Quét hoặc nhập mã Serial tra cứu: Nhận mã Serial từ máy quét hoặc bàn phím.
   + 1.2.3.2. Lấy thông tin nguồn gốc: Hiển thị NCC, ngày nhập kho, giá vốn đích danh.
   + 1.2.3.3. Lấy thông tin vị trí lưu trữ thực tế: Hiển thị vị trí Dãy-Kệ-Tầng-Ngăn hiện tại.
-  + 1.2.3.4. Lấy thông tin đại lý xuất mua: Hiển thị mã đơn sỉ, tên đại lý và ngày bàn giao.
+  + 1.2.3.4. Lấy thông tin đại lý xuất mua: Hiển thị mã lệnh xuất đại lý, tên đại lý và ngày bàn giao.
   + 1.2.3.5. Lấy lịch sử tiếp nhận bảo hành, đổi trả sửa chữa: Kết xuất toàn bộ dòng thời gian vòng đời Serial.
 
 1.3. Xuất nhập dữ liệu Master Data
 - 1.3.1. Import danh mục sản phẩm từ file Excel nhà sản xuất: Đọc file Excel khởi tạo hàng loạt hồ sơ SKU.
-- 1.3.2. Export bảng thông số kỹ thuật & Bảng giá sỉ ra file PDF / Excel: Xuất danh mục và báo giá B2B ra PDF/Excel.
+- 1.3.2. Export bảng thông số kỹ thuật & Bảng giá phân phối đại lý ra file PDF / Excel: Xuất danh mục và báo giá B2B ra PDF/Excel.
 
 MODULE 2: QUẢN TRỊ HỆ THỐNG & PHÂN QUYỀN (THÀNH VIÊN 1)
 2.1. Quản trị tài khoản người dùng & Xác thực
@@ -394,31 +394,31 @@ MODULE 3: ĐỐI TÁC NHÀ CUNG CẤP, NHẬP KHO & CHI PHÍ (THÀNH VIÊN 2)
 - 3.3.2. Quét chọn danh sách Serial từ "Kho hàng lỗi" xuất trả.
 - 3.3.3. Duyệt trả hàng: Giảm trừ công nợ phải trả NCC & Xuất kho lỗi gửi sang TV4.
 
-MODULE 4: KHÁCH HÀNG SỈ, BÁN SỈ & XUẤT KHO ĐA NĂNG (THÀNH VIÊN 3)
-4.1. Quản lý đại lý phân phối khách sỉ (B2B Partners)
+MODULE 4: ĐỐI TÁC ĐẠI LÝ & QUẢN LÝ XUẤT KHO ĐA NĂNG (THÀNH VIÊN 3)
+4.1. Quản lý đại lý phân phối đối tác đại lý (B2B Partners)
 - 4.1.1. Quản lý hồ sơ đại lý (Tên cửa hàng/công ty, MST, giấy phép, người đại diện).
 - 4.1.2. Cấu hình chính sách thương mại & Hạn mức nợ:
   + 4.1.2.1. Thiết lập cấp bậc đại lý (VIP, Cấp 1, Cấp 2).
   + 4.1.2.2. Cài đặt tỷ lệ chiết khấu sỉ theo hợp đồng B2B (30%, 25%, 20%).
   + 4.1.2.3. Thiết lập hạn mức công nợ tối đa & Thời hạn nợ (Net 15, Net 30, Thanh toán ngay).
-- 4.1.3. Lập phiếu Thu tiền sỉ & Thu hồi công nợ đại lý:
+- 4.1.3. Lập phiếu Thu hồi công nợ đại lý & Thu hồi công nợ đại lý:
   + 4.1.3.1. Tạo phiếu thu tiền (Chuyển khoản / Tiền mặt).
-  + 4.1.3.2. Ghi nhận tiền đặt cọc đơn hàng sỉ.
+  + 4.1.3.2. Ghi nhận tiền đặt cọc đơn hàng xuất đại lý.
   + 4.1.3.3. Giảm trừ số dư nợ & Khôi phục hạn mức tín dụng khả dụng của đại lý.
 
-4.2. Tiếp nhận & Xử lý đơn bán sỉ
-- 4.2.1. Khởi tạo đơn bán sỉ:
+4.2. Tiếp nhận & Xử lý lệnh xuất kho đại lý
+- 4.2.1. Khởi tạo lệnh xuất kho đại lý:
   + 4.2.1.1. Chọn đại lý đặt hàng & hợp đồng nguyên tắc.
   + 4.2.1.2. Chọn mã đồng hồ theo Thùng/Lô hoặc Chiếc lẻ.
   + 4.2.1.3. Kiểm tra điều kiện số lượng đặt tối thiểu (MOQ).
   + 4.2.1.4. Tự động kiểm tra số lượng tồn kho khả dụng từ TV4.
-  + 4.2.1.5. Tự động áp dụng đơn giá sỉ và tỷ lệ chiết khấu theo cấp đại lý.
+  + 4.2.1.5. Tự động áp dụng đơn giá phân phối đại lý và tỷ lệ chiết khấu theo cấp đại lý.
 - 4.2.2. Thẩm định điều kiện thanh toán & Duyệt đơn:
   + 4.2.2.1. Kiểm tra hạn mức nợ còn lại của đại lý.
   + 4.2.2.2. Kiểm tra xác nhận tiền đặt cọc tối thiểu.
   + 4.2.2.3. Duyệt đơn: Khóa số lượng hàng sang trạng thái "Giữ chỗ" (Reserved) tại TV4.
-  + 4.2.2.4. Hủy đơn sỉ: Giải phóng hàng giữ chỗ hoàn lại tồn khả dụng.
-- 4.2.3. Đóng gói & Thực xuất kho bán sỉ:
+  + 4.2.2.4. Hủy lệnh xuất đại lý: Giải phóng hàng giữ chỗ hoàn lại tồn khả dụng.
+- 4.2.3. Đóng gói & Thực xuất kho phân phối đại lý:
   + 4.2.3.1. Tạo phiếu xuất kho sỉ từ đơn hàng đã duyệt.
   + 4.2.3.2. Quét thực tế mã Serial từng chiếc đồng hồ khi đóng kiện xuất.
   + 4.2.3.3. Kiểm tra đối khớp đúng mã và đủ số lượng Serial theo đơn.
@@ -431,8 +431,8 @@ MODULE 4: KHÁCH HÀNG SỈ, BÁN SỈ & XUẤT KHO ĐA NĂNG (THÀNH VIÊN 3)
 - 4.3.2. Lập phiếu xuất tiêu hủy đồng hồ hỏng hóc không thể sửa chữa.
 - 4.3.3. Lập phiếu xuất bán thanh lý đồng hồ từ "Kho Hàng Trưng Bày" (Display).
 
-4.4. Tiếp nhận đổi / trả hàng từ đại lý sỉ
-- 4.4.1. Lập phiếu tiếp nhận hàng sỉ hoàn trả.
+4.4. Tiếp nhận đổi / trả hàng từ đại lý B2B
+- 4.4.1. Lập phiếu tiếp nhận hàng đại lý hoàn trả.
 - 4.4.2. Quét mã Serial kiểm tra nguồn gốc (Xác minh đã bán cho đúng đại lý).
 - 4.4.3. Phân loại hàng trả: Chuyển Kho hàng mới (đổi mẫu) hoặc Kho hàng lỗi (hỏng).
 - 4.4.4. Duyệt phiếu: Cấn trừ công nợ đại lý & Nhập lại kho tương ứng gửi TV4.
@@ -441,7 +441,7 @@ MODULE 5: QUẢN TRỊ TỒN KHO, VỊ TRÍ KỆ & KIỂM KÊ (THÀNH VIÊN 4)
 5.1. Giám sát tồn kho đa trạng thái & Đa đơn vị
 - 5.1.1. Quản lý tồn kho hiển thị đa đơn vị (Ví dụ: 10 Thùng + 6 Chiếc = 126 Chiếc).
 - 5.1.2. Quản lý 3 trạng thái kho riêng biệt:
-  + 5.1.2.1. Kho Hàng Mới (New/Seal - Sẵn sàng xuất sỉ).
+  + 5.1.2.1. Kho Hàng Mới (New/Seal - Sẵn sàng xuất kho đại lý).
   + 5.1.2.2. Kho Hàng Trưng Bày (Display - Bán thanh lý).
   + 5.1.2.3. Kho Hàng Lỗi (Defective - Chờ gửi bảo hành / Trả NCC).
 - 5.1.3. Phân tích số lượng: Tồn thực tế, Số lượng giữ chỗ (Reserved), Tồn khả dụng.
@@ -456,7 +456,7 @@ MODULE 5: QUẢN TRỊ TỒN KHO, VỊ TRÍ KỆ & KIỂM KÊ (THÀNH VIÊN 4)
 5.3. Cảnh báo định mức tồn kho sỉ
 - 5.3.1. Tự động lọc danh sách sản phẩm có tồn kho khả dụng ≤ Min tồn sỉ.
 - 5.3.2. Tự động tạo đề xuất lập kế hoạch nhập hàng gửi TV2.
-- 5.3.3. Tự động phát hiện hàng hết tồn kho (= 0) và khóa nhận đơn sỉ.
+- 5.3.3. Tự động phát hiện hàng hết tồn kho (= 0) và khóa nhận lệnh xuất đại lý.
 
 5.4. Kiểm kê kho & Cân bằng chênh lệch
 - 5.4.1. Khởi tạo đợt kiểm kê (Toàn bộ kho, Theo kệ, hoặc Theo thương hiệu).
@@ -470,24 +470,24 @@ MODULE 5: QUẢN TRỊ TỒN KHO, VỊ TRÍ KỆ & KIỂM KÊ (THÀNH VIÊN 4)
 
 MODULE 6: BÁO CÁO TỔNG HỢP, DÒNG TIỀN & DASHBOARD ĐIỀU HÀNH (THÀNH VIÊN 5)
 6.1. Trung tâm điều hành Dashboard
-- 6.1.1. Hiển thị thẻ chỉ số KPI: Doanh thu bán sỉ, Giá trị kho, Chi phí, Đơn mới.
-- 6.1.2. Biểu đồ diễn biến doanh thu bán sỉ theo thời gian (Tháng/Quý/Năm).
+- 6.1.1. Hiển thị thẻ chỉ số KPI: Doanh số xuất kho đại lý, Giá trị kho, Chi phí, Đơn mới.
+- 6.1.2. Biểu đồ diễn biến doanh số xuất kho đại lý theo thời gian (Tháng/Quý/Năm).
 - 6.1.3. Biểu đồ cơ cấu chi phí vận hành kho sỉ.
 - 6.1.4. Bảng xếp hạng Top thương hiệu & Mẫu đồng hồ bán chạy nhất.
 - 6.1.5. Khung dòng thời gian (Timeline) theo dõi hoạt động thao tác nhân viên theo thời gian thực.
 
 6.2. Hệ thống báo cáo chuyên sâu các phân hệ
 - 6.2.1. Báo cáo nhập hàng: Tổng giá trị nhập, phân bổ chi phí, sản lượng theo NCC.
-- 6.2.2. Báo cáo bán sỉ: Doanh số theo đại lý, tỷ lệ chiết khấu, tỷ lệ hủy đơn.
-- 6.2.3. Báo cáo xuất kho: Cơ cấu tỷ trọng xuất bán sỉ, xuất bảo hành, xuất hủy.
+- 6.2.2. Báo cáo xuất kho đại lý: Doanh số theo đại lý, tỷ lệ chiết khấu, tỷ lệ hủy đơn.
+- 6.2.3. Báo cáo xuất kho: Cơ cấu tỷ trọng xuất kho đại lý, xuất bảo hành, xuất hủy.
 - 6.2.4. Báo cáo chất lượng & Đổi trả: Tỷ lệ hàng lỗi theo hãng và dòng máy.
 - 6.2.5. Báo cáo tồn kho & Phân tích tồn kho lâu ngày (Dead Stock): Tỷ lệ quay vòng kho, hàng tồn ứ.
 
 6.3. Báo cáo tài chính & Quản trị công nợ B2B
-- 6.3.1. Báo cáo Sổ chi tiết công nợ đại lý sỉ (Dư đầu, Phát sinh xuất, Thu tiền, Dư cuối).
+- 6.3.1. Báo cáo Sổ chi tiết công nợ đại lý B2B (Dư đầu, Phát sinh xuất, Thu tiền, Dư cuối).
 - 6.3.2. Báo cáo Sổ chi tiết công nợ NCC (Dư đầu, Phát sinh nhập, Chi tiền, Dư cuối).
-- 6.3.3. Báo cáo dòng tiền thực tế (Thu tiền cọc/nợ sỉ - Chi tiền trả NCC & Chi phí).
-- 6.3.4. Báo cáo Lợi nhuận gộp kênh phân phối sỉ.
+- 6.3.3. Báo cáo dòng tiền thực tế (Thu tiền cọc/nợ đại lý - Chi tiền trả NCC & Chi phí).
+- 6.3.4. Báo cáo Lợi nhuận gộp kênh phân phối đại lý.
 - 6.3.5. Xuất dữ liệu báo cáo đa định dạng (Excel, PDF, CSV).
 
 ----------------------------------------------------------------------------------------
@@ -496,7 +496,7 @@ PHẦN 6: YÊU CẦU PHI CHỨC NĂNG (NON-FUNCTIONAL REQUIREMENTS)
 
 1. Hiệu năng & Xử lý đồng thời (Performance & Concurrency):
 - Tốc độ xử lý Serial: Hệ thống phải kiểm tra đối soát trùng lặp và nạp thành công lô từ 500 đến 1.000 mã Serial từ file Excel hoặc thiết bị quét trong thời gian dưới 2 giây.
-- Kiểm soát giao dịch đồng thời (Concurrency Control): Áp dụng cơ chế khóa bản ghi mức cơ sở dữ liệu (Row-level Locking / Transaction Isolation) khi nhiều nhân viên cùng duyệt đơn bán sỉ hoặc cùng quét xuất kho cho một mẫu đồng hồ, tuyệt đối không để xảy ra tình trạng xuất âm kho hoặc bán trùng 1 mã Serial cho 2 đại lý.
+- Kiểm soát giao dịch đồng thời (Concurrency Control): Áp dụng cơ chế khóa bản ghi mức cơ sở dữ liệu (Row-level Locking / Transaction Isolation) khi nhiều nhân viên cùng duyệt lệnh xuất kho đại lý hoặc cùng quét xuất kho cho một mẫu đồng hồ, tuyệt đối không để xảy ra tình trạng xuất âm kho hoặc bán trùng 1 mã Serial cho 2 đại lý.
 
 2. Bảo mật & Toàn vẹn dữ liệu (Security & Data Integrity):
 - Bảo mật xác thực: Mật khẩu người dùng phải được mã hóa một chiều (Bcrypt / Argon2); quản lý phiên đăng nhập bằng cơ chế JWT (Access Token & Refresh Token) cho phép Admin thu hồi phiên từ xa ngay lập tức.
@@ -514,7 +514,7 @@ Hệ thống phân chia quyền hạn theo 4 vai trò chính: Admin (Quản tr�
 
 * Phân hệ 1 - Quản lý Hàng hóa, Serial & Đơn vị tính (TV1):
   - Quản lý danh mục Master, thêm/sửa hồ sơ SKU, cấu hình ĐVT: Admin, Quản trị sỉ (Thêm/Sửa/Xóa); Thủ kho, Kế toán kho (Chỉ xem).
-  - Cài đặt phương pháp giá vốn & Bảng giá sỉ đại lý: Admin, Kế toán kho, Quản trị sỉ (Cấu hình/Duyệt); Thủ kho (Không có quyền xem giá vốn).
+  - Cài đặt phương pháp giá vốn & Bảng giá phân phối đại lý đại lý: Admin, Kế toán kho, Quản trị sỉ (Cấu hình/Duyệt); Thủ kho (Không có quyền xem giá vốn).
   - Tra cứu vòng đời Serial (Serial Lifecycle Lookup): Tất cả vai trò (Xem theo phạm vi dữ liệu được cấp).
 
 * Phân hệ 2 - Quản trị Hệ thống & Phân quyền (TV1):
@@ -526,11 +526,11 @@ Hệ thống phân chia quyền hạn theo 4 vai trò chính: Admin (Quản tr�
   - Phân bổ chi phí lô hàng vào giá vốn & Duyệt phiếu nhập kho: Kế toán kho, Admin (Khai báo chi phí & Phê duyệt chính thức).
   - Lập phiếu Chi tiền thanh toán nợ NCC: Kế toán kho (Lập phiếu); Admin (Duyệt chi).
 
-* Phân hệ 4 - Khách hàng sỉ, Bán sỉ & Xuất kho đa năng (TV3):
+* Phân hệ 4 - Đối tác đại lý, Đối Tác Đại Lý & Quản Lý Xuất Kho đa năng (TV3):
   - Quản lý hồ sơ đại lý, cấp bậc, chiết khấu & hạn mức nợ: Quản trị sỉ (Tạo/Đề xuất); Admin, Kế toán kho (Phê duyệt hạn mức).
-  - Khởi tạo đơn bán sỉ & Duyệt giữ chỗ (Reserved): Quản trị sỉ (Lập đơn & Duyệt thương mại); Kế toán kho (Thẩm định công nợ/đặt cọc).
+  - Khởi tạo lệnh xuất kho đại lý & Duyệt giữ chỗ (Reserved): Quản trị sỉ (Lập đơn & Duyệt thương mại); Kế toán kho (Thẩm định công nợ/đặt cọc).
   - Quét Serial đóng kiện & Xác nhận thực xuất kho: Thủ kho (Thực hiện quét Serial và xác nhận xuất kho).
-  - Lập phiếu Thu tiền sỉ & Thu hồi công nợ đại lý: Kế toán kho (Lập & Duyệt phiếu thu).
+  - Lập phiếu Thu hồi công nợ đại lý & Thu hồi công nợ đại lý: Kế toán kho (Lập & Duyệt phiếu thu).
 
 * Phân hệ 5 - Quản trị Tồn kho, Vị trí kệ & Kiểm kê (TV4):
   - Cấu hình sơ đồ kệ, gán vị trí & điều chuyển ngăn kệ nội bộ: Thủ kho (Thực hiện); Admin (Xem/Giám sát).
@@ -539,7 +539,7 @@ Hệ thống phân chia quyền hạn theo 4 vai trò chính: Admin (Quản tr�
 
 * Phân hệ 6 - Báo cáo Tổng hợp, Dòng tiền & Dashboard Điều hành (TV5):
   - Dashboard tổng hợp, Báo cáo lợi nhuận gộp & Dòng tiền: Admin, Kế toán kho (Toàn quyền xem và xuất file).
-  - Báo cáo bán sỉ & Công nợ đại lý: Admin, Quản trị sỉ, Kế toán kho.
+  - Báo cáo xuất kho đại lý & Công nợ đại lý: Admin, Quản trị sỉ, Kế toán kho.
   - Báo cáo xuất/nhập/tồn & Dead Stock (số lượng): Admin, Thủ kho, Quản trị sỉ, Kế toán kho.
 
 ----------------------------------------------------------------------------------------
@@ -552,7 +552,7 @@ PHẦN 8: ĐẶC TẢ CÁC USE CASE NGHIỆP VỤ TRỌNG TÂM (CORE USE CASES)
 - Kích hoạt (Trigger): Lô hàng đồng hồ vật lý về đến cửa kho kèm hóa đơn, chứng từ vận chuyển và bảng kê Serial từ nhà sản xuất.
 - Luồng sự kiện chính (Main Flow):
   1. Thủ kho chọn đơn đặt hàng mua (`don_dat_hang_mua`) và chọn Nhà cung cấp (`nha_cung_cap`).
-  2. Hệ thống tải thông tin danh mục mẫu đồng hồ, số lượng đặt và quy cách đóng gói sỉ (Thùng/Hộp).
+  2. Hệ thống tải thông tin danh mục mẫu đồng hồ, số lượng đặt và quy cách đóng gói xuất kho (Thùng/Hộp).
   3. Thủ kho nhập số lượng giao dịch thực nhận; hệ thống tự động quy đổi ra tổng số chiếc lẻ (N chiếc).
   4. Thủ kho chọn phương thức nạp Serial: Quét mã vạch trực tiếp bằng súng quét hoặc tải file Excel dải Serial từ nhà sản xuất.
   5. Hệ thống kiểm tra đối soát tự động:
@@ -574,19 +574,19 @@ PHẦN 8: ĐẶC TẢ CÁC USE CASE NGHIỆP VỤ TRỌNG TÂM (CORE USE CASES)
   - E1 (Lệch số lượng Serial): Tổng số Serial quét được khác số lượng quy đổi → Hệ thống cảnh báo đỏ, khóa nút lưu và chỉ rõ số lượng thừa/thiếu.
   - E2 (Trùng lặp Serial): Phát hiện 1 hoặc nhiều mã Serial đã tồn tại trong CSDL → Hệ thống đánh dấu đỏ các dòng Serial trùng lặp, từ chối duyệt cho đến khi được chỉnh sửa.
 
-8.2. Use Case UC-02: Tạo Đơn Bán Sỉ & Duyệt Giữ Chỗ Tồn Kho (Reserved Allocation)
+8.2. Use Case UC-02: Tạo Đơn Xuất Kho Đại Lý & Duyệt Giữ Chỗ Tồn Kho (Reserved Allocation)
 - Tác nhân: Quản trị sỉ (Kinh doanh B2B), Kế toán kho.
 - Tiền điều kiện: Đại lý B2B đã được kích hoạt tài khoản; Mẫu đồng hồ có tồn khả dụng > 0.
 - Luồng sự kiện chính:
   1. Quản trị sỉ chọn Đại lý B2B và nhập danh sách mã đồng hồ (SKU) theo Thùng hoặc Chiếc lẻ.
-  2. Hệ thống kiểm tra điều kiện đặt sỉ:
+  2. Hệ thống kiểm tra điều kiện đặt hàng đại lý:
      - Số lượng đặt ≥ MOQ quy định cho từng mẫu (5 - 10 chiếc).
      - Số lượng đặt ≤ Tồn kho khả dụng hiện tại (Tồn khả dụng = Tồn thực tế - Tồn đang giữ chỗ).
-  3. Hệ thống áp dụng bảng giá sỉ và tỷ lệ chiết khấu theo hạng đại lý (VIP 30%, Bạc 25%, Đồng 20%) để tính Tổng giá trị đơn hàng.
+  3. Hệ thống áp dụng bảng giá phân phối đại lý và tỷ lệ chiết khấu theo hạng đại lý (VIP 30%, Bạc 25%, Đồng 20%) để tính Tổng giá trị đơn hàng.
   4. Hệ thống thẩm định tín dụng đại lý:
      Dư nợ hiện tại + Giá trị đơn mới - Tiền cọc ≤ Hạn mức công nợ
      Và kiểm tra đại lý không có hóa đơn quá hạn Net 15 / Net 30.
-  5. Quản trị sỉ bấm "Duyệt đơn bán sỉ".
+  5. Quản trị sỉ bấm "Duyệt lệnh xuất kho đại lý".
   6. Hệ thống thực hiện khóa tồn giữ chỗ tại mức số lượng SKU:
      - Chuyển đơn sang trạng thái `DA_DUYET` trong bảng `don_ban_si`.
      - Tăng `so_luong_giu_cho` của SKU tương ứng trong bảng `tong_hop_ton_kho`.
@@ -595,11 +595,11 @@ PHẦN 8: ĐẶC TẢ CÁC USE CASE NGHIỆP VỤ TRỌNG TÂM (CORE USE CASES)
   - E1 (Không đủ tồn khả dụng): Báo lỗi không đủ hàng và hiển thị số lượng khả dụng tối đa có thể đặt.
   - E2 (Vượt hạn mức nợ): Hệ thống từ chối duyệt tự động, yêu cầu đại lý thanh toán nợ cũ hoặc nạp thêm tiền cọc để tiếp tục.
 
-8.3. Use Case UC-03: Quét Serial Đóng Kiện & Thực Xuất Kho Bán Sỉ
+8.3. Use Case UC-03: Quét Serial Đóng Kiện & Thực Xuất Kho Xuất Kho Đại Lý
 - Tác nhân: Thủ kho.
-- Tiền điều kiện: Đơn bán sỉ đã ở trạng thái `DA_DUYET` (đã giữ chỗ tồn kho thành công).
+- Tiền điều kiện: Lệnh xuất kho đại lý đã ở trạng thái `DA_DUYET` (đã giữ chỗ tồn kho thành công).
 - Luồng sự kiện chính:
-  1. Thủ kho mở Đơn bán sỉ đã duyệt, tạo Phiếu xuất kho đóng hàng (`phieu_xuat_kho`).
+  1. Thủ kho mở Lệnh xuất kho đại lý đã duyệt, tạo Phiếu xuất kho đóng hàng (`phieu_xuat_kho`).
   2. Hệ thống hiển thị danh sách SKU và số lượng chiếc cần xuất theo từng dòng.
   3. Thủ kho lấy đồng hồ từ ngăn kệ, dùng máy quét đọc lần lượt từng mã Serial đóng vào kiện hàng.
   4. Hệ thống kiểm tra thời gian thực từng mã Serial quét vào:
@@ -644,7 +644,7 @@ Hệ thống sử dụng hệ quản trị CSDL quan hệ (PostgreSQL / Microsof
 
 9.1. Bảng `vai_tro` (Quản lý các chức năng / vai trò người dùng trong hệ thống)
 - `ma_vai_tro`         | VARCHAR(20)    | KHÓA CHÍNH  | Định danh vai trò ('QUAN_TRI_HE_THONG', 'QUAN_LY_BAN_SI', 'THU_KHO', 'KE_TOAN_KHO')
-- `ten_vai_tro`        | NVARCHAR(100)  | BẮT BUỘC    | Tên hiển thị ('Quản trị hệ thống', 'Quản lý bán sỉ', 'Thủ kho', 'Kế toán kho')
+- `ten_vai_tro`        | NVARCHAR(100)  | BẮT BUỘC    | Tên hiển thị ('Quản trị hệ thống', 'Quản lý xuất kho đại lý', 'Thủ kho', 'Kế toán kho')
 - `mo_ta_chuc_nang`    | NVARCHAR(255)  | ĐƯỢC PHÉP TRỐNG | Mô tả phạm vi quyền hạn và trách nhiệm công việc
 
 9.2. Bảng `nguoi_dung` (Quản lý tài khoản đăng nhập và nhân viên sử dụng)
@@ -676,18 +676,18 @@ Hệ thống sử dụng hệ quản trị CSDL quan hệ (PostgreSQL / Microsof
 - `do_chiu_nuoc`       | VARCHAR(20)    | BẮT BUỘC    | Mức chống nước ('3ATM', '5ATM', '10ATM', '20ATM')
 - `thoi_han_bao_hanh`  | INT            | MẶC ĐỊNH 24 | Thời gian bảo hành chính hãng (tính theo tháng)
 - `bat_buoc_serial`    | BOOLEAN        | MẶC ĐỊNH TRUE | Cờ bắt buộc nhập dải Serial từng chiếc
-- `so_luong_dat_toi_thieu_moq` | INT    | MẶC ĐỊNH 5  | Số lượng đặt sỉ tối thiểu khi lên đơn B2B
+- `so_luong_dat_toi_thieu_moq` | INT    | MẶC ĐỊNH 5  | Số lượng đặt hàng đại lý tối thiểu khi lên đơn B2B
 - `canh_bao_ton_toi_thieu` | INT        | MẶC ĐỊNH 10 | Ngưỡng số lượng tồn khả dụng kích hoạt đề xuất nhập
 - `nguong_ton_toi_da`  | INT            | MẶC ĐỊNH 200| Mức chứa tối đa trong kho
-- `gia_ban_si_co_so`   | DECIMAL(18,2)  | BẮT BUỘC    | Giá niêm yết bán sỉ cơ sở trước chiết khấu
+- `gia_ban_si_co_so`   | DECIMAL(18,2)  | BẮT BUỘC    | Giá niêm yết xuất kho đại lý cơ sở trước chiết khấu
 - `duong_dan_anh`      | VARCHAR(500)   | ĐƯỢC PHÉP TRỐNG | Đường dẫn ảnh mẫu đồng hồ
 - `ngay_tao`           | DATETIME       | MẶC ĐỊNH THỜI GIAN HIỆN TẠI
 
-9.5. Bảng `quy_doi_don_vi` (Quản lý tỷ lệ quy đổi đóng gói bán sỉ ra chiếc lẻ)
+9.5. Bảng `quy_doi_don_vi` (Quản lý tỷ lệ quy đổi đóng gói xuất kho ra chiếc lẻ)
 - `ma_quy_doi`         | INT TỰ TĂNG    | KHÓA CHÍNH
 - `ma_san_pham`        | VARCHAR(50)    | KHÓA NGOẠI -> san_pham(ma_san_pham)
 - `don_vi_co_so`       | NVARCHAR(20)   | MẶC ĐỊNH 'Chiếc' | Đơn vị tính cơ bản nhỏ nhất
-- `don_vi_ban_si`      | NVARCHAR(20)   | BẮT BUỘC    | Đơn vị đóng gói sỉ ('Hộp', 'Kiện', 'Thùng carton', 'Lô')
+- `don_vi_ban_si`      | NVARCHAR(20)   | BẮT BUỘC    | Đơn vị đóng gói xuất kho ('Hộp', 'Kiện', 'Thùng carton', 'Lô')
 - `he_so_quy_doi`      | INT            | BẮT BUỘC    | Hệ số quy đổi ra chiếc lẻ (Ví dụ: 1 Thùng = 20 Chiếc)
 
 9.6. Bảng `vi_tri_ngan_ke` (Sơ đồ địa chỉ vật lý lưu trữ trong kho)
@@ -703,7 +703,7 @@ Hệ thống sử dụng hệ quản trị CSDL quan hệ (PostgreSQL / Microsof
 - `ma_san_pham`        | VARCHAR(50)    | KHÓA NGOẠI -> san_pham(ma_san_pham)
 - `trang_thai_chat_luong` | VARCHAR(20) | BẮT BUỘC    | Loại kho ('HANG_MOI', 'HANG_TRUNG_BAY', 'HANG_LOI')
 - `so_luong_thuc_te`   | INT            | MẶC ĐỊNH 0  | Tổng số lượng thực tế hiện diện trong kho
-- `so_luong_giu_cho`   | INT            | MẶC ĐỊNH 0  | Số lượng giữ chỗ cho các đơn bán sỉ đã duyệt
+- `so_luong_giu_cho`   | INT            | MẶC ĐỊNH 0  | Số lượng giữ chỗ cho các lệnh xuất kho đại lý đã duyệt
 - `so_luong_kha_dung`  | INT            | MẶC ĐỊNH 0  | Số lượng sẵn sàng bán (= so_luong_thuc_te - so_luong_giu_cho)
 - DUY NHẤT (`ma_san_pham`, `trang_thai_chat_luong`)
 
@@ -719,9 +719,9 @@ Hệ thống sử dụng hệ quản trị CSDL quan hệ (PostgreSQL / Microsof
 - `du_no_hien_tai`     | DECIMAL(18,2)  | MẶC ĐỊNH 0.00 | Số tiền kho hiện đang còn nợ nhà cung cấp
 - `dang_hop_tac`       | BOOLEAN        | MẶC ĐỊNH TRUE | Cờ trạng thái hợp tác kinh doanh
 
-9.9. Bảng `dai_ly_b2b` (Hồ sơ khách hàng sỉ và chính sách thương mại)
-- `ma_dai_ly`          | VARCHAR(50)    | KHÓA CHÍNH  | Mã đại lý bán sỉ
-- `ten_dai_ly`         | NVARCHAR(255)  | BẮT BUỘC    | Tên cửa hàng sỉ / Doanh nghiệp đại lý
+9.9. Bảng `dai_ly_b2b` (Hồ sơ đối tác đại lý và chính sách thương mại)
+- `ma_dai_ly`          | VARCHAR(50)    | KHÓA CHÍNH  | Mã đại lý xuất kho đại lý
+- `ten_dai_ly`         | NVARCHAR(255)  | BẮT BUỘC    | Tên cửa hàng đại lý / Doanh nghiệp đại lý
 - `ma_so_thue`         | VARCHAR(20)    | BẮT BUỘC    | Mã số thuế đại lý
 - `cap_bac_dai_ly`     | VARCHAR(20)    | BẮT BUỘC    | Hạng đối tác ('VIP', 'BAC', 'DONG')
 - `ty_le_chiet_khau`   | DECIMAL(5,2)   | BẮT BUỘC    | Tỷ lệ chiết khấu thương mại (%) (30.00, 25.00, 20.00)
@@ -755,7 +755,7 @@ Hệ thống sử dụng hệ quản trị CSDL quan hệ (PostgreSQL / Microsof
 - `loai_nhap_kho`      | VARCHAR(30)    | BẮT BUỘC    | Loại nghiệp vụ ('NHAP_MUA_PO', 'DAI_LY_TRA_HANG', 'BAO_HANH_TRA_VE')
 - `ma_don_mua_po`      | VARCHAR(50)    | KHÓA NGOẠI -> don_dat_hang_mua(ma_don_mua_po), NULL
 - `ma_nha_cung_cap`    | VARCHAR(50)    | KHÓA NGOẠI -> nha_cung_cap(ma_nha_cung_cap), NULL
-- `ma_dai_ly`          | VARCHAR(50)    | KHÓA NGOẠI -> dai_ly_b2b(ma_dai_ly), NULL (áp dụng khi khách sỉ trả hàng)
+- `ma_dai_ly`          | VARCHAR(50)    | KHÓA NGOẠI -> dai_ly_b2b(ma_dai_ly), NULL (áp dụng khi đối tác đại lý trả hàng)
 - `ngay_nhap_kho`      | DATETIME       | BẮT BUỘC    | Thời điểm thực hiện nghiệm thu nhập kho
 - `tong_tien_hang`     | DECIMAL(18,2)  | BẮT BUỘC    | Tổng tiền hóa đơn mua hàng
 - `chi_phi_phan_bo`    | DECIMAL(18,2)  | MẶC ĐỊNH 0.00 | Chi phí vận chuyển, hải quan, bốc dỡ phân bổ vào lô hàng
@@ -789,8 +789,8 @@ Hệ thống sử dụng hệ quản trị CSDL quan hệ (PostgreSQL / Microsof
 - `ngay_het_han_bao_hanh` | DATE        | ĐƯỢC PHÉP TRỐNG | Thời hạn bảo hành căn cứ theo ngày xuất kho
 - `ngay_cap_nhat`      | DATETIME       | MẶC ĐỊNH THỜI GIAN HIỆN TẠI (Tự động cập nhật khi có biến động)
 
-9.15. Bảng `don_ban_si` (Quản lý đơn đặt hàng bán sỉ của các đại lý B2B)
-- `ma_don_ban_si`      | VARCHAR(50)    | KHÓA CHÍNH  | Mã đơn hàng bán sỉ (ĐH-YYYYMMDD-XXX)
+9.15. Bảng `don_ban_si` (Quản lý đơn đặt hàng xuất kho đại lý của các đại lý B2B)
+- `ma_don_ban_si`      | VARCHAR(50)    | KHÓA CHÍNH  | Mã đơn hàng xuất kho đại lý (ĐH-YYYYMMDD-XXX)
 - `ma_dai_ly`          | VARCHAR(50)    | KHÓA NGOẠI -> dai_ly_b2b(ma_dai_ly)
 - `ngay_dat_hang`      | DATETIME       | BẮT BUỘC    | Thời điểm đại lý chốt đặt đơn
 - `cap_bac_ap_dung`    | VARCHAR(20)    | BẮT BUỘC    | Hạng đại lý tại thời điểm duyệt đơn ('VIP', 'BAC', 'DONG')
@@ -807,7 +807,7 @@ Hệ thống sử dụng hệ quản trị CSDL quan hệ (PostgreSQL / Microsof
 - `ma_chi_tiet_don_si` | INT TỰ TĂNG    | KHÓA CHÍNH
 - `ma_don_ban_si`      | VARCHAR(50)    | KHÓA NGOẠI -> don_ban_si(ma_don_ban_si)
 - `ma_san_pham`        | VARCHAR(50)    | KHÓA NGOẠI -> san_pham(ma_san_pham)
-- `don_vi_ban`         | NVARCHAR(20)   | BẮT BUỘC    | Đơn vị xuất bán sỉ ('Thùng', 'Kiện', 'Chiếc')
+- `don_vi_ban`         | NVARCHAR(20)   | BẮT BUỘC    | Đơn vị xuất kho đại lý ('Thùng', 'Kiện', 'Chiếc')
 - `so_luong_dat`       | INT            | BẮT BUỘC    | Số lượng gói hàng đặt
 - `so_luong_quy_doi`   | INT            | BẮT BUỘC    | Số lượng chiếc quy đổi (được hệ thống khóa giữ chỗ tồn)
 - `don_gia_si_niem_yet`| DECIMAL(18,2)  | BẮT BUỘC    | Đơn giá niêm yết của 1 chiếc đồng hồ
@@ -833,7 +833,7 @@ Hệ thống sử dụng hệ quản trị CSDL quan hệ (PostgreSQL / Microsof
 - `gia_von_tai_thoi_diem_xuat` | DECIMAL(18,2) | BẮT BUỘC | Giá vốn gốc đích danh của chiếc đồng hồ được xuất
 - `don_gia_ban_thuc_te`| DECIMAL(18,2)  | BẮT BUỘC    | Giá bán thực tế chiếc đồng hồ này sau khi chia đều chiết khấu
 
-9.19. Bảng `phieu_thu_tien` (Chứng từ thu tiền thanh toán nợ hoặc tiền cọc của đại lý sỉ - PT)
+9.19. Bảng `phieu_thu_tien` (Chứng từ thu tiền thanh toán nợ hoặc tiền cọc của đại lý B2B - PT)
 - `ma_phieu_thu`       | VARCHAR(50)    | KHÓA CHÍNH  | Mã chứng từ thu tiền (PT-YYYYMMDD-XXX)
 - `ma_dai_ly`          | VARCHAR(50)    | KHÓA NGOẠI -> dai_ly_b2b(ma_dai_ly)
 - `ma_don_ban_si`      | VARCHAR(50)    | KHÓA NGOẠI -> don_ban_si(ma_don_ban_si), NULL (gán mã đơn nếu là thu cọc)
@@ -910,11 +910,11 @@ PHẦN 10: QUY TRÌNH NGHIỆP VỤ & QUY TẮC TOÀN VẸN GIAO DỊCH (WORKFLO
    │
    └──► [Xuất trả NCC] ────────────────────────────────► (DA_TRA_NCC)
 ```
-*Lưu ý kiến trúc:* Trạng thái giữ chỗ hàng được quản trị tập trung tại trường `so_luong_giu_cho` của bảng `tong_hop_ton_kho` theo mã SKU khi duyệt Đơn bán sỉ (`don_ban_si`). Serial vật lý chỉ chuyển trạng thái sang `DA_BAN` khi thủ kho thực hiện quét mã đóng thùng tại khâu xuất kho (`phieu_xuat_kho`).
+*Lưu ý kiến trúc:* Trạng thái giữ chỗ hàng được quản trị tập trung tại trường `so_luong_giu_cho` của bảng `tong_hop_ton_kho` theo mã SKU khi duyệt Lệnh xuất kho đại lý (`don_ban_si`). Serial vật lý chỉ chuyển trạng thái sang `DA_BAN` khi thủ kho thực hiện quét mã đóng thùng tại khâu xuất kho (`phieu_xuat_kho`).
 
 10.2. Quy tắc giao dịch đồng thời & Chống bán trùng (Concurrency & Locking Rule):
-Để giải quyết bài toán nhiều nhân viên kinh doanh cùng lập đơn sỉ và xuất kho cho các mã đồng hồ hot số lượng có hạn:
-- Khóa bi quan ở mức bản ghi (Pessimistic Row-level Locking): Khi thực hiện duyệt Đơn bán sỉ (`don_ban_si`), hệ thống thực thi truy vấn kiểm tra tồn kho bằng câu lệnh có khóa:
+Để giải quyết bài toán nhiều nhân viên kinh doanh cùng lập lệnh xuất đại lý và xuất kho cho các mã đồng hồ hot số lượng có hạn:
+- Khóa bi quan ở mức bản ghi (Pessimistic Row-level Locking): Khi thực hiện duyệt Lệnh xuất kho đại lý (`don_ban_si`), hệ thống thực thi truy vấn kiểm tra tồn kho bằng câu lệnh có khóa:
   ```sql
   SELECT so_luong_kha_dung 
   FROM tong_hop_ton_kho 
@@ -931,8 +931,8 @@ PHẦN 10: QUY TRÌNH NGHIỆP VỤ & QUY TẮC TOÀN VẸN GIAO DỊCH (WORKFLO
   ```
   Nếu `trang_thai_vong_doi` ≠ `'TRONG_KHO'`, hệ thống lập tức từ chối và Rollback giao dịch, ngăn chặn tuyệt đối việc 2 thủ kho cùng quét 1 chiếc đồng hồ cho 2 đơn khác nhau.
 
-10.3. Công thức tính Lợi nhuận gộp đích danh trên từng đơn bán sỉ:
-Doanh thu thuần đơn sỉ = ∑(Giá sỉ sau chiết khấu × Số lượng chiếc)
+10.3. Công thức tính Lợi nhuận gộp đích danh trên từng lệnh xuất kho đại lý:
+Doanh thu thuần lệnh xuất đại lý = ∑(Giá phân phối đại lý sau chiết khấu × Số lượng chiếc)
 Tổng giá vốn hàng bán (COGS) = ∑ gia_von_dich_danh(Serial_i)
 Lợi nhuận gộp B2B = Doanh thu thuần - Tổng COGS - Chi phí vận chuyển kho chịu
 Mô hình đảm bảo tính minh bạch tài chính tuyệt đối, bóc tách chính xác tỷ suất lợi nhuận trên từng chiếc đồng hồ và từng đại lý phân phối.

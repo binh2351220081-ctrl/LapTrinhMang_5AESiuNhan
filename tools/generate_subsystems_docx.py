@@ -118,7 +118,7 @@ def create_document():
     
     info_data = [
         ("Tên đề tài:", "Hệ thống Quản lý Kho Hàng Hóa Cửa Hàng Đồng Hồ (ChronoVault B2B WMS)"),
-        ("Mô hình nghiệp vụ:", "Phân phối Bán sỉ B2B Wholesale Distribution (Đại lý, Chuỗi bán lẻ cao cấp)"),
+        ("Mô hình nghiệp vụ:", "Phân phối Đại lý B2B (B2B Wholesale Distribution) (Đại lý, Chuỗi bán lẻ cao cấp)"),
         ("Số lượng phân hệ:", "05 Phân hệ chuyên sâu (Tương ứng 5 Thành viên TV1 - TV5 phụ trách độc lập & tích hợp)"),
         ("Tổng số chức năng:", "11 Nhóm chức năng lớn • 47 Chức năng con mức nguyên tử"),
         ("Ngày lập / Phiên bản:", "Tháng 10/2026 • Phiên bản 2.0 (Kiến trúc chuẩn hóa khép kín)")
@@ -166,14 +166,14 @@ def create_document():
     intro_p = doc.add_paragraph()
     intro_p.paragraph_format.line_spacing = 1.15
     intro_p.paragraph_format.space_after = Pt(6)
-    r = intro_p.add_run("Kho hàng hóa đồng hồ cao cấp là ngành hàng đặc thù có giá trị kinh tế rất lớn, tiêu chuẩn thẩm định và bảo hành nghiêm ngặt. Hệ thống ChronoVault B2B được thiết kế chuyên biệt cho mô hình phân phối sỉ, vận hành dựa trên ")
+    r = intro_p.add_run("Kho hàng hóa đồng hồ cao cấp là ngành hàng đặc thù có giá trị kinh tế rất lớn, tiêu chuẩn thẩm định và bảo hành nghiêm ngặt. Hệ thống ChronoVault B2B được thiết kế chuyên biệt cho mô hình phân phối đại lý, vận hành dựa trên ")
     r.font.name = "Arial"; r.font.size = Pt(10)
     r_bold = intro_p.add_run("4 nguyên lý quản trị bắt buộc: ")
     r_bold.font.name = "Arial"; r_bold.font.size = Pt(10); r_bold.font.bold = True
     
     bullets = [
-        ("Quản lý định danh Serial / IMEI đích danh 100%: ", "Mỗi chiếc đồng hồ lưu hành trong hệ thống đều gắn với 1 mã Serial duy nhất từ hãng, truy vết vòng đời trọn vẹn: Nhập kho -> Kệ lưu trữ -> Đơn sỉ -> Đại lý sở hữu -> Bảo hành/Đổi trả."),
-        ("Quản lý Đơn vị tính (ĐVT) đa cấp & Quy cách đóng gói sỉ: ", "Hỗ trợ nhập/xuất theo Thùng / Kiện / Lô và tự động quy đổi chính xác ra Chiếc lẻ theo hệ số chuẩn (ví dụ: 1 Thùng = 10 Chiếc), kiểm soát số lượng đặt tối thiểu (MOQ)."),
+        ("Quản lý định danh Serial / IMEI đích danh 100%: ", "Mỗi chiếc đồng hồ lưu hành trong hệ thống đều gắn với 1 mã Serial duy nhất từ hãng, truy vết vòng đời trọn vẹn: Nhập kho -> Kệ lưu trữ -> Lệnh xuất đại lý -> Đại lý sở hữu -> Bảo hành/Đổi trả."),
+        ("Quản lý Đơn vị tính (ĐVT) đa cấp & Quy cách đóng gói xuất kho: ", "Hỗ trợ nhập/xuất theo Thùng / Kiện / Lô và tự động quy đổi chính xác ra Chiếc lẻ theo hệ số chuẩn (ví dụ: 1 Thùng = 10 Chiếc), kiểm soát số lượng đặt tối thiểu (MOQ)."),
         ("Cơ chế tính Giá vốn Đích danh (Specific Identification Method): ", "Mỗi chiếc đồng hồ được gán giá vốn thực tế khi nhập kho, cộng dồn chi phí vận chuyển quốc tế, thuế hải quan và bảo hiểm để tính chính xác lợi nhuận gộp từng đơn hàng."),
         ("Chu trình Công nợ B2B khép kín & Đối soát dòng tiền: ", "Tích hợp Phiếu Chi trả NCC và Phiếu Thu thu nợ/cọc Đại lý, kiểm soát hạn mức tín dụng (Credit Limit) trước khi duyệt đơn xuất.")
     ]
@@ -223,9 +223,9 @@ def create_document():
             "PH1",
             "Quản Lý Hàng Hóa & Quản Trị Hệ Thống",
             "Thành viên 1 (TV1)",
-            "Quản lý danh mục đồng hồ, thông số kỹ thuật, cấu hình ĐVT sỉ/lẻ, MOQ, tra cứu vòng đời Serial; quản trị người dùng, phân quyền RBAC và ghi vết Audit Log.",
+            "Quản lý danh mục đồng hồ, thông số kỹ thuật, cấu hình ĐVT đóng gói/lẻ, MOQ, tra cứu vòng đời Serial; quản trị người dùng, phân quyền RBAC và ghi vết Audit Log.",
             "• Quản trị hệ thống\n• Người dùng theo quyền",
-            "Đầu vào: Thông tin SKU, Barcode, bộ máy, giá sỉ, ảnh, tài khoản, ma trận quyền.\nĐầu ra: Danh mục sản phẩm chuẩn, timeline vòng đời Serial, tài khoản an toàn, Audit log.",
+            "Đầu vào: Thông tin SKU, Barcode, bộ máy, giá phân phối đại lý, ảnh, tài khoản, ma trận quyền.\nĐầu ra: Danh mục sản phẩm chuẩn, timeline vòng đời Serial, tài khoản an toàn, Audit log.",
             "Cung cấp danh mục đồng hồ & cấu hình ĐVT cho PH2 (Nhập), PH3 (Xuất), PH4 (Tồn kho); bảo mật & ghi log cho toàn hệ thống."
         ),
         (
@@ -239,11 +239,11 @@ def create_document():
         ),
         (
             "PH3",
-            "Khách Sỉ & Bán Sỉ - Xuất Hàng",
+            "Đối Tác Đại Lý & Quản Lý Xuất Kho",
             "Thành viên 3 (TV3)",
-            "Quản lý đại lý B2B, phân hạng, hạn mức tín dụng; lập đơn bán sỉ, khóa hàng giữ chỗ (Reserved), quét Serial đóng gói xuất kho, xuất bảo hành/hủy, thu cọc/nợ và đổi trả sỉ.",
+            "Quản lý đại lý B2B, phân hạng, hạn mức tín dụng; lập lệnh xuất kho đại lý, khóa hàng giữ chỗ (Reserved), quét Serial đóng gói xuất kho, xuất bảo hành/hủy, thu cọc/nợ và nhận trả hàng đại lý.",
             "• Nhân viên nhập - xuất kho\n• Thủ kho (quản lý điều hành)\n• Kế toán\n• Chủ cửa hàng",
-            "Đầu vào: Hồ sơ đại lý, đơn đặt sỉ, mã Serial quét lấy từ kệ, phiếu thu tiền cọc, yêu cầu đổi trả.\nĐầu ra: Đơn sỉ duyệt, Phiếu xuất kho B2B có bảng kê Serial, Phiếu thu tiền nợ, cập nhật hạn mức tín dụng.",
+            "Đầu vào: Hồ sơ đại lý, đơn đặt hàng đại lý, mã Serial quét lấy từ kệ, phiếu thu tiền cọc, yêu cầu đổi trả.\nĐầu ra: Lệnh xuất đại lý duyệt, Phiếu xuất kho B2B có bảng kê Serial, Phiếu thu tiền nợ, cập nhật hạn mức tín dụng.",
             "Kiểm tra & khóa tồn kho tại PH4; xuất Serial đổi trạng thái ĐÃ BÁN; tăng công nợ đại lý và gửi doanh số/dòng tiền sang PH5."
         ),
         (
@@ -253,7 +253,7 @@ def create_document():
             "Quản lý tồn kho đa đơn vị (Thùng/Chiếc), phân loại 3 trạng thái (Mới, Trưng bày, Lỗi); quản lý sơ đồ ngăn kệ vật lý; kiểm kê quét Serial đối soát chênh lệch và quản lý Sổ Thẻ kho.",
             "• Thủ kho (quản lý điều hành)\n• Nhân viên nhập - xuất kho\n• Kế toán\n• Chủ cửa hàng",
             "Đầu vào: Lệnh nhập từ PH2, lệnh xuất từ PH3, vị trí kệ, kết quả quét kiểm đếm thực tế.\nĐầu ra: Số lượng tồn thực tế/giữ chỗ/khả dụng, sơ đồ kệ trực quan, Phiếu cân bằng kiểm kê, Sổ Thẻ kho.",
-            "Cung cấp số lượng khả dụng cho PH3 lên đơn sỉ; cách ly hàng lỗi cho PH2 xuất trả NCC; cung cấp giá trị tồn kho đích danh cho PH5."
+            "Cung cấp số lượng khả dụng cho PH3 lên lệnh xuất đại lý; cách ly hàng lỗi cho PH2 xuất trả NCC; cung cấp giá trị tồn kho đích danh cho PH5."
         ),
         (
             "PH5",
@@ -261,7 +261,7 @@ def create_document():
             "Thành viên 5 (TV5)",
             "Tổng hợp số liệu điều hành thời gian thực: KPI Cards, biểu đồ doanh thu Canvas 6 tháng, báo cáo chuyên sâu nhập/xuất/tồn, sổ chi tiết công nợ 2 chiều và dòng tiền thu/chi thực tế.",
             "• Chủ cửa hàng\n• Quản trị hệ thống\n• Thủ kho (quản lý điều hành)\n• Nhân viên nhập - xuất kho\n• Kế toán",
-            "Đầu vào: Dữ liệu giao dịch từ PH1, PH2, PH3, PH4 (Nhập kho, xuất sỉ, thu tiền, chi tiền, tồn kho, kiểm kê).\nĐầu ra: Dashboard chỉ số KPI, Biểu đồ doanh thu Canvas, 9 loại báo cáo tài chính/quản trị, file xuất Excel/PDF.",
+            "Đầu vào: Dữ liệu giao dịch từ PH1, PH2, PH3, PH4 (Nhập kho, xuất kho đại lý, thu tiền, chi tiền, tồn kho, kiểm kê).\nĐầu ra: Dashboard chỉ số KPI, Biểu đồ doanh thu Canvas, 9 loại báo cáo tài chính/quản trị, file xuất Excel/PDF.",
             "Thu nhận luồng dữ liệu tổng hợp từ toàn bộ 4 phân hệ PH1, PH2, PH3, PH4 để kết xuất báo cáo và giám sát sức khỏe tài chính doanh nghiệp."
         )
     ]
@@ -323,7 +323,7 @@ def create_document():
         ("Quản trị hệ thống", "Quản lý tài khoản, vai trò, cấu hình hệ thống và Audit Log; không mặc định can thiệp hoặc duyệt nghiệp vụ thu/chi, nhập/xuất."),
         ("Chủ cửa hàng", "Theo dõi Dashboard/báo cáo điều hành và phê duyệt ngoại lệ vượt ngưỡng về chi phí, tín dụng, chênh lệch kiểm kê; không trực tiếp quản trị tài khoản kỹ thuật hoặc xử lý giao dịch kho thường ngày."),
         ("Thủ kho (quản lý điều hành)", "Chịu trách nhiệm quản lý điều hành toàn diện kho hàng, định vị hàng hóa, bảo quản an toàn, xác nhận giao nhận vật lý, tổ chức kiểm kê và cân bằng kho trong thẩm quyền."),
-        ("Nhân viên nhập - xuất kho", "Lập phiếu nhập kho từ PO, quét nạp Serial, lập đơn bán sỉ nháp, soạn và đóng gói đơn xuất kho, xử lý phiếu đổi trả và bảo hành theo quy trình."),
+        ("Nhân viên nhập - xuất kho", "Lập phiếu nhập kho từ PO, quét nạp Serial, lập lệnh xuất kho đại lý nháp, soạn và đóng gói đơn xuất kho, xử lý phiếu đổi trả và bảo hành theo quy trình."),
         ("Kế toán", "Phân bổ chi phí phụ trợ vào giá vốn đích danh, theo dõi công nợ NCC/đại lý, lập phiếu thu/chi, đối soát chứng từ và lập báo cáo tài chính.")
     ]
     for row_idx, (a_name, a_desc) in enumerate(actors_list, start=1):
@@ -501,7 +501,7 @@ def create_document():
             "code": "F1.1.1",
             "name": "Xem danh sách đồng hồ",
             "actor": "Quản trị hệ thống, Thủ kho (quản lý điều hành), Nhân viên nhập - xuất kho, Kế toán",
-            "workflow": "Hệ thống truy xuất cơ sở dữ liệu sản phẩm, hiển thị dạng bảng Datatable kèm hình ảnh, SKU, thương hiệu, giá sỉ VIP, tồn kho thực tế; hỗ trợ phân trang và sắp xếp.",
+            "workflow": "Hệ thống truy xuất cơ sở dữ liệu sản phẩm, hiển thị dạng bảng Datatable kèm hình ảnh, SKU, thương hiệu, giá phân phối đại lý VIP, tồn kho thực tế; hỗ trợ phân trang và sắp xếp.",
             "input": "Bộ lọc thương hiệu, từ khóa tìm kiếm, tùy chọn sắp xếp (giá, tên, tồn kho), số trang.",
             "output": "Danh sách mẫu đồng hồ hiển thị trực quan, phân trang chính xác.",
             "rules": "Chỉ hiển thị các sản phẩm có trạng thái ACTIVE hoặc hiển thị kèm cờ gắn nhãn nếu NGỪNG KINH DOANH.",
@@ -515,13 +515,13 @@ def create_document():
             "input": "ID hoặc mã SKU của mẫu đồng hồ được chọn.",
             "output": "Modal thông số kỹ thuật chi tiết chuẩn ngành đồng hồ xa xỉ.",
             "rules": "Hiển thị đầy đủ 6 thông số kỹ thuật bắt buộc của ngành đồng hồ.",
-            "linked": "Độc lập trong PH1; phục vụ tư vấn bán sỉ tại PH3."
+            "linked": "Độc lập trong PH1; phục vụ tư vấn xuất kho đại lý tại PH3."
         },
         {
             "code": "F1.1.3",
             "name": "Thêm mới đồng hồ",
             "actor": "Quản trị hệ thống",
-            "workflow": "Admin mở form thêm mới, khai báo mã SKU, Barcode, tên mẫu, thương hiệu, phân loại, giá vốn chuẩn, giá sỉ theo cấp bậc (VIP/Bạc/Đồng), ảnh, Min/Max tồn kho, cờ quản lý Serial.",
+            "workflow": "Admin mở form thêm mới, khai báo mã SKU, Barcode, tên mẫu, thương hiệu, phân loại, giá vốn chuẩn, giá phân phối đại lý theo cấp bậc (VIP/Bạc/Đồng), ảnh, Min/Max tồn kho, cờ quản lý Serial.",
             "input": "SKU, Barcode, tên, hãng, loại máy, kính, dây, size mặt, waterResist, warranty, baseCost, wholesalePriceVip/Silver/Bronze, moq, minStock, maxStock, shelfId, hasSerial.",
             "output": "Bản ghi sản phẩm mới được lưu vào CSDL; hiển thị ngay trên danh mục.",
             "rules": "Mã SKU và Barcode là duy nhất tuyệt đối. Cờ quản lý Serial mặc định là TRUE đối với đồng hồ.",
@@ -529,13 +529,13 @@ def create_document():
         },
         {
             "code": "F1.1.4",
-            "name": "Chỉnh sửa thông tin & Cấu hình ĐVT sỉ",
+            "name": "Chỉnh sửa thông tin & Cấu hình ĐVT đóng gói",
             "actor": "Quản trị hệ thống",
-            "workflow": "Admin chỉnh sửa thông số sản phẩm, thiết lập ĐVT cơ bản (Chiếc), ĐVT bán sỉ (Thùng/Kiện/Lô), hệ số quy đổi đóng gói (ví dụ: 1 Thùng = 10 Chiếc), chính sách MOQ và giá sỉ phân cấp.",
-            "input": "ID sản phẩm, hệ số quy đổi (conversionRate), ĐVT sỉ, MOQ, giá sỉ các hạng đại lý.",
+            "workflow": "Admin chỉnh sửa thông số sản phẩm, thiết lập ĐVT cơ bản (Chiếc), ĐVT đóng gói xuất kho (Thùng/Kiện/Lô), hệ số quy đổi đóng gói (ví dụ: 1 Thùng = 10 Chiếc), chính sách MOQ và giá phân phối đại lý phân cấp.",
+            "input": "ID sản phẩm, hệ số quy đổi (conversionRate), ĐVT đóng gói, MOQ, giá phân phối đại lý các hạng đại lý.",
             "output": "Thông tin sản phẩm cập nhật; hệ số quy đổi được áp dụng cho chu trình nhập/xuất.",
             "rules": "Hệ số quy đổi phải là số nguyên dương >= 1. MOQ phải >= 1.",
-            "linked": "PH2 (Dùng hệ số quy đổi khi nhập), PH3 (Dùng khi lên đơn bán sỉ)."
+            "linked": "PH2 (Dùng hệ số quy đổi khi nhập), PH3 (Dùng khi lập lệnh xuất kho đại lý)."
         },
         {
             "code": "F1.1.5",
@@ -545,7 +545,7 @@ def create_document():
             "input": "ID sản phẩm, lý do ngừng kinh doanh / xóa.",
             "output": "Cập nhật status = 'INACTIVE' hoặc xóa bản ghi khỏi hệ thống.",
             "rules": "Tuyệt đối không cho phép xóa vật lý nếu sản phẩm còn tồn kho > 0 hoặc đã phát sinh lịch sử giao dịch (chỉ cho phép chuyển trạng thái Ngừng kinh doanh).",
-            "linked": "PH4 (Kiểm tra tồn kho vật lý), PH3 (Chặn lên đơn sỉ mới)."
+            "linked": "PH4 (Kiểm tra tồn kho vật lý), PH3 (Chặn lên lệnh xuất đại lý mới)."
         },
         {
             "code": "F1.1.6",
@@ -561,7 +561,7 @@ def create_document():
             "code": "F1.1.7",
             "name": "Tìm kiếm & Lọc nâng cao",
             "actor": "Tất cả người dùng",
-            "workflow": "Người dùng nhập từ khóa tìm kiếm theo SKU, Barcode, tên hoặc chọn lọc đa tiêu chí (Thương hiệu, khoảng giá sỉ, loại bộ máy cơ/pin/solar); hệ thống lọc tức thời.",
+            "workflow": "Người dùng nhập từ khóa tìm kiếm theo SKU, Barcode, tên hoặc chọn lọc đa tiêu chí (Thương hiệu, khoảng giá phân phối đại lý, loại bộ máy cơ/pin/solar); hệ thống lọc tức thời.",
             "input": "Chuỗi tìm kiếm, mảng thương hiệu đã chọn, khoảng giá (min - max), loại bộ máy.",
             "output": "Bảng dữ liệu được lọc tức thời trong vòng < 0.2 giây.",
             "rules": "Tìm kiếm không phân biệt chữ hoa/thường, hỗ trợ tiếng Việt có dấu và không dấu.",
@@ -571,7 +571,7 @@ def create_document():
             "code": "F1.1.8",
             "name": "Truy vết vòng đời Serial (Serial Lifecycle)",
             "actor": "Tất cả người dùng",
-            "workflow": "Người dùng nhập/quét mã Serial bất kỳ; hệ thống truy vấn toàn bộ lịch sử: Thời điểm nhập, NCC, vị trí kệ lưu trữ, mã đơn sỉ, đại lý tiếp nhận, lịch sử bảo hành/đổi trả.",
+            "workflow": "Người dùng nhập/quét mã Serial bất kỳ; hệ thống truy vấn toàn bộ lịch sử: Thời điểm nhập, NCC, vị trí kệ lưu trữ, mã lệnh xuất đại lý, đại lý tiếp nhận, lịch sử bảo hành/đổi trả.",
             "input": "Chuỗi mã Serial Number (Serial/IMEI).",
             "output": "Màn hình Timeline trực quan hiển thị toàn bộ sự kiện gắn liền với Serial từ lúc sinh ra đến hiện tại.",
             "rules": "Bắt buộc mã Serial phải khớp chính xác. Hiển thị cảnh báo đỏ nếu Serial không thuộc hệ thống.",
@@ -662,7 +662,7 @@ def create_document():
             "code": "F1.2.8",
             "name": "Ghi nhận & Truy xuất Nhật ký (Audit Log)",
             "actor": "Tất cả tác nhân (Hệ thống tự động ghi)",
-            "workflow": "Mọi thao tác trọng yếu (Tạo đơn sỉ, Duyệt nhập kho, Thu nợ, Chi tiền, Kiểm kê...) đều được tự động ghi nhận vào Audit Log kèm thời gian, người thực hiện, hành động, đối tượng tác động.",
+            "workflow": "Mọi thao tác trọng yếu (Tạo lệnh xuất đại lý, Duyệt nhập kho, Thu nợ, Chi tiền, Kiểm kê...) đều được tự động ghi nhận vào Audit Log kèm thời gian, người thực hiện, hành động, đối tượng tác động.",
             "input": "Timestamp, username, vai trò, hành động (ACTION_TYPE), mã chứng từ/đối tượng.",
             "output": "Bảng Audit Log thời gian thực, hỗ trợ thanh tra và đối soát nội bộ.",
             "rules": "Dữ liệu Audit Log chỉ có quyền ĐỌC (Append-only), tuyệt đối không được sửa hoặc xóa bởi bất kỳ ai.",
@@ -869,19 +869,19 @@ def create_document():
     ]
 
     # -------------------------------------------------------------
-    # DỮ LIỆU PHÂN HỆ 3: BÁN SỈ & PHÂN PHỐI ĐẠI LÝ - XUẤT HÀNG (TV3)
+    # DỮ LIỆU PHÂN HỆ 3: ĐỐI TÁC ĐẠI LÝ & QUẢN LÝ XUẤT KHO (TV3)
     # -------------------------------------------------------------
     data_ph3 = [
-        {"is_group": True, "code": "CNL 3.1", "name": "QUẢN LÝ ĐẠI LÝ B2B & ĐỔI TRẢ SỈ", "desc": "Nhóm chức năng quản lý danh mục đại lý, hạn mức tín dụng, thu tiền sỉ/cọc và tiếp nhận đổi trả hàng sỉ."},
+        {"is_group": True, "code": "CNL 3.1", "name": "QUẢN LÝ ĐẠI LÝ B2B & NHẬN TRẢ HÀNG ĐẠI LÝ", "desc": "Nhóm chức năng quản lý danh mục đại lý, hạn mức tín dụng, thu hồi công nợ đại lý/cọc và tiếp nhận tiếp nhận trả hàng đại lý."},
         {
             "code": "F3.1.1",
             "name": "Xem danh sách đại lý B2B",
             "actor": "Nhân viên nhập - xuất kho, Kế toán, Quản trị hệ thống",
-            "workflow": "Hiển thị danh mục 100% đối tác phân phối sỉ là pháp nhân/cửa hàng cao cấp (Hải Triều, Đăng Quang, Xwatch...); phân hạng rõ ràng: VIP, Bạc, Đồng.",
+            "workflow": "Hiển thị danh mục 100% đối tác phân phối đại lý là pháp nhân/cửa hàng cao cấp (Hải Triều, Đăng Quang, Xwatch...); phân hạng rõ ràng: VIP, Bạc, Đồng.",
             "input": "Bộ lọc phân hạng đại lý, từ khóa tìm kiếm theo tên shop, MST, địa chỉ.",
             "output": "Bảng đại lý B2B kèm hạn mức tín dụng, dư nợ hiện tại và công nợ khả dụng.",
-            "rules": "Không quản lý khách lẻ POS; 100% đối tác là đại lý bán sỉ B2B.",
-            "linked": "Cung cấp danh sách khách hàng cho module Bán sỉ (F3.2.1)."
+            "rules": "Không quản lý khách lẻ POS; 100% đối tác là đại lý phân phối đại lý B2B.",
+            "linked": "Cung cấp danh sách khách hàng cho module Xuất kho đại lý (F3.2.1)."
         },
         {
             "code": "F3.1.2",
@@ -890,7 +890,7 @@ def create_document():
             "workflow": "Khai báo thông tin pháp lý của đại lý: Tên doanh nghiệp/Thương hiệu shop, MST, người đại diện pháp luật, hotline, địa chỉ kho nhận hàng, phân hạng hợp đồng.",
             "input": "Tên đại lý, MST, người đại diện, SĐT, địa chỉ kho nhận, phân hạng (VIP/Bạc/Đồng).",
             "output": "Hồ sơ đại lý B2B mới được kích hoạt trong hệ thống.",
-            "rules": "Mã số thuế đại lý là duy nhất. Bắt buộc có địa chỉ giao hàng sỉ chính xác.",
+            "rules": "Mã số thuế đại lý là duy nhất. Bắt buộc có địa chỉ giao hàng đại lý chính xác.",
             "linked": "Đồng bộ sang danh bạ khách hàng tại PH5."
         },
         {
@@ -901,7 +901,7 @@ def create_document():
             "input": "Mã đại lý, tỷ lệ chiết khấu hợp đồng (%), hạn mức tín dụng (VND).",
             "output": "Chính sách thương mại của đại lý được cập nhật và áp dụng tự động khi lên đơn.",
             "rules": "Hạn mức nợ tối đa phải tuân theo chính sách phê duyệt tín dụng của Chủ cửa hàng.",
-            "linked": "Sử dụng trực tiếp trong quy tắc kiểm tra duyệt đơn sỉ (F3.2.6)."
+            "linked": "Sử dụng trực tiếp trong quy tắc kiểm tra duyệt lệnh xuất đại lý (F3.2.6)."
         },
         {
             "code": "F3.1.4",
@@ -915,17 +915,17 @@ def create_document():
         },
         {
             "code": "F3.1.5",
-            "name": "Lập phiếu Thu tiền sỉ / Thu nợ đại lý",
+            "name": "Lập phiếu Thu hồi công nợ đại lý / Thu nợ đại lý",
             "actor": "Kế toán",
-            "workflow": "Kế toán lập phiếu thu tiền (Chuyển khoản ngân hàng / Tiền mặt) ghi nhận tiền đặt cọc đơn sỉ hoặc thu hồi nợ mua sỉ; hệ thống tự động trừ dư nợ và khôi phục hạn mức mua hàng.",
+            "workflow": "Kế toán lập phiếu thu tiền (Chuyển khoản ngân hàng / Tiền mặt) ghi nhận tiền đặt cọc lệnh xuất đại lý hoặc thu hồi công nợ đại lý; hệ thống tự động trừ dư nợ và khôi phục hạn mức mua hàng.",
             "input": "Mã đại lý, số tiền thu, phương thức (Chuyển khoản/Tiền mặt), chứng từ tham chiếu (UNC/Hóa đơn), ghi chú.",
             "output": "Phiếu thu (PT-xxxx) được tạo và duyệt; dư nợ đại lý giảm; hạn mức mua hàng tăng.",
-            "rules": "Số tiền thu tự động cấn trừ vào các hóa đơn sỉ đến hạn trước (nguyên tắc FIFO).",
+            "rules": "Số tiền thu tự động cấn trừ vào các hóa lệnh xuất đại lý đến hạn trước (nguyên tắc FIFO).",
             "linked": "Giảm nợ đại lý tại F3.1.4; tăng dòng tiền thu thực tế tại Dashboard & Báo cáo PH5."
         },
         {
             "code": "F3.1.6",
-            "name": "Tiếp nhận yêu cầu đổi trả sỉ",
+            "name": "Tiếp nhận yêu cầu nhận trả hàng đại lý",
             "actor": "Nhân viên nhập - xuất kho, Thủ kho (quản lý điều hành)",
             "workflow": "Đại lý gửi trả hàng; người dùng quét mã Serial sản phẩm trả; hệ thống truy vấn đối soát nguồn gốc xuất kho xem chiếc đồng hồ này có đúng xuất bán cho đại lý này hay không.",
             "input": "Mã đại lý, mã Serial đồng hồ gửi trả, lý do hoàn trả.",
@@ -945,7 +945,7 @@ def create_document():
         },
         {
             "code": "F3.1.8",
-            "name": "Phê duyệt phiếu đổi trả sỉ",
+            "name": "Phê duyệt phiếu nhận trả hàng đại lý",
             "actor": "Nhân viên nhập - xuất kho, Thủ kho (quản lý điều hành), Kế toán, Chủ cửa hàng",
             "workflow": "Nhân viên xử lý yêu cầu; Thủ kho xác nhận hàng nhận và tình trạng; Kế toán đối soát giá trị hoàn trả/công nợ; Chủ cửa hàng duyệt ngoại lệ vượt ngưỡng.",
             "input": "Mã phiếu đổi trả (TS-xxxx), quyết định phê duyệt.",
@@ -959,18 +959,18 @@ def create_document():
             "actor": "Kế toán, Chủ cửa hàng",
             "workflow": "Kế toán cảnh báo nợ quá hạn hoặc vi phạm điều khoản; Chủ cửa hàng quyết định tạm khóa/ngừng hợp tác.",
             "input": "Mã đại lý, trạng thái (ACTIVE / LOCKED / SUSPENDED), lý do khóa.",
-            "output": "Đại lý bị khóa không thể tạo hoặc duyệt thêm đơn bán sỉ mới.",
+            "output": "Đại lý bị khóa không thể tạo hoặc duyệt thêm lệnh xuất kho đại lý mới.",
             "rules": "Đại lý bị khóa vẫn được phép lập phiếu thu để trả hết nợ cũ.",
-            "linked": "Chặn chức năng tạo đơn sỉ F3.2.1."
+            "linked": "Chặn chức năng tạo lệnh xuất đại lý F3.2.1."
         },
-        {"is_group": True, "code": "CNL 3.2", "name": "BÁN SỈ & XUẤT HÀNG ĐA NĂNG (ĐƠN SỈ, XUẤT SỈ, BẢO HÀNH/HỦY)", "desc": "Nhóm chức năng lên đơn bán sỉ, khóa giữ chỗ, quét Serial xuất kho, xuất bảo hành/hủy và biên bản bàn giao."},
+        {"is_group": True, "code": "CNL 3.2", "name": "QUẢN LÝ XUẤT KHO ĐẠI LÝ & ĐIỀU CHUYỂN", "desc": "Nhóm chức năng lập lệnh xuất kho đại lý, khóa giữ chỗ, quét Serial xuất kho, xuất bảo hành/hủy và biên bản bàn giao."},
         {
             "code": "F3.2.1",
-            "name": "Khởi tạo đơn bán sỉ",
+            "name": "Khởi tạo lệnh xuất kho đại lý",
             "actor": "Nhân viên nhập - xuất kho",
-            "workflow": "Nhân viên bán sỉ chọn đại lý đối tác từ danh bạ, hệ thống tự động tải phân hạng (VIP/Bạc/Đồng), tỷ lệ chiết khấu hợp đồng và hạn mức nợ còn lại.",
+            "workflow": "Nhân viên xuất kho đại lý chọn đại lý đối tác từ danh bạ, hệ thống tự động tải phân hạng (VIP/Bạc/Đồng), tỷ lệ chiết khấu hợp đồng và hạn mức nợ còn lại.",
             "input": "Mã đại lý mua hàng, ngày đặt hàng, nhân viên phụ trách.",
-            "output": "Đơn bán sỉ mới được khởi tạo ở trạng thái BẢN NHÁP (DRAFT).",
+            "output": "Lệnh xuất kho đại lý mới được khởi tạo ở trạng thái BẢN NHÁP (DRAFT).",
             "rules": "Đại lý phải đang ở trạng thái ACTIVE và còn hạn mức tín dụng.",
             "linked": "Lấy thông tin đại lý từ F3.1.1."
         },
@@ -978,9 +978,9 @@ def create_document():
             "code": "F3.2.2",
             "name": "Chọn sản phẩm theo Thùng hoặc Chiếc lẻ",
             "actor": "Nhân viên nhập - xuất kho",
-            "workflow": "Thêm sản phẩm vào đơn, lựa chọn ĐVT bán sỉ là Thùng / Kiện hoặc Chiếc lẻ; hệ thống tự động quy đổi ra chiếc lẻ và kiểm tra điều kiện số lượng đặt hàng tối thiểu (MOQ).",
-            "input": "ID sản phẩm, ĐVT đặt sỉ (Thùng/Kiện/Chiếc), số lượng đặt.",
-            "output": "Dòng sản phẩm đơn sỉ kèm số lượng chiếc quy đổi và cảnh báo nếu vi phạm MOQ.",
+            "workflow": "Thêm sản phẩm vào đơn, lựa chọn ĐVT đóng gói xuất kho là Thùng / Kiện hoặc Chiếc lẻ; hệ thống tự động quy đổi ra chiếc lẻ và kiểm tra điều kiện số lượng đặt hàng tối thiểu (MOQ).",
+            "input": "ID sản phẩm, ĐVT đặt hàng đại lý (Thùng/Kiện/Chiếc), số lượng đặt.",
+            "output": "Dòng sản phẩm lệnh xuất đại lý kèm số lượng chiếc quy đổi và cảnh báo nếu vi phạm MOQ.",
             "rules": "Số lượng chiếc quy đổi phải >= MOQ của sản phẩm. Cảnh báo và chặn thêm nếu < MOQ.",
             "linked": "Lấy hệ số quy đổi và MOQ từ cấu hình sản phẩm F1.1.4."
         },
@@ -996,13 +996,13 @@ def create_document():
         },
         {
             "code": "F3.2.4",
-            "name": "Áp giá sỉ tự động theo cấp bậc",
+            "name": "Áp giá đại lý tự động theo cấp bậc",
             "actor": "Hệ thống tự động",
-            "workflow": "Hệ thống tự động tra cứu bảng giá sỉ tương ứng với hạng của đại lý (VIP: giá rẻ nhất, Bạc: giá trung bình, Đồng: giá chuẩn), tự động nhân chiết khấu thương mại để tính giá bán cuối.",
-            "input": "Phân hạng đại lý (VIP/Bạc/Đồng), tỷ lệ chiết khấu hợp đồng, đơn giá sỉ gốc.",
-            "output": "Đơn giá sỉ sau chiết khấu và thành tiền của từng dòng sản phẩm.",
+            "workflow": "Hệ thống tự động tra cứu bảng giá phân phối đại lý tương ứng với hạng của đại lý (VIP: giá rẻ nhất, Bạc: giá trung bình, Đồng: giá chuẩn), tự động nhân chiết khấu thương mại để tính giá bán cuối.",
+            "input": "Phân hạng đại lý (VIP/Bạc/Đồng), tỷ lệ chiết khấu hợp đồng, đơn giá phân phối đại lý gốc.",
+            "output": "Đơn giá phân phối đại lý sau chiết khấu và thành tiền của từng dòng sản phẩm.",
             "rules": "Đơn giá áp tự động từ cấu hình sản phẩm F1.1.3, không cho phép nhân viên tự ý sửa giá bán.",
-            "linked": "Lấy dữ liệu giá sỉ phân cấp từ PH1."
+            "linked": "Lấy dữ liệu giá phân phối đại lý phân cấp từ PH1."
         },
         {
             "code": "F3.2.5",
@@ -1016,32 +1016,32 @@ def create_document():
         },
         {
             "code": "F3.2.6",
-            "name": "Phê duyệt đơn sỉ & Khóa hàng Giữ chỗ",
+            "name": "Phê duyệt lệnh xuất đại lý & Khóa hàng Giữ chỗ",
             "actor": "Kế toán, Chủ cửa hàng",
             "workflow": "Kế toán xác nhận điều kiện công nợ; đơn trong hạn được hệ thống duyệt theo quy trình, chỉ Chủ cửa hàng mới duyệt ngoại lệ vượt hạn mức. Khi được duyệt, hệ thống chuyển số lượng hàng sang GIỮ CHỖ (RESERVED) tại PH4.",
-            "input": "Mã đơn bán sỉ (DS-xxxx), kết quả thẩm định công nợ, quyết định duyệt ngoại lệ (nếu có).",
-            "output": "Đơn sỉ chuyển trạng thái APPROVED; số lượng hàng bị khóa Giữ chỗ tại PH4.",
+            "input": "Mã lệnh xuất kho đại lý (DS-xxxx), kết quả thẩm định công nợ, quyết định duyệt ngoại lệ (nếu có).",
+            "output": "Lệnh xuất đại lý chuyển trạng thái APPROVED; số lượng hàng bị khóa Giữ chỗ tại PH4.",
             "rules": "Hàng đã giữ chỗ sẽ bị trừ khỏi Tồn khả dụng; mọi ngoại lệ vượt hạn mức phải có lý do và Chủ cửa hàng phê duyệt.",
             "linked": "Cập nhật tăng Tồn giữ chỗ và giảm Tồn khả dụng tại PH4 (F4.1.1)."
         },
         {
             "code": "F3.2.7",
-            "name": "Hủy đơn bán sỉ & Giải phóng giữ chỗ",
+            "name": "Hủy lệnh xuất kho đại lý & Giải phóng giữ chỗ",
             "actor": "Nhân viên nhập - xuất kho",
             "workflow": "Hủy đơn nháp hoặc đơn chưa đóng gói khi đại lý không hoàn tất cọc hoặc vi phạm cam kết; hệ thống tự động giải phóng toàn bộ số lượng giữ chỗ về Tồn khả dụng.",
-            "input": "Mã đơn sỉ cần hủy, lý do hủy đơn.",
-            "output": "Đơn sỉ chuyển trạng thái CANCELLED; số lượng giữ chỗ được giải phóng về Tồn khả dụng.",
-            "rules": "Chỉ được hủy đơn sỉ chưa thực hiện đóng gói xuất kho.",
+            "input": "Mã lệnh xuất đại lý cần hủy, lý do hủy đơn.",
+            "output": "Lệnh xuất đại lý chuyển trạng thái CANCELLED; số lượng giữ chỗ được giải phóng về Tồn khả dụng.",
+            "rules": "Chỉ được hủy lệnh xuất đại lý chưa thực hiện đóng gói xuất kho.",
             "linked": "Khôi phục Tồn khả dụng tại PH4; ghi nhận tỷ lệ hủy đơn tại Báo cáo PH5."
         },
         {
             "code": "F3.2.8",
-            "name": "Khởi tạo phiếu xuất kho bán sỉ",
+            "name": "Khởi tạo phiếu xuất kho xuất kho đại lý",
             "actor": "Nhân viên nhập - xuất kho",
-            "workflow": "Nhân viên mở đơn sỉ đã duyệt và tạo phiếu xuất kho đóng gói (PX-xxxx) với danh sách sản phẩm và số lượng chiếc cần xuất giao.",
-            "input": "Mã đơn bán sỉ đã duyệt (APPROVED).",
+            "workflow": "Nhân viên mở lệnh xuất đại lý đã duyệt và tạo phiếu xuất kho đóng gói (PX-xxxx) với danh sách sản phẩm và số lượng chiếc cần xuất giao.",
+            "input": "Mã lệnh xuất kho đại lý đã duyệt (APPROVED).",
             "output": "Phiếu xuất kho ở trạng thái ĐANG ĐÓNG GÓI (PACKING).",
-            "rules": "Phiếu xuất kho phải gắn chặt với mã đơn sỉ đã được phê duyệt.",
+            "rules": "Phiếu xuất kho phải gắn chặt với mã lệnh xuất đại lý đã được phê duyệt.",
             "linked": "Kích hoạt quy trình đóng gói tại PH4."
         },
         {
@@ -1105,20 +1105,20 @@ def create_document():
             "code": "F4.1.1",
             "name": "Theo dõi tồn kho tổng hợp đa đơn vị",
             "actor": "Thủ kho (quản lý điều hành), Quản trị hệ thống, Nhân viên nhập - xuất kho",
-            "workflow": "Hệ thống hiển thị bảng tồn kho tổng hợp theo cả ĐVT sỉ (Thùng/Kiện) và ĐVT lẻ (Chiếc); bóc tách rõ ràng 3 chỉ số cốt lõi: Tồn thực tế, Tồn giữ chỗ (Reserved) và Tồn khả dụng bán sỉ.",
+            "workflow": "Hệ thống hiển thị bảng tồn kho tổng hợp theo cả ĐVT đóng gói (Thùng/Kiện) và ĐVT lẻ (Chiếc); bóc tách rõ ràng 3 chỉ số cốt lõi: Tồn thực tế, Tồn giữ chỗ (Reserved) và Tồn khả dụng xuất kho đại lý.",
             "input": "Bộ lọc thương hiệu, nhóm danh mục, tìm kiếm SKU.",
             "output": "Bảng tổng hợp tồn kho đa đơn vị cập nhật tức thời theo từng giây.",
             "rules": "Công thức bắt buộc: Tồn khả dụng = Tồn thực tế - Tồn giữ chỗ. Không bao giờ để Tồn khả dụng bị âm.",
-            "linked": "Cung cấp số lượng khả dụng cho PH3 lên đơn bán sỉ."
+            "linked": "Cung cấp số lượng khả dụng cho PH3 lập lệnh xuất kho đại lý."
         },
         {
             "code": "F4.1.2",
             "name": "Quản lý 3 trạng thái phân loại chất lượng",
             "actor": "Thủ kho (quản lý điều hành)",
-            "workflow": "Hệ thống phân chia kho thành 3 tab trạng thái chất lượng riêng biệt: Kho Hàng Mới (New Stock - nguyên seal đủ điều kiện bán sỉ), Kho Trưng Bày (Display Stock) và Kho Hàng Lỗi (Defect Stock).",
+            "workflow": "Hệ thống phân chia kho thành 3 tab trạng thái chất lượng riêng biệt: Kho Hàng Mới (New Stock - nguyên seal đủ điều kiện xuất kho đại lý), Kho Trưng Bày (Display Stock) và Kho Hàng Lỗi (Defect Stock).",
             "input": "Tab chuyển đổi trạng thái chất lượng kho được chọn.",
             "output": "Danh mục sản phẩm và Serial tương ứng với từng phân loại chất lượng.",
-            "rules": "Chỉ hàng thuộc Kho Hàng Mới mới được phép cấp phát cho các đơn bán sỉ thương mại.",
+            "rules": "Chỉ hàng thuộc Kho Hàng Mới mới được phép cấp phát cho các lệnh xuất kho đại lý thương mại.",
             "linked": "Kho Lỗi liên kết với F2.1.6 (Xuất trả NCC); Kho Mới phục vụ PH3."
         },
         {
@@ -1155,11 +1155,11 @@ def create_document():
             "code": "F4.1.6",
             "name": "Cảnh báo hết hàng (Out of Stock)",
             "actor": "Hệ thống tự động",
-            "workflow": "Hệ thống tự động đánh dấu cờ HẾT HÀNG đối với các sản phẩm có tồn khả dụng = 0, đồng thời tạm khóa nhận đơn sỉ mới đối với sản phẩm này trên giao diện PH3.",
+            "workflow": "Hệ thống tự động đánh dấu cờ HẾT HÀNG đối với các sản phẩm có tồn khả dụng = 0, đồng thời tạm khóa nhận lệnh xuất đại lý mới đối với sản phẩm này trên giao diện PH3.",
             "input": "Sự kiện Tồn khả dụng giảm về 0.",
-            "output": "Nhãn 'HẾT HÀNG' màu đỏ hiển thị trên danh mục; vô hiệu hóa nút đặt sỉ.",
+            "output": "Nhãn 'HẾT HÀNG' màu đỏ hiển thị trên danh mục; vô hiệu hóa nút đặt hàng đại lý.",
             "rules": "Ngăn chặn tuyệt đối tình trạng bán khống khi không có hàng trong kho.",
-            "linked": "Vô hiệu hóa nút chọn sản phẩm tại Đơn bán sỉ PH3."
+            "linked": "Vô hiệu hóa nút chọn sản phẩm tại Lệnh xuất kho đại lý PH3."
         },
         {"is_group": True, "code": "CNL 4.2", "name": "SƠ ĐỒ VỊ TRÍ KỆ HÀNG & QUẢN LÝ ĐỊNH VỊ", "desc": "Nhóm chức năng quản lý sơ đồ kệ vật lý, gán vị trí lưu kho và trực quan hóa tỷ lệ lấp đầy kệ."},
         {
@@ -1237,7 +1237,7 @@ def create_document():
             "code": "F4.3.5",
             "name": "Truy xuất Sổ Thẻ kho điện tử",
             "actor": "Thủ kho (quản lý điều hành), Kế toán",
-            "workflow": "Xem nhật ký chi tiết dòng thời gian biến động của từng mã sản phẩm: Ngày phát sinh, loại chứng từ (Nhập, Xuất sỉ, Trả hàng, Cân bằng), số lượng biến động (+/-), tồn sau biến động và mã Serial liên quan.",
+            "workflow": "Xem nhật ký chi tiết dòng thời gian biến động của từng mã sản phẩm: Ngày phát sinh, loại chứng từ (Nhập, Xuất kho đại lý, Trả hàng, Cân bằng), số lượng biến động (+/-), tồn sau biến động và mã Serial liên quan.",
             "input": "Mã sản phẩm (SKU) cần tra cứu thẻ kho, khoảng thời gian.",
             "output": "Bảng Sổ Thẻ kho điện tử chi tiết theo chuẩn mực kế toán hàng tồn kho.",
             "rules": "Số tồn sau biến động phải khớp logic toán học: Tồn sau = Tồn trước + Nhập - Xuất.",
@@ -1254,7 +1254,7 @@ def create_document():
             "code": "F5.1.1",
             "name": "Thẻ chỉ số hiệu suất trọng yếu (KPI Cards)",
             "actor": "Chủ cửa hàng, Thủ kho (quản lý điều hành), Kế toán",
-            "workflow": "Hệ thống tổng hợp và tính toán tức thời 5 chỉ số cốt lõi: Tổng giá trị tồn kho đích danh, Doanh thu phân phối sỉ, Tổng số đơn sỉ, Tồn kho khả dụng và Tỷ lệ đổi trả hàng sỉ.",
+            "workflow": "Hệ thống tổng hợp và tính toán tức thời 5 chỉ số cốt lõi: Tổng giá trị tồn kho đích danh, Doanh thu phân phối đại lý, Tổng số lệnh xuất đại lý, Tồn kho khả dụng và Tỷ lệ tiếp nhận trả hàng đại lý.",
             "input": "Dữ liệu giao dịch thời gian thực từ 4 phân hệ (PH1, PH2, PH3, PH4).",
             "output": "5 thẻ KPI hiển thị số liệu nổi bật, định dạng tiền tệ chuyên nghiệp và màu sắc trực quan.",
             "rules": "Số liệu cập nhật theo thời gian thực (Real-time) mỗi khi có giao dịch phát sinh trong hệ thống.",
@@ -1262,20 +1262,20 @@ def create_document():
         },
         {
             "code": "F5.1.2",
-            "name": "Biểu đồ trực quan doanh số sỉ (Canvas Chart)",
+            "name": "Biểu đồ trực quan doanh số xuất kho đại lý (Canvas Chart)",
             "actor": "Chủ cửa hàng, Nhân viên nhập - xuất kho",
-            "workflow": "Sử dụng công nghệ HTML5 Canvas vẽ biểu đồ cột/đường trực quan xu hướng doanh thu phân phối sỉ theo 6 tháng gần nhất, kèm tỷ lệ % tăng trưởng so với cùng kỳ.",
-            "input": "Chuỗi doanh thu bán sỉ theo từng tháng trong 6 tháng gần nhất.",
+            "workflow": "Sử dụng công nghệ HTML5 Canvas vẽ biểu đồ cột/đường trực quan xu hướng doanh thu phân phối đại lý theo 6 tháng gần nhất, kèm tỷ lệ % tăng trưởng so với cùng kỳ.",
+            "input": "Chuỗi doanh số xuất kho đại lý theo từng tháng trong 6 tháng gần nhất.",
             "output": "Biểu đồ Canvas tương tác trực quan với trục tọa độ, đường xu hướng và cột doanh thu.",
             "rules": "Vẽ mượt mà bằng HTML5 Canvas thuần, không phụ thuộc thư viện nặng nề của bên thứ ba.",
-            "linked": "Lấy dữ liệu từ các đơn hàng sỉ COMPLETED tại PH3."
+            "linked": "Lấy dữ liệu từ các đơn hàng xuất đại lý COMPLETED tại PH3."
         },
         {
             "code": "F5.1.3",
-            "name": "Bảng xếp hạng Top sản phẩm bán sỉ",
+            "name": "Bảng xếp hạng Top sản phẩm xuất kho đại lý",
             "actor": "Nhân viên nhập - xuất kho, Quản trị hệ thống",
             "workflow": "Thống kê danh sách các mẫu đồng hồ được các đại lý nhập nhiều nhất, xếp hạng theo sản lượng bán ra (số chiếc) và tổng doanh số phân phối, kèm tỷ trọng đóng góp.",
-            "input": "Dữ liệu xuất bán chi tiết của tất cả các đơn sỉ COMPLETED.",
+            "input": "Dữ liệu xuất bán chi tiết của tất cả các lệnh xuất đại lý COMPLETED.",
             "output": "Bảng xếp hạng Top 5 / Top 10 đồng hồ bán chạy nhất kèm huy hiệu vàng/bạc/đồng.",
             "rules": "Chỉ tính các sản phẩm trong các đơn hàng đã xuất giao thành công.",
             "linked": "Hỗ trợ bộ phận thu mua TV2 lên kế hoạch nhập hàng cho các mẫu bán chạy."
@@ -1284,13 +1284,13 @@ def create_document():
             "code": "F5.1.4",
             "name": "Dòng thời gian hoạt động gần đây (Activity Stream)",
             "actor": "Chủ cửa hàng",
-            "workflow": "Hiển thị tức thời luồng các thao tác nghiệp vụ trọng yếu vừa phát sinh trong hệ thống: Nhập kho mới, Duyệt đơn sỉ, Thu tiền nợ, Chi tiền NCC, Hoàn tất kiểm kê...",
+            "workflow": "Hiển thị tức thời luồng các thao tác nghiệp vụ trọng yếu vừa phát sinh trong hệ thống: Nhập kho mới, Duyệt lệnh xuất đại lý, Thu tiền nợ, Chi tiền NCC, Hoàn tất kiểm kê...",
             "input": "Luồng dữ liệu nhật ký mới nhất từ bảng AUDIT_LOGS.",
             "output": "Danh sách dòng thời gian (Timeline) các hành vi gần nhất kèm avatar người thực hiện.",
             "rules": "Cập nhật tự động, hiển thị tối thiểu 10 sự kiện gần nhất.",
             "linked": "Lấy dữ liệu từ Audit Log của TV1 (F1.2.8)."
         },
-        {"is_group": True, "code": "CNL 5.2", "name": "HỆ THỐNG BÁO CÁO CHUYÊN SÂU ĐA PHÂN HỆ", "desc": "Nhóm chức năng xuất các báo cáo chuyên sâu về nhập hàng, phân phối sỉ, cơ cấu xuất, chất lượng, công nợ và dòng tiền."},
+        {"is_group": True, "code": "CNL 5.2", "name": "HỆ THỐNG BÁO CÁO CHUYÊN SÂU ĐA PHÂN HỆ", "desc": "Nhóm chức năng xuất các báo cáo chuyên sâu về nhập hàng, phân phối đại lý, cơ cấu xuất, chất lượng, công nợ và dòng tiền."},
         {
             "code": "F5.2.1",
             "name": "Báo cáo chuyên sâu Nhập hàng (Inbound)",
@@ -1303,23 +1303,23 @@ def create_document():
         },
         {
             "code": "F5.2.2",
-            "name": "Báo cáo Phân phối Bán sỉ (Wholesale Outbound)",
+            "name": "Báo cáo Phân phối Đại lý (Wholesale Outbound)",
             "actor": "Chủ cửa hàng, Nhân viên nhập - xuất kho",
-            "workflow": "Báo cáo doanh số bán sỉ phân tích theo từng đại lý, theo phân hạng đại lý (VIP/Bạc/Đồng); thống kê tỷ lệ hoàn tất đơn hàng và tỷ lệ hủy đơn.",
+            "workflow": "Báo cáo doanh số xuất kho đại lý phân tích theo từng đại lý, theo phân hạng đại lý (VIP/Bạc/Đồng); thống kê tỷ lệ hoàn tất đơn hàng và tỷ lệ hủy đơn.",
             "input": "Khoảng thời gian báo cáo, phân hạng đại lý, mã đại lý cụ thể.",
-            "output": "Bảng phân tích doanh số sỉ, sản lượng xuất và hiệu quả kênh phân phối.",
+            "output": "Bảng phân tích doanh số xuất kho đại lý, sản lượng xuất và hiệu quả kênh phân phối.",
             "rules": "Bóc tách rõ ràng giữa doanh thu trước chiết khấu và doanh thu thuần thực thu.",
-            "linked": "Tổng hợp dữ liệu từ module Bán sỉ TV3 (F3.2.10)."
+            "linked": "Tổng hợp dữ liệu từ module Xuất kho đại lý TV3 (F3.2.10)."
         },
         {
             "code": "F5.2.3",
             "name": "Báo cáo Cơ cấu xuất hàng",
             "actor": "Chủ cửa hàng, Thủ kho (quản lý điều hành), Kế toán",
-            "workflow": "Thống kê tỷ trọng xuất kho theo các mục đích nghiệp vụ khác nhau: Xuất bán sỉ thương mại, Xuất gửi bảo hành chính hãng, Xuất tiêu hủy hàng hỏng không thể phục hồi.",
+            "workflow": "Thống kê tỷ trọng xuất kho theo các mục đích nghiệp vụ khác nhau: Xuất kho đại lý thương mại, Xuất gửi bảo hành chính hãng, Xuất tiêu hủy hàng hỏng không thể phục hồi.",
             "input": "Khoảng thời gian báo cáo.",
             "output": "Biểu đồ và bảng tỷ trọng cơ cấu xuất kho theo từng nhóm mục đích.",
             "rules": "Tổng tỷ trọng các mục đích xuất phải bằng 100% tổng lượng xuất kho trong kỳ.",
-            "linked": "Lấy dữ liệu từ Phiếu xuất sỉ F3.2.10 và Phiếu xuất khác F3.2.11."
+            "linked": "Lấy dữ liệu từ Phiếu xuất kho đại lý F3.2.10 và Phiếu xuất khác F3.2.11."
         },
         {
             "code": "F5.2.4",
@@ -1329,7 +1329,7 @@ def create_document():
             "input": "Khoảng thời gian báo cáo, bộ lọc thương hiệu, loại bộ máy.",
             "output": "Bảng phân tích tỷ lệ lỗi (% defect rate) và danh sách các nguyên nhân lỗi phổ biến.",
             "rules": "Cảnh báo đối với các dòng sản phẩm có tỷ lệ lỗi vượt ngưỡng cho phép (> 2.0%).",
-            "linked": "Dữ liệu từ Đổi trả sỉ PH3 (F3.1.6) và Xuất trả NCC PH2 (F2.1.6)."
+            "linked": "Dữ liệu từ Nhận trả hàng đại lý PH3 (F3.1.6) và Xuất trả NCC PH2 (F2.1.6)."
         },
         {
             "code": "F5.2.5",
@@ -1345,7 +1345,7 @@ def create_document():
             "code": "F5.2.6",
             "name": "Báo cáo Tài chính & Lợi nhuận gộp B2B",
             "actor": "Chủ cửa hàng, Kế toán",
-            "workflow": "Tổng hợp Doanh thu thuần bán sỉ trừ đi Giá vốn hàng bán đích danh và trừ đi Chi phí logistics phân bổ để xác định Lợi nhuận gộp thực tế của kênh phân phối sỉ.",
+            "workflow": "Tổng hợp Doanh thu thuần xuất kho đại lý trừ đi Giá vốn hàng bán đích danh và trừ đi Chi phí logistics phân bổ để xác định Lợi nhuận gộp thực tế của kênh phân phối đại lý.",
             "input": "Khoảng thời gian hạch toán, tùy chọn phân tích theo thương hiệu hoặc theo đại lý.",
             "output": "Báo cáo kết quả kinh doanh gộp: Doanh thu, Giá vốn đích danh, Chi phí logistics, Lợi nhuận gộp, Tỷ suất LN (%).",
             "rules": "Giá vốn hàng bán được tính chính xác tuyệt đối theo phương pháp Giá vốn Đích danh của từng chiếc đã bán.",
@@ -1356,7 +1356,7 @@ def create_document():
             "name": "Sổ chi tiết công nợ B2B (Đại lý & NCC)",
             "actor": "Chủ cửa hàng, Kế toán",
             "workflow": "Bảng đối soát chi tiết tình hình công nợ 2 chiều: Số dư nợ đầu kỳ, Phát sinh nợ trong kỳ (do nhập/xuất hàng), Phát sinh có trong kỳ (từ Phiếu thu/Phiếu chi tiền) và Số dư nợ cuối kỳ.",
-            "input": "Đối tượng đối soát (Nhà cung cấp hoặc Đại lý sỉ), khoảng thời gian hạch toán.",
+            "input": "Đối tượng đối soát (Nhà cung cấp hoặc Đại lý B2B), khoảng thời gian hạch toán.",
             "output": "Sổ chi tiết công nợ dạng bảng chữ T chuẩn mực kế toán doanh nghiệp.",
             "rules": "Công thức cân bằng: Dư nợ cuối kỳ = Dư đầu kỳ + Phát sinh Nợ - Phát sinh Có.",
             "linked": "Tích hợp toàn diện với Phiếu nhập PH2, Phiếu xuất PH3, Phiếu thu/chi PH2/PH3."
@@ -1365,7 +1365,7 @@ def create_document():
             "code": "F5.2.8",
             "name": "Báo cáo Dòng tiền Thu / Chi thực tế (Cashflow)",
             "actor": "Chủ cửa hàng, Kế toán",
-            "workflow": "Tổng hợp toàn bộ dòng tiền thực tế thu vào (tiền cọc đơn sỉ, tiền thu nợ đại lý) và dòng tiền thực tế chi ra (thanh toán NCC, thanh toán cước vận chuyển) theo mốc thời gian, xác định dòng tiền thuần.",
+            "workflow": "Tổng hợp toàn bộ dòng tiền thực tế thu vào (tiền cọc đơn xuất kho, tiền thu nợ đại lý) và dòng tiền thực tế chi ra (thanh toán NCC, thanh toán cước vận chuyển) theo mốc thời gian, xác định dòng tiền thuần.",
             "input": "Khoảng thời gian báo cáo, hình thức tiền tệ (Chuyển khoản ngân hàng / Tiền mặt).",
             "output": "Báo cáo lưu chuyển tiền tệ trực tiếp: Tổng thu, Tổng chi, Dòng tiền thuần trong kỳ (Net Cashflow).",
             "rules": "Chỉ ghi nhận dòng tiền dựa trên các Phiếu Thu và Phiếu Chi đã thực chi/thực thu thành công.",
@@ -1386,7 +1386,7 @@ def create_document():
     # Tạo các bảng phân tích chi tiết cho 5 phân hệ
     create_subsystem_table(
         "1. PHÂN HỆ 1 (TV1): QUẢN LÝ HÀNG HÓA & QUẢN TRỊ HỆ THỐNG",
-        "Phụ trách: Thành viên 1 • Quản lý danh mục đồng hồ cao cấp, cấu hình quy cách đóng gói sỉ Thùng/Kiện, tra cứu vòng đời Serial, quản trị người dùng, phân quyền RBAC và Audit Log.",
+        "Phụ trách: Thành viên 1 • Quản lý danh mục đồng hồ cao cấp, cấu hình quy cách đóng gói xuất kho Thùng/Kiện, tra cứu vòng đời Serial, quản trị người dùng, phân quyền RBAC và Audit Log.",
         data_ph1
     )
 
@@ -1397,8 +1397,8 @@ def create_document():
     )
 
     create_subsystem_table(
-        "3. PHÂN HỆ 3 (TV3): BÁN SỈ & PHÂN PHỐI ĐẠI LÝ - XUẤT HÀNG",
-        "Phụ trách: Thành viên 3 • Quản lý đại lý B2B, hạn mức tín dụng, lập đơn sỉ, khóa hàng giữ chỗ (Reserved), quét Serial xuất kho thực tế, xuất bảo hành/hủy, thu cọc/nợ và đổi trả sỉ.",
+        "3. PHÂN HỆ 3 (TV3): ĐỐI TÁC ĐẠI LÝ & QUẢN LÝ XUẤT KHO",
+        "Phụ trách: Thành viên 3 • Quản lý đại lý B2B, hạn mức tín dụng, lập lệnh xuất đại lý, khóa hàng giữ chỗ (Reserved), quét Serial xuất kho thực tế, xuất bảo hành/hủy, thu cọc/nợ và nhận trả hàng đại lý.",
         data_ph3
     )
 
@@ -1455,9 +1455,9 @@ def create_document():
             "1",
             "PH1 (Hàng Hóa)",
             "Thêm mới / Sửa cấu hình sản phẩm & ĐVT",
-            "SKU, Barcode, tên, hãng, ĐVT sỉ/lẻ, hệ số quy đổi, MOQ, giá sỉ các hạng, vị trí kệ gán.",
+            "SKU, Barcode, tên, hãng, ĐVT đóng gói/lẻ, hệ số quy đổi, MOQ, giá phân phối đại lý các hạng, vị trí kệ gán.",
             "PH2 (Nhập), PH3 (Xuất), PH4 (Tồn kho)",
-            "PH2 nạp cấu hình quy đổi ĐVT khi nhập; PH3 nạp MOQ và giá sỉ tự động; PH4 gán vị trí ngăn kệ định danh cho sản phẩm.",
+            "PH2 nạp cấu hình quy đổi ĐVT khi nhập; PH3 nạp MOQ và giá phân phối đại lý tự động; PH4 gán vị trí ngăn kệ định danh cho sản phẩm.",
             "Danh mục đồng bộ trên toàn hệ thống."
         ),
         (
@@ -1489,18 +1489,18 @@ def create_document():
         ),
         (
             "5",
-            "PH3 (Bán Sỉ)",
-            "Phê duyệt Đơn bán sỉ (APPROVED)",
-            "Mã đơn sỉ, danh sách SKU, số lượng chiếc đặt mua, mã đại lý đối tác.",
+            "PH3 (Xuất Kho Đại Lý)",
+            "Phê duyệt Lệnh xuất kho đại lý (APPROVED)",
+            "Mã lệnh xuất đại lý, danh sách SKU, số lượng chiếc đặt mua, mã đại lý đối tác.",
             "PH4 (Tồn Kho)",
             "Tự động chuyển số lượng sản phẩm tương ứng từ Tồn khả dụng sang trạng thái GIỮ CHỖ (RESERVED) để chống bán trùng lặp.",
             "Tồn giữ chỗ tăng; Tồn khả dụng giảm tương ứng."
         ),
         (
             "6",
-            "PH3 (Bán Sỉ)",
-            "Hủy Đơn bán sỉ (CANCELLED)",
-            "Mã đơn sỉ bị hủy, danh sách SKU và số lượng đã giữ chỗ.",
+            "PH3 (Xuất Kho Đại Lý)",
+            "Hủy Lệnh xuất kho đại lý (CANCELLED)",
+            "Mã lệnh xuất đại lý bị hủy, danh sách SKU và số lượng đã giữ chỗ.",
             "PH4 (Tồn Kho)",
             "Tự động giải phóng toàn bộ số lượng giữ chỗ hoàn trả lại cho Tồn khả dụng của sản phẩm.",
             "Tồn giữ chỗ giảm; Tồn khả dụng được khôi phục."
@@ -1508,7 +1508,7 @@ def create_document():
         (
             "7",
             "PH3 (Xuất Kho)",
-            "Hoàn tất xuất kho đơn sỉ (COMPLETED)",
+            "Hoàn tất xuất kho lệnh xuất đại lý (COMPLETED)",
             "Mã phiếu xuất, danh sách mã Serial đích danh đã quét từ kệ, mã đại lý, tổng giá trị xuất bán.",
             "PH4 (Tồn Kho)",
             "Trừ tồn kho thực tế; trừ tồn giữ chỗ; chuyển trạng thái các mã Serial sang 'ĐÃ BÁN (SOLD)'; ghi nhận Sổ Thẻ kho biến động (-).",
@@ -1516,17 +1516,17 @@ def create_document():
         ),
         (
             "8",
-            "PH3 (Bán Sỉ)",
-            "Hoàn tất xuất kho đơn sỉ (COMPLETED)",
-            "Mã đơn sỉ, mã đại lý, doanh thu thuần, danh sách Serial xuất (kèm giá vốn đích danh), chi phí vận chuyển.",
+            "PH3 (Xuất Kho Đại Lý)",
+            "Hoàn tất xuất kho lệnh xuất đại lý (COMPLETED)",
+            "Mã lệnh xuất đại lý, mã đại lý, doanh thu thuần, danh sách Serial xuất (kèm giá vốn đích danh), chi phí vận chuyển.",
             "PH5 (Báo Cáo / Doanh Thu)",
-            "Hạch toán tăng công nợ đại lý; ghi nhận doanh thu bán sỉ; trừ giá vốn đích danh để tính Lợi nhuận gộp B2B thời gian thực.",
+            "Hạch toán tăng công nợ đại lý; ghi nhận doanh số xuất kho đại lý; trừ giá vốn đích danh để tính Lợi nhuận gộp B2B thời gian thực.",
             "Công nợ đại lý tăng; Doanh thu và LN gộp ghi nhận."
         ),
         (
             "9",
             "PH3 (Thu Tiền)",
-            "Lập & Duyệt Phiếu Thu tiền sỉ / nợ (PT-xxxx)",
+            "Lập & Duyệt Phiếu Thu nợ đại lý / nợ (PT-xxxx)",
             "Mã phiếu thu, mã đại lý, số tiền thu, hình thức thu, mã chứng từ ngân hàng.",
             "PH3 (Đại Lý) & PH5 (Báo Cáo)",
             "Giảm số dư nợ của đại lý; tự động khôi phục hạn mức tín dụng khả dụng của đại lý; ghi nhận dòng tiền thu vào Cashflow Report.",
@@ -1534,8 +1534,8 @@ def create_document():
         ),
         (
             "10",
-            "PH3 (Đổi Trả Sỉ)",
-            "Phê duyệt Phiếu đổi trả sỉ (APPROVED)",
+            "PH3 (Tiếp Nhận Trả Hàng Đại Lý)",
+            "Phê duyệt Phiếu nhận trả hàng đại lý (APPROVED)",
             "Mã phiếu trả, mã đại lý, mã Serial nhận lại, tình trạng chất lượng (Mới nguyên seal / Lỗi kỹ thuật), giá trị hàng trả.",
             "PH4 (Tồn Kho) & PH5 (Công Nợ)",
             "PH4 nạp lại Serial vào Kho Mới hoặc Kho Lỗi C-01 tương ứng; PH5 cấn trừ giảm số dư nợ của đại lý.",
@@ -1611,7 +1611,7 @@ def create_document():
         (
             "1",
             "PH1: Hàng Hóa",
-            "Danh mục sản phẩm, cấu hình ĐVT, MOQ, giá sỉ phân cấp, tra cứu Serial, xuất CSV.",
+            "Danh mục sản phẩm, cấu hình ĐVT, MOQ, giá phân phối đại lý phân cấp, tra cứu Serial, xuất CSV.",
             "Toàn quyền\n[V, C, E, D, A]",
             "Xem danh mục và tồn kho\n[V]",
             "Chỉ xem & Tra cứu Serial\n[V]",
@@ -1640,8 +1640,8 @@ def create_document():
         ),
         (
             "4",
-            "PH3: Đại Lý & Xuất Sỉ",
-            "Hồ sơ đại lý, đơn bán sỉ, duyệt khóa giữ chỗ, đóng gói quét Serial, Phiếu thu, đổi trả sỉ.",
+            "PH3: Đối Tác Đại Lý & Quản Lý Xuất Kho",
+            "Hồ sơ đại lý, lệnh xuất kho đại lý, duyệt khóa giữ chỗ, đóng gói quét Serial, Phiếu thu, nhận trả hàng đại lý.",
             "Xem; không xử lý giao dịch thường ngày\n[V]",
             "Xem số liệu; phê duyệt ngoại lệ hạn mức tín dụng\n[A]",
             "Xác nhận xuất kho vật lý\n[V, A (Packing)]",
@@ -1737,7 +1737,7 @@ def create_document():
         run.font.name = "Arial"; run.font.size = Pt(8); run.font.bold = True; run.font.color.rgb = RGBColor(255, 255, 255)
 
     entities_data = [
-        ("1", "WATCHES (chrono_watches_v2)", "PH1 (TV1)", "id / sku", "sku, barcode, name, brand, movement, glass, strap, dialSize, waterResist, warranty, baseCost, wholesalePriceVip/Silver/Bronze, conversionRate, moq, minStock, maxStock, shelfId, hasSerial, status", "Danh mục mẫu đồng hồ, thông số kỹ thuật, giá sỉ phân cấp và định mức tồn kho."),
+        ("1", "WATCHES (chrono_watches_v2)", "PH1 (TV1)", "id / sku", "sku, barcode, name, brand, movement, glass, strap, dialSize, waterResist, warranty, baseCost, wholesalePriceVip/Silver/Bronze, conversionRate, moq, minStock, maxStock, shelfId, hasSerial, status", "Danh mục mẫu đồng hồ, thông số kỹ thuật, giá phân phối đại lý phân cấp và định mức tồn kho."),
         ("2", "SERIALS (chrono_serials_v2)", "PH4 (TV4) & PH1", "serialNumber", "serialNumber, sku, watchName, costPrice, status (IN_STOCK/SOLD/DEFECT), qualityType (NEW/DISPLAY/DEFECT), shelfLocation, supplierId, receiptCode, dealerId, orderCode, warrantyExpire, timeline[]", "Quản lý đích danh 100% mã Serial, giá vốn đích danh, vị trí kệ và lịch sử vòng đời."),
         ("3", "ACCOUNTS (chrono_accounts_v2)", "PH1 (TV1)", "id / username", "id, username, fullName, email, phone, role, status (ACTIVE/INACTIVE), avatar, lastLogin", "Tài khoản nhân viên vận hành, chức danh và thông tin xác thực."),
         ("4", "ROLES (chrono_roles_v2)", "PH1 (TV1)", "roleId", "roleId, roleName, desc, permissions { products, inbound, outbound, warehouse, reports, system }", "Ma trận cấu hình phân quyền chi tiết cho 5 vai trò người dùng, gồm Chủ cửa hàng."),
@@ -1747,9 +1747,9 @@ def create_document():
         ("8", "SUPPLIER_PAYMENTS (chrono_supplier_payments_v2)", "PH2 (TV2)", "id", "id (PC-xxxx), supplierId, supplierName, date, amount, paymentMethod, bankAccount, referenceDoc, createdBy, note", "Phiếu Chi thanh toán công nợ tiền hàng cho Nhà cung cấp."),
         ("9", "SUPPLIER_RETURNS (chrono_supplier_returns_v2)", "PH2 (TV2)", "id", "id (XT-xxxx), supplierId, supplierName, date, watchId, serials[], quantity, refundValue, reason, status, createdBy", "Phiếu xuất trả hàng lỗi kỹ thuật từ Kho Lỗi về cho Nhà cung cấp."),
         ("10", "DEALERS (chrono_dealers_v2)", "PH3 (TV3)", "id", "id, name, taxCode, phone, representative, address, tier (VIP/SILVER/BRONZE), discountPercent, creditLimit, currentDebt, status", "Hồ sơ đại lý B2B, phân hạng, tỷ lệ chiết khấu, hạn mức tín dụng và số dư nợ."),
-        ("11", "ORDERS (chrono_orders_v2)", "PH3 (TV3)", "code", "code (DS-xxxx), dealerId, dealerName, date, status (DRAFT/APPROVED/PACKING/COMPLETED/CANCELLED), items [{ watchId, sku, unit, quantity, convertedQty, unitPrice, discountPercent, finalUnitPrice, subtotal, dispatchedSerials[] }], totalAmount, depositAmount, remainingDebt, shippingFee", "Đơn đặt hàng bán sỉ, số lượng giữ chỗ, quản lý tiền cọc và bảng kê Serial xuất kho."),
-        ("12", "DEALER_RECEIPTS (chrono_dealer_receipts_v2)", "PH3 (TV3)", "id", "id (PT-xxxx), dealerId, dealerName, date, amount, paymentMethod, referenceDoc, createdBy, note", "Phiếu Thu tiền đặt cọc hoặc tiền thanh toán nợ mua sỉ từ Đại lý."),
-        ("13", "CUSTOMER_RETURNS (chrono_customer_returns_v2)", "PH3 (TV3)", "id", "id (TS-xxxx), dealerId, dealerName, date, watchId, serials[], quantity, returnType (KHO_MOI/KHO_LOI), refundAmount, reason, status", "Phiếu tiếp nhận và xử lý đổi trả hàng hóa từ các đại lý phân phối sỉ."),
+        ("11", "ORDERS (chrono_orders_v2)", "PH3 (TV3)", "code", "code (DS-xxxx), dealerId, dealerName, date, status (DRAFT/APPROVED/PACKING/COMPLETED/CANCELLED), items [{ watchId, sku, unit, quantity, convertedQty, unitPrice, discountPercent, finalUnitPrice, subtotal, dispatchedSerials[] }], totalAmount, depositAmount, remainingDebt, shippingFee", "Đơn đặt hàng xuất kho đại lý, số lượng giữ chỗ, quản lý tiền cọc và bảng kê Serial xuất kho."),
+        ("12", "DEALER_RECEIPTS (chrono_dealer_receipts_v2)", "PH3 (TV3)", "id", "id (PT-xxxx), dealerId, dealerName, date, amount, paymentMethod, referenceDoc, createdBy, note", "Phiếu Thu tiền đặt cọc hoặc tiền thanh toán nợ nhập hàng đại lý từ Đại lý."),
+        ("13", "CUSTOMER_RETURNS (chrono_customer_returns_v2)", "PH3 (TV3)", "id", "id (TS-xxxx), dealerId, dealerName, date, watchId, serials[], quantity, returnType (KHO_MOI/KHO_LOI), refundAmount, reason, status", "Phiếu tiếp nhận và xử lý đổi trả hàng hóa từ các đại lý phân phối đại lý."),
         ("14", "OTHER_DISPATCHES (chrono_other_dispatches_v2)", "PH3 (TV3)", "id", "id (XK-xxxx), dispatchType (BAO_HANH/TIEU_HUY), date, serials[], reason, approvedBy, note", "Phiếu xuất kho phi thương mại: Xuất gửi bảo hành hãng hoặc Xuất tiêu hủy hàng hỏng nặng."),
         ("15", "SHELVES (chrono_shelves_v2)", "PH4 (TV4)", "id", "id (A-01, B-01...), name, zone, capacity, currentCount, category, status", "Sơ đồ mặt bằng các dãy kệ, tủ kính chống ẩm và tỷ lệ lấp đầy lưu trữ vật lý."),
         ("16", "STOCK_AUDITS (chrono_stock_audits_v2)", "PH4 (TV4)", "id", "id (KK-xxxx), auditDate, shelfId, shelfName, bookCount, actualCount, diffCount, scannedSerials[], diffSerials[], status, auditor, note", "Phiếu kiểm kê định kỳ/đột xuất theo kệ, đối soát số lượng và mã Serial lệch."),
@@ -1841,11 +1841,11 @@ def create_document():
         ),
         (
             "3",
-            "PH3: Bán Sỉ & Xuất Hàng",
+            "PH3: Đối Tác Đại Lý & Quản Lý Xuất Kho",
             "Bán trùng lặp cùng một chiếc đồng hồ cho 2 đại lý; xuất hàng cho đại lý đã vượt hạn mức nợ; xuất nhầm mã Serial lấy từ kệ.",
             "RẤT CAO (EXTREME)",
-            "• Cơ chế khóa hàng Giữ chỗ (Reserved) tức thì khi đơn sỉ được duyệt.\n• Kiểm tra tự động Hạn mức tín dụng (Credit Limit) và chặn duyệt nếu nợ vượt mức.\n• Bắt buộc dùng máy quét mã vạch quét Serial thực tế khi đóng gói xuất.",
-            "Đơn bán sỉ (DS-xxxx), Biên bản bàn giao xuất kho B2B có chữ ký nhận và bảng kê Serial chi tiết."
+            "• Cơ chế khóa hàng Giữ chỗ (Reserved) tức thì khi lệnh xuất đại lý được duyệt.\n• Kiểm tra tự động Hạn mức tín dụng (Credit Limit) và chặn duyệt nếu nợ vượt mức.\n• Bắt buộc dùng máy quét mã vạch quét Serial thực tế khi đóng gói xuất.",
+            "Lệnh xuất kho đại lý (DS-xxxx), Biên bản bàn giao xuất kho B2B có chữ ký nhận và bảng kê Serial chi tiết."
         ),
         (
             "4",
@@ -1917,7 +1917,7 @@ def create_document():
 
     concl_bullets = [
         ("Tính độc lập và tính tích hợp song hành: ", "5 thành viên phụ trách 5 phân hệ độc lập về mặt chuyên trang demo (tv1_hang_hoa.html, tv1_he_thong.html, tv2_nhap_kho.html, tv3_xuat_kho.html, tv4_ton_kho.html, tv5_bao_cao.html) đồng thời tích hợp mượt mà trong ứng dụng tổng thể index.html."),
-        ("Chuẩn hóa nghiệp vụ B2B cao cấp: ", "Giải quyết triệt để bài toán kinh doanh đặc thù của ngành đồng hồ xa xỉ: Định danh Serial 100%, Giá vốn đích danh phân bổ chi phí, Quy đổi ĐVT sỉ/lẻ, Khóa giữ chỗ đơn hàng và Quản lý hạn mức công nợ."),
+        ("Chuẩn hóa nghiệp vụ B2B cao cấp: ", "Giải quyết triệt để bài toán kinh doanh đặc thù của ngành đồng hồ xa xỉ: Định danh Serial 100%, Giá vốn đích danh phân bổ chi phí, Quy đổi ĐVT đóng gói/lẻ, Khóa giữ chỗ đơn hàng và Quản lý hạn mức công nợ."),
         ("Độ tin cậy và kiểm soát rủi ro tuyệt đối: ", "Mọi biến động vật lý (nhập, xuất, kệ, kiểm kê) đều được ràng buộc logic toán học với dòng tiền (công nợ, thu chi) và được lưu vết bất biến trong Audit Log."),
         ("Sẵn sàng cho công tác kiểm thử & nghiệm thu: ", "Cung cấp cơ sở lý thuyết vững chắc phục vụ thiết kế cơ sở dữ liệu (Database Schema), lập kịch bản kiểm thử (Test Cases) và trình bày báo cáo đồ án trước hội đồng.")
     ]

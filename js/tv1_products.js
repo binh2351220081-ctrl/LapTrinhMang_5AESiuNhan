@@ -183,15 +183,15 @@ function openWatchDetailModal(watchId) {
       </table>
 
       <!-- Packaging and B2B Pricing Matrix -->
-      <div class="section-subtitle" style="margin-top:16px;">💼 CHÍNH SÁCH BÁN SỈ & QUY CÁCH ĐÓNG GÓI</div>
+      <div class="section-subtitle" style="margin-top:16px;">💼 CHÍNH SÁCH XUẤT KHO ĐẠI LÝ & QUY CÁCH ĐÓNG GÓI</div>
       <table class="data-table-spec">
-        <tr><td>Quy đổi ĐVT sỉ:</td><td>1 ${watch.wholesaleUnit} = <b>${watch.conversionRate} ${watch.baseUnit}</b></td></tr>
+        <tr><td>Quy đổi ĐVT đóng gói:</td><td>1 ${watch.wholesaleUnit} = <b>${watch.conversionRate} ${watch.baseUnit}</b></td></tr>
         <tr><td>Số lượng đặt tối thiểu (MOQ):</td><td><b>${watch.moq} ${watch.baseUnit}</b></td></tr>
         <tr><td>Phương pháp tính giá vốn:</td><td><b style="color:var(--gold-light);">${watch.costPriceMethod}</b></td></tr>
         <tr><td>Giá vốn bình quân tham chiếu:</td><td><b>${formatVND(watch.baseCost)}</b></td></tr>
-        <tr><td>Giá sỉ Đại lý Hạng VIP:</td><td><b style="color:var(--success);">${formatVND(watch.wholesalePriceVip)}</b></td></tr>
-        <tr><td>Giá sỉ Đại lý Hạng Bạc:</td><td><b>${formatVND(watch.wholesalePriceSilver)}</b></td></tr>
-        <tr><td>Giá sỉ Đại lý Hạng Đồng:</td><td><b>${formatVND(watch.wholesalePriceBronze)}</b></td></tr>
+        <tr><td>Giá phân phối đại lý Đại lý Hạng VIP:</td><td><b style="color:var(--success);">${formatVND(watch.wholesalePriceVip)}</b></td></tr>
+        <tr><td>Giá phân phối đại lý Đại lý Hạng Bạc:</td><td><b>${formatVND(watch.wholesalePriceSilver)}</b></td></tr>
+        <tr><td>Giá phân phối đại lý Đại lý Hạng Đồng:</td><td><b>${formatVND(watch.wholesalePriceBronze)}</b></td></tr>
         <tr><td>Định mức tồn an toàn (Min - Max):</td><td><b>${watch.minStock} - ${watch.maxStock} ${watch.baseUnit}</b></td></tr>
       </table>
 
@@ -290,7 +290,7 @@ function openAddWatchModal() {
 
       <div class="form-row">
         <div class="form-group">
-          <label class="form-label">ĐVT Bán Sỉ</label>
+          <label class="form-label">ĐVT Xuất Kho Đại Lý</label>
           <select class="form-select" id="formWholesaleUnit">
             <option value="Thùng">Thùng</option>
             <option value="Kiện">Kiện</option>
@@ -367,7 +367,7 @@ function openEditWatchModal(watchId) {
 
       <div class="form-row">
         <div class="form-group">
-          <label class="form-label">ĐVT Bán Sỉ</label>
+          <label class="form-label">ĐVT Xuất Kho Đại Lý</label>
           <input type="text" id="formWholesaleUnit" class="form-input" value="${watch.wholesaleUnit}">
         </div>
         <div class="form-group">
@@ -557,7 +557,7 @@ function lookupSerial(serialCode = null) {
   if (resultContainer) {
     let statusLabel = '<span class="badge-status status-completed">Trong Kho</span>';
     if (serial.status === 'RESERVED') statusLabel = '<span class="badge-status status-warning">Đã Khóa Giữ Chỗ</span>';
-    else if (serial.status === 'SOLD') statusLabel = '<span class="badge-status status-sold">Đã Xuất Bán Sỉ</span>';
+    else if (serial.status === 'SOLD') statusLabel = '<span class="badge-status status-sold">Đã Xuất Xuất Kho Đại Lý</span>';
     else if (serial.status === 'DEFECT') statusLabel = '<span class="badge-status status-danger">Kho Hàng Lỗi</span>';
     else if (serial.status === 'RETURNED_SUPPLIER') statusLabel = '<span class="badge-status status-danger">Đã Xuất Trả NCC</span>';
 
