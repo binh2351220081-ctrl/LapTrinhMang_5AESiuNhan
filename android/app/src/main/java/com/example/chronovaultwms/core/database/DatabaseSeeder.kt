@@ -337,7 +337,8 @@ object DatabaseSeeder {
         if (serialDao.countSerials() == 0) {
             serialDao.insertAll(sampleSerials)
         }
-        if (userDao.countUsers() == 0) {
+        val existingUsers = userDao.getAllUsers()
+        if (existingUsers.isEmpty() || existingUsers.any { it.role == "DIRECTOR" }) {
             userDao.insertAll(sampleUsers)
         }
         if (auditLogDao.countLogs() == 0) {

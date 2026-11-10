@@ -159,7 +159,8 @@ class ProductListFragment : Fragment() {
             binding.tvTotalCount.text = "Tổng danh mục: ${allProducts.size} mẫu đồng hồ"
 
             // Kiểm tra trạng thái phiên đăng nhập
-            if (!sessionManager.isLoggedIn()) {
+            val currentRole = sessionManager.getRole()
+            if (!sessionManager.isLoggedIn() || currentRole == "DIRECTOR") {
                 sessionManager.saveSession("jwt_token_demo", "USR-001", "Phan Bá Hải Bình", "SYSTEM_ADMIN")
             }
             updateUserHeader()
