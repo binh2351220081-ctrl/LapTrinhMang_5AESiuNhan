@@ -306,11 +306,20 @@ class ProductListFragment : Fragment() {
                         else -> "📊"
                     }
 
-                    // Bấm nút sửa để đổi Gmail/Hồ sơ tài khoản
-                    userItemBinding.btnEditAccount.setOnClickListener {
-                        showEditUserDialog(user) {
-                            loadAccountsList()
+                    // Phân quyền RBAC: Chỉ Giám Đốc (DIRECTOR) hoặc chính chủ tài khoản mới có quyền sửa
+                    val currentRole = sessionManager.getRole() ?: "DIRECTOR"
+                    val currentUserId = sessionManager.getUserId() ?: "USR-001"
+                    val canEdit = (currentRole == "DIRECTOR") || (currentUserId == user.userId)
+
+                    if (canEdit) {
+                        userItemBinding.btnEditAccount.visibility = View.VISIBLE
+                        userItemBinding.btnEditAccount.setOnClickListener {
+                            showEditUserDialog(user) {
+                                loadAccountsList()
+                            }
                         }
+                    } else {
+                        userItemBinding.btnEditAccount.visibility = View.GONE
                     }
 
                     dialogBinding.containerAccountsList.addView(userItemBinding.root)
@@ -370,6 +379,17 @@ class ProductListFragment : Fragment() {
      * F1.9: Hộp thoại Chỉnh Sửa Hồ Sơ, Đổi Gmail, Họ Tên, Mật Khẩu trực tiếp trong app
      */
     private fun showEditUserDialog(user: UserEntity, onUpdated: (() -> Unit)? = null) {
+        val currentRole = sessionManager.getRole() ?: "DIRECTOR"
+        val currentUserId = sessionManager.getUserId() ?: "USR-001"
+        if (currentRole != "DIRECTOR" && currentUserId != user.userId) {
+            Toast.makeText(
+                requireContext(),
+                "⛔ Bạn không có quyền quản trị để sửa tài khoản của người khác!",
+                Toast.LENGTH_LONG
+            ).show()
+            return
+        }
+
         val editBinding = DialogUserEditBinding.inflate(layoutInflater)
         val editDialog = AlertDialog.Builder(requireContext())
             .setView(editBinding.root)
