@@ -38,7 +38,7 @@
 | **FR-03** | Quản lý Danh mục Đồng hồ Cao cấp | Khai báo và quản lý hồ sơ Master Data từng mẫu đồng hồ xa xỉ: Mã SKU duy nhất, Tên mẫu, Hãng (Rolex, Omega, Patek...), Bộ sưu tập, Loại máy (Automatic, Quartz, Solar), Chất liệu vỏ (Vàng 18K, Thép, Titanium), Mặt kính Sapphire, Độ chống nước, Upload ảnh sản phẩm. | **Cao** | Store Owner / System Admin |
 | **FR-04** | Quản lý ĐVT Đa cấp & Tỷ lệ Quy đổi | Thiết lập cấu trúc Đơn vị tính 2 cấp bắt buộc: ĐVT Cơ sở ("Chiếc") và ĐVT Đóng gói ("Thùng" hoặc "Hộp"). Lưu trữ tỷ lệ quy đổi `conversionRate` (1 Thùng = N Chiếc) làm căn cứ tự động cho phân hệ Nhập kho (TV2) và Xuất kho (TV3). | **Cao** | Warehouse Manager |
 | **FR-05** | Định mức Tồn kho & Cảnh báo an toàn | Thiết lập mức tồn kho tối thiểu (`minStockAlert`) và tối đa (`maxStockAlert`) cho từng mẫu đồng hồ. Hiển thị cảnh báo trực quan màu vàng/đỏ khi tồn khả dụng chạm ngưỡng an toàn. | **Trung bình** | Store Owner / Quản lý kho |
-| *FR-06 → FR-20* | *[Các phân hệ của TV2, TV3, TV4, TV5]* | *Bao gồm các yêu cầu chức năng về Nhập kho NCC (TV2 Quân), Phân phối Bán sỉ & Khóa giữ chỗ (TV3 Thảo), Ma trận Kệ Bin & Kiểm kê (TV4 Tâm), Executive Dashboard & 9 Báo cáo (TV5 Tú).* | *Cao* | *Nhóm 5 AE Siêu Nhân* |
+| *FR-06 → FR-20* | *[Các phân hệ của TV2, TV3, TV4, TV5]* | *Bao gồm các yêu cầu chức năng về Đối tác NCC & Nhập kho (TV2 Quân), Đối tác Đại lý & Quản lý Xuất kho (TV3 Thảo), Ma trận Kệ Bin & Kiểm kê (TV4 Tâm), Executive Dashboard & 9 Báo cáo (TV5 Tú).* | *Cao* | *Nhóm 5 AE Siêu Nhân* |
 
 ---
 
@@ -56,7 +56,7 @@
 ### 3.2. Bảng 5 Phân hệ của Hệ thống:
 - **MOD-01: Quản trị Hệ thống & Danh mục Luxury Horology (Phan Bá Hải Bình phụ trách):** Quản lý bảo mật, xác thực người dùng, phân quyền RBAC 5 Roles, danh mục thông số đồng hồ xa xỉ, thiết lập ĐVT 2 cấp và cấu trúc CSDL Room Core.
 - **MOD-02: Quản lý Đối tác NCC & Nhập kho Quy đổi ĐVT (Nguyễn Đắc Quân phụ trách)**
-- **MOD-03: Quản lý Đại lý B2B & Phân phối Xuất kho (Tô Đức Thảo phụ trách)**
+- **MOD-03: Đối Tác Đại Lý & Quản Lý Xuất Kho (Tô Đức Thảo phụ trách)**
 - **MOD-04: Quản trị Tồn kho Nội bộ & Kiểm kê Kệ hàng (Võ Công Tâm phụ trách)**
 - **MOD-05: Executive Dashboard & Hệ thống 9 Báo cáo (Trần Công Tú phụ trách)**
 
@@ -152,7 +152,7 @@ MOD-01: Phân hệ Quản trị Hệ thống & Danh mục Luxury Horology (Phan 
 ### 7.1. Phân công 5 vai trò thành viên
 1. **Phan Bá Hải Bình (TV1):** Trưởng nhóm / Quản trị hệ thống (`SYSTEM_ADMIN`) — Điều phối toàn bộ dự án, kiến trúc MVVM Core, Room DB v4, phân quyền RBAC 5 Roles, Phân hệ Quản trị Danh mục Luxury Horology, tổng hợp báo cáo.
 2. **Nguyễn Đắc Quân (TV2):** Nhân viên Nhập kho (`OPERATIONS_STAFF`) — Lập trình phân hệ Nhà cung cấp, công nợ phải trả, phiếu nhập kho quy đổi ĐVT, tích hợp Camera quét mã Serial và tính giá vốn đích danh.
-3. **Tô Đức Thảo (TV3):** Nhân viên Xuất kho (`OPERATIONS_STAFF`) — Lập trình phân hệ Đại lý B2B, hạn mức nợ, khóa giữ chỗ tồn kho (Reservation), xuất kho 2 bước và in hóa đơn B2B.
+3. **Tô Đức Thảo (TV3):** Nhân viên Xuất kho (`OPERATIONS_STAFF`) — Lập trình phân hệ Đối tác Đại lý & Quản lý Xuất kho, hạn mức tín dụng, khóa giữ chỗ tồn kho (Reservation), xuất kho 2 bước và in phiếu xuất kho B2B.
 4. **Võ Công Tâm (TV4):** Thủ kho (`WAREHOUSE_MANAGER`) — Lập trình phân hệ Phân loại tồn kho 3 chất lượng, ma trận kệ tủ chống trộm K1/K2, kiểm kê đối soát tự động và Sổ Thẻ kho điện tử.
 5. **Trần Công Tú (TV5):** Kế toán kho (`ACCOUNTANT`) — Lập trình Executive Dashboard KPI thời gian thực, MPAndroidChart doanh thu 6 tháng, hệ thống 9 báo cáo chuyên sâu và báo cáo dòng tiền thuần Cashflow.
 

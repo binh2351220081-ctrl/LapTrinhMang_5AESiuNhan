@@ -64,28 +64,28 @@
 ---
 
 # PHẦN 2: HƯỚNG DẪN DÀNH CHO THÀNH VIÊN 3 (TÔ ĐỨC THẢO)
-> **Phân hệ phụ trách:** Quản lý Đại lý Sỉ B2B, Kiểm soát Hạn mức Công nợ, Đơn Bán Sỉ, Cơ chế Giữ chỗ & Quét Serial Xuất kho  
+> **Phân hệ phụ trách:** Đối Tác Đại Lý & Quản Lý Xuất Kho, Kiểm soát Hạn mức Tín dụng, Lệnh Xuất Kho, Cơ chế Giữ chỗ & Quét Serial Xuất kho  
 > **Package phụ trách:** `com.example.chronovaultwms.outbound` | **Nhánh Git:** `feature/tv3-outbound-dealer`
 
 ### 1. Khung nội dung Word bạn cần viết:
-- **Tiêu đề chương trong Word:** `CHƯƠNG: PHÂN HỆ QUẢN LÝ ĐẠI LÝ B2B & PHÂN PHỐI BÁN SỈ XUẤT KHO (TV3: TÔ ĐỨC THẢO)`
-- **Nội dung 1 - Quản lý Đại lý B2B & Hạn mức Tín dụng (Credit Limit):**
-  - Mô tả danh mục đại lý (Hải Triều, Galle Watch, Boss Luxury...), phân hạng (VIP Kim Cương, Vàng, Bạc, Đồng), tỷ lệ chiết khấu thương mại (15% – 30%).
-  - Giải thích giải thuật khóa tự động (Credit Limit Enforcement): Khi tạo đơn hàng mới, nếu $(\text{Dư nợ hiện tại} + \text{Giá trị đơn mới}) > \text{Hạn mức nợ}$ thì hệ thống chặn không cho lưu đơn, hiện cảnh báo đỏ.
-  - Mô tả chức năng Lập Phiếu Thu tiền nợ đại lý để giảm dư nợ.
-- **Nội dung 2 - Quy trình Tạo Đơn Bán Sỉ & Cơ chế Khóa Giữ Chỗ (Inventory Reservation):**
-  - Giải thích bài toán: Tránh tình trạng tranh chấp tồn kho giữa các nhân viên bán hàng.
+- **Tiêu đề chương trong Word:** `CHƯƠNG: PHÂN HỆ ĐỐI TÁC ĐẠI LÝ & QUẢN LÝ XUẤT KHO (TV3: TÔ ĐỨC THẢO)`
+- **Nội dung 1 - Quản lý Đại lý Tiếp Nhận B2B & Hạn mức Tín dụng (Credit Limit):**
+  - Mô tả danh mục đại lý tiếp nhận (Hải Triều, Galle Watch, Boss Luxury...), phân hạng (VIP Kim Cương, Vàng, Bạc, Đồng), tỷ lệ chiết khấu thương mại (15% – 30%).
+  - Giải thích giải thuật khóa tự động (Credit Limit Enforcement): Khi tạo lệnh xuất hàng mới, nếu $(\text{Dư nợ hiện tại} + \text{Giá trị lô hàng xuất}) > \text{Hạn mức nợ}$ thì hệ thống chặn không cho lưu đơn, hiện cảnh báo đỏ.
+  - Mô tả chức năng Lập Phiếu Thu đối soát công nợ đại lý để giảm dư nợ.
+- **Nội dung 2 - Quy trình Tạo Lệnh Xuất Hàng Đại Lý & Cơ chế Khóa Giữ Chỗ (Inventory Reservation):**
+  - Giải thích bài toán: Tránh tình trạng tranh chấp tồn kho giữa các nhân viên điều phối xuất hàng.
   - Công thức: $\text{Tồn khả dụng} = \text{Tổng tồn vật lý} - \text{Tồn đang giữ chỗ}$.
-  - Khi đơn hàng ở trạng thái tiếp nhận (Pending), hệ thống tự động tăng `reservedQuantity` để đơn hàng sau không thể lấy trùng.
+  - Khi đơn hàng ở trạng thái tiếp nhận (Pending), hệ thống tự động tăng `reservedQuantity` để các lệnh xuất sau không thể lấy trùng.
 - **Nội dung 3 - Quy trình Xuất kho 2 bước (Picking & Dispatch):**
   - Bước 1 (Picking List): Gợi ý danh sách Serial cụ thể trong kho theo vị trí ngăn kệ.
-  - Bước 2 (Quét Camera Serial Dispatch): Nhân viên cầm điện thoại quét từng mã Serial trên hộp trước khi đóng thùng giao hàng. Kiểm tra chéo thời gian thực (không cho quét hàng trưng bày hoặc hàng lỗi).
+  - Bước 2 (Quét Camera Serial Dispatch): Nhân viên xuất kho cầm điện thoại quét từng mã Serial trên hộp trước khi đóng thùng bàn giao vận chuyển. Kiểm tra chéo thời gian thực (không cho quét hàng trưng bày hoặc hàng lỗi).
 - **Nội dung 4 - Cập nhật Công nợ & In Phiếu Xuất kho B2B:**
   - Chuyển trạng thái Serial sang `DA_BAN`, ghi giảm tồn vật lý, giải phóng tồn giữ chỗ, ghi tăng công nợ phải thu của đại lý và sinh dòng Sổ Thẻ kho (-).
 
 ### 2. Sơ đồ cần vẽ và chèn vào Word:
-- **Sơ đồ Use Case:** *Quản lý hồ sơ đại lý, Kiểm tra hạn mức nợ, Tạo đơn bán sỉ B2B, Khóa giữ chỗ tồn kho, Quét Serial xuất kho, Lập Phiếu Thu tiền nợ*.
-- **Sơ đồ Tuần tự (Sequence Diagram):** Luồng Tạo đơn và Xuất kho: *Tạo đơn -> Check Hạn mức nợ -> Tăng tồn giữ chỗ -> Quét Serial -> Check trạng thái Serial -> Chuyển DA_BAN -> Tăng nợ đại lý*.
+- **Sơ đồ Use Case:** *Quản lý hồ sơ đại lý, Kiểm tra hạn mức tín dụng, Tạo lệnh xuất kho B2B, Khóa giữ chỗ tồn kho, Quét Serial xuất kho, Lập Phiếu Thu nợ đại lý*.
+- **Sơ đồ Tuần tự (Sequence Diagram):** Luồng Tạo lệnh xuất và Xuất bến: *Tạo lệnh xuất -> Check Hạn mức tín dụng -> Tăng tồn giữ chỗ -> Quét Serial -> Check trạng thái Serial -> Chuyển DA_BAN -> Tăng nợ đại lý*.
 
 ### 3. Bảng Dữ liệu Mẫu (Test Data) cần đưa vào báo cáo:
 - **Đại lý:** Chuỗi Đồng hồ Galle Watch (Hạng VIP, Chiết khấu 25%, Hạn mức nợ: 3,000,000,000 VNĐ, Dư nợ hiện tại: 1,800,000,000 VNĐ).
@@ -199,7 +199,7 @@
    - Lời cảm ơn & Mục lục tự động, Danh mục Bảng biểu, Danh mục Hình ảnh.
    - **Chương 1:** Tổng quan bài toán B2B Luxury Horology, Kiến trúc Core MVVM, Room Database v4 & Phân quyền RBAC 5 Roles (Do Bình viết).
    - **Chương 2:** Phân hệ Nhà cung cấp & Nhập kho (Ghép bài của TV2 - Quân).
-   - **Chương 3:** Phân hệ Đại lý B2B & Phân phối Bán sỉ (Ghép bài của TV3 - Thảo).
+   - **Chương 3:** Phân hệ Đối tác Đại lý & Quản lý Xuất kho (Ghép bài của TV3 - Thảo).
    - **Chương 4:** Phân hệ Quản lý Tồn kho & Kiểm kê (Ghép bài của TV4 - Tâm).
    - **Chương 5:** Phân hệ Executive Dashboard & Báo cáo Chuyên sâu (Ghép bài của TV5 - Tú).
    - **Chương 6:** Đánh giá kết quả thực nghiệm, Quy chuẩn Git Workflow & Hướng phát triển tương lai.

@@ -181,7 +181,7 @@ def build_word_guideline_document():
     data = [
         ("TV1", "Phan Bá Hải Bình\n(Nhóm trưởng)", "Core Arch, RBAC 5 Roles, Danh mục Luxury & ĐVT", "com.example.chronovaultwms.core\ncom.example.chronovaultwms.product", "main\nfeature/product"),
         ("TV2", "Nguyễn Đắc Quân", "Nhà Cung Cấp, Nhập Kho ĐVT, Quét Serial & Giá Vốn Đích Danh", "com.example.chronovaultwms.inbound", "feature/tv2-inbound-supplier"),
-        ("TV3", "Tô Đức Thảo", "Đại Lý B2B, Hạn Mức Nợ, Đơn Bán Sỉ, Giữ Chỗ & Quét Xuất Kho", "com.example.chronovaultwms.outbound", "feature/tv3-outbound-dealer"),
+        ("TV3", "Tô Đức Thảo", "Đối Tác Đại Lý & Quản Lý Xuất Kho, Khóa Giữ Chỗ, Quét Serial", "com.example.chronovaultwms.outbound", "feature/tv3-outbound-dealer"),
         ("TV4", "Võ Công Tâm", "Tồn Kho 3 Chất Lượng, Ma Trận Kệ Bin, Kiểm Kê & Sổ Thẻ Kho", "com.example.chronovaultwms.inventory", "feature/tv4-inventory-audit"),
         ("TV5", "Trần Công Tú", "Dashboard KPI, MPAndroidChart Doanh Số 6 Tháng & 9 Báo Cáo", "com.example.chronovaultwms.dashboard", "feature/tv5-dashboard-reports")
     ]
@@ -243,11 +243,11 @@ def build_word_guideline_document():
     add_callout(
         doc,
         [
-            "• Phân hệ: Đại lý B2B, Kiểm soát Hạn mức Công nợ, Đơn Bán Sỉ, Khóa Giữ Chỗ & Quét Serial Xuất Kho.",
-            "• Tiêu đề chương trong Word: CHƯƠNG: PHÂN HỆ QUẢN LÝ ĐẠI LÝ B2B & PHÂN PHỐI BÁN SỈ XUẤT KHO",
+            "• Phân hệ: Đối Tác Đại Lý & Quản Lý Xuất Kho (Hạn Mức Tín Dụng, Khóa Giữ Chỗ & Quét Serial).",
+            "• Tiêu đề chương trong Word: CHƯƠNG: PHÂN HỆ ĐỐI TÁC ĐẠI LÝ & QUẢN LÝ XUẤT KHO",
             "",
-            "1. Nội dung 1 - Quản lý Đại lý B2B & Hạn mức Tín dụng: Hồ sơ đại lý (Hải Triều, Galle Watch...), phân hạng VIP/Vàng/Bạc/Đồng, chiết khấu 15%-30%; thuật toán khóa đơn tự động nếu (Dư nợ hiện tại + Đơn mới) > Hạn mức nợ.",
-            "2. Nội dung 2 - Đơn bán sỉ & Cơ chế Khóa Giữ Chỗ (Reservation): Tồn khả dụng = Tồn vật lý - Tồn giữ chỗ. Đơn ở trạng thái tiếp nhận sẽ tăng reservedQuantity để các đơn sau không lấy trùng.",
+            "1. Nội dung 1 - Quản lý Đại lý B2B & Hạn mức Tín dụng: Hồ sơ đại lý (Hải Triều, Galle Watch...), phân hạng VIP/Vàng/Bạc/Đồng, chiết khấu 15%-30%; thuật toán khóa đơn tự động nếu (Dư nợ hiện tại + Giá trị lô hàng xuất) > Hạn mức nợ.",
+            "2. Nội dung 2 - Lệnh xuất kho & Cơ chế Khóa Giữ Chỗ (Reservation): Tồn khả dụng = Tồn vật lý - Tồn giữ chỗ. Lệnh xuất ở trạng thái tiếp nhận sẽ tăng reservedQuantity để các đơn sau không lấy trùng.",
             "3. Nội dung 3 - Xuất kho 2 bước (Picking & Dispatch): Gợi ý Serial theo vị trí kệ, quét Camera Serial trước khi đóng thùng (chặn hàng lỗi/trưng bày), xác nhận xuất kho hoàn tất.",
             "4. Nội dung 4 - Cập nhật Công nợ & In Phiếu Xuất: Chuyển Serial sang DA_BAN, trừ tồn vật lý, giải phóng giữ chỗ, tăng nợ đại lý, in phiếu xuất B2B kèm danh sách Serial bảo hành.",
             "",

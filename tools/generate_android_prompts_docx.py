@@ -226,7 +226,7 @@ def build_android_prompts_document():
     team_data = [
         ("TV1: Phan Bá Hải Bình\n(Nhóm trưởng)", "Core Framework, Auth & Quản lý Hàng hóa Master", "com.example.chronovaultwms.core\ncom.example.chronovaultwms.product", "Khởi tạo Architecture MVVM, Room DB, Navigation, Master Đồng hồ, ĐVT Thùng/Chiếc, MOQ, Tra cứu Serial Timeline, Audit Log."),
         ("TV2: Nguyễn Đắc Quân", "Đối tác Nhà Cung Cấp & Quản lý Nhập Kho", "com.example.chronovaultwms.inbound", "Hồ sơ NCC, Phiếu nhập kho, Tích hợp Camera Barcode/ZXing nạp Serial, Quy đổi ĐVT, Tính Giá vốn đích danh, Phiếu Chi nợ NCC."),
-        ("TV3: Tô Đức Thảo", "Khách Sỉ & Bán Sỉ - Phân Phối Xuất Hàng", "com.example.chronovaultwms.outbound", "Hồ sơ đại lý B2B, Hạn mức tín dụng, Đơn bán sỉ, Duyệt khóa giữ chỗ (Reserved), Quét Serial đóng kiện xuất sỉ, Phiếu Thu sỉ, Đổi trả sỉ."),
+        ("TV3: Tô Đức Thảo", "Đối Tác Đại Lý & Quản Lý Xuất Kho", "com.example.chronovaultwms.outbound", "Hồ sơ đại lý tiếp nhận B2B, Hạn mức tín dụng, Lệnh xuất kho, Duyệt khóa giữ chỗ (Reserved), Quét Serial đóng kiện xuất bến, Phiếu Thu nợ đại lý."),
         ("TV4: Võ Công Tâm", "Tồn Kho, Vị Trí Kệ Vật Lý & Kiểm Kê", "com.example.chronovaultwms.inventory", "Tồn kho đa đơn vị, 3 kho chất lượng (Mới/Trưng bày/Lỗi), Sơ đồ kệ Bin [Khu-Dãy-Tầng-Ngăn], Quét kiểm kê Camera, Phiếu cân bằng kho, Sổ Thẻ kho."),
         ("TV5: Trần Công Tú", "Dashboard Điều Hành & Báo Cáo Thống Kê", "com.example.chronovaultwms.dashboard", "Executive Dashboard KPI, Vẽ biểu đồ MPAndroidChart doanh số/chi phí 6 tháng, Top sản phẩm bán chạy, 9 Báo cáo chuyên sâu, Sổ nợ 2 chiều, Dòng tiền.")
     ]
@@ -472,67 +472,67 @@ YÊU CẦU ĐẦU RA:
     # -------------------------------------------------------------
     # PROMPT 3: TV3 - TÔ ĐỨC THẢO
     # -------------------------------------------------------------
-    doc.add_heading("3. PROMPT CHO THÀNH VIÊN 3: TÔ ĐỨC THẢO (KHÁCH SỈ & BÁN SỈ - XUẤT HÀNG)", level=2)
+    doc.add_heading("3. PROMPT CHO THÀNH VIÊN 3: TÔ ĐỨC THẢO (ĐỐI TÁC ĐẠI LÝ & QUẢN LÝ XUẤT KHO)", level=2)
     
     add_callout(
         doc,
         [
-            "• Vai trò: Phụ trách Phân hệ 3.",
-            "• Trách nhiệm: Quản lý hồ sơ đại lý sỉ B2B, phân hạng và kiểm soát hạn mức tín dụng (Credit Limit), lên đơn bán sỉ, áp giá sỉ tự động, thẩm định nợ & duyệt khóa hàng giữ chỗ (Reserved), quét Serial đóng kiện xuất sỉ, thu tiền cọc/nợ và tiếp nhận đổi trả sỉ."
+            "• Vai trò: Phụ trách Phân hệ 3 (Đối Tác Đại Lý & Quản Lý Xuất Kho).",
+            "• Trách nhiệm: Quản lý hồ sơ đại lý tiếp nhận B2B, phân hạng và kiểm soát hạn mức tín dụng (Credit Limit), lập lệnh xuất kho theo hợp đồng đại lý, thẩm định công nợ & duyệt khóa hàng giữ chỗ (Reserved), quy trình xuất kho 2 bước (Picking & Dispatch), quét Serial đóng kiện xuất kho, thu hồi công nợ đại lý và xử lý nhập trả hàng đại lý."
         ],
         title="MỤC TIÊU PHÂN HỆ 3 (TV3 - TÔ ĐỨC THẢO)",
         border_color="1B365D",
         bg_color="F1F5F9"
     )
 
-    p3_text = """BẠN LÀ LẬP TRÌNH VIÊN ANDROID CHUYÊN TRÁCH PHÂN HỆ ĐẠI LÝ B2B VÀ BÁN SỈ XUẤT KHO. HÃY PHÁT TRIỂN MODULE TRONG PACKAGE `com.example.chronovaultwms.outbound` BẰNG KOTLIN:
+    p3_text = """BẠN LÀ LẬP TRÌNH VIÊN ANDROID CHUYÊN TRÁCH PHÂN HỆ ĐỐI TÁC ĐẠI LÝ VÀ QUẢN LÝ XUẤT KHO. HÃY PHÁT TRIỂN MODULE TRONG PACKAGE `com.example.chronovaultwms.outbound` BẰNG KOTLIN:
 
 1. KẾ THỪA NỀN TẢNG CORE & CƠ SỞ DỮ LIỆU:
    - Kế thừa trực tiếp từ branch `main` của Nhóm trưởng (Phan Bá Hải Bình).
-   - Sử dụng các Entity và DAO dùng chung từ `com.example.chronovaultwms.core.database.*`: ProductEntity, SerialEntity, ChronoVaultDatabase.
-   - Sử dụng SessionManager để kiểm tra vai trò người dùng hiện tại (OPERATIONS_STAFF hoặc WAREHOUSE_MANAGER).
+   - Sử dụng các Entity và DAO dùng chung từ `com.example.chronovaultwms.core.database.*`:
+     + ProductEntity: Lấy mã SKU, tên mẫu mã, giá bán sỉ niêm yết, đơn vị tính.
+     + SerialEntity: Lấy danh sách Serial đang `TRONG_KHO`, cập nhật trạng thái khi giữ chỗ (`CHO_XUAT`) và khi thực xuất (`DA_BAN`).
+     + ChronoVaultDatabase: Instance Room Database dùng chung.
+   - Sử dụng SessionManager để kiểm tra vai trò người dùng (STORE_OWNER, ACCOUNTANT, OPERATIONS_STAFF).
 
-2. QUẢN LÝ ĐẠI LÝ B2B & HẠN MỨC CÔNG NỢ TÍN DỤNG (CREDIT LIMIT):
-   - Danh sách đại lý sỉ (DealerListFragment): Quản lý 100% đối tác là cửa hàng/chuỗi bán lẻ; phân loại 3 cấp bậc (VIP, BAC, DONG); hiển thị hạn mức tín dụng (Credit Limit) và số dư nợ hiện tại.
-   - Thêm/Sửa hồ sơ đại lý: Cấu hình tỷ lệ chiết khấu hợp đồng và thời hạn nợ (Net 15 / Net 30).
-   - Lập Phiếu Thu tiền sỉ (DealerReceiptDialog): Thu tiền cọc đơn hàng hoặc thu nợ đại lý; cập nhật giảm số dư nợ và tự động khôi phục hạn mức mua hàng khả dụng.
+2. HỒ SƠ ĐẠI LÝ TIẾP NHẬN B2B & KIỂM SOÁT HẠN MỨC TÍN DỤNG:
+   - Danh bạ Đại lý B2B (DealerListFragment): Quản lý tên đại lý / chuỗi cửa hàng (Galle Watch, Hải Triều, Boss Luxury...), Mã số thuế, Hạng đại lý (VIP Kim Cương, Vàng, Bạc, Đồng), Tỷ lệ chiết khấu thương mại (Ví dụ: 15% - 30%), Hạn mức nợ tối đa (Credit Limit, ví dụ: 2 tỷ VNĐ), Số dư nợ hiện tại (Outstanding Balance).
+   - Kiểm tra Hạn mức nợ tự động (Credit Limit Enforcement):
+     + Khi nhân viên tạo lệnh xuất hàng mới, hệ thống tự động kiểm tra:
+       Nếu (Dư nợ hiện tại + Giá trị lô hàng xuất) > Hạn mức nợ cho phép:
+       -> Khóa chặn không cho Lưu đơn hàng, hiển thị Dialog cảnh báo đỏ: "Đại lý đã vượt hạn mức tín dụng! Vui lòng thu bớt tiền nợ cũ hoặc xin duyệt ngoại lệ từ Chủ cửa hàng."
+   - Lập Phiếu Thu tiền nợ Đại lý (ReceiptVoucherDialog): Ghi nhận tiền thu nợ từ đại lý (tiền mặt/chuyển khoản), cập nhật giảm dư nợ ngay lập tức.
 
-3. LÊN ĐƠN BÁN SỈ & DUYỆT KHÓA GIỮ CHỖ TỒN KHO (RESERVED ALLOCATION):
-   - Xây dựng CreateWholesaleOrderActivity / Dialog:
-     + Chọn đại lý B2B -> Hệ thống tự động nhận diện cấp bậc (VIP/Bạc/Đồng).
-     + Thêm sản phẩm theo Thùng hoặc Chiếc lẻ.
-     + Ràng buộc bắt buộc 1: Kiểm tra MOQ (Số lượng đặt phải >= MOQ quy định cho từng mẫu).
-     + Ràng buộc bắt buộc 2: Tự động áp giá sỉ theo cấp bậc đại lý (VIP được giá tốt nhất) và tính chiết khấu thương mại.
-     + Ràng buộc bắt buộc 3: Kiểm tra tồn kho khả dụng (Available = Thực tế - Đang giữ chỗ Reserved). Chặn lên đơn nếu vượt tồn khả dụng.
-     + Ràng buộc bắt buộc 4: Thẩm định hạn mức nợ tín dụng:
-       Dư nợ hiện tại + Giá trị đơn mới - Tiền cọc <= Hạn mức tín dụng của đại lý.
-       Nếu vượt hạn mức, hệ thống yêu cầu cờ duyệt ngoại lệ từ Chủ cửa hàng (STORE_OWNER).
-     + Sau khi duyệt đơn: Chuyển đơn sang trạng thái `APPROVED`, đồng thời KHÓA SỐ LƯỢNG HÀNG GIỮ CHỖ (Tăng `reservedQty`, giảm `availableQty`) để ngăn không cho đơn khác bán trùng lặp.
-     + Nếu đơn hàng bị hủy: Tự động giải phóng số lượng giữ chỗ, trả lại cho tồn khả dụng ngay lập tức.
+3. QUẢN LÝ LỆNH XUẤT HÀNG ĐẠI LÝ B2B & CƠ CHẾ GIỮ CHỖ (INVENTORY RESERVATION):
+   - Xây dựng CreateOutboundOrderActivity:
+     + Chọn Đại lý tiếp nhận -> Hệ thống tự động áp dụng mức chiết khấu theo Hạng đại lý.
+     + Chọn danh sách SKU đồng hồ và số lượng xuất theo ĐVT "Thùng" hoặc "Chiếc".
+     + Kiểm tra tồn kho khả dụng (Available Stock Check):
+       Tồn khả dụng = Tổng tồn vật lý - Tồn đang giữ chỗ cho các đơn khác.
+       Nếu số lượng đặt > Tồn khả dụng -> Báo lỗi không cho lưu.
+     + Cơ chế Giữ chỗ (Reservation Engine): Khi đơn hàng ở trạng thái "Đã tiếp nhận" (Pending), hệ thống tự động tăng `reservedQuantity` của SKU để các đơn khác không thể lấy trùng.
 
-4. QUÉT SERIAL ĐÓNG KIỆN & THỰC XUẤT KHO BÁN SỈ (OUTBOUND DISPATCH):
-   - Xây dựng DispatchOrderActivity (Quét Serial đóng gói giao hàng):
-     + Dựa trên đơn bán sỉ đã duyệt, nhân viên lấy hàng trên kệ và dùng camera quét mã Serial từng chiếc đóng vào kiện.
-     + Đối soát thời gian thực:
-       * Mã Serial quét vào PHẢI thuộc đúng mã SKU yêu cầu trên đơn.
-       * Serial phải đang có trạng thái `TRONG_KHO` và chất lượng `HANG_MOI`.
-       * Không bị quét trùng trong cùng kiện hàng.
-     + Khi quét đủ 100% số lượng: Bấm "Xác nhận xuất kho" -> Hệ thống thực hiện đồng thời:
-       * Giảm tồn thực tế và giải phóng tồn giữ chỗ.
-       * Cập nhật Serial sang trạng thái `DA_BAN`, gán mã đại lý sở hữu và tính ngày hết hạn bảo hành.
-       * Tăng số dư nợ của đại lý (trừ đi tiền cọc đã nộp).
-       * Sinh Biên bản bàn giao hàng hóa kiêm phiếu xuất kho B2B hiển thị danh sách 100% mã Serial đã xuất.
+4. QUY TRÌNH XUẤT KHO 2 BƯỚC BẮT BUỘC & QUÉT CAMERA SERIAL (PICKING & DISPATCH):
+   - Bước 1 (Picking List - Tạo danh sách xuất kho): Hệ thống gợi ý danh sách Serial cụ thể trong kho theo vị trí ngăn kệ Bin thuận tiện lấy hàng nhất.
+   - Bước 2 (Quét Serial Dispatch bằng Camera ML Kit / ZXing):
+     + Nhân viên xuất kho cầm điện thoại quét từng mã Serial trên hộp đồng hồ trước khi đóng thùng giao cho đại lý.
+     + Ứng dụng kiểm tra chéo thời gian thực (Real-time Cross-validation):
+       * Báo lỗi và rung cảnh báo nếu quét nhầm mã Serial không thuộc đơn hàng.
+       * Báo lỗi nếu quét mã Serial đang ở trạng thái lỗi (`HANG_LOI`) hoặc đang trưng bày (`TRUNG_BAY`).
+     + Sau khi quét đủ 100% mã Serial: Mở nút "Xác nhận Xuất kho Hoàn tất".
 
-5. TIẾP NHẬN ĐỔI TRẢ SỈ & XUẤT KHÁC (BẢO HÀNH/HỦY):
-   - Tiếp nhận đổi trả: Quét mã Serial đại lý trả về để kiểm tra nguồn gốc bán ra từ hệ thống.
-   - Phân loại chất lượng: Đưa về `HANG_MOI` (nguyên seal đổi mẫu) hoặc đưa về `HANG_LOI` (hỏng kỹ thuật); tự động cấn trừ tiền vào nợ đại lý.
-   - Phiếu xuất khác: Cho phép lập phiếu xuất gửi về Trung tâm bảo hành của hãng hoặc xuất tiêu hủy hàng vỡ nát.
+5. HOÀN TẤT XUẤT KHO, CẬP NHẬT CÔNG NỢ & PHIẾU XUẤT KHO B2B:
+   - Chuyển trạng thái các Serial đã quét sang `DA_BAN`.
+   - Giảm trừ tồn kho vật lý và giải phóng số lượng giữ chỗ trong Room DB.
+   - Ghi tăng công nợ phải thu của Đại lý tương ứng với giá trị sau chiết khấu của lô hàng xuất.
+   - Ghi nhận giao dịch vào Sổ Thẻ kho (-).
+   - In / Xem Phiếu Xuất kho kiêm Hóa đơn B2B: Hiển thị đầy đủ danh sách Serial định danh để kích hoạt bảo hành hãng.
 
 YÊU CẦU ĐẦU RA:
 - Mã nguồn Kotlin sạch, chuẩn MVVM, kết nối mượt mà với Room DB của TV1.
 - Đặt tên file giao diện XML bắt buộc dùng tiền tố: `fragment_outbound_...`, `dialog_outbound_...`, `item_outbound_...`"""
 
-    add_prompt_box(doc, p3_text, "PROMPT TV3 (TÔ ĐỨC THẢO): ĐẠI LÝ B2B, BÁN SỈ, KHÓA GIỮ CHỖ & QUÉT XUẤT SERIAL")
+    add_prompt_box(doc, p3_text, "PROMPT TV3 (TÔ ĐỨC THẢO): ĐỐI TÁC ĐẠI LÝ, KHÓA GIỮ CHỖ & QUÉT XUẤT SERIAL")
 
     # -------------------------------------------------------------
     # PROMPT 4: TV4 - VÕ CÔNG TÂM

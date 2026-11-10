@@ -24,7 +24,7 @@
 |:---:|:---|:---|:---|:---|:---|
 | **TV1** | **Phan Bá Hải Bình** (Leader) | Quản trị Hệ thống, RBAC 5 Roles, Danh mục Sản phẩm Đồng hồ Luxury & ĐVT Thùng/Chiếc | `com.example.chronovaultwms.core` & `product` | `main` / `feature/product` | `fragment_product_...` |
 | **TV2** | **Nguyễn Đắc Quân** | Nhà Cung Cấp, Công nợ Phải trả, Nhập kho Quy đổi ĐVT, Quét Serial & Giá vốn Đích danh | `com.example.chronovaultwms.inbound` | `feature/tv2-inbound-supplier` | `fragment_inbound_...` |
-| **TV3** | **Tô Đức Thảo** | Đại lý Sỉ B2B, Kiểm soát Hạn mức Công nợ, Đơn Bán sỉ, Giữ chỗ & Quét Serial Xuất kho | `com.example.chronovaultwms.outbound` | `feature/tv3-outbound-dealer` | `fragment_outbound_...` |
+| **TV3** | **Tô Đức Thảo** | Đối Tác Đại Lý & Quản Lý Xuất Kho, Kiểm soát Hạn mức Tín dụng, Khóa Giữ chỗ & Quét Serial | `com.example.chronovaultwms.outbound` | `feature/tv3-outbound-dealer` | `fragment_outbound_...` |
 | **TV4** | **Võ Công Tâm** | Tồn kho 3 Cấp Chất lượng, Sơ đồ Ngăn kệ K1/K2, Phiếu Kiểm kê Thừa/Thiếu & Sổ Thẻ kho | `com.example.chronovaultwms.inventory` | `feature/tv4-inventory-audit` | `fragment_inventory_...` |
 | **TV5** | **Trần Công Tú** | Executive Dashboard KPI thời gian thực, MPAndroidChart Doanh số 6 tháng, 9 Báo cáo Chuyên sâu & Dòng tiền | `com.example.chronovaultwms.dashboard` | `feature/tv5-dashboard-reports` | `fragment_dashboard_...` |
 
@@ -133,7 +133,7 @@ YÊU CẦU ĐẦU RA:
 *Copy toàn bộ phần code dưới đây và dán vào AI (ChatGPT / Claude / DeepSeek / Gemini):*
 
 ```text
-BẠN LÀ LẬP TRÌNH VIÊN ANDROID CHUYÊN TRÁCH PHÂN HỆ BÁN SỈ B2B VÀ XUẤT KHO. HÃY PHÁT TRIỂN MODULE TRONG PACKAGE `com.example.chronovaultwms.outbound` BẰNG KOTLIN:
+BẠN LÀ LẬP TRÌNH VIÊN ANDROID CHUYÊN TRÁCH PHÂN HỆ ĐỐI TÁC ĐẠI LÝ VÀ QUẢN LÝ XUẤT KHO. HÃY PHÁT TRIỂN MODULE TRONG PACKAGE `com.example.chronovaultwms.outbound` BẰNG KOTLIN:
 
 1. KẾ THỪA NỀN TẢNG CORE & CƠ SỞ DỮ LIỆU:
    - Kế thừa trực tiếp từ branch `main` của Nhóm trưởng (Phan Bá Hải Bình).
@@ -143,18 +143,18 @@ BẠN LÀ LẬP TRÌNH VIÊN ANDROID CHUYÊN TRÁCH PHÂN HỆ BÁN SỈ B2B VÀ
      + ChronoVaultDatabase: Instance Room Database dùng chung.
    - Sử dụng SessionManager để kiểm tra vai trò người dùng (STORE_OWNER, ACCOUNTANT, OPERATIONS_STAFF).
 
-2. HỒ SƠ ĐẠI LÝ PHÂN PHỐI SỈ B2B & KIỂM SOÁT HẠN MỨC TÍN DỤNG:
-   - Danh bạ Đại lý B2B (DealerListFragment): Quản lý tên đại lý / chuỗi bán lẻ (Galle Watch, Hải Triều, Boss Luxury...), Mã số thuế, Hạng đại lý (VIP Kim Cương, Vàng, Bạc, Đồng), Tỷ lệ chiết khấu thương mại (Ví dụ: 15% - 30%), Hạn mức nợ tối đa (Credit Limit, ví dụ: 2 tỷ VNĐ), Số dư nợ hiện tại (Outstanding Balance).
+2. HỒ SƠ ĐẠI LÝ TIẾP NHẬN B2B & KIỂM SOÁT HẠN MỨC TÍN DỤNG:
+   - Danh bạ Đại lý B2B (DealerListFragment): Quản lý tên đại lý / chuỗi cửa hàng (Galle Watch, Hải Triều, Boss Luxury...), Mã số thuế, Hạng đại lý (VIP Kim Cương, Vàng, Bạc, Đồng), Tỷ lệ chiết khấu thương mại (Ví dụ: 15% - 30%), Hạn mức nợ tối đa (Credit Limit, ví dụ: 2 tỷ VNĐ), Số dư nợ hiện tại (Outstanding Balance).
    - Kiểm tra Hạn mức nợ tự động (Credit Limit Enforcement):
-     + Khi nhân viên tạo đơn bán sỉ mới, hệ thống tự động kiểm tra:
-       Nếu (Dư nợ hiện tại + Giá trị đơn hàng mới) > Hạn mức nợ cho phép:
-       -> Khóa chặn không cho Lưu đơn hàng, hiển thị Dialog cảnh báo đỏ: "Đại lý đã vượt hạn mức nợ! Vui lòng thu bớt tiền nợ cũ hoặc xin duyệt ngoại lệ từ Chủ cửa hàng."
+     + Khi nhân viên tạo lệnh xuất hàng mới, hệ thống tự động kiểm tra:
+       Nếu (Dư nợ hiện tại + Giá trị lô hàng xuất) > Hạn mức nợ cho phép:
+       -> Khóa chặn không cho Lưu đơn hàng, hiển thị Dialog cảnh báo đỏ: "Đại lý đã vượt hạn mức tín dụng! Vui lòng thu bớt tiền nợ cũ hoặc xin duyệt ngoại lệ từ Chủ cửa hàng."
    - Lập Phiếu Thu tiền nợ Đại lý (ReceiptVoucherDialog): Ghi nhận tiền thu nợ từ đại lý (tiền mặt/chuyển khoản), cập nhật giảm dư nợ ngay lập tức.
 
-3. QUẢN LÝ ĐƠN ĐẶT HÀNG BÁN SỈ B2B & CƠ CHẾ GIỮ CHỖ (INVENTORY RESERVATION):
+3. QUẢN LÝ LỆNH XUẤT HÀNG ĐẠI LÝ B2B & CƠ CHẾ GIỮ CHỖ (INVENTORY RESERVATION):
    - Xây dựng CreateOutboundOrderActivity:
-     + Chọn Đại lý sỉ -> Hệ thống tự động áp dụng mức chiết khấu theo Hạng đại lý.
-     + Chọn danh sách SKU đồng hồ và số lượng xuất sỉ theo ĐVT "Thùng" hoặc "Chiếc".
+     + Chọn Đại lý tiếp nhận -> Hệ thống tự động áp dụng mức chiết khấu theo Hạng đại lý.
+     + Chọn danh sách SKU đồng hồ và số lượng xuất theo ĐVT "Thùng" hoặc "Chiếc".
      + Kiểm tra tồn kho khả dụng (Available Stock Check):
        Tồn khả dụng = Tổng tồn vật lý - Tồn đang giữ chỗ cho các đơn khác.
        Nếu số lượng đặt > Tồn khả dụng -> Báo lỗi không cho lưu.
@@ -163,18 +163,18 @@ BẠN LÀ LẬP TRÌNH VIÊN ANDROID CHUYÊN TRÁCH PHÂN HỆ BÁN SỈ B2B VÀ
 4. QUY TRÌNH XUẤT KHO 2 BƯỚC BẮT BUỘC & QUÉT CAMERA SERIAL (PICKING & DISPATCH):
    - Bước 1 (Picking List - Tạo danh sách xuất kho): Hệ thống gợi ý danh sách Serial cụ thể trong kho theo vị trí ngăn kệ Bin thuận tiện lấy hàng nhất.
    - Bước 2 (Quét Serial Dispatch bằng Camera ML Kit / ZXing):
-     + Thủ kho cầm điện thoại quét từng mã Serial trên hộp đồng hồ trước khi đóng thùng giao cho đại lý.
+     + Nhân viên xuất kho cầm điện thoại quét từng mã Serial trên hộp đồng hồ trước khi đóng thùng giao cho đại lý.
      + Ứng dụng kiểm tra chéo thời gian thực (Real-time Cross-validation):
        * Báo lỗi và rung cảnh báo nếu quét nhầm mã Serial không thuộc đơn hàng.
        * Báo lỗi nếu quét mã Serial đang ở trạng thái lỗi (`HANG_LOI`) hoặc đang trưng bày (`TRUNG_BAY`).
      + Sau khi quét đủ 100% mã Serial: Mở nút "Xác nhận Xuất kho Hoàn tất".
 
-5. TÍNH TOÁN DOANH THU, CẬP NHẬT CÔNG NỢ & XUẤT HÓA ĐƠN ĐIỆN TỬ B2B:
+5. HOÀN TẤT XUẤT KHO, CẬP NHẬT CÔNG NỢ & PHIẾU XUẤT KHO B2B:
    - Chuyển trạng thái các Serial đã quét sang `DA_BAN`.
    - Giảm trừ tồn kho vật lý và giải phóng số lượng giữ chỗ trong Room DB.
-   - Ghi tăng công nợ phải thu của Đại lý tương ứng với giá trị sau chiết khấu của đơn hàng.
+   - Ghi tăng công nợ phải thu của Đại lý tương ứng với giá trị sau chiết khấu của lô hàng xuất.
    - Ghi nhận giao dịch vào Sổ Thẻ kho (-).
-   - In / Xem Phiếu Xuất kho kiêm Hóa đơn B2B: Hiển thị đầy đủ danh sách Serial định danh để bảo hành hãng.
+   - In / Xem Phiếu Xuất kho kiêm Hóa đơn B2B: Hiển thị đầy đủ danh sách Serial định danh để kích hoạt bảo hành hãng.
 
 YÊU CẦU ĐẦU RA:
 - Mã nguồn Kotlin sạch, chuẩn MVVM, kết nối mượt mà với Room DB của TV1.
