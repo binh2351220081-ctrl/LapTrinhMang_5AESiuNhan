@@ -56,6 +56,23 @@
                     android:textSize="11sp"
                     android:layout_marginEnd="6dp" />
 
+                <!-- Nút Chuyển Sang TV3: Xuất Kho B2B -->
+                <TextView
+                    android:id="@+id/btnNavOutbound"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_search_input"
+                    android:backgroundTint="@color/accent_gold"
+                    android:paddingStart="8dp"
+                    android:paddingTop="4dp"
+                    android:paddingEnd="8dp"
+                    android:paddingBottom="4dp"
+                    android:text="📤 TV3: Xuất Kho"
+                    android:textColor="@color/primary_dark"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="6dp" />
+
                 <!-- Nút Đăng Xuất -->
                 <TextView
                     android:id="@+id/btnLogout"

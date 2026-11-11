@@ -53,6 +53,7 @@ class ProductListFragment : Fragment() {
     private var _binding: FragmentProductListBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var database: ChronoVaultDatabase
     private lateinit var productDao: ProductDao
     private lateinit var serialDao: SerialDao
     private lateinit var userDao: UserDao
@@ -75,7 +76,7 @@ class ProductListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Khởi tạo Database DAO & Session
-        val database = ChronoVaultDatabase.getInstance(requireContext())
+        database = ChronoVaultDatabase.getInstance(requireContext())
         productDao = database.productDao()
         serialDao = database.serialDao()
         userDao = database.userDao()
@@ -127,6 +128,13 @@ class ProductListFragment : Fragment() {
             showSystemManagementDialog()
         }
 
+        binding.btnNavOutbound.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainer, com.example.chronovaultwms.outbound.OutboundOrderFragment())
+                .addToBackStack(null)
+                .commit()
+        }
+
         // Bấm vào tên người dùng ở Header để đổi ngay Gmail / Hồ sơ cá nhân
         binding.tvLoggedInUser.setOnClickListener {
             viewLifecycleOwner.lifecycleScope.launch {
@@ -147,8 +155,16 @@ class ProductListFragment : Fragment() {
 
     private fun loadProductsAndCheckAuth() {
         viewLifecycleOwner.lifecycleScope.launch {
-            // Nạp dữ liệu mẫu ban đầu gồm Sản phẩm, Serials, 5 Tài khoản và Nhật ký nếu CSDL rỗng
-            DatabaseSeeder.checkAndSeed(productDao, serialDao, userDao, auditLogDao)
+            // Nạp dữ liệu mẫu ban đầu gồm Sản phẩm, Serials, 5 Tài khoản, Đại lý, Đơn sỉ và Nhật ký nếu CSDL rỗng
+            DatabaseSeeder.checkAndSeed(
+                productDao,
+                serialDao,
+                userDao,
+                auditLogDao,
+                database.dealerDao(),
+                database.outboundOrderDao(),
+                database.dealerReceiptDao()
+            )
 
             // Lấy danh sách sản phẩm từ Room
             allProducts = withContext(Dispatchers.IO) {

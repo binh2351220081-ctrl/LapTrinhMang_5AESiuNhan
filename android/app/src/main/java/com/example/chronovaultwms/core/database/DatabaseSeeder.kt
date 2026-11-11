@@ -322,6 +322,157 @@ object DatabaseSeeder {
             action = "PHÂN_BỔ_GIÁ_VỐN",
             details = "Hạch toán chi phí logistics và gán giá vốn đích danh cho Serial RLX-SUB-2026-002.",
             ipAddress = "192.168.1.105 - Accounting Terminal"
+        ),
+        AuditLogEntity(
+            timestamp = "10/11/2026 14:10:15",
+            actorName = "Tô Đức Thảo",
+            role = "OPERATIONS_STAFF",
+            action = "DUYỆT_ĐƠN_SỈ_GIỮ_CHỖ",
+            details = "Duyệt đơn sỉ DS-2026-001 cho Galle Watch: 2 chiếc Rolex Submariner (khóa giữ chỗ 2 chiếc).",
+            ipAddress = "192.168.1.103 - Outbound Terminal"
+        )
+    )
+
+    val sampleDealers = listOf(
+        DealerEntity(
+            dealerId = "DL-GALLE",
+            name = "Galle Watch Việt Nam",
+            tier = "VIP",
+            discountPercent = 0.30,
+            creditLimit = 3000000000.0,
+            currentDebt = 1800000000.0,
+            phone = "0988.123.456",
+            address = "41 Thi Sách, Hai Bà Trưng, Hà Nội",
+            taxCode = "0101892831",
+            status = "ACTIVE"
+        ),
+        DealerEntity(
+            dealerId = "DL-HAITRIEU",
+            name = "Đồng Hồ Hải Triều",
+            tier = "VIP",
+            discountPercent = 0.30,
+            creditLimit = 2500000000.0,
+            currentDebt = 1200000000.0,
+            phone = "0977.654.321",
+            address = "160 Âu Cơ, P.9, Tân Bình, TP.HCM",
+            taxCode = "0312548910",
+            status = "ACTIVE"
+        ),
+        DealerEntity(
+            dealerId = "DL-BOSSLUX",
+            name = "Boss Luxury Watch",
+            tier = "SILVER",
+            discountPercent = 0.25,
+            creditLimit = 1500000000.0,
+            currentDebt = 600000000.0,
+            phone = "0944.888.999",
+            address = "60 Ngô Quyền, Hoàn Kiếm, Hà Nội",
+            taxCode = "0108923412",
+            status = "ACTIVE"
+        ),
+        DealerEntity(
+            dealerId = "DL-DANGQUANG",
+            name = "Đăng Quang Watch",
+            tier = "SILVER",
+            discountPercent = 0.25,
+            creditLimit = 1000000000.0,
+            currentDebt = 350000000.0,
+            phone = "0966.333.222",
+            address = "55 Trần Đăng Ninh, Cầu Giấy, Hà Nội",
+            taxCode = "0105829103",
+            status = "ACTIVE"
+        ),
+        DealerEntity(
+            dealerId = "DL-XWATCH",
+            name = "Xwatch Luxury",
+            tier = "BRONZE",
+            discountPercent = 0.20,
+            creditLimit = 500000000.0,
+            currentDebt = 0.0,
+            phone = "0933.777.111",
+            address = "472 Xã Đàn, Đống Đa, Hà Nội",
+            taxCode = "0106948271",
+            status = "ACTIVE"
+        )
+    )
+
+    val sampleOrders = listOf(
+        OutboundOrderEntity(
+            orderCode = "DS-2026-001",
+            dealerId = "DL-GALLE",
+            dealerName = "Galle Watch Việt Nam",
+            productCode = "RLX-126610LN",
+            productName = "Rolex Submariner Date 41mm",
+            unit = "PIECE",
+            quantity = 2,
+            convertedQuantity = 2,
+            unitPrice = 320000000.0,
+            discountPercent = 0.30,
+            totalAmount = 448000000.0,
+            depositAmount = 150000000.0,
+            remainingDebt = 298000000.0,
+            status = "RESERVED",
+            createdDate = "10/11/2026 14:10",
+            dispatchedSerials = ""
+        ),
+        OutboundOrderEntity(
+            orderCode = "DS-2026-002",
+            dealerId = "DL-HAITRIEU",
+            dealerName = "Đồng Hồ Hải Triều",
+            productCode = "OMG-310304250",
+            productName = "Omega Speedmaster Professional Moonwatch",
+            unit = "PIECE",
+            quantity = 2,
+            convertedQuantity = 2,
+            unitPrice = 165000000.0,
+            discountPercent = 0.30,
+            totalAmount = 231000000.0,
+            depositAmount = 100000000.0,
+            remainingDebt = 131000000.0,
+            status = "COMPLETED",
+            createdDate = "09/11/2026 16:45",
+            dispatchedSerials = "OMG-SPEED-2026-001, OMG-SPEED-2026-002"
+        ),
+        OutboundOrderEntity(
+            orderCode = "DS-2026-003",
+            dealerId = "DL-BOSSLUX",
+            dealerName = "Boss Luxury Watch",
+            productCode = "CAR-WSSA0029",
+            productName = "Cartier Santos de Cartier Medium",
+            unit = "PIECE",
+            quantity = 1,
+            convertedQuantity = 1,
+            unitPrice = 180000000.0,
+            discountPercent = 0.25,
+            totalAmount = 135000000.0,
+            depositAmount = 50000000.0,
+            remainingDebt = 85000000.0,
+            status = "RESERVED",
+            createdDate = "10/11/2026 15:20",
+            dispatchedSerials = ""
+        )
+    )
+
+    val sampleReceipts = listOf(
+        DealerReceiptEntity(
+            receiptId = "PT-2026-001",
+            dealerId = "DL-GALLE",
+            dealerName = "Galle Watch Việt Nam",
+            amount = 200000000.0,
+            paymentMethod = "CHUYEN_KHOAN",
+            referenceDoc = "UNC-VCB-88391",
+            date = "09/11/2026 15:30",
+            note = "Thu nợ đơn hàng Rolex đợt tháng 10"
+        ),
+        DealerReceiptEntity(
+            receiptId = "PT-2026-002",
+            dealerId = "DL-HAITRIEU",
+            dealerName = "Đồng Hồ Hải Triều",
+            amount = 100000000.0,
+            paymentMethod = "CHUYEN_KHOAN",
+            referenceDoc = "UNC-TCB-99201",
+            date = "10/11/2026 09:15",
+            note = "Đặt cọc đơn hàng sỉ Omega Moonwatch"
         )
     )
 
@@ -329,7 +480,10 @@ object DatabaseSeeder {
         productDao: ProductDao,
         serialDao: SerialDao,
         userDao: UserDao,
-        auditLogDao: AuditLogDao
+        auditLogDao: AuditLogDao,
+        dealerDao: DealerDao? = null,
+        outboundOrderDao: OutboundOrderDao? = null,
+        dealerReceiptDao: DealerReceiptDao? = null
     ) = withContext(Dispatchers.IO) {
         if (productDao.getProductCount() == 0) {
             productDao.insertAll(sampleProducts)
@@ -343,6 +497,21 @@ object DatabaseSeeder {
         }
         if (auditLogDao.countLogs() == 0) {
             auditLogDao.insertAll(sampleAuditLogs)
+        }
+        dealerDao?.let {
+            if (it.countDealers() == 0) {
+                it.insertAll(sampleDealers)
+            }
+        }
+        outboundOrderDao?.let {
+            if (it.countOrders() == 0) {
+                it.insertAll(sampleOrders)
+            }
+        }
+        dealerReceiptDao?.let {
+            if (it.countReceipts() == 0) {
+                it.insertAll(sampleReceipts)
+            }
         }
     }
 }

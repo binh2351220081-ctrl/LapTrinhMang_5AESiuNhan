@@ -10,9 +10,12 @@ import androidx.room.RoomDatabase
         ProductEntity::class,
         SerialEntity::class,
         UserEntity::class,
-        AuditLogEntity::class
+        AuditLogEntity::class,
+        DealerEntity::class,
+        OutboundOrderEntity::class,
+        DealerReceiptEntity::class
     ],
-    version = 4,
+    version = 5,
     exportSchema = false
 )
 abstract class ChronoVaultDatabase : RoomDatabase() {
@@ -20,6 +23,9 @@ abstract class ChronoVaultDatabase : RoomDatabase() {
     abstract fun serialDao(): SerialDao
     abstract fun userDao(): UserDao
     abstract fun auditLogDao(): AuditLogDao
+    abstract fun dealerDao(): DealerDao
+    abstract fun outboundOrderDao(): OutboundOrderDao
+    abstract fun dealerReceiptDao(): DealerReceiptDao
 
     companion object {
         @Volatile
