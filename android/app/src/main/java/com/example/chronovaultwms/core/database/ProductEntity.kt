@@ -10,7 +10,7 @@ data class ProductEntity(
     val name: String,               // Tên đầy đủ (VD: Rolex Submariner Date 41mm)
     val brand: String,              // Thương hiệu (Rolex, Omega, Patek Philippe...)
     val category: String,           // Phân loại (Diver, Chronograph, Dress, Pilot...)
-    val wholesalePrice: Double,     // Giá bán sỉ B2B (VNĐ)
+    val wholesalePrice: Double,     // Đơn giá phân phối đại lý B2B (VNĐ)
     val retailPrice: Double,        // Giá niêm yết hãng (VNĐ)
     val stockQuantity: Int,         // Số lượng tồn kho (Chiếc)
     val caseDiameter: String,       // Đường kính mặt (VD: 41mm)

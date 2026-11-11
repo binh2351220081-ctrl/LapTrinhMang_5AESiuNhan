@@ -17,7 +17,7 @@ function renderDashboard() {
     .filter(s => s.status === 'IN_STOCK' || s.status === 'RESERVED')
     .reduce((sum, s) => sum + (s.costPrice || 0), 0);
 
-  // Tổng doanh thu sỉ B2B từ các đơn hàng
+  // Tổng doanh số xuất kho đại lý B2B từ các đơn hàng
   const totalRevenue = orders
     .filter(o => o.status !== 'CANCELLED')
     .reduce((sum, o) => sum + (o.totalAmount || 0), 0);
@@ -177,7 +177,7 @@ function openDebtLedgerModal() {
   bodyElem.innerHTML = `
     <div class="modal-detail-wrap">
       <!-- Section 1: Công nợ Phải Thu Đại Lý B2B -->
-      <div class="section-subtitle">🏪 1. SỔ CÔNG NỢ PHẢI THU ĐẠI LÝ BÁN SỈ B2B</div>
+      <div class="section-subtitle">🏪 1. SỔ CÔNG NỢ PHẢI THU ĐẠI LÝ XUẤT KHO ĐẠI LÝ B2B</div>
       <table class="data-table-spec">
         <thead>
           <tr style="background:rgba(255,255,255,0.05); font-size:11px;">
@@ -265,7 +265,7 @@ function openCashflowReportModal() {
       </div>
 
       <!-- Inflow Transactions -->
-      <div class="section-subtitle" style="margin-top:16px;">📈 CÁC KHOẢN THU BÁN SỈ THỰC TẾ (${receipts.length} phiếu thu)</div>
+      <div class="section-subtitle" style="margin-top:16px;">📈 CÁC KHOẢN THU XUẤT KHO ĐẠI LÝ THỰC TẾ (${receipts.length} phiếu thu)</div>
       <table class="data-table-spec">
         <thead>
           <tr style="background:rgba(255,255,255,0.05); font-size:11px;">

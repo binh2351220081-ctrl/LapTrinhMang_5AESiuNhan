@@ -248,7 +248,7 @@ const INITIAL_SERIALS = [
     timeline: [
       { date: '2026-08-15 09:30', title: 'Nhập kho thành công', desc: 'Từ NCC: Rolex Authorized Asia theo PN-2026-001' },
       { date: '2026-08-15 11:00', title: 'Định vị vị trí kệ', desc: 'Vị trí Kệ A-01-T2-N04' },
-      { date: '2026-09-28 10:15', title: 'Khóa giữ chỗ (Reserved)', desc: 'Đơn sỉ DS-2026-104 của Đại lý Hoàng Kim Watch VIP (Đã cọc 30%)' }
+      { date: '2026-09-28 10:15', title: 'Khóa giữ chỗ (Reserved)', desc: 'Lệnh xuất đại lý DS-2026-104 của Đại lý Hoàng Kim Watch VIP (Đã cọc 30%)' }
     ]
   },
   {
@@ -268,7 +268,7 @@ const INITIAL_SERIALS = [
     warrantyExpire: '2031-09-10',
     timeline: [
       { date: '2026-08-15 09:30', title: 'Nhập kho thành công', desc: 'Nhập từ Rolex Authorized Asia' },
-      { date: '2026-09-08 14:00', title: 'Lên đơn sỉ DS-2026-098', desc: 'Đại lý Đồng Hồ Hoàng Kim đặt sỉ' },
+      { date: '2026-09-08 14:00', title: 'Lên lệnh xuất đại lý DS-2026-098', desc: 'Đại lý Đồng Hồ Hoàng Kim đặt hàng đại lý' },
       { date: '2026-09-10 16:30', title: 'Quét xuất kho & Bàn giao', desc: 'Xuất giao đại lý theo PX-2026-088. Kích hoạt bảo hành điện tử 5 năm' }
     ]
   },
@@ -309,7 +309,7 @@ const INITIAL_SERIALS = [
     warrantyExpire: '2031-08-20',
     timeline: [
       { date: '2026-08-20 10:15', title: 'Nhập kho thành công', desc: 'Nhập khẩu từ Swatch Group' },
-      { date: '2026-08-25 09:00', title: 'Chuyển Kho Trưng Bày', desc: 'Chuyển mẫu đồng hồ sang Showroom B2B giới thiệu khách sỉ' }
+      { date: '2026-08-25 09:00', title: 'Chuyển Kho Trưng Bày', desc: 'Chuyển mẫu đồng hồ sang Showroom B2B giới thiệu đối tác đại lý' }
     ]
   },
   {
@@ -348,8 +348,8 @@ const INITIAL_SERIALS = [
     warrantyExpire: '2028-08-20',
     timeline: [
       { date: '2026-08-20 10:15', title: 'Nhập kho nguyên kiện', desc: 'Nhập từ Swatch Group' },
-      { date: '2026-09-02 11:00', title: 'Xuất sỉ Hải Triều', desc: 'Theo đơn DS-2026-095' },
-      { date: '2026-09-12 15:30', title: 'Tiếp nhận đổi trả sỉ', desc: 'Đại lý Hải Triều trả lại do hấp hơi nước mặt kính' },
+      { date: '2026-09-02 11:00', title: 'Xuất kho đại lý Hải Triều', desc: 'Theo đơn DS-2026-095' },
+      { date: '2026-09-12 15:30', title: 'Tiếp nhận trả hàng đại lý', desc: 'Đại lý Hải Triều trả lại do hấp hơi nước mặt kính' },
       { date: '2026-09-12 16:00', title: 'Cách ly Kho Hàng Lỗi', desc: 'Lưu tại Kệ C-01 chờ lập Phiếu xuất trả NCC hoàn tiền' }
     ]
   },
@@ -551,7 +551,7 @@ const INITIAL_DEALERS = [
   }
 ];
 
-// Phiếu Thu Tiền Bán Sỉ / Thu Hồi Nợ Đại Lý (TV3.1)
+// Phiếu Thu Tiền Xuất Kho Đại Lý / Thu Hồi Nợ Đại Lý (TV3.1)
 const INITIAL_DEALER_RECEIPTS = [
   {
     id: 'PT-2026-001',
@@ -560,7 +560,7 @@ const INITIAL_DEALER_RECEIPTS = [
     date: '2026-09-10',
     amount: 150000000,
     paymentMethod: 'CHUYEN_KHOAN',
-    referenceDoc: 'Thu tiền cọc đơn sỉ DS-2026-104',
+    referenceDoc: 'Thu tiền cọc đơn xuất kho DS-2026-104',
     createdBy: 'Kế toán (Phạm Thị Lan)',
     note: 'Chuyển khoản qua VCB tài khoản công ty'
   },
@@ -611,7 +611,7 @@ const INITIAL_OTHER_DISPATCHES = [
 ];
 
 // ==========================================
-// SEED DATA 5: PHIẾU NHẬP KHO & ĐƠN BÁN SỈ
+// SEED DATA 5: PHIẾU NHẬP KHO & LỆNH XUẤT KHO ĐẠI LÝ
 // ==========================================
 const INITIAL_RECEIPTS = [
   {
@@ -913,7 +913,7 @@ const INITIAL_ROLES = [
   {
     roleId: 'NHANVIEN_KHO',
     roleName: 'Nhân Viên Nhập/Xuất Kho',
-    desc: 'Lập phiếu nhập, quét Serial, lập đơn bán sỉ nháp, soạn/đóng gói đơn và xử lý xuất kho theo quy trình',
+    desc: 'Lập phiếu nhập, quét Serial, lập lệnh xuất kho đại lý nháp, soạn/đóng gói đơn và xử lý xuất kho theo quy trình',
     permissions: {
       products: { view: true, add: false, edit: false, delete: false },
       inbound: { view: true, create: true, approve: false, pay: false },
@@ -956,7 +956,7 @@ const INITIAL_ROLES = [
 // SEED DATA 8: NHẬT KÝ AUDIT LOG (TV1.2 & TV5)
 // ==========================================
 const INITIAL_AUDIT_LOGS = [
-  { time: 'Hôm nay 10:15', user: 'Nhân viên nhập/xuất kho (Nguyễn Phương)', action: 'TẠO_ĐƠN_SỈ', target: 'Đơn sỉ DS-2026-104 cho Đại lý Hoàng Kim (Khóa giữ chỗ)' },
+  { time: 'Hôm nay 10:15', user: 'Nhân viên nhập/xuất kho (Nguyễn Phương)', action: 'TẠO_ĐƠN_SỈ', target: 'Lệnh xuất đại lý DS-2026-104 cho Đại lý Hoàng Kim (Khóa giữ chỗ)' },
   { time: 'Hôm nay 09:20', user: 'Kế toán (Phạm Thị Lan)', action: 'THU_TIỀN_SỈ', target: 'Lập phiếu thu PT-2026-001 thu 150.000.000đ từ Hoàng Kim Watch' },
   { time: 'Hôm nay 08:30', user: 'Thủ kho (Lê Tuấn)', action: 'KIỂM_KÊ_KHO', target: 'Hoàn tất kiểm kê Kệ A-01 (18/18 chiếc khớp 100%)' },
   { time: 'Hôm qua 16:30', user: 'Thủ kho (Lê Tuấn)', action: 'NHẬP_TRẢ_HÀNG', target: 'Tiếp nhận Tissot PRX lỗi hơi kính từ Hải Triều -> Kho Lỗi C-01' },
@@ -1155,7 +1155,7 @@ class ChronoDB {
     this.setOrders(list);
   }
 
-  // --- Dealer Receipts (Thu tiền sỉ TV3) ---
+  // --- Dealer Receipts (Thu hồi công nợ đại lý TV3) ---
   static getDealerReceipts() { return this.get(STORAGE_KEYS.DEALER_RECEIPTS, INITIAL_DEALER_RECEIPTS); }
   static addDealerReceipt(rcpt) {
     const list = this.getDealerReceipts();
@@ -1172,7 +1172,7 @@ class ChronoDB {
     this.logAction(rcpt.createdBy || 'Kế toán', 'THU_TIỀN_SỈ', `Lập phiếu thu ${rcpt.id} từ ${rcpt.dealerName}: ${formatShortVND(rcpt.amount)}`);
   }
 
-  // --- Customer Returns (Đổi trả sỉ TV3) ---
+  // --- Customer Returns (Nhận trả hàng đại lý TV3) ---
   static getCustomerReturns() { return this.get(STORAGE_KEYS.CUSTOMER_RETURNS, INITIAL_CUSTOMER_RETURNS); }
   static addCustomerReturn(ret) {
     const list = this.getCustomerReturns();

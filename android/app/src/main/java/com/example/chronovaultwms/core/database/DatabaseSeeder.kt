@@ -272,6 +272,26 @@ object DatabaseSeeder {
         ),
         UserEntity(
             userId = "USR-005",
+            username = "quan_inbound",
+            password = "123",
+            fullName = "Nguyễn Đắc Quân",
+            role = "OPERATIONS_STAFF",
+            department = "Nhân Viên Nhập Kho & NCC (TV2)",
+            email = "quan_ltm@dau.edu.vn",
+            status = "ACTIVE"
+        ),
+        UserEntity(
+            userId = "USR-006",
+            username = "thao_outbound",
+            password = "123",
+            fullName = "Tô Đức Thảo",
+            role = "OPERATIONS_STAFF",
+            department = "Nhân Viên Xuất Kho & Đại Lý (TV3)",
+            email = "thao_ltm@dau.edu.vn",
+            status = "ACTIVE"
+        ),
+        UserEntity(
+            userId = "USR-007",
             username = "tu_accountant",
             password = "123",
             fullName = "Trần Công Tú",

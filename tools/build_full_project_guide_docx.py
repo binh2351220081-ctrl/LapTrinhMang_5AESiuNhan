@@ -213,7 +213,7 @@ def build_full_project_guide():
     matrix_data = [
         ("Phan Bá Hải Bình\n(Nhóm trưởng - TV1)", "PH1: Hàng Hóa Master & Quản Trị Hệ Thống", "Chủ trì Báo cáo PTTK, CSDL 23 bảng 3NF, Bảng phân hệ Excel, RBAC 5 vai trò.", "tv1_hang_hoa.html\ntv1_he_thong.html\njs/tv1_*.js", "Core Backend Server, Auth JWT, Token Revoke, CRUD Đồng hồ, Serial Timeline, Audit Log.", "Core Architecture MVVM, Room DB mẫu, Auth Login, Product List, Serial Timeline UI."),
         ("Nguyễn Đắc Quân\n(TV2)", "PH2: Đối Tác NCC & Quản Lý Nhập Kho", "Module 3 PTTK, Use Case UC-01, Bảng NCC, Phiếu nhập, Phiếu chi, Quy tắc giá vốn đích danh.", "tv2_nhap_kho.html\njs/tv2_inbound.js", "API Nhà cung cấp, API kiểm tra trùng Serial, API duyệt nhập kho, API phân bổ chi phí, API Phiếu chi.", "Supplier Module, Inbound Receipt, Tích hợp Camera ML Kit nạp Serial, Form phân bổ chi phí."),
-        ("Tô Đức Thảo\n(TV3)", "PH3: Khách Sỉ & Bán Sỉ - Phân Phối Xuất Hàng", "Module 4 PTTK, Use Case UC-02 & UC-03, Bảng Đại lý, Đơn sỉ, Phiếu xuất, Hạn mức nợ.", "tv3_xuat_kho.html\njs/tv3_outbound.js", "API Đại lý B2B, API thẩm định nợ tín dụng, Socket broadcast khóa giữ chỗ Reserved, API xuất sỉ, Phiếu thu.", "Dealer Module, Create Wholesale Order, Quét Camera đóng kiện xuất kho, Phiếu thu tiền sỉ."),
+        ("Tô Đức Thảo\n(TV3)", "PH3: Đối Tác Đại Lý & Quản Lý Xuất Kho", "Module 4 PTTK, Use Case UC-02 & UC-03, Bảng Đại lý, Lệnh xuất đại lý, Phiếu xuất, Hạn mức nợ.", "tv3_xuat_kho.html\njs/tv3_outbound.js", "API Đại lý B2B, API thẩm định nợ tín dụng, Socket broadcast khóa giữ chỗ Reserved, API xuất kho đại lý, Phiếu thu.", "Dealer Module, Create Wholesale Order, Quét Camera đóng kiện xuất kho, Phiếu thu nợ đại lý."),
         ("Võ Công Tâm\n(TV4)", "PH4: Tồn Kho, Vị Trí Kệ Vật Lý & Kiểm Kê", "Module 5 PTTK, Use Case UC-04, Bảng Sơ đồ kệ Bin, Kiểm kê, Sổ Thẻ kho bất biến.", "tv4_ton_kho.html\njs/tv4_warehouse.js", "API Tồn kho đa đơn vị, Socket khóa xuất nhập khi kiểm kê, API đối soát chênh lệch, API Sổ Thẻ kho.", "Stock Overview 3 kho, Sơ đồ kệ Bin trực quan, Quét kiểm kê Camera phân màu Thừa/Thiếu, Thẻ kho."),
         ("Trần Công Tú\n(TV5)", "PH5: Báo Cáo Thống Kê & Dashboard Điều Hành", "Module 6 PTTK, 9 Báo cáo chuyên sâu, Công thức Lợi nhuận gộp B2B, Sổ nợ 2 chiều, Dòng tiền.", "tv5_bao_cao.html\njs/tv5_reports.js", "API Dashboard KPI thời gian thực, API thống kê doanh số 6 tháng, API Sổ chi tiết công nợ 2 chiều, Cashflow API.", "Executive Dashboard KPI, MPAndroidChart doanh số/chi phí, 9 Màn hình báo cáo, Xuất CSV/In A4.")
     ]
@@ -308,7 +308,7 @@ HÃY THỰC HIỆN TOÀN BỘ CÁC CÔNG VIỆC DƯỚI ĐÂY MỘT CÁCH CHUẨ
 3. HẠNG MỤC WEB CLIENT (FRONTEND TV1):
    - Duy trì và hoàn thiện 2 trang giao diện: `tv1_hang_hoa.html` và `tv1_he_thong.html` kết hợp với `js/tv1_products.js`, `js/tv1_system.js`.
    - Giao diện hiển thị danh mục đồng hồ phong cách Horology Luxury Dark Mode (#0B0F17, viền vàng Gold #D4AF37), bộ lọc thương hiệu, tìm kiếm Debounce, modal khai báo 6 thông số kỹ thuật (bộ máy, kính, dây, size mặt, chống nước, bảo hành).
-   - Màn hình Tra Cứu Vòng Đời Serial (Serial Timeline): Nhập mã Serial bất kỳ -> Render trực quan toàn bộ lịch sử (Ngày nhập -> NCC -> Kệ lưu kho -> Đơn sỉ -> Đại lý sở hữu -> Bảo hành).
+   - Màn hình Tra Cứu Vòng Đời Serial (Serial Timeline): Nhập mã Serial bất kỳ -> Render trực quan toàn bộ lịch sử (Ngày nhập -> NCC -> Kệ lưu kho -> Lệnh xuất đại lý -> Đại lý sở hữu -> Bảo hành).
    - Màn hình Quản trị hệ thống: Danh sách tài khoản, chuyển trạng thái Active/Locked, cấu hình ma trận vai trò (RBAC) và bảng hiển thị Audit Log bất biến.
 
 4. HẠNG MỤC LẬP TRÌNH MẠNG & SERVER BACKEND (CORE NETWORK):
@@ -317,7 +317,7 @@ HÃY THỰC HIỆN TOÀN BỘ CÁC CÔNG VIỆC DƯỚI ĐÂY MỘT CÁCH CHUẨ
      + POST /api/auth/logout: Thu hồi token và hủy phiên làm việc.
      + GET /api/products: Trả về danh sách mẫu đồng hồ phân trang, kèm số lượng tồn kho thực tế liên kết từ bảng serials.
      + POST /api/products/create: Thêm mẫu đồng hồ mới, validate tính duy nhất của SKU và Barcode.
-     + PUT /api/products/{sku}/uom: Cập nhật quy cách đóng gói sỉ (ĐVT sỉ, conversionRate, MOQ).
+     + PUT /api/products/{sku}/uom: Cập nhật quy cách đóng gói xuất kho (ĐVT đóng gói, conversionRate, MOQ).
      + GET /api/serials/{serialNumber}/timeline: API truy vết toàn bộ lịch sử vòng đời của 1 chiếc đồng hồ.
      + GET /api/system/audit-logs: Truy vấn nhật ký kiểm toán hệ thống có bộ lọc thời gian và tác nhân.
    - Middleware: Xác thực JWT token và kiểm tra quyền hạn RBAC trước khi cho phép client truy cập API.
@@ -389,54 +389,54 @@ HÃY THỰC HIỆN TOÀN BỘ CÁC CÔNG VIỆC DƯỚI ĐÂY MỘT CÁCH CHUẨ
     # -------------------------------------------------------------
     # PROMPT 3: TÔ ĐỨC THẢO (TV3)
     # -------------------------------------------------------------
-    doc.add_heading("3. BẢN PROMPT TOÀN DIỆN: THÀNH VIÊN 3 - TÔ ĐỨC THẢO (KHÁCH SỈ & BÁN SỈ - XUẤT HÀNG)", level=2)
-    p3_full = """BẠN LÀ LẬP TRÌNH VIÊN PHỤ TRÁCH PHÂN HỆ KHÁCH SỈ & BÁN SỈ - XUẤT HÀNG TRONG DỰ ÁN HỆ THỐNG QUẢN LÝ KHO ĐỒNG HỒ CAO CẤP CHRONOVAULT B2B WHOLESALE WMS (MÔN LẬP TRÌNH MẠNG).
+    doc.add_heading("3. BẢN PROMPT TOÀN DIỆN: THÀNH VIÊN 3 - TÔ ĐỨC THẢO (ĐỐI TÁC ĐẠI LÝ & QUẢN LÝ XUẤT KHO)", level=2)
+    p3_full = """BẠN LÀ LẬP TRÌNH VIÊN PHỤ TRÁCH PHÂN HỆ ĐỐI TÁC ĐẠI LÝ & QUẢN LÝ XUẤT KHO TRONG DỰ ÁN HỆ THỐNG QUẢN LÝ KHO ĐỒNG HỒ CAO CẤP CHRONOVAULT B2B WHOLESALE WMS (MÔN LẬP TRÌNH MẠNG).
 HÃY THỰC HIỆN TOÀN BỘ CÁC CÔNG VIỆC DƯỚI ĐÂY MỘT CÁCH CHUẨN XÁC, ĐỒNG BỘ VỚI NHÓM TRƯỞNG:
 
 1. PHẠM VI NGHIỆP VỤ PHỤ TRÁCH (TV3 - TÔ ĐỨC THẢO):
-   - Phân Hệ 3: Quản lý hồ sơ Đại lý sỉ B2B, Hạn mức tín dụng công nợ (Credit Limit), Khởi tạo đơn bán sỉ, Áp giá sỉ tự động theo cấp bậc, Duyệt khóa hàng giữ chỗ (Reserved Allocation), Quét Serial đóng kiện xuất sỉ, Thu tiền cọc/nợ đại lý, Đổi trả sỉ và Xuất khác (Bảo hành/Hủy).
+   - Phân Hệ 3: Quản lý hồ sơ Đại lý B2B, Hạn mức tín dụng công nợ (Credit Limit), Khởi tạo lệnh xuất kho đại lý, Áp giá đại lý tự động theo cấp bậc, Duyệt khóa hàng giữ chỗ (Reserved Allocation), Quét Serial đóng kiện xuất kho đại lý, Thu tiền cọc/nợ đại lý, Nhận trả hàng đại lý và Xuất khác (Bảo hành/Hủy).
 
 2. HẠNG MỤC TÀI LIỆU & PHÂN TÍCH THIẾT KẾ:
    - Chịu trách nhiệm hoàn thiện Module 4 trong Báo cáo PTTK và Bảng Phân Hệ Excel 5 Sheet.
-   - Đặc tả chi tiết Use Case UC-02 (Tạo đơn bán sỉ & Khóa giữ chỗ Reserved) và UC-03 (Quét Serial đóng kiện xuất sỉ).
+   - Đặc tả chi tiết Use Case UC-02 (Tạo lệnh xuất kho đại lý & Khóa giữ chỗ Reserved) và UC-03 (Quét Serial đóng kiện xuất kho đại lý).
    - Thiết kế và quản lý dữ liệu các bảng CSDL: `dealers`, `wholesale_orders`, `order_items`, `outbound_dispatches`, `dealer_receipts`, `customer_returns`.
-   - Ràng buộc nghiệp vụ: RB-05 (Số lượng đặt >= MOQ), RB-07 (Giá sỉ theo hạng VIP/Bạc/Đồng), RB-08 (Thẩm định nợ: Dư nợ + Đơn mới - Cọc <= Hạn mức nợ), RB-09 (Khóa giữ chỗ Reserved khi duyệt đơn), RB-10 (Giải phóng giữ chỗ khi hủy đơn).
+   - Ràng buộc nghiệp vụ: RB-05 (Số lượng đặt >= MOQ), RB-07 (Giá phân phối đại lý theo hạng VIP/Bạc/Đồng), RB-08 (Thẩm định nợ: Dư nợ + Đơn mới - Cọc <= Hạn mức nợ), RB-09 (Khóa giữ chỗ Reserved khi duyệt đơn), RB-10 (Giải phóng giữ chỗ khi hủy đơn).
 
 3. HẠNG MỤC WEB CLIENT (FRONTEND TV3):
    - Hoàn thiện giao diện `tv3_xuat_kho.html` và file logic `js/tv3_outbound.js`.
    - Danh sách đại lý B2B phân hạng (VIP, Bạc, Đồng), hiển thị hạn mức nợ và dư nợ.
-   - Form lên đơn bán sỉ: Chọn đại lý -> Hệ thống tự động áp giá sỉ và chiết khấu; kiểm tra MOQ; kiểm tra tồn kho khả dụng thời gian thực.
+   - Form lập lệnh xuất kho đại lý: Chọn đại lý -> Hệ thống tự động áp giá đại lý và chiết khấu; kiểm tra MOQ; kiểm tra tồn kho khả dụng thời gian thực.
    - Thẩm định tín dụng và duyệt đơn: Khi duyệt đơn, tự động chuyển số lượng sang trạng thái Giữ chỗ (Reserved) để không bị bán trùng lặp cho đơn khác.
    - Màn hình Quét Serial đóng kiện xuất kho: Thủ kho dùng camera quét Serial trên kệ; hệ thống kiểm tra Serial thuộc đúng SKU, trạng thái Trong kho và Hàng mới.
-   - Lập Phiếu Thu tiền sỉ (giảm nợ, khôi phục hạn mức) và Biên bản bàn giao hàng B2B A4.
+   - Lập Phiếu Thu nợ đại lý (giảm nợ, khôi phục hạn mức) và Biên bản bàn giao hàng B2B A4.
 
 4. HẠNG MỤC LẬP TRÌNH MẠNG & API/SOCKET (NETWORK COMMUNICATION):
    - Xây dựng và kết nối các Endpoint REST API & WebSocket:
      + GET /api/dealers: Lấy danh sách đại lý, hạng và hạn mức nợ còn lại.
      + POST /api/dealers/create: Thêm mới đại lý, cấu hình Credit Limit và thời hạn nợ (Net 15/30).
-     + POST /api/orders/create: Gửi đơn sỉ nháp lên server.
+     + POST /api/orders/create: Gửi lệnh xuất đại lý nháp lên server.
      + PUT /api/orders/{orderId}/approve: Thẩm định tín dụng và phê duyệt đơn:
        * Tăng số lượng giữ chỗ `reservedQty`, giảm tồn khả dụng `availableQty`.
        * Phát thông điệp mạng WebSocket: `EVENT_STOCK_RESERVED` báo cho toàn mạng biết số lượng khả dụng đã giảm.
-     + PUT /api/orders/{orderId}/cancel: Hủy đơn sỉ, phát sự kiện giải phóng giữ chỗ `EVENT_STOCK_RELEASED`.
+     + PUT /api/orders/{orderId}/cancel: Hủy lệnh xuất đại lý, phát sự kiện giải phóng giữ chỗ `EVENT_STOCK_RELEASED`.
      + POST /api/outbound/dispatch: Xác nhận xuất kho thành công:
        * Giảm tồn thực tế, giải phóng giữ chỗ.
        * Cập nhật Serial sang `DA_BAN`, gán mã đại lý và ngày bảo hành.
        * Tăng dư nợ đại lý, ghi phát sinh Thẻ kho (-).
        * Phát thông điệp `EVENT_DISPATCH_COMPLETED` sang TV4 và TV5.
-     + POST /api/dealers/payment-receipt: Thu tiền sỉ, giảm dư nợ đại lý.
+     + POST /api/dealers/payment-receipt: Thu hồi công nợ đại lý, giảm dư nợ đại lý.
 
 5. HẠNG MỤC ỨNG DỤNG ANDROID STUDIO (KOTLIN MVVM):
    - Package phụ trách: `com.chronovault.wms.dealer` và `com.chronovault.wms.outbound`.
    - Xây dựng DealerListFragment, DealerDetailActivity.
    - Xây dựng CreateWholesaleOrderActivity: Chọn mẫu đồng hồ, kiểm tra MOQ, hiển thị đơn giá VIP/Bạc/Đồng tự động, hiển thị số tiền cọc bắt buộc.
-   - Xây dựng DispatchOrderActivity (Đóng gói xuất sỉ): Tích hợp camera quét mã Serial từng chiếc, kiểm tra đối soát thời gian thực.
-   - Màn hình lập Phiếu Thu tiền sỉ và Màn hình tiếp nhận đổi trả hàng sỉ.
+   - Xây dựng DispatchOrderActivity (Đóng gói xuất kho đại lý): Tích hợp camera quét mã Serial từng chiếc, kiểm tra đối soát thời gian thực.
+   - Màn hình lập Phiếu Thu nợ đại lý và Màn hình tiếp nhận tiếp nhận trả hàng đại lý.
 
 6. HẠNG MỤC KIỂM THỬ:
    - Kiểm thử kịch bản vượt hạn mức tín dụng: Đơn hàng mới làm dư nợ vượt Credit Limit -> Hệ thống bắt buộc chặn và yêu cầu duyệt ngoại lệ từ Chủ cửa hàng.
    - Kiểm thử tính năng khóa giữ chỗ: Khi đơn đã duyệt nhưng chưa xuất, tồn khả dụng giảm đi và các đơn khác không thể đặt vượt số lượng còn lại."""
-    add_prompt_box(doc, p3_full, "PROMPT FULL-STACK: TV3 - TÔ ĐỨC THẢO (KHÁCH SỈ & BÁN SỈ - XUẤT HÀNG)")
+    add_prompt_box(doc, p3_full, "PROMPT FULL-STACK: TV3 - TÔ ĐỨC THẢO (ĐỐI TÁC ĐẠI LÝ & QUẢN LÝ XUẤT KHO)")
 
     # -------------------------------------------------------------
     # PROMPT 4: VÕ CÔNG TÂM (TV4)
@@ -501,7 +501,7 @@ HÃY THỰC HIỆN TOÀN BỘ CÁC CÔNG VIỆC DƯỚI ĐÂY MỘT CÁCH CHUẨ
 
 3. HẠNG MỤC WEB CLIENT (FRONTEND TV5):
    - Hoàn thiện giao diện `tv5_bao_cao.html` và file logic `js/tv5_reports.js`.
-   - Màn hình Executive Dashboard với 5 thẻ KPI thời gian thực: Tổng giá trị tài sản tồn kho theo giá vốn đích danh, Doanh thu phân phối sỉ, Số đơn hàng sỉ mới, Tồn khả dụng và Tỷ lệ đổi trả hàng sỉ (< 2.0%).
+   - Màn hình Executive Dashboard với 5 thẻ KPI thời gian thực: Tổng giá trị tài sản tồn kho theo giá vốn đích danh, Doanh thu phân phối đại lý, Số đơn hàng xuất đại lý mới, Tồn khả dụng và Tỷ lệ tiếp nhận trả hàng đại lý (< 2.0%).
    - Tích hợp HTML5 Canvas vẽ biểu đồ doanh số 6 tháng gần nhất và biểu đồ cơ cấu chi phí nhập hàng.
    - Bảng xếp hạng Top mẫu đồng hồ bán chạy nhất kênh sỉ.
    - Hệ thống 9 báo cáo chuyên sâu với bộ lọc thời gian và tính năng xuất file CSV/Excel hoặc in PDF A4.
@@ -512,12 +512,12 @@ HÃY THỰC HIỆN TOÀN BỘ CÁC CÔNG VIỆC DƯỚI ĐÂY MỘT CÁCH CHUẨ
      + GET /api/dashboard/kpi: Tổng hợp số liệu từ các phân hệ trả về 5 chỉ số KPI điều hành.
      + GET /api/dashboard/sales-chart: Lấy dữ liệu doanh số và chi phí theo từng tháng phục vụ vẽ biểu đồ.
      + GET /api/reports/inbound: Báo cáo nhập hàng theo NCC và chi phí phân bổ.
-     + GET /api/reports/outbound: Báo cáo xuất sỉ theo đại lý và cấp bậc.
+     + GET /api/reports/outbound: Báo cáo xuất kho đại lý theo đại lý và cấp bậc.
      + GET /api/reports/dead-stock: Báo cáo hàng tồn lâu ngày chậm luân chuyển (> 90 ngày).
      + GET /api/reports/gross-profit: Báo cáo lợi nhuận gộp B2B chi tiết theo từng dòng sản phẩm.
      + GET /api/reports/debt-ledger: Bảng đối soát chi tiết công nợ 2 chiều (Đại lý & NCC).
      + GET /api/reports/cashflow: Báo cáo dòng tiền thực tế thu/chi theo mốc thời gian.
-     + Lắng nghe WebSocket: Khi TV2 duyệt nhập kho, TV3 xuất sỉ hoặc thu/chi tiền, Server phát tín hiệu để màn hình Dashboard tự động nhảy số thời gian thực mà không cần F5 trình duyệt.
+     + Lắng nghe WebSocket: Khi TV2 duyệt nhập kho, TV3 xuất kho đại lý hoặc thu/chi tiền, Server phát tín hiệu để màn hình Dashboard tự động nhảy số thời gian thực mà không cần F5 trình duyệt.
 
 5. HẠNG MỤC ỨNG DỤNG ANDROID STUDIO (KOTLIN MVVM):
    - Package phụ trách: `com.chronovault.wms.dashboard` và `com.chronovault.wms.reports`.

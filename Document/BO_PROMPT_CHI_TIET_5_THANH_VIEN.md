@@ -24,7 +24,7 @@
 |:---:|:---|:---|:---|:---|:---|
 | **TV1** | **Phan Bá Hải Bình** (Leader) | Quản trị Hệ thống, RBAC 5 Roles, Danh mục Sản phẩm Đồng hồ Luxury & ĐVT Thùng/Chiếc | `com.example.chronovaultwms.core` & `product` | `main` / `feature/product` | `fragment_product_...` |
 | **TV2** | **Nguyễn Đắc Quân** | Nhà Cung Cấp, Công nợ Phải trả, Nhập kho Quy đổi ĐVT, Quét Serial & Giá vốn Đích danh | `com.example.chronovaultwms.inbound` | `feature/tv2-inbound-supplier` | `fragment_inbound_...` |
-| **TV3** | **Tô Đức Thảo** | Đại lý Sỉ B2B, Kiểm soát Hạn mức Công nợ, Đơn Bán sỉ, Giữ chỗ & Quét Serial Xuất kho | `com.example.chronovaultwms.outbound` | `feature/tv3-outbound-dealer` | `fragment_outbound_...` |
+| **TV3** | **Tô Đức Thảo** | Đối Tác Đại Lý & Quản Lý Xuất Kho, Kiểm soát Hạn mức Tín dụng, Khóa Giữ chỗ & Quét Serial | `com.example.chronovaultwms.outbound` | `feature/tv3-outbound-dealer` | `fragment_outbound_...` |
 | **TV4** | **Võ Công Tâm** | Tồn kho 3 Cấp Chất lượng, Sơ đồ Ngăn kệ K1/K2, Phiếu Kiểm kê Thừa/Thiếu & Sổ Thẻ kho | `com.example.chronovaultwms.inventory` | `feature/tv4-inventory-audit` | `fragment_inventory_...` |
 | **TV5** | **Trần Công Tú** | Executive Dashboard KPI thời gian thực, MPAndroidChart Doanh số 6 tháng, 9 Báo cáo Chuyên sâu & Dòng tiền | `com.example.chronovaultwms.dashboard` | `feature/tv5-dashboard-reports` | `fragment_dashboard_...` |
 
@@ -133,28 +133,28 @@ YÊU CẦU ĐẦU RA:
 *Copy toàn bộ phần code dưới đây và dán vào AI (ChatGPT / Claude / DeepSeek / Gemini):*
 
 ```text
-BẠN LÀ LẬP TRÌNH VIÊN ANDROID CHUYÊN TRÁCH PHÂN HỆ BÁN SỈ B2B VÀ XUẤT KHO. HÃY PHÁT TRIỂN MODULE TRONG PACKAGE `com.example.chronovaultwms.outbound` BẰNG KOTLIN:
+BẠN LÀ LẬP TRÌNH VIÊN ANDROID CHUYÊN TRÁCH PHÂN HỆ ĐỐI TÁC ĐẠI LÝ VÀ QUẢN LÝ XUẤT KHO. HÃY PHÁT TRIỂN MODULE TRONG PACKAGE `com.example.chronovaultwms.outbound` BẰNG KOTLIN:
 
 1. KẾ THỪA NỀN TẢNG CORE & CƠ SỞ DỮ LIỆU:
    - Kế thừa trực tiếp từ branch `main` của Nhóm trưởng (Phan Bá Hải Bình).
    - Sử dụng các Entity và DAO dùng chung từ `com.example.chronovaultwms.core.database.*`:
-     + ProductEntity: Lấy mã SKU, tên mẫu mã, giá bán sỉ niêm yết, đơn vị tính.
+     + ProductEntity: Lấy mã SKU, tên mẫu mã, giá phân phối đại lý niêm yết, đơn vị tính.
      + SerialEntity: Lấy danh sách Serial đang `TRONG_KHO`, cập nhật trạng thái khi giữ chỗ (`CHO_XUAT`) và khi thực xuất (`DA_BAN`).
      + ChronoVaultDatabase: Instance Room Database dùng chung.
    - Sử dụng SessionManager để kiểm tra vai trò người dùng (STORE_OWNER, ACCOUNTANT, OPERATIONS_STAFF).
 
-2. HỒ SƠ ĐẠI LÝ PHÂN PHỐI SỈ B2B & KIỂM SOÁT HẠN MỨC TÍN DỤNG:
-   - Danh bạ Đại lý B2B (DealerListFragment): Quản lý tên đại lý / chuỗi bán lẻ (Galle Watch, Hải Triều, Boss Luxury...), Mã số thuế, Hạng đại lý (VIP Kim Cương, Vàng, Bạc, Đồng), Tỷ lệ chiết khấu thương mại (Ví dụ: 15% - 30%), Hạn mức nợ tối đa (Credit Limit, ví dụ: 2 tỷ VNĐ), Số dư nợ hiện tại (Outstanding Balance).
+2. HỒ SƠ ĐẠI LÝ TIẾP NHẬN B2B & KIỂM SOÁT HẠN MỨC TÍN DỤNG:
+   - Danh bạ Đại lý B2B (DealerListFragment): Quản lý tên đại lý / chuỗi cửa hàng (Galle Watch, Hải Triều, Boss Luxury...), Mã số thuế, Hạng đại lý (VIP Kim Cương, Vàng, Bạc, Đồng), Tỷ lệ chiết khấu thương mại (Ví dụ: 15% - 30%), Hạn mức nợ tối đa (Credit Limit, ví dụ: 2 tỷ VNĐ), Số dư nợ hiện tại (Outstanding Balance).
    - Kiểm tra Hạn mức nợ tự động (Credit Limit Enforcement):
-     + Khi nhân viên tạo đơn bán sỉ mới, hệ thống tự động kiểm tra:
-       Nếu (Dư nợ hiện tại + Giá trị đơn hàng mới) > Hạn mức nợ cho phép:
-       -> Khóa chặn không cho Lưu đơn hàng, hiển thị Dialog cảnh báo đỏ: "Đại lý đã vượt hạn mức nợ! Vui lòng thu bớt tiền nợ cũ hoặc xin duyệt ngoại lệ từ Chủ cửa hàng."
+     + Khi nhân viên tạo lệnh xuất hàng mới, hệ thống tự động kiểm tra:
+       Nếu (Dư nợ hiện tại + Giá trị lô hàng xuất) > Hạn mức nợ cho phép:
+       -> Khóa chặn không cho Lưu đơn hàng, hiển thị Dialog cảnh báo đỏ: "Đại lý đã vượt hạn mức tín dụng! Vui lòng thu bớt tiền nợ cũ hoặc xin duyệt ngoại lệ từ Chủ cửa hàng."
    - Lập Phiếu Thu tiền nợ Đại lý (ReceiptVoucherDialog): Ghi nhận tiền thu nợ từ đại lý (tiền mặt/chuyển khoản), cập nhật giảm dư nợ ngay lập tức.
 
-3. QUẢN LÝ ĐƠN ĐẶT HÀNG BÁN SỈ B2B & CƠ CHẾ GIỮ CHỖ (INVENTORY RESERVATION):
+3. QUẢN LÝ LỆNH XUẤT HÀNG ĐẠI LÝ B2B & CƠ CHẾ GIỮ CHỖ (INVENTORY RESERVATION):
    - Xây dựng CreateOutboundOrderActivity:
-     + Chọn Đại lý sỉ -> Hệ thống tự động áp dụng mức chiết khấu theo Hạng đại lý.
-     + Chọn danh sách SKU đồng hồ và số lượng xuất sỉ theo ĐVT "Thùng" hoặc "Chiếc".
+     + Chọn Đại lý tiếp nhận -> Hệ thống tự động áp dụng mức chiết khấu theo Hạng đại lý.
+     + Chọn danh sách SKU đồng hồ và số lượng xuất theo ĐVT "Thùng" hoặc "Chiếc".
      + Kiểm tra tồn kho khả dụng (Available Stock Check):
        Tồn khả dụng = Tổng tồn vật lý - Tồn đang giữ chỗ cho các đơn khác.
        Nếu số lượng đặt > Tồn khả dụng -> Báo lỗi không cho lưu.
@@ -163,18 +163,18 @@ BẠN LÀ LẬP TRÌNH VIÊN ANDROID CHUYÊN TRÁCH PHÂN HỆ BÁN SỈ B2B VÀ
 4. QUY TRÌNH XUẤT KHO 2 BƯỚC BẮT BUỘC & QUÉT CAMERA SERIAL (PICKING & DISPATCH):
    - Bước 1 (Picking List - Tạo danh sách xuất kho): Hệ thống gợi ý danh sách Serial cụ thể trong kho theo vị trí ngăn kệ Bin thuận tiện lấy hàng nhất.
    - Bước 2 (Quét Serial Dispatch bằng Camera ML Kit / ZXing):
-     + Thủ kho cầm điện thoại quét từng mã Serial trên hộp đồng hồ trước khi đóng thùng giao cho đại lý.
+     + Nhân viên xuất kho cầm điện thoại quét từng mã Serial trên hộp đồng hồ trước khi đóng thùng giao cho đại lý.
      + Ứng dụng kiểm tra chéo thời gian thực (Real-time Cross-validation):
        * Báo lỗi và rung cảnh báo nếu quét nhầm mã Serial không thuộc đơn hàng.
        * Báo lỗi nếu quét mã Serial đang ở trạng thái lỗi (`HANG_LOI`) hoặc đang trưng bày (`TRUNG_BAY`).
      + Sau khi quét đủ 100% mã Serial: Mở nút "Xác nhận Xuất kho Hoàn tất".
 
-5. TÍNH TOÁN DOANH THU, CẬP NHẬT CÔNG NỢ & XUẤT HÓA ĐƠN ĐIỆN TỬ B2B:
+5. HOÀN TẤT XUẤT KHO, CẬP NHẬT CÔNG NỢ & PHIẾU XUẤT KHO B2B:
    - Chuyển trạng thái các Serial đã quét sang `DA_BAN`.
    - Giảm trừ tồn kho vật lý và giải phóng số lượng giữ chỗ trong Room DB.
-   - Ghi tăng công nợ phải thu của Đại lý tương ứng với giá trị sau chiết khấu của đơn hàng.
+   - Ghi tăng công nợ phải thu của Đại lý tương ứng với giá trị sau chiết khấu của lô hàng xuất.
    - Ghi nhận giao dịch vào Sổ Thẻ kho (-).
-   - In / Xem Phiếu Xuất kho kiêm Hóa đơn B2B: Hiển thị đầy đủ danh sách Serial định danh để bảo hành hãng.
+   - In / Xem Phiếu Xuất kho kiêm Hóa đơn B2B: Hiển thị đầy đủ danh sách Serial định danh để kích hoạt bảo hành hãng.
 
 YÊU CẦU ĐẦU RA:
 - Mã nguồn Kotlin sạch, chuẩn MVVM, kết nối mượt mà với Room DB của TV1.
@@ -196,8 +196,8 @@ BẠN LÀ LẬP TRÌNH VIÊN ANDROID CHUYÊN TRÁCH PHÂN HỆ QUẢN LÝ KHO N�
 
 2. PHÂN LOẠI TỒN KHO 3 TRẠNG THÁI CHẤT LƯỢNG (INVENTORY SEGREGATION):
    - Màn hình InventoryStatusFragment: Hiển thị chi tiết tồn kho từng SKU chia thành 3 nhóm trạng thái chất lượng riêng biệt:
-     1. Hàng Mới Chuẩn Hãng (`HANG_MOI`): Sẵn sàng cung ứng xuất sỉ.
-     2. Hàng Trưng Bày Boutique (`TRUNG_BAY`): Đồng hồ để tại tủ kính cho khách VIP xem mẫu, không được tự động xuất bán sỉ.
+     1. Hàng Mới Chuẩn Hãng (`HANG_MOI`): Sẵn sàng cung ứng xuất kho đại lý.
+     2. Hàng Trưng Bày Boutique (`TRUNG_BAY`): Đồng hồ để tại tủ kính cho khách VIP xem mẫu, không được tự động xuất kho đại lý.
      3. Kho Hàng Lỗi / Chờ Xử Lý (`HANG_LOI`): Đồng hồ trầy xước, chạy sai giờ, hấp hơi nước chờ gửi trả hãng hoặc gửi đi bảo hành nước ngoài.
    - Chức năng Chuyển đổi trạng thái chất lượng (ChangeQualityDialog): Cho phép chọn mã Serial, chuyển trạng thái kèm nhập lý do kỹ thuật (Ví dụ: Chuyển từ HÀNG MỚI sang HÀNG LỖI vì xước vành bezel).
 
@@ -224,7 +224,7 @@ BẠN LÀ LẬP TRÌNH VIÊN ANDROID CHUYÊN TRÁCH PHÂN HỆ QUẢN LÝ KHO N�
      + Bước 5: Lập Biên bản xử lý chênh lệch kiểm kê (AuditAdjustmentDialog): Nhập nguyên nhân, bắt buộc có chữ ký xác nhận của Quản lý kho; tự động điều chỉnh số liệu tồn kho và ghi nhật ký kiểm toán Audit Log.
 
 5. SỔ THẺ KHO ĐIỆN TỬ (STOCK CARD LEDGER):
-   - Màn hình StockCardFragment: Tra cứu lịch sử biến động tồn kho của bất kỳ mẫu SKU hoặc tra cứu hành trình luân chuyển của 1 mã Serial duy nhất (từ lúc nhập kho -> đổi kệ -> bán sỉ -> hoặc trả hàng). Hiển thị rõ: Ngày giờ, Loại nghiệp vụ (Nhập/Xuất/Kiểm kê), Mã chứng từ, Số lượng biến động (+/-), Tồn cuối kỳ, Nhân viên thực hiện.
+   - Màn hình StockCardFragment: Tra cứu lịch sử biến động tồn kho của bất kỳ mẫu SKU hoặc tra cứu hành trình luân chuyển của 1 mã Serial duy nhất (từ lúc nhập kho -> đổi kệ -> xuất kho đại lý -> hoặc trả hàng). Hiển thị rõ: Ngày giờ, Loại nghiệp vụ (Nhập/Xuất/Kiểm kê), Mã chứng từ, Số lượng biến động (+/-), Tồn cuối kỳ, Nhân viên thực hiện.
 
 YÊU CẦU ĐẦU RA:
 - Mã nguồn Kotlin sạch, chuẩn MVVM, kết nối mượt mà với Room DB của TV1.
@@ -248,28 +248,28 @@ BẠN LÀ LẬP TRÌNH VIÊN ANDROID CHUYÊN TRÁCH PHÂN HỆ BÁO CÁO VÀ DAS
    - Xây dựng DashboardOverviewFragment (Màn hình trung tâm điều hành):
      + Hiển thị 5 thẻ chỉ số hiệu suất trọng yếu (KPI Cards) phong cách Horology Luxury:
        * Tổng giá trị tài sản tồn kho: Tính chuẩn xác theo giá vốn đích danh của từng Serial trong kho.
-       * Doanh thu phân phối sỉ: Doanh số tích lũy từ các đơn hàng xuất bán cho đại lý trong kỳ.
-       * Số lượng đơn bán sỉ mới.
+       * Doanh thu phân phối đại lý: Doanh số tích lũy từ các đơn hàng xuất bán cho đại lý trong kỳ.
+       * Số lượng lệnh xuất kho đại lý mới.
        * Tổng tồn kho khả dụng cung ứng.
-       * Tỷ lệ đổi trả hàng sỉ (Cảnh báo đỏ nếu vượt ngưỡng an toàn > 2.0%).
-     + Dòng thời gian hoạt động gần đây (Audit Activity Stream): Hiển thị danh sách các thao tác quan trọng vừa phát sinh trong kho (nhập mới, duyệt đơn sỉ, thu tiền nợ, kiểm kê kệ...).
+       * Tỷ lệ tiếp nhận trả hàng đại lý (Cảnh báo đỏ nếu vượt ngưỡng an toàn > 2.0%).
+     + Dòng thời gian hoạt động gần đây (Audit Activity Stream): Hiển thị danh sách các thao tác quan trọng vừa phát sinh trong kho (nhập mới, duyệt lệnh xuất đại lý, thu tiền nợ, kiểm kê kệ...).
 
 3. BIỂU ĐỒ TRỰC QUAN DOANH SỐ & CHI PHÍ BẰNG MPANDROIDCHART:
    - Tích hợp thư viện `com.github.PhilJay:MPAndroidChart:v3.1.0`.
-   - Biểu đồ BarChart / LineChart xu hướng doanh thu phân phối sỉ 6 tháng gần nhất kèm tỷ lệ tăng trưởng.
+   - Biểu đồ BarChart / LineChart xu hướng doanh thu phân phối đại lý 6 tháng gần nhất kèm tỷ lệ tăng trưởng.
    - Biểu đồ PieChart cơ cấu chi phí phát sinh: Cước vận chuyển quốc tế, thuế hải quan, bảo hiểm lô hàng, phí lưu kho.
    - Bảng xếp hạng Top 5 / Top 10 mẫu đồng hồ bán chạy nhất kênh sỉ (xếp theo sản lượng chiếc bán ra và theo doanh thu).
 
 4. HỆ THỐNG 9 BÁO CÁO CHUYÊN SÂU ĐA PHÂN HỆ:
    - Xây dựng ReportContainerFragment với bộ lọc thời gian (Từ ngày - Đến ngày) và hiển thị 9 báo cáo chuyên sâu:
      1. Báo cáo Nhập hàng (Inbound Report): Số lượng và giá trị nhập theo từng NCC, cơ cấu chi phí phân bổ.
-     2. Báo cáo Phân phối Bán sỉ (Outbound Report): Doanh số theo từng đại lý, tỷ lệ hoàn tất đơn hàng.
-     3. Báo cáo Cơ cấu xuất hàng: Tỷ trọng xuất bán sỉ vs Xuất gửi bảo hành hãng vs Xuất tiêu hủy hàng hỏng.
+     2. Báo cáo Phân phối Đại lý (Outbound Report): Doanh số theo từng đại lý, tỷ lệ hoàn tất đơn hàng.
+     3. Báo cáo Cơ cấu xuất hàng: Tỷ trọng xuất kho đại lý vs Xuất gửi bảo hành hãng vs Xuất tiêu hủy hàng hỏng.
      4. Báo cáo Đổi trả & Chất lượng bộ máy: Phân tích tỷ lệ lỗi theo từng hãng và theo dòng máy (Automatic, Quartz, Solar) phục vụ đàm phán hợp đồng với NCC.
      5. Báo cáo Hàng chậm luân chuyển (Dead Stock Aging): Liệt kê các mẫu đồng hồ có thời gian lưu kho > 90 ngày hoặc > 180 ngày để đề xuất thanh lý thu hồi vốn.
-     6. Báo cáo Tài chính & Lợi nhuận gộp B2B: Doanh thu bán sỉ trừ Giá vốn đích danh trừ Chi phí logistics = Lợi nhuận gộp thực tế.
+     6. Báo cáo Tài chính & Lợi nhuận gộp B2B: Doanh số xuất kho đại lý trừ Giá vốn đích danh trừ Chi phí logistics = Lợi nhuận gộp thực tế.
      7. Sổ chi tiết công nợ B2B 2 chiều: Đối soát chi tiết từng đại lý và nhà cung cấp (Dư nợ đầu kỳ, Phát sinh nợ, Phát sinh có, Dư nợ cuối kỳ).
-     8. Báo cáo Dòng tiền Thu / Chi thực tế (Cashflow Report): Dòng tiền thu vào (bán sỉ, thu hồi nợ) trừ Dòng tiền chi ra (trả NCC, chi phí) = Dòng tiền thuần (Net Cashflow).
+     8. Báo cáo Dòng tiền Thu / Chi thực tế (Cashflow Report): Dòng tiền thu vào (xuất kho đại lý, thu hồi nợ) trừ Dòng tiền chi ra (trả NCC, chi phí) = Dòng tiền thuần (Net Cashflow).
      9. Báo cáo Nhật ký kiểm toán Audit Log toàn hệ thống.
 
 5. XUẤT BÁO CÁO (EXPORT CSV / PDF / IN ẤN):
@@ -295,6 +295,6 @@ YÊU CẦU ĐẦU RA:
 ### B. Kịch bản Kiểm thử Tích hợp Liên phân hệ (Cross-Testing Checklist)
 - **Test Case 1 (TV1 & TV2):** TV1 tạo sản phẩm SKU `RLX-SUB-01` (1 Thùng = 10 Chiếc). TV2 tạo phiếu nhập 2 Thùng -> Kiểm tra hệ thống yêu cầu quét đủ 20 Serial và tính giá vốn đích danh.
 - **Test Case 2 (TV2 & TV4):** TV2 duyệt phiếu nhập -> Kiểm tra TV4 thấy tồn kho tăng, các Serial xuất hiện trên kệ và có dòng phát sinh trong Sổ Thẻ kho (+).
-- **Test Case 3 (TV3 & TV4):** TV3 lên đơn bán sỉ 5 chiếc -> Kiểm tra TV4 thấy tồn giữ chỗ tăng 5, tồn khả dụng giảm 5. TV3 quét xuất kho -> Tồn thực tế giảm 5, Serial chuyển `DA_BAN`.
+- **Test Case 3 (TV3 & TV4):** TV3 lập lệnh xuất kho đại lý 5 chiếc -> Kiểm tra TV4 thấy tồn giữ chỗ tăng 5, tồn khả dụng giảm 5. TV3 quét xuất kho -> Tồn thực tế giảm 5, Serial chuyển `DA_BAN`.
 - **Test Case 4 (TV2, TV3 & TV5):** TV2 lập phiếu chi trả NCC, TV3 lập phiếu thu đại lý -> Kiểm tra TV5 thấy Dashboard cập nhật dòng tiền và Sổ chi tiết công nợ 2 chiều chính xác.
 
