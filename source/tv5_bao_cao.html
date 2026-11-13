@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phân Hệ 5: Báo Cáo & Dashboard Điều Hành - ChronoVault B2B</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header class="desktop-controls-bar" style="max-width:960px;">
+    <div class="controls-badge">
+      <span class="live-dot"></span>
+      <span>PHÂN HỆ 5 • THÀNH VIÊN 5: BÁO CÁO & DASHBOARD ĐIỀU HÀNH B2B</span>
+    </div>
+    <div style="display:flex; gap:8px;">
+      <a href="index.html" class="btn-toggle-view" style="text-decoration:none;">🏠 Cổng Trung Tâm</a>
+      <a href="tv1_hang_hoa.html" class="btn-toggle-view" style="text-decoration:none;">🏷️ TV1: Hàng Hóa</a>
+    </div>
+  </header>
+
+  <main class="phone-wrapper full-screen-mode" style="max-width:960px; height:auto; min-height:88vh; padding-bottom:30px;">
+    <div class="toast-container" id="toastContainer"></div>
+
+    <header class="app-header">
+      <div class="header-top-row">
+        <div class="brand-section">
+          <div class="brand-logo-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+              <polyline points="17 6 23 6 23 12"/>
+            </svg>
+          </div>
+          <div class="brand-info">
+            <h1>TRUNG TÂM ĐIỀU HÀNH B2B, BIỂU ĐỒ & SỔ CÔNG NỢ</h1>
+            <span>KPI REALTIME, DÒNG TIỀN & AUDIT TRAIL • THÀNH VIÊN 5</span>
+          </div>
+        </div>
+        <div class="header-actions">
+          <button class="btn-primary-action" style="width:auto; padding:6px 14px; font-size:12px;" onclick="openDebtLedgerModal()">
+            📊 Sổ Công Nợ 2 Chiều
+          </button>
+          <button class="btn-toggle-view" onclick="openCashflowReportModal()">
+            💵 Dòng Tiền Thu / Chi
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <div style="padding:16px 20px; flex:1; overflow-y:auto;">
+      
+      <!-- KPI Grid -->
+      <div class="kpi-grid">
+        <div class="kpi-card highlight">
+          <div class="kpi-header">
+            <span class="kpi-label">Tổng Giá Trị Tồn Kho Đích Danh (Theo Serial)</span>
+            <div class="kpi-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            </div>
+          </div>
+          <div class="kpi-value" id="kpiTotalValuation">0 ₫</div>
+          <div class="kpi-subtext">
+            <span class="trend-up">●</span>
+            <span>Cộng dồn 100% giá vốn đích danh từng mã Serial trong kho</span>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <span class="kpi-label">Doanh Thu Sỉ B2B</span>
+            <div class="kpi-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+            </div>
+          </div>
+          <div class="kpi-value" id="kpiRevenue">0 ₫</div>
+          <div class="kpi-subtext trend-up">↑ 18.5% so với tháng trước</div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <span class="kpi-label">Đơn Hàng Sỉ B2B</span>
+            <div class="kpi-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+            </div>
+          </div>
+          <div class="kpi-value" id="kpiOrdersCount">0</div>
+          <div class="kpi-subtext" style="color:var(--gold-light);">Đại lý B2B đối tác</div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <span class="kpi-label">Tồn Khả Dụng</span>
+            <div class="kpi-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+            </div>
+          </div>
+          <div class="kpi-value" id="kpiInStockCount">0</div>
+          <div class="kpi-subtext" style="color:var(--success);">Khớp 100% mã Serial</div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <span class="kpi-label">Tỷ Lệ Đổi Trả Sỉ</span>
+            <div class="kpi-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+            </div>
+          </div>
+          <div class="kpi-value" style="color:var(--warning);">0.85%</div>
+          <div class="kpi-subtext" style="color:var(--text-muted);">Ngưỡng an toàn &lt; 2.0%</div>
+        </div>
+      </div>
+
+      <!-- Canvas Chart -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <h3>Doanh Số Phân Phối Sỉ (6 Tháng Gần Nhất)</h3>
+          <span class="chart-badge">Tăng trưởng +32%</span>
+        </div>
+        <div class="chart-canvas-wrap">
+          <canvas id="revenueCanvas"></canvas>
+        </div>
+      </div>
+
+      <!-- Action Shortcuts for reports -->
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-bottom:16px;">
+        <button class="btn-secondary-action" style="padding:14px; text-align:left;" onclick="openDebtLedgerModal()">
+          <div style="font-weight:700; color:var(--gold-light); margin-bottom:4px;">📊 Sổ Chi Tiết Công Nợ B2B</div>
+          <div style="font-size:11px; color:var(--text-muted);">Đối soát nợ 2 chiều Đại lý B2B & Nhà cung cấp</div>
+        </button>
+
+        <button class="btn-secondary-action" style="padding:14px; text-align:left;" onclick="openCashflowReportModal()">
+          <div style="font-weight:700; color:var(--success); margin-bottom:4px;">💵 Dòng Tiền Thu / Chi Thực Tế</div>
+          <div style="font-size:11px; color:var(--text-muted);">Tổng hợp các phiếu Thu tiền sỉ & Phiếu Chi NCC</div>
+        </button>
+      </div>
+
+      <!-- Realtime Activity Log Timeline -->
+      <div class="section-title-wrap">
+        <div class="section-title">
+          <span class="title-accent"></span> Hoạt Động Gần Đây (Audit Log)
+        </div>
+      </div>
+      <div class="timeline-flow" id="dashboardActivityLogs"></div>
+
+    </div>
+
+    <!-- General Detail Modal -->
+    <div class="modal-backdrop" id="generalDetailModal">
+      <div class="modal-sheet" style="max-width:700px; margin:0 auto; width:100%;">
+        <div class="modal-drag-handle"></div>
+        <div class="modal-header">
+          <h2 id="generalModalTitle">Chi Tiết Báo Cáo</h2>
+          <button class="modal-close-btn" onclick="closeModal('generalDetailModal')">✕</button>
+        </div>
+        <div class="modal-body-scroll" id="generalModalBody"></div>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/data.js"></script>
+  <script src="js/tv5_reports.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      renderDashboard();
+    });
+  </script>
+</body>
+</html>

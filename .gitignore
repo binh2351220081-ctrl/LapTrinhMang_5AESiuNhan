@@ -1,0 +1,30 @@
+# Python virtual environment
+.venv/
+venv/
+ENV/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Temporary / OS files
+.DS_Store
+Thumbs.db
+*.tmp
+
+# IDE / Editor
+.vscode/
+.idea/
+
+
+# Microsoft Office temporary lock files
+~$*
+*.tmp
+
+# Android build & local files
+.gradle/
+**/build/
+**/local.properties
+*.iml
+.cxx/

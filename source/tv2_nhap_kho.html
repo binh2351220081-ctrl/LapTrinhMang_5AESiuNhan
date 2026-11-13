@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phân Hệ 2: Đối Tác NCC & Nhập Hàng - ChronoVault B2B</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header class="desktop-controls-bar" style="max-width:960px;">
+    <div class="controls-badge">
+      <span class="live-dot"></span>
+      <span>PHÂN HỆ 2 • THÀNH VIÊN 2: NHÀ CUNG CẤP & QUẢN LÝ NHẬP HÀNG</span>
+    </div>
+    <div style="display:flex; gap:8px;">
+      <a href="index.html" class="btn-toggle-view" style="text-decoration:none;">🏠 Cổng Trung Tâm</a>
+      <a href="tv3_xuat_kho.html" class="btn-toggle-view" style="text-decoration:none;">📤 TV3: Xuất Sỉ</a>
+    </div>
+  </header>
+
+  <main class="phone-wrapper full-screen-mode" style="max-width:960px; height:auto; min-height:88vh; padding-bottom:30px;">
+    <div class="toast-container" id="toastContainer"></div>
+
+    <header class="app-header">
+      <div class="header-top-row">
+        <div class="brand-section">
+          <div class="brand-logo-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/>
+              <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+          </div>
+          <div class="brand-info">
+            <h1>QUẢN LÝ NHẬP KHO & CÔNG NỢ NHÀ CUNG CẤP</h1>
+            <span>ĐẶC TẢ NGHIỆP VỤ INBOUND • THÀNH VIÊN 2</span>
+          </div>
+        </div>
+        <div class="header-actions">
+          <button class="btn-primary-action" style="width:auto; padding:6px 14px; font-size:12px;" onclick="openCreateInboundModal()">
+            + Lập Phiếu Nhập Kho
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <div style="padding:16px 20px; flex:1; overflow-y:auto;">
+      
+      <!-- Section 1: Inbound Receipts -->
+      <div class="section-title-wrap">
+        <div class="section-title">
+          <span class="title-accent"></span> Danh Sách Phiếu Nhập Kho Chính Hãng (Inbound)
+        </div>
+      </div>
+      <div id="inboundReceiptsList"></div>
+
+      <!-- Section 2: Suppliers & Debts -->
+      <div class="section-title-wrap" style="margin-top:24px;">
+        <div class="section-title">
+          <span class="title-accent"></span> Danh Sách Nhà Cung Cấp & Sổ Nợ Phải Trả
+        </div>
+      </div>
+      <div id="suppliersDebtOverview"></div>
+
+    </div>
+
+    <!-- Create Inbound Modal -->
+    <div class="modal-backdrop" id="createInboundModal">
+      <div class="modal-sheet" style="max-width:650px; margin:0 auto; width:100%;">
+        <div class="modal-drag-handle"></div>
+        <div class="modal-header">
+          <h2>📥 Lập Phiếu Nhập Kho Chính Hãng</h2>
+          <button class="modal-close-btn" onclick="closeModal('createInboundModal')">✕</button>
+        </div>
+        <div class="modal-body-scroll">
+          <div class="form-group">
+            <label class="form-label">Nhà Cung Cấp Đối Tác</label>
+            <select class="form-select" id="inboundSupplierSelect"></select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Chọn Mẫu Đồng Hồ</label>
+            <select class="form-select" id="inboundWatchSelect" onchange="updateInboundConversionPreview()"></select>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Đơn Vị Tính Nhập</label>
+              <select class="form-select" id="inboundUnitSelect" onchange="updateInboundConversionPreview()">
+                <option value="BOX">ĐVT Sỉ (Thùng/Kiện)</option>
+                <option value="PIECE">Chiếc lẻ</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Số Lượng Nhập</label>
+              <input type="number" id="inboundQtyInput" class="form-input" min="1" value="1" oninput="updateInboundConversionPreview()">
+            </div>
+          </div>
+          <div id="inboundConversionPreview" style="background:rgba(212,175,55,0.08); border:1px solid var(--border-gold); border-radius:8px; padding:10px; font-size:12px; margin-bottom:12px;"></div>
+          <div class="form-group">
+            <label class="form-label">
+              <span>Nạp Dải Mã Serial (Mỗi mã 1 dòng)</span>
+              <span style="color:var(--gold-light); cursor:pointer;" onclick="document.getElementById('inboundSerialTextarea').dataset.autoGen='false'; updateInboundConversionPreview();">Tự động sinh</span>
+            </label>
+            <textarea id="inboundSerialTextarea" class="form-textarea" rows="4" style="font-family:'JetBrains Mono',monospace; font-size:11px;"></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Chi Phí Vận Chuyển & Hải Quan Phân Bổ (VND)</label>
+            <input type="number" id="inboundAllocatedCost" class="form-input" value="15000000" step="500000">
+          </div>
+          <button class="btn-primary-action" onclick="submitCreateInbound()">✓ Phê Duyệt & Nhập Kho Vật Lý</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- General Detail Modal -->
+    <div class="modal-backdrop" id="generalDetailModal">
+      <div class="modal-sheet" style="max-width:650px; margin:0 auto; width:100%;">
+        <div class="modal-drag-handle"></div>
+        <div class="modal-header">
+          <h2 id="generalModalTitle">Chi Tiết</h2>
+          <button class="modal-close-btn" onclick="closeModal('generalDetailModal')">✕</button>
+        </div>
+        <div class="modal-body-scroll" id="generalModalBody"></div>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/data.js"></script>
+  <script src="js/tv2_inbound.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      renderInboundTab();
+    });
+  </script>
+</body>
+</html>

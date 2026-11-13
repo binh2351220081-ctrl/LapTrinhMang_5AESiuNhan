@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/card_bg"
+    android:padding="22dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Logo / Icon -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingBottom="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="👑"
+                android:textSize="36sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:letterSpacing="0.1"
+                android:text="CHRONOVAULT WMS"
+                android:textColor="@color/accent_gold"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="Xác Thực Đăng Nhập &amp; Phân Quyền (RBAC)"
+                android:textColor="@color/primary"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="Phân hệ 1.2: Quản trị Hệ thống (TV1 - Phan Bá Hải Bình)"
+                android:textColor="@color/text_secondary"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <!-- Username Input -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilLoginUsername"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:hint="Tên đăng nhập (Username)">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etLoginUsername"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:text="binh_admin" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Password Input -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilLoginPassword"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:hint="Mật khẩu"
+            app:passwordToggleEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etLoginPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:text="admin123" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Submit Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnLoginSubmit"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:backgroundTint="@color/accent_gold"
+            android:text="ĐĂNG NHẬP HỆ THỐNG"
+            android:textColor="@color/primary"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:cornerRadius="8dp" />
+
+        <!-- Divider -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="14dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"
+                android:background="@color/border_color" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:text="HOẶC ĐĂNG NHẬP NHANH 1-CHẠM DEMO"
+                android:textColor="@color/text_secondary"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"
+                android:background="@color/border_color" />
+        </LinearLayout>
+
+        <!-- Quick 1-Click Login Chips for 5 Business Actors -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnQuickBinh"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginBottom="6dp"
+                android:gravity="start|center_vertical"
+                android:text="🛡️ 1. Quản Trị Hệ Thống (Phan Bá Hải Bình)"
+                android:textColor="@color/primary"
+                android:textSize="12sp"
+                app:cornerRadius="6dp"
+                app:strokeColor="@color/accent_gold" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnQuickOwner"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginBottom="6dp"
+                android:gravity="start|center_vertical"
+                android:text="👑 2. Chủ Cửa Hàng (Store Owner / Toàn Quyền)"
+                android:textColor="@color/primary"
+                android:textSize="12sp"
+                app:cornerRadius="6dp"
+                app:strokeColor="@color/accent_gold" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnQuickTam"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginBottom="6dp"
+                android:gravity="start|center_vertical"
+                android:text="🏢 3. Thủ Kho - Quản Lý Điều Hành (Võ Công Tâm)"
+                android:textColor="@color/primary"
+                android:textSize="12sp"
+                app:cornerRadius="6dp"
+                app:strokeColor="@color/border_color" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnQuickOps"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginBottom="6dp"
+                android:gravity="start|center_vertical"
+                android:text="📦 4. Nhân Viên Nhập - Xuất Kho (Quân &amp; Thảo)"
+                android:textColor="@color/primary"
+                android:textSize="12sp"
+                app:cornerRadius="6dp"
+                app:strokeColor="@color/border_color" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnQuickTu"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="start|center_vertical"
+                android:text="💰 5. Kế Toán Kho &amp; Công Nợ (Trần Công Tú)"
+                android:textColor="@color/primary"
+                android:textSize="12sp"
+                app:cornerRadius="6dp"
+                app:strokeColor="@color/border_color" />
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>
+
