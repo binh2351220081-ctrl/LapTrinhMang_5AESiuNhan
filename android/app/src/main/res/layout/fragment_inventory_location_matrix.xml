@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sơ Đồ Kệ Kho (Bin Matrix)"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Khu Vực K1: Thể Thao (Rolex, AP)"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
+
+        <GridLayout
+            android:id="@+id/gridK1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="3"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Khu Vực K2: Dress Watch (Patek, Cartier)"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
+
+        <GridLayout
+            android:id="@+id/gridK2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="3"/>
+
+    </LinearLayout>
+</ScrollView>
