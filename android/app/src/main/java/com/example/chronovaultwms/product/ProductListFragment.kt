@@ -33,6 +33,7 @@ import com.example.chronovaultwms.databinding.FragmentProductListBinding
 import com.example.chronovaultwms.databinding.ItemAuditLogBinding
 import com.example.chronovaultwms.databinding.ItemProductTimelineStepBinding
 import com.example.chronovaultwms.databinding.ItemUserAccountBinding
+import com.example.chronovaultwms.dashboard.DashboardOverviewFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -113,6 +114,8 @@ class ProductListFragment : Fragment() {
     }
 
     private fun setupListeners() {
+        binding.btnBackDashboard.setOnClickListener { returnToDashboard() }
+
         binding.tvFilterReset.setOnClickListener {
             binding.searchView.setQuery("", false)
             adapter.updateList(allProducts)
@@ -160,6 +163,14 @@ class ProductListFragment : Fragment() {
             sessionManager.clearSession()
             Toast.makeText(requireContext(), "Đã đăng xuất khỏi hệ thống", Toast.LENGTH_SHORT).show()
             showLoginDialog()
+        }
+    }
+
+    private fun returnToDashboard() {
+        if (!parentFragmentManager.popBackStackImmediate()) {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainer, DashboardOverviewFragment())
+                .commit()
         }
     }
 
