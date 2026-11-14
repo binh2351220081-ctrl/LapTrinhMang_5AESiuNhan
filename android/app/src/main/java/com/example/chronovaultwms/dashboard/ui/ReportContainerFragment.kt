@@ -13,6 +13,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.chronovaultwms.R
+import com.example.chronovaultwms.dashboard.DashboardOverviewFragment
 import com.example.chronovaultwms.dashboard.export.ReportExportManager
 import com.example.chronovaultwms.dashboard.export.ReportPrintManager
 import com.example.chronovaultwms.dashboard.model.ReportTable
@@ -46,7 +48,7 @@ class ReportContainerFragment : Fragment() {
         binding.btnToDate.setOnClickListener { showDatePicker(false) }
         binding.btnExportCsv.setOnClickListener { exportCurrentReport() }
         binding.btnPrint.setOnClickListener { currentReport?.let { ReportPrintManager.printA4(requireContext(), it) } }
-        binding.btnDashboardBack.setOnClickListener { parentFragmentManager.popBackStack() }
+        binding.btnDashboardBack.setOnClickListener { returnToDashboard() }
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) { viewModel.state.collect(::render) }
         }
@@ -79,6 +81,14 @@ class ReportContainerFragment : Fragment() {
         runCatching { ReportExportManager.exportCsv(requireContext(), report) }
             .onSuccess { Toast.makeText(requireContext(), "Đã xuất báo cáo: $it", Toast.LENGTH_LONG).show() }
             .onFailure { Toast.makeText(requireContext(), "Xuất CSV thất bại: ${it.message}", Toast.LENGTH_LONG).show() }
+    }
+
+    private fun returnToDashboard() {
+        if (!parentFragmentManager.popBackStackImmediate()) {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainer, DashboardOverviewFragment())
+                .commit()
+        }
     }
 
     override fun onDestroyView() { super.onDestroyView(); _binding = null }
