@@ -32,12 +32,12 @@ enum class ReportType(val displayName: String) {
     INBOUND("1. Báo cáo nhập hàng"),
     OUTBOUND("2. Báo cáo phân phối bán sỉ"),
     DISPATCH_STRUCTURE("3. Cơ cấu xuất hàng"),
-    RETURNS_QUALITY("4. Đổi trả và chất lượng"),
-    DEAD_STOCK("5. Hàng chậm luân chuyển"),
-    GROSS_PROFIT("6. Tài chính và lợi nhuận gộp"),
-    TWO_WAY_DEBT("7. Sổ công nợ hai chiều"),
-    CASHFLOW("8. Dòng tiền thu chi"),
-    AUDIT_LOG("9. Nhật ký kiểm toán")
+    RETURNS_QUALITY("4. Đổi trả & chất lượng bộ máy"),
+    DEAD_STOCK("5. Hàng chậm luân chuyển (Dead Stock)"),
+    GROSS_PROFIT("6. Tài chính & lợi nhuận gộp B2B"),
+    TWO_WAY_DEBT("7. Sổ công nợ B2B hai chiều"),
+    CASHFLOW("8. Dòng tiền thu / chi thực tế"),
+    AUDIT_LOG("9. Nhật ký kiểm toán toàn hệ thống")
 }
 
 data class ReportRow(val values: List<String>)

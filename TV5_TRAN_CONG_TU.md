@@ -7,7 +7,7 @@ Phân hệ `dashboard/` đã được tích hợp vào mã nguồn `main` của 
 - Dashboard KPI: giá trị tồn theo giá vốn đích danh, doanh thu sỉ, số đơn sỉ, tồn khả dụng, tỷ lệ đổi trả.
 - Biểu đồ doanh thu 6 tháng và cơ cấu chi phí bằng View Android thuần, không phụ thuộc thư viện biểu đồ ngoài.
 - Top sản phẩm và nhật ký hoạt động liên phân hệ.
-- 9 báo cáo: nhập hàng, xuất sỉ, cơ cấu xuất, chất lượng/đổi trả, hàng tồn, lợi nhuận gộp, công nợ hai chiều, dòng tiền, audit log.
+- 9 báo cáo: nhập hàng, xuất sỉ, cơ cấu xuất; chất lượng/đổi trả theo hãng và dòng máy; dead stock trên 90/180 ngày; lợi nhuận gộp B2B; công nợ đại lý/NCC đủ dư đầu kỳ, phát sinh Nợ/Có và dư cuối kỳ; dòng tiền; audit log.
 - Lọc khoảng ngày, xuất CSV vào Downloads trên Android 10+ (thư mục ứng dụng trên Android 8–9), in A4 qua Android Print Manager.
 - Nút `Danh mục TV1` để kiểm tra luồng tích hợp với phân hệ sản phẩm.
 

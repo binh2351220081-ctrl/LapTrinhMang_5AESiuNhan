@@ -5,6 +5,6 @@
     <string name="dashboard_from_date">Từ ngày</string>
     <string name="dashboard_to_date">Đến ngày</string>
     <string name="dashboard_choose_report">Chọn báo cáo</string>
-    <string name="dashboard_export_csv">Xuất CSV</string>
-    <string name="dashboard_print_a4">In A4</string>
+    <string name="dashboard_export_csv">Xuất CSV / Excel</string>
+    <string name="dashboard_print_a4">In / Lưu PDF A4</string>
 </resources>

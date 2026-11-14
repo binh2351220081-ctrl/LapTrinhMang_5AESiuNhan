@@ -22,7 +22,9 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 import java.text.NumberFormat
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
+import java.time.temporal.ChronoUnit
 import java.util.Locale
 
 /**
@@ -111,7 +113,10 @@ class RoomDashboardRepository(private val database: ChronoVaultDatabase) : Dashb
         logs: List<AuditLogEntity>
     ): ReportTable {
         val productsByCode = products.associateBy { it.productCode }
-        val delivered = serials.filter { it.status == "DELIVERED" }
+        val periodSerials = serials.filter { serial ->
+            parseDate(serial.importDate)?.let { !it.isBefore(range.from) && !it.isAfter(range.to) } ?: true
+        }
+        val delivered = periodSerials.filter { it.status == "DELIVERED" }
         val revenue = delivered.sumOf { productsByCode[it.productCode]?.wholesalePrice ?: 0.0 }
         val specificCost = delivered.sumOf { it.unitCost }
         val logistics = specificCost * 0.045
@@ -119,40 +124,60 @@ class RoomDashboardRepository(private val database: ChronoVaultDatabase) : Dashb
         return when (type) {
             ReportType.INBOUND -> report(type, range,
                 listOf("Nhà cung cấp", "Số serial", "Giá trị nhập", "Vị trí"),
-                serials.groupBy { it.supplierName }.map { (supplier, rows) ->
+                periodSerials.groupBy { it.supplierName }.map { (supplier, rows) ->
                     listOf(supplier, rows.size.toString(), money(rows.sumOf { it.unitCost }), rows.first().currentLocation)
                 },
-                "${serials.size} serial • Giá vốn đích danh ${money(serials.sumOf { it.unitCost })}")
+                "${periodSerials.size} serial • Giá vốn đích danh ${money(periodSerials.sumOf { it.unitCost })}")
 
             ReportType.OUTBOUND -> report(type, range,
                 listOf("Đại lý", "Số chiếc", "Doanh số", "Trạng thái"),
-                serials.filter { it.dealerName != null }.groupBy { it.dealerName.orEmpty() }.map { (dealer, rows) ->
+                periodSerials.filter { it.dealerName != null }.groupBy { it.dealerName.orEmpty() }.map { (dealer, rows) ->
                     listOf(dealer, rows.size.toString(), money(rows.sumOf { productsByCode[it.productCode]?.wholesalePrice ?: 0.0 }), rows.first().status)
                 },
                 "Doanh số đã bàn giao ${money(revenue)} • ${delivered.size} serial")
 
             ReportType.DISPATCH_STRUCTURE -> {
-                val groups = serials.groupingBy { it.status }.eachCount()
+                val groups = periodSerials.groupingBy { it.status }.eachCount()
                 report(type, range, listOf("Trạng thái", "Số serial", "Tỷ trọng"),
-                    groups.map { (status, count) -> listOf(status, count.toString(), percent(count, serials.size)) },
-                    "Cơ cấu theo ${serials.size} serial đang được đồng bộ")
+                    groups.map { (status, count) -> listOf(status, count.toString(), percent(count, periodSerials.size)) },
+                    "Cơ cấu theo ${periodSerials.size} serial trong kỳ")
             }
 
-            ReportType.RETURNS_QUALITY -> report(type, range,
-                listOf("Thương hiệu", "Đã quản lý", "Lỗi/đổi trả", "Tỷ lệ"),
-                products.groupBy { it.brand }.map { (brand, brandProducts) ->
-                    val codes = brandProducts.map { it.productCode }.toSet()
-                    val rows = serials.filter { it.productCode in codes }
-                    val defective = rows.count { it.status == "DEFECTIVE" || it.status == "RETURNED" }
-                    listOf(brand, rows.size.toString(), defective.toString(), percent(defective, rows.size))
-                }, "Theo dõi chất lượng theo Serial, ngưỡng cảnh báo 2%")
+            ReportType.RETURNS_QUALITY -> {
+                val groups = products.groupBy { it.brand to movementFamily(it.movementType) }
+                val rows = groups.map { (key, groupProducts) ->
+                    val codes = groupProducts.map { it.productCode }.toSet()
+                    val managed = periodSerials.filter {
+                        it.productCode in codes && it.status in setOf("ALLOCATED", "DISPATCHED", "DELIVERED", "DEFECTIVE", "RETURNED")
+                    }
+                    val defective = managed.count { it.status == "DEFECTIVE" || it.status == "RETURNED" }
+                    listOf(key.first, key.second, managed.size.toString(), defective.toString(), percent(defective, managed.size))
+                }.sortedWith(compareBy({ it[0] }, { it[1] }))
+                val managedTotal = rows.sumOf { it[2].toInt() }
+                val defectiveTotal = rows.sumOf { it[3].toInt() }
+                report(type, range,
+                    listOf("Thương hiệu", "Dòng máy", "Đã bán/quản lý", "Lỗi/đổi trả", "Tỷ lệ lỗi"), rows,
+                    "Tổng $managedTotal chiếc • Lỗi/đổi trả $defectiveTotal • Tỷ lệ ${percent(defectiveTotal, managedTotal)} • Ngưỡng cảnh báo 2%")
+            }
 
-            ReportType.DEAD_STOCK -> report(type, range,
-                listOf("SKU", "Sản phẩm", "Tồn", "Giá trị vốn"),
-                products.filter { it.stockQuantity > 0 }.sortedByDescending { it.stockQuantity }.take(10).map { product ->
-                    val cost = serials.filter { it.productCode == product.productCode && it.status == "IN_STOCK" }.sumOf { it.unitCost }
-                    listOf(product.productCode, product.name, product.stockQuantity.toString(), money(cost))
-                }, "Danh sách ưu tiên xử lý tồn theo số lượng giảm dần")
+            ReportType.DEAD_STOCK -> {
+                val agedSerials = serials.mapNotNull { serial ->
+                    val importDate = parseDate(serial.importDate) ?: return@mapNotNull null
+                    val age = ChronoUnit.DAYS.between(importDate, range.to)
+                    serial.takeIf { it.status == "IN_STOCK" && age > 90 }?.let { Triple(it, importDate, age) }
+                }
+                val rows = agedSerials.groupBy { it.first.productCode }.map { (code, items) ->
+                    val product = productsByCode[code]
+                    val oldest = items.maxBy { it.third }
+                    listOf(code, product?.name ?: "Không xác định", items.size.toString(),
+                        if (oldest.third > 180) "> 180 ngày" else "> 90 ngày",
+                        oldest.second.format(DATE_FORMATTER), oldest.third.toString(), money(items.sumOf { it.first.unitCost }))
+                }.sortedByDescending { it[5].toLong() }
+                val over180 = agedSerials.count { it.third > 180 }
+                report(type, range,
+                    listOf("SKU", "Mẫu đồng hồ", "Tồn", "Nhóm tuổi", "Nhập cũ nhất", "Số ngày", "Giá trị vốn"), rows,
+                    "${agedSerials.size} chiếc tồn trên 90 ngày • $over180 chiếc trên 180 ngày • Đề xuất ưu tiên thanh lý nhóm trên 180 ngày")
+            }
 
             ReportType.GROSS_PROFIT -> {
                 val grossProfit = ReportCalculations.grossProfit(revenue, specificCost, logistics)
@@ -165,29 +190,47 @@ class RoomDashboardRepository(private val database: ChronoVaultDatabase) : Dashb
             }
 
             ReportType.TWO_WAY_DEBT -> {
-                val receivables = serials.filter { it.status == "ALLOCATED" }.groupBy { it.dealerName ?: "Chưa xác định" }
-                val payables = serials.filter { it.status != "DELIVERED" }.groupBy { it.supplierName }
-                val rows = receivables.map { (name, items) ->
-                    listOf(name, "Phải thu", money(items.sumOf { productsByCode[it.productCode]?.wholesalePrice ?: 0.0 }))
-                } + payables.map { (name, items) -> listOf(name, "Phải trả", money(items.sumOf { it.unitCost })) }
-                report(type, range, listOf("Đối tác", "Loại công nợ", "Dư hiện tại"), rows,
-                    "Đối soát hai chiều từ đơn phân bổ và Serial chưa thanh toán")
+                val beforePeriod = serials.filter { parseDate(it.importDate)?.isBefore(range.from) == true }
+                val dealerRows = serials.mapNotNull { it.dealerName }.distinct().sorted().map { name ->
+                    val opening = beforePeriod.filter { it.dealerName == name && it.status == "ALLOCATED" }
+                        .sumOf { productsByCode[it.productCode]?.wholesalePrice ?: 0.0 }
+                    val inPeriod = periodSerials.filter { it.dealerName == name }
+                    val debit = inPeriod.sumOf { productsByCode[it.productCode]?.wholesalePrice ?: 0.0 }
+                    val credit = inPeriod.filter { it.status == "DELIVERED" }
+                        .sumOf { productsByCode[it.productCode]?.wholesalePrice ?: 0.0 }
+                    listOf(name, "Đại lý / Phải thu", money(opening), money(debit), money(credit), money(ReportCalculations.endingBalance(opening, debit, credit)))
+                }
+                val supplierRows = serials.map { it.supplierName }.distinct().sorted().map { name ->
+                    val opening = beforePeriod.filter { it.supplierName == name && it.status != "DELIVERED" }.sumOf { it.unitCost }
+                    val inPeriod = periodSerials.filter { it.supplierName == name }
+                    val debit = inPeriod.filter { it.status == "DELIVERED" }.sumOf { it.unitCost }
+                    val credit = inPeriod.sumOf { it.unitCost }
+                    val ending = (opening + credit - debit).coerceAtLeast(0.0)
+                    listOf(name, "NCC / Phải trả", money(opening), money(debit), money(credit), money(ending))
+                }
+                report(type, range,
+                    listOf("Đối tác", "Loại công nợ", "Dư đầu kỳ", "Phát sinh Nợ", "Phát sinh Có", "Dư cuối kỳ"),
+                    dealerRows + supplierRows,
+                    "Đối soát hai chiều theo từng đại lý và nhà cung cấp từ dữ liệu Serial trong kỳ")
             }
 
             ReportType.CASHFLOW -> {
+                val supplierPayments = delivered.sumOf { it.unitCost }
                 val cashIn = revenue
-                val cashOut = serials.sumOf { it.unitCost } + logistics
+                val cashOut = supplierPayments + logistics
                 report(type, range, listOf("Nhóm dòng tiền", "Thu", "Chi"), listOf(
-                    listOf("Thu bán sỉ", money(cashIn), money(0.0)),
-                    listOf("Thanh toán nhà cung cấp", money(0.0), money(serials.sumOf { it.unitCost })),
+                    listOf("Thu xuất kho đại lý / thu hồi nợ", money(cashIn), money(0.0)),
+                    listOf("Thanh toán nhà cung cấp", money(0.0), money(supplierPayments)),
                     listOf("Logistics và bảo hiểm", money(0.0), money(logistics))
                 ), "Dòng tiền thuần ${money(ReportCalculations.netCashflow(cashIn, cashOut))}")
             }
 
             ReportType.AUDIT_LOG -> report(type, range,
                 listOf("Thời gian", "Người dùng", "Vai trò", "Hành động", "Chi tiết"),
-                logs.map { listOf(it.timestamp, it.actorName, it.role, it.action, it.details) },
-                "${logs.size} hoạt động gần nhất • chỉ đọc, không sửa hoặc xóa")
+                logs.filter { log ->
+                    parseDate(log.timestamp)?.let { !it.isBefore(range.from) && !it.isAfter(range.to) } ?: true
+                }.map { listOf(it.timestamp, it.actorName, it.role, it.action, it.details) },
+                "Nhật ký kiểm toán chỉ đọc, không cho phép sửa hoặc xóa")
         }
     }
 
@@ -206,4 +249,20 @@ class RoomDashboardRepository(private val database: ChronoVaultDatabase) : Dashb
 
     private fun percent(part: Double, total: Double): String =
         if (total == 0.0) "0,00%" else String.format(Locale.forLanguageTag("vi-VN"), "%.2f%%", part * 100.0 / total)
+
+    private fun parseDate(value: String): LocalDate? =
+        runCatching { LocalDate.parse(value.take(10), DATE_FORMATTER) }.getOrNull()
+
+    private fun movementFamily(value: String): String {
+        val normalized = value.lowercase(Locale.ROOT)
+        return when {
+            "quartz" in normalized -> "Quartz"
+            "solar" in normalized || "eco-drive" in normalized -> "Solar"
+            else -> "Automatic"
+        }
+    }
+
+    private companion object {
+        val DATE_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+    }
 }
