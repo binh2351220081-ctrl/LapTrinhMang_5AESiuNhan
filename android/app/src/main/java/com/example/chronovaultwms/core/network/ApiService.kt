@@ -1,9 +1,12 @@
 package com.example.chronovaultwms.core.network
 
+import com.example.chronovaultwms.core.database.DealerReceiptEntity
+import com.example.chronovaultwms.core.database.OutboundOrderEntity
 import com.example.chronovaultwms.core.database.ProductEntity
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Query
 
@@ -21,6 +24,22 @@ data class LoginResponse(
     val message: String?
 )
 
+data class OutboundDispatchSyncRequest(
+    val orderCode: String,
+    val dealerId: String,
+    val productCode: String,
+    val dispatchedQuantity: Int,
+    val dispatchedSerials: List<String>,
+    val dispatchedBy: String,
+    val timestamp: String
+)
+
+data class OutboundSyncResponse(
+    val success: Boolean,
+    val eventType: String?,
+    val message: String?
+)
+
 interface ApiService {
     @POST("api/auth/login")
     suspend fun login(@Body request: LoginRequest): Response<LoginResponse>
@@ -30,5 +49,23 @@ interface ApiService {
         @Query("page") page: Int = 1,
         @Query("limit") limit: Int = 20
     ): Response<List<ProductEntity>>
+
+    @POST("api/v1/outbound/orders")
+    suspend fun createOutboundOrder(
+        @Header("Authorization") bearerToken: String,
+        @Body order: OutboundOrderEntity
+    ): Response<OutboundSyncResponse>
+
+    @POST("api/v1/outbound/dispatch")
+    suspend fun confirmOutboundDispatch(
+        @Header("Authorization") bearerToken: String,
+        @Body request: OutboundDispatchSyncRequest
+    ): Response<OutboundSyncResponse>
+
+    @POST("api/v1/dealers/receipts")
+    suspend fun submitClearanceVoucher(
+        @Header("Authorization") bearerToken: String,
+        @Body receipt: DealerReceiptEntity
+    ): Response<OutboundSyncResponse>
 }
 

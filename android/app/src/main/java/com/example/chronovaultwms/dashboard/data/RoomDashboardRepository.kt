@@ -1,24 +1,11 @@
 package com.example.chronovaultwms.dashboard.data
 
-import com.example.chronovaultwms.core.database.AuditLogEntity
-import com.example.chronovaultwms.core.database.ChronoVaultDatabase
-import com.example.chronovaultwms.core.database.DatabaseSeeder
-import com.example.chronovaultwms.core.database.ProductEntity
-import com.example.chronovaultwms.core.database.SerialEntity
-import com.example.chronovaultwms.dashboard.domain.ReportCalculations
-import com.example.chronovaultwms.dashboard.model.AuditActivity
-import com.example.chronovaultwms.dashboard.model.CostSlice
-import com.example.chronovaultwms.dashboard.model.DashboardKpis
-import com.example.chronovaultwms.dashboard.model.DashboardSnapshot
-import com.example.chronovaultwms.dashboard.model.DateRange
-import com.example.chronovaultwms.dashboard.model.MonthlyRevenue
-import com.example.chronovaultwms.dashboard.model.ReportRow
-import com.example.chronovaultwms.dashboard.model.ReportTable
-import com.example.chronovaultwms.dashboard.model.ReportType
-import com.example.chronovaultwms.dashboard.model.TopProduct
+import androidx.room.withTransaction
+import com.example.chronovaultwms.core.database.*
+import com.example.chronovaultwms.dashboard.model.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import java.text.NumberFormat
 import java.time.LocalDate
@@ -27,242 +14,146 @@ import java.time.format.TextStyle
 import java.time.temporal.ChronoUnit
 import java.util.Locale
 
-/**
- * Lớp tích hợp do TV5 sở hữu. Chỉ đọc các DAO dùng chung của TV1–TV4 để tổng hợp,
- * không ghi và không thay đổi schema của phân hệ khác.
- */
+/** TV5 integration reads actual warehouse documents. A dispatch is not a sale or cash receipt. */
 class RoomDashboardRepository(private val database: ChronoVaultDatabase) : DashboardRepository {
-    override fun observeDashboard(): Flow<DashboardSnapshot> = flow { emit(loadSnapshot()) }
+    override fun observeDashboard(): Flow<DashboardSnapshot> = database.invalidationTracker.createFlow(
+        "products", "serials", "outbound_orders", "outbound_dispatches", "outbound_allocations",
+        "outbound_returns", "outbound_other_dispatches", "stock_movements", "audit_logs"
+    ).map { loadSnapshot() }
 
-    private suspend fun seedIfNeeded() {
-        DatabaseSeeder.checkAndSeed(
-            database.productDao(), database.serialDao(), database.userDao(), database.auditLogDao()
-        )
+    private data class Data(
+        val products: List<ProductEntity>, val serials: List<SerialEntity>, val orders: List<OutboundOrderEntity>,
+        val dispatches: List<OutboundDispatchEntity>, val allocations: Map<String, List<OutboundAllocationEntity>>,
+        val returns: List<OutboundReturnEntity>, val other: List<OutboundOtherDispatchEntity>,
+        val movements: List<StockMovementEntity>, val logs: List<AuditLogEntity>
+    )
+
+    private suspend fun loadData(): Data = database.withTransaction {
+        DatabaseSeeder.checkAndSeed(database.productDao(), database.serialDao(), database.userDao(),
+            database.auditLogDao(), database.dealerDao(), database.outboundOrderDao(), database.dealerReceiptDao())
+        val workflow = database.outboundWorkflowDao()
+        val dispatches = workflow.allDispatches()
+        Data(database.productDao().getAllProducts(), database.serialDao().getAllSerials(),
+            database.outboundOrderDao().getAllOrders(), dispatches,
+            dispatches.associate { it.orderCode to workflow.allocations(it.orderCode) },
+            workflow.allReturns(), workflow.allOtherDispatches(), workflow.allMovements(), database.auditLogDao().getAllLogs())
     }
 
     private suspend fun loadSnapshot(): DashboardSnapshot = withContext(Dispatchers.IO) {
-        seedIfNeeded()
-        val products = database.productDao().getAllProducts()
-        val serials = database.serialDao().getAllSerials()
-        val logs = database.auditLogDao().getAllLogs()
-        val productsByCode = products.associateBy { it.productCode }
-        val inWarehouse = serials.filter { it.status != "DELIVERED" }
-        val sold = serials.filter { it.status == "DELIVERED" || it.status == "ALLOCATED" }
-        val delivered = serials.filter { it.status == "DELIVERED" }
-        val revenue = delivered.sumOf { productsByCode[it.productCode]?.wholesalePrice ?: 0.0 }
-        val inventoryValue = ReportCalculations.specificInventoryValue(inWarehouse.map { it.unitCost })
-        val returned = serials.count { it.status == "DEFECTIVE" || it.status == "RETURNED" }
-        val soldCount = (delivered.size + returned).coerceAtLeast(1)
-
+        val data = loadData()
+        val warehouse = data.serials.filter { it.status in PHYSICAL_STATUSES }
+        val dispatched = data.dispatches.flatMap { data.allocations[it.orderCode].orEmpty() }
+        val dispatchedValue = dispatched.sumOf { it.unitCost }
         val currentMonth = LocalDate.now().withDayOfMonth(1)
-        val weights = listOf(0.55, 0.66, 0.72, 0.83, 0.91, 1.0)
-        val revenueBase = if (revenue > 0) revenue else products.sumOf { it.wholesalePrice * it.stockQuantity } * 0.08
-        val months = weights.mapIndexed { index, weight ->
-            val month = currentMonth.minusMonths((5 - index).toLong())
-            MonthlyRevenue(
-                month.month.getDisplayName(TextStyle.SHORT, Locale.forLanguageTag("vi-VN")),
-                revenueBase * weight
-            )
+        val monthly = (5 downTo 0).map { offset ->
+            val month = currentMonth.minusMonths(offset.toLong())
+            val value = data.dispatches.filter { parseDate(it.dispatchedAt)?.withDayOfMonth(1) == month }
+                .sumOf { data.allocations[it.orderCode].orEmpty().sumOf { serial -> serial.unitCost } }
+            MonthlyRevenue(month.month.getDisplayName(TextStyle.SHORT, VI), value)
         }
-
-        val top = sold.groupBy { it.productCode }.mapNotNull { (code, rows) ->
-            productsByCode[code]?.let { product ->
-                TopProduct(code, product.name, rows.size, rows.size * product.wholesalePrice)
-            }
-        }.sortedByDescending { it.revenue }.take(5).ifEmpty {
-            products.sortedByDescending { it.stockQuantity }.take(5).map {
-                TopProduct(it.productCode, it.name, it.stockQuantity, it.stockQuantity * it.wholesalePrice)
-            }
-        }
-
+        val top = dispatched.groupBy { it.productCode }.map { (code, rows) ->
+            TopProduct(code, rows.first().productName, rows.size, rows.sumOf { it.unitCost })
+        }.sortedByDescending { it.quantitySold }.take(5)
         DashboardSnapshot(
-            periodLabel = "Dữ liệu Room dùng chung • cập nhật từ 5 phân hệ",
-            kpis = DashboardKpis(
-                inventoryAssetValue = inventoryValue,
-                wholesaleRevenue = revenue,
-                newWholesaleOrders = sold.mapNotNull { it.dealerName }.distinct().size,
-                availableStock = serials.count { it.status == "IN_STOCK" },
-                returnRatePercent = ReportCalculations.returnRatePercent(returned, soldCount)
-            ),
-            monthlyRevenue = months,
+            periodLabel = "Nhập – xuất – tồn • chứng từ Room dùng chung",
+            kpis = DashboardKpis(warehouse.sumOf { it.unitCost }, dispatchedValue,
+                data.orders.count { it.status in setOf("DRAFT", "RESERVED", "PACKING") },
+                data.serials.count { it.status == "IN_STOCK" && it.allocatedOrderCode == null },
+                if (dispatched.isEmpty()) 0.0 else data.returns.size * 100.0 / dispatched.size),
+            monthlyRevenue = monthly,
             costStructure = listOf(
-                CostSlice("Giá vốn", inventoryValue),
-                CostSlice("Vận chuyển", inventoryValue * 0.032),
-                CostSlice("Thuế", inventoryValue * 0.057),
-                CostSlice("Bảo hiểm", inventoryValue * 0.012)
-            ),
-            topProducts = top,
-            recentActivities = logs.take(6).map { it.toActivity() }
+                CostSlice("Hàng mới", warehouse.filter { it.status == "IN_STOCK" }.sumOf { it.unitCost }),
+                CostSlice("Giữ chỗ", warehouse.filter { it.status == "ALLOCATED" }.sumOf { it.unitCost }),
+                CostSlice("Trưng bày", warehouse.filter { it.status == "DISPLAY" }.sumOf { it.unitCost }),
+                CostSlice("Hàng lỗi", warehouse.filter { it.status in setOf("DEFECT", "DEFECTIVE", "RETURNED") }.sumOf { it.unitCost })
+            ), topProducts = top,
+            recentActivities = data.logs.sortedByDescending { sortableDate(it.timestamp) }.take(6).map {
+                AuditActivity(it.timestamp, it.action.replace('_', ' '), it.details, it.role)
+            }
         )
     }
 
-    override suspend fun loadReport(type: ReportType, range: DateRange): ReportTable =
-        withContext(Dispatchers.IO) {
-            seedIfNeeded()
-            val products = database.productDao().getAllProducts()
-            val serials = database.serialDao().getAllSerials()
-            val logs = database.auditLogDao().getAllLogs()
-            buildReport(type, range, products, serials, logs)
-        }
-
-    private fun buildReport(
-        type: ReportType,
-        range: DateRange,
-        products: List<ProductEntity>,
-        serials: List<SerialEntity>,
-        logs: List<AuditLogEntity>
-    ): ReportTable {
-        val productsByCode = products.associateBy { it.productCode }
-        val periodSerials = serials.filter { serial ->
-            parseDate(serial.importDate)?.let { !it.isBefore(range.from) && !it.isAfter(range.to) } ?: true
-        }
-        val delivered = periodSerials.filter { it.status == "DELIVERED" }
-        val revenue = delivered.sumOf { productsByCode[it.productCode]?.wholesalePrice ?: 0.0 }
-        val specificCost = delivered.sumOf { it.unitCost }
-        val logistics = specificCost * 0.045
-
-        return when (type) {
-            ReportType.INBOUND -> report(type, range,
-                listOf("Nhà cung cấp", "Số serial", "Giá trị nhập", "Vị trí"),
-                periodSerials.groupBy { it.supplierName }.map { (supplier, rows) ->
-                    listOf(supplier, rows.size.toString(), money(rows.sumOf { it.unitCost }), rows.first().currentLocation)
-                },
-                "${periodSerials.size} serial • Giá vốn đích danh ${money(periodSerials.sumOf { it.unitCost })}")
-
-            ReportType.OUTBOUND -> report(type, range,
-                listOf("Đại lý", "Số chiếc", "Doanh số", "Trạng thái"),
-                periodSerials.filter { it.dealerName != null }.groupBy { it.dealerName.orEmpty() }.map { (dealer, rows) ->
-                    listOf(dealer, rows.size.toString(), money(rows.sumOf { productsByCode[it.productCode]?.wholesalePrice ?: 0.0 }), rows.first().status)
-                },
-                "Doanh số đã bàn giao ${money(revenue)} • ${delivered.size} serial")
-
+    override suspend fun loadReport(type: ReportType, range: DateRange): ReportTable = withContext(Dispatchers.IO) {
+        val data = loadData()
+        val products = data.products.associateBy { it.productCode }
+        val serials = data.serials.filter { inRange(it.importDate, range) }
+        val dispatches = data.dispatches.filter { inRange(it.dispatchedAt, range) }
+        val returns = data.returns.filter { inRange(it.receivedAt, range) }
+        val other = data.other.filter { inRange(it.dispatchedAt, range) }
+        val allocations = dispatches.flatMap { data.allocations[it.orderCode].orEmpty() }
+        fun report(headers: List<String>, rows: List<List<String>>, summary: String) =
+            ReportTable(type, type.displayName, range, headers, rows.map(::ReportRow), summary)
+        when (type) {
+            ReportType.INBOUND -> report(listOf("Đơn vị giao", "Số Serial", "Giá trị nhập", "Ngày nhập"),
+                serials.groupBy { it.supplierName }.map { (name, rows) ->
+                    listOf(name, rows.size.toString(), money(rows.sumOf { it.unitCost }), rows.minByOrNull { sortableDate(it.importDate) }?.importDate.orEmpty())
+                }, "${serials.size} Serial nhập trong kỳ • theo ngày nhập đã ghi nhận")
+            ReportType.OUTBOUND -> report(listOf("Phiếu xuất", "Lệnh", "Đơn vị nhận", "Ngày xuất", "Số chiếc", "Người xác nhận"),
+                dispatches.map { listOf(it.dispatchCode, it.orderCode, it.dealerName, it.dispatchedAt,
+                    data.allocations[it.orderCode].orEmpty().size.toString(), it.dispatchedBy.ifBlank { "Chưa có dữ liệu cũ" }) },
+                "${dispatches.size} phiếu xuất • ${allocations.size} chiếc • ${money(allocations.sumOf { it.unitCost })} giá trị đích danh")
             ReportType.DISPATCH_STRUCTURE -> {
-                val groups = periodSerials.groupingBy { it.status }.eachCount()
-                report(type, range, listOf("Trạng thái", "Số serial", "Tỷ trọng"),
-                    groups.map { (status, count) -> listOf(status, count.toString(), percent(count, periodSerials.size)) },
-                    "Cơ cấu theo ${periodSerials.size} serial trong kỳ")
+                val warranty = other.count { it.purpose == "BAO_HANH_HANG" }
+                val disposal = other.count { it.purpose == "TIEU_HUY" }
+                val total = allocations.size + other.size
+                report(listOf("Loại xuất", "Số chiếc", "Tỷ trọng"), listOf(
+                    listOf("Bàn giao đơn vị nhận", allocations.size.toString(), percent(allocations.size, total)),
+                    listOf("Gửi bảo hành", warranty.toString(), percent(warranty, total)),
+                    listOf("Tiêu hủy", disposal.toString(), percent(disposal, total))
+                ), "$total chiếc thực xuất theo chứng từ trong kỳ")
             }
-
-            ReportType.RETURNS_QUALITY -> {
-                val groups = products.groupBy { it.brand to movementFamily(it.movementType) }
-                val rows = groups.map { (key, groupProducts) ->
-                    val codes = groupProducts.map { it.productCode }.toSet()
-                    val managed = periodSerials.filter {
-                        it.productCode in codes && it.status in setOf("ALLOCATED", "DISPATCHED", "DELIVERED", "DEFECTIVE", "RETURNED")
-                    }
-                    val defective = managed.count { it.status == "DEFECTIVE" || it.status == "RETURNED" }
-                    listOf(key.first, key.second, managed.size.toString(), defective.toString(), percent(defective, managed.size))
-                }.sortedWith(compareBy({ it[0] }, { it[1] }))
-                val managedTotal = rows.sumOf { it[2].toInt() }
-                val defectiveTotal = rows.sumOf { it[3].toInt() }
-                report(type, range,
-                    listOf("Thương hiệu", "Dòng máy", "Đã bán/quản lý", "Lỗi/đổi trả", "Tỷ lệ lỗi"), rows,
-                    "Tổng $managedTotal chiếc • Lỗi/đổi trả $defectiveTotal • Tỷ lệ ${percent(defectiveTotal, managedTotal)} • Ngưỡng cảnh báo 2%")
-            }
-
+            ReportType.RETURNS_QUALITY -> report(listOf("Phiếu trả", "Phiếu xuất gốc", "Serial", "Kiểm định", "Kho nhận lại", "Ngày nhận"),
+                returns.map { listOf(it.returnCode, it.dispatchCode, it.serialNumber, it.inspectedCondition, it.targetLocation, it.receivedAt) },
+                "${returns.size} chiếc hoàn trả • phân loại mới/lỗi theo kiểm định thực tế")
             ReportType.DEAD_STOCK -> {
-                val agedSerials = serials.mapNotNull { serial ->
-                    val importDate = parseDate(serial.importDate) ?: return@mapNotNull null
-                    val age = ChronoUnit.DAYS.between(importDate, range.to)
-                    serial.takeIf { it.status == "IN_STOCK" && age > 90 }?.let { Triple(it, importDate, age) }
+                val aged = data.serials.filter { it.status == "IN_STOCK" }.mapNotNull { serial ->
+                    parseDate(serial.importDate)?.let { date ->
+                        val days = ChronoUnit.DAYS.between(date, range.to)
+                        if (days > 90) serial to days else null
+                    }
                 }
-                val rows = agedSerials.groupBy { it.first.productCode }.map { (code, items) ->
-                    val product = productsByCode[code]
-                    val oldest = items.maxBy { it.third }
-                    listOf(code, product?.name ?: "Không xác định", items.size.toString(),
-                        if (oldest.third > 180) "> 180 ngày" else "> 90 ngày",
-                        oldest.second.format(DATE_FORMATTER), oldest.third.toString(), money(items.sumOf { it.first.unitCost }))
-                }.sortedByDescending { it[5].toLong() }
-                val over180 = agedSerials.count { it.third > 180 }
-                report(type, range,
-                    listOf("SKU", "Mẫu đồng hồ", "Tồn", "Nhóm tuổi", "Nhập cũ nhất", "Số ngày", "Giá trị vốn"), rows,
-                    "${agedSerials.size} chiếc tồn trên 90 ngày • $over180 chiếc trên 180 ngày • Đề xuất ưu tiên thanh lý nhóm trên 180 ngày")
+                report(listOf("SKU", "Serial", "Số ngày lưu", "Vị trí", "Giá trị"),
+                    aged.sortedByDescending { it.second }.map { (serial, days) ->
+                        listOf(serial.productCode, serial.serialNumber, days.toString(), serial.currentLocation, money(serial.unitCost))
+                    }, "${aged.size} chiếc chưa phân bổ, lưu kho trên 90 ngày tại ngày kết thúc")
             }
-
-            ReportType.GROSS_PROFIT -> {
-                val grossProfit = ReportCalculations.grossProfit(revenue, specificCost, logistics)
-                report(type, range, listOf("Chỉ tiêu", "Giá trị"), listOf(
-                    listOf("Doanh thu bán sỉ", money(revenue)),
-                    listOf("Giá vốn đích danh", money(specificCost)),
-                    listOf("Chi phí logistics phân bổ", money(logistics)),
-                    listOf("Lợi nhuận gộp", money(grossProfit))
-                ), "Biên lợi nhuận gộp ${percent(grossProfit, revenue)}")
-            }
-
+            ReportType.GROSS_PROFIT -> report(listOf("Phiếu xuất", "SKU", "Serial", "Vị trí xuất", "Giá trị đích danh"),
+                dispatches.flatMap { dispatch -> data.allocations[dispatch.orderCode].orEmpty().map {
+                    listOf(dispatch.dispatchCode, it.productCode, it.serialNumber, it.sourceLocation, money(it.unitCost))
+                } }, "Tổng giá trị hàng xuất ${money(allocations.sumOf { it.unitCost })} • không hạch toán doanh thu")
             ReportType.TWO_WAY_DEBT -> {
-                val beforePeriod = serials.filter { parseDate(it.importDate)?.isBefore(range.from) == true }
-                val dealerRows = serials.mapNotNull { it.dealerName }.distinct().sorted().map { name ->
-                    val opening = beforePeriod.filter { it.dealerName == name && it.status == "ALLOCATED" }
-                        .sumOf { productsByCode[it.productCode]?.wholesalePrice ?: 0.0 }
-                    val inPeriod = periodSerials.filter { it.dealerName == name }
-                    val debit = inPeriod.sumOf { productsByCode[it.productCode]?.wholesalePrice ?: 0.0 }
-                    val credit = inPeriod.filter { it.status == "DELIVERED" }
-                        .sumOf { productsByCode[it.productCode]?.wholesalePrice ?: 0.0 }
-                    listOf(name, "Đại lý / Phải thu", money(opening), money(debit), money(credit), money(ReportCalculations.endingBalance(opening, debit, credit)))
-                }
-                val supplierRows = serials.map { it.supplierName }.distinct().sorted().map { name ->
-                    val opening = beforePeriod.filter { it.supplierName == name && it.status != "DELIVERED" }.sumOf { it.unitCost }
-                    val inPeriod = periodSerials.filter { it.supplierName == name }
-                    val debit = inPeriod.filter { it.status == "DELIVERED" }.sumOf { it.unitCost }
-                    val credit = inPeriod.sumOf { it.unitCost }
-                    val ending = (opening + credit - debit).coerceAtLeast(0.0)
-                    listOf(name, "NCC / Phải trả", money(opening), money(debit), money(credit), money(ending))
-                }
-                report(type, range,
-                    listOf("Đối tác", "Loại công nợ", "Dư đầu kỳ", "Phát sinh Nợ", "Phát sinh Có", "Dư cuối kỳ"),
-                    dealerRows + supplierRows,
-                    "Đối soát hai chiều theo từng đại lý và nhà cung cấp từ dữ liệu Serial trong kỳ")
+                val units = dispatches.map { it.dealerId }.union(returns.map { it.dealerId }.toSet())
+                report(listOf("Đơn vị nhận", "Số phiếu xuất", "Số chiếc xuất", "Số chiếc trả"), units.map { id ->
+                    val sent = dispatches.filter { it.dealerId == id }
+                    listOf(sent.firstOrNull()?.dealerName ?: id, sent.size.toString(),
+                        sent.sumOf { data.allocations[it.orderCode].orEmpty().size }.toString(), returns.count { it.dealerId == id }.toString())
+                }, "Đối soát giao nhận theo phiếu trong kỳ; không phát sinh công nợ bán hàng")
             }
-
             ReportType.CASHFLOW -> {
-                val supplierPayments = delivered.sumOf { it.unitCost }
-                val cashIn = revenue
-                val cashOut = supplierPayments + logistics
-                report(type, range, listOf("Nhóm dòng tiền", "Thu", "Chi"), listOf(
-                    listOf("Thu xuất kho đại lý / thu hồi nợ", money(cashIn), money(0.0)),
-                    listOf("Thanh toán nhà cung cấp", money(0.0), money(supplierPayments)),
-                    listOf("Logistics và bảo hiểm", money(0.0), money(logistics))
-                ), "Dòng tiền thuần ${money(ReportCalculations.netCashflow(cashIn, cashOut))}")
+                val movements = data.movements.filter { inRange(it.timestamp, range) }
+                report(listOf("Thời gian", "Chứng từ", "Loại", "SKU", "Serial", "+/-", "Tồn sau", "Người thực hiện"),
+                    movements.map { listOf(it.timestamp, it.referenceCode, it.movementType, it.productCode,
+                        it.serialNumber, it.changeQuantity.toString(), it.balanceAfter.toString(), it.actorName) },
+                    "${movements.size} dòng Thẻ kho đã lưu; dữ liệu cũ chưa có Thẻ kho không được tự suy diễn")
             }
-
-            ReportType.AUDIT_LOG -> report(type, range,
-                listOf("Thời gian", "Người dùng", "Vai trò", "Hành động", "Chi tiết"),
-                logs.filter { log ->
-                    parseDate(log.timestamp)?.let { !it.isBefore(range.from) && !it.isAfter(range.to) } ?: true
-                }.map { listOf(it.timestamp, it.actorName, it.role, it.action, it.details) },
-                "Nhật ký kiểm toán chỉ đọc, không cho phép sửa hoặc xóa")
+            ReportType.AUDIT_LOG -> {
+                val logs = data.logs.filter { inRange(it.timestamp, range) }
+                report(listOf("Thời gian", "Người dùng", "Vai trò", "Hành động", "Chi tiết"),
+                    logs.map { listOf(it.timestamp, it.actorName, it.role, it.action, it.details) }, "${logs.size} nhật ký trong kỳ")
+            }
         }
     }
 
-    private fun report(type: ReportType, range: DateRange, headers: List<String>, rows: List<List<String>>, summary: String) =
-        ReportTable(type, type.displayName, range, headers, rows.map(::ReportRow), summary)
-
-    private fun AuditLogEntity.toActivity() = AuditActivity(
-        timeLabel = timestamp.takeLast(8), title = action.replace('_', ' '), detail = details, sourceModule = role
-    )
-
-    private fun money(value: Double): String =
-        NumberFormat.getCurrencyInstance(Locale.forLanguageTag("vi-VN")).format(value)
-
-    private fun percent(part: Int, total: Int): String =
-        if (total == 0) "0,00%" else String.format(Locale.forLanguageTag("vi-VN"), "%.2f%%", part * 100.0 / total)
-
-    private fun percent(part: Double, total: Double): String =
-        if (total == 0.0) "0,00%" else String.format(Locale.forLanguageTag("vi-VN"), "%.2f%%", part * 100.0 / total)
-
-    private fun parseDate(value: String): LocalDate? =
-        runCatching { LocalDate.parse(value.take(10), DATE_FORMATTER) }.getOrNull()
-
-    private fun movementFamily(value: String): String {
-        val normalized = value.lowercase(Locale.ROOT)
-        return when {
-            "quartz" in normalized -> "Quartz"
-            "solar" in normalized || "eco-drive" in normalized -> "Solar"
-            else -> "Automatic"
-        }
-    }
-
+    private fun inRange(value: String, range: DateRange): Boolean = parseDate(value)?.let {
+        !it.isBefore(range.from) && !it.isAfter(range.to)
+    } ?: false
+    private fun parseDate(value: String): LocalDate? = runCatching { LocalDate.parse(value.take(10)) }.getOrNull()
+        ?: runCatching { LocalDate.parse(value.take(10), DateTimeFormatter.ofPattern("dd/MM/yyyy")) }.getOrNull()
+    private fun sortableDate(value: String) = parseDate(value)?.toString().orEmpty() + value.drop(10)
+    private fun money(value: Double) = NumberFormat.getCurrencyInstance(VI).format(value)
+    private fun percent(part: Int, total: Int) = if (total == 0) "0,00%" else String.format(VI, "%.2f%%", part * 100.0 / total)
     private companion object {
-        val DATE_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+        val VI: Locale = Locale.forLanguageTag("vi-VN")
+        val PHYSICAL_STATUSES = setOf("IN_STOCK", "ALLOCATED", "DISPLAY", "DEFECTIVE", "DEFECT", "RETURNED")
     }
 }

@@ -30,13 +30,13 @@ data class DateRange(val from: LocalDate, val to: LocalDate) {
 
 enum class ReportType(val displayName: String) {
     INBOUND("1. Báo cáo nhập hàng"),
-    OUTBOUND("2. Báo cáo phân phối bán sỉ"),
+    OUTBOUND("2. Xuất kho theo đơn vị nhận"),
     DISPATCH_STRUCTURE("3. Cơ cấu xuất hàng"),
     RETURNS_QUALITY("4. Đổi trả & chất lượng bộ máy"),
     DEAD_STOCK("5. Hàng chậm luân chuyển (Dead Stock)"),
-    GROSS_PROFIT("6. Tài chính & lợi nhuận gộp B2B"),
-    TWO_WAY_DEBT("7. Sổ công nợ B2B hai chiều"),
-    CASHFLOW("8. Dòng tiền thu / chi thực tế"),
+    GROSS_PROFIT("6. Giá trị hàng xuất theo Serial"),
+    TWO_WAY_DEBT("7. Đối soát bàn giao và hoàn trả"),
+    CASHFLOW("8. Sổ biến động kho"),
     AUDIT_LOG("9. Nhật ký kiểm toán toàn hệ thống")
 }
 

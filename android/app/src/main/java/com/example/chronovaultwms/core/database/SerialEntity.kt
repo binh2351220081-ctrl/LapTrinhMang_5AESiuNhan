@@ -19,6 +19,10 @@ data class SerialEntity(
     val unitCost: Double,              // Giá vốn đích danh gồm thuế & bảo hiểm (VNĐ)
     val supplierName: String,          // Nhà cung ứng (VD: Rolex Geneva SA - Thụy Sĩ)
     val dealerName: String? = null,    // Đại lý nhận sỉ (nếu đã phân bổ hoặc xuất)
-    val qcNotes: String = ""           // Kết quả kiểm định QC (VD: Chuẩn COSC +1s/ngày)
+    val qcNotes: String = "",          // Kết quả kiểm định QC (VD: Chuẩn COSC +1s/ngày)
+    val dealerId: String? = null,
+    val allocatedOrderCode: String? = null,
+    val lastDispatchCode: String? = null,
+    val lastDispatchAt: String? = null
 )
 

@@ -252,7 +252,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="3dp"
-                        android:text="• Trách nhiệm: Tác nghiệp tiền tuyến: quét Barcode nạp Serial nhập kho, soạn hàng, đóng gói xuất kho phân phối đại lý B2B.\n• Ranh giới: Không có quyền duyệt thu/chi, không tự duyệt lệnh xuất vượt hạn mức nợ."
+                        android:text="• Trách nhiệm: Tác nghiệp tiền tuyến: quét Barcode nạp Serial nhập kho, soạn hàng, đóng gói xuất kho lưu ký.\n• Ranh giới: Không có quyền duyệt giải phóng bảo lãnh, không tự duyệt lệnh vượt hạn mức lưu ký."
                         android:textColor="@color/text_secondary"
                         android:textSize="11sp" />
                 </LinearLayout>

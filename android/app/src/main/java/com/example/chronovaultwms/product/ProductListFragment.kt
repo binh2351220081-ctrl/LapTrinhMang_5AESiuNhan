@@ -748,19 +748,19 @@ class ProductListFragment : Fragment() {
                         "Đã lưu trữ an toàn tại vị trí ${serial.currentLocation}. Kích hoạt mã định danh RFID/Barcode theo dõi."
                     ),
                     Triple(
-                        "4. 🔒 Khóa Hàng Giữ Chỗ Đơn Sỉ B2B (Allocation)",
-                        if (serial.status == "ALLOCATED" || serial.status == "DELIVERED") "Đã xác nhận" else "Sẵn sàng",
-                        if (serial.dealerName != null) "Đã khóa tự động giữ chỗ cho: ${serial.dealerName}." else "Hàng khả dụng sẵn sàng phân bổ cho các đại lý bán buôn."
+                        "4. 🔒 Khóa Giữ Chỗ Lệnh Điều Phối (Allocation)",
+                        if (serial.status == "ALLOCATED" || serial.status == "DELIVERED" || serial.status == "DISPATCHED") "Đã xác nhận" else "Sẵn sàng",
+                        if (serial.dealerName != null) "Đã khóa tự động giữ chỗ cho: ${serial.dealerName}." else "Hàng khả dụng sẵn sàng phân bổ theo lệnh điều phối kho."
                     ),
                     Triple(
                         "5. 🚚 Quét Barcode Xuất Bến & Bàn Giao Vận Chuyển",
-                        if (serial.status == "DELIVERED") "Hoàn thành" else "Chờ xuất bến",
-                        if (serial.status == "DELIVERED") "Đã quét xuất kho Serial ${serial.serialNumber}, bàn giao xe vận tải có niêm phong bảo mật." else "Đang chờ lệnh xuất kho và phiếu xuất kho được duyệt."
+                        if (serial.status == "DELIVERED" || serial.status == "DISPATCHED") "Hoàn thành" else "Chờ xuất bến",
+                        if (serial.status == "DELIVERED" || serial.status == "DISPATCHED") "Đã quét xuất kho Serial ${serial.serialNumber}, bàn giao xe vận tải có niêm phong bảo mật." else "Đang chờ lệnh điều phối và phiếu xuất kho được duyệt."
                     ),
                     Triple(
-                        "6. 🛡️ Bàn Giao Đại Lý & Kích Hoạt Bảo Hành Điện Tử",
-                        if (serial.status == "DELIVERED") "Đã kích hoạt" else "Chưa kích hoạt",
-                        if (serial.status == "DELIVERED") "Đại lý đã ký nhận biên bản bàn giao. Đã kích hoạt bảo hành chính hãng toàn cầu 5 năm." else "Bảo hành sẽ được tự động kích hoạt ngay khi hoàn tất giao hàng."
+                        "6. 🛡️ Bàn Giao Đơn Vị Nhận & Kích Hoạt Bảo Hành Điện Tử",
+                        if (serial.status == "DELIVERED" || serial.status == "DISPATCHED") "Đã kích hoạt" else "Chưa kích hoạt",
+                        if (serial.status == "DELIVERED" || serial.status == "DISPATCHED") "Đơn vị tiếp nhận đã ký biên bản bàn giao. Đã kích hoạt bảo hành chính hãng toàn cầu 5 năm." else "Bảo hành sẽ được tự động kích hoạt ngay khi hoàn tất bàn giao xuất kho."
                     )
                 )
 

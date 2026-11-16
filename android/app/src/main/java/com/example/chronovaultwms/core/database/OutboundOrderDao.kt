@@ -7,7 +7,7 @@ import androidx.room.Query
 import androidx.room.Update
 
 /**
- * Data Access Object cho Đơn Hàng Bán Sỉ B2B
+ * Data Access Object cho Lệnh Điều Phối Xuất Kho Outbound
  * Phụ trách: Phân hệ 3 (TV3 - Tô Đức Thảo)
  */
 @Dao
@@ -24,13 +24,13 @@ interface OutboundOrderDao {
     @Query("SELECT COUNT(*) FROM outbound_orders")
     suspend fun countOrders(): Int
 
-    @Query("SELECT COALESCE(SUM(convertedQuantity), 0) FROM outbound_orders WHERE productCode = :productCode AND status = 'RESERVED'")
+    @Query("SELECT COUNT(*) FROM serials WHERE productCode = :productCode AND status = 'ALLOCATED' AND allocatedOrderCode IS NOT NULL")
     suspend fun getReservedQuantity(productCode: String): Int
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insertAll(orders: List<OutboundOrderEntity>)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insert(order: OutboundOrderEntity)
 
     @Update

@@ -6,7 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 
 /**
- * Data Access Object cho Phiếu Thu Tiền Sỉ
+ * Data Access Object cho Phiếu Xác Nhận Bàn Giao & Giải Phóng Bảo Lãnh
  * Phụ trách: Phân hệ 3 (TV3 - Tô Đức Thảo)
  */
 @Dao

@@ -7,7 +7,7 @@ import androidx.room.Query
 import androidx.room.Update
 
 /**
- * Data Access Object cho Đại lý B2B
+ * Data Access Object cho Đơn vị / Chi nhánh tiếp nhận hàng xuất kho
  * Phụ trách: Phân hệ 3 (TV3 - Tô Đức Thảo)
  */
 @Dao
@@ -32,5 +32,8 @@ interface DealerDao {
 
     @Query("UPDATE dealers SET currentDebt = :newDebt WHERE dealerId = :dealerId")
     suspend fun updateDebt(dealerId: String, newDebt: Double)
+
+    @Query("SELECT * FROM dealers WHERE taxCode = :taxCode AND dealerId != :excludingId LIMIT 1")
+    suspend fun findTaxCodeOwner(taxCode: String, excludingId: String): DealerEntity?
 }
 

@@ -15,7 +15,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="📦 Quét Serial Xuất Kho B2B"
+            android:text="📦 Soạn Hàng &amp; Quét Serial Xuất Kho"
             android:textColor="@color/primary"
             android:textSize="17sp"
             android:textStyle="bold" />
@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
-            android:text="Đơn sỉ: DS-2026-001 • Đại lý: Galle Watch"
+            android:text="Lệnh xuất: DS-2026-001 • Đơn vị nhận: Galle Watch"
             android:textColor="@color/text_secondary"
             android:textSize="12sp" />
 
@@ -105,13 +105,16 @@
                 app:backgroundTint="@color/accent_gold" />
         </LinearLayout>
 
-        <!-- Available In-Stock Serials Guide -->
+        <!-- Smart Picking List Guide -->
         <TextView
             android:id="@+id/tvAvailableSerialsHint"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:text="💡 Gợi ý Serial trong kho: RLX-SUB-2026-001, RLX-SUB-2026-002"
+            android:layout_marginTop="8dp"
+            android:background="#FEFCE8"
+            android:lineSpacingExtra="2dp"
+            android:padding="8dp"
+            android:text="📋 PHIẾU SOẠN HÀNG THÔNG MINH (FIFO):\n• Lô 1: RLX-SUB-2026-001 | 📍 Kệ K1-A02-B03 | Vốn: 285,000,000 đ"
             android:textColor="@color/accent_gold_dark"
             android:textSize="11sp" />
 

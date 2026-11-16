@@ -44,7 +44,7 @@
                 android:paddingTop="3dp"
                 android:paddingEnd="8dp"
                 android:paddingBottom="3dp"
-                android:text="⭐ VIP (CK 30%)"
+                android:text="⭐ VIP (Hệ số 25%)"
                 android:textColor="@color/text_gold"
                 android:textSize="11sp"
                 android:textStyle="bold" />
@@ -82,7 +82,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Dư Nợ Hiện Tại"
+                    android:text="Tài Sản Đang Giữ"
                     android:textColor="@color/text_secondary"
                     android:textSize="11sp" />
 
@@ -106,7 +106,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Hạn Mức Tín Dụng"
+                    android:text="Hạn Mức Bảo Lãnh"
                     android:textColor="@color/text_secondary"
                     android:textSize="11sp" />
 
@@ -145,7 +145,7 @@
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="36dp"
-                android:text="💰 Lập Phiếu Thu"
+                android:text="🛡️ Giải Phóng Bảo Lãnh"
                 android:textColor="@color/accent_gold_dark"
                 android:textSize="11sp"
                 app:strokeColor="@color/accent_gold" />

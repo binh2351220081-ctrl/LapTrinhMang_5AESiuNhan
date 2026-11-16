@@ -50,13 +50,13 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <!-- Dealer Name & Date -->
+        <!-- Receiving Branch Name & Date -->
         <TextView
             android:id="@+id/tvOrderDealerName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            android:text="🏪 Galle Watch Việt Nam"
+            android:text="🏢 Galle Watch Việt Nam"
             android:textColor="@color/text_primary"
             android:textSize="13sp"
             android:textStyle="bold" />
@@ -65,7 +65,7 @@
             android:id="@+id/tvOrderCreatedDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="🕒 Ngày đặt: 10/11/2026 14:10"
+            android:text="🕒 Ngày lập lệnh: 10/11/2026 14:10"
             android:textColor="@color/text_secondary"
             android:textSize="11sp" />
 
@@ -91,12 +91,12 @@
                 android:id="@+id/tvOrderQuantitySummary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Quy cách: 2 chiếc lẻ (Chiết khấu 30%)"
+                android:text="Quy cách: 2 chiếc (Hệ số điều chuyển 25%)"
                 android:textColor="@color/text_secondary"
                 android:textSize="11sp" />
         </LinearLayout>
 
-        <!-- Financial Breakdown -->
+        <!-- Valuation & Custody Breakdown -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -107,7 +107,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Tổng tiền sau CK:"
+                android:text="Giá trị bảo lãnh:"
                 android:textColor="@color/text_secondary"
                 android:textSize="12sp" />
 
@@ -115,7 +115,7 @@
                 android:id="@+id/tvOrderTotalAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="448.000.000 đ"
+                android:text="525.000.000 đ"
                 android:textColor="@color/text_primary"
                 android:textSize="13sp"
                 android:textStyle="bold" />
@@ -131,7 +131,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Đã cọc: 150.000.000 đ"
+                android:text="Ký quỹ bảo lãnh: 150.000.000 đ"
                 android:textColor="#059669"
                 android:textSize="11sp" />
 
@@ -139,7 +139,7 @@
                 android:id="@+id/tvOrderRemainingDebt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Còn nợ: 298.000.000 đ"
+                android:text="Trách nhiệm phát sinh: 375.000.000 đ"
                 android:textColor="#DC2626"
                 android:textSize="11sp"
                 android:textStyle="bold" />
@@ -157,7 +157,7 @@
                 android:id="@+id/btnDispatchOrder"
                 android:layout_width="wrap_content"
                 android:layout_height="38dp"
-                android:text="📦 Quét Serial Xuất Kho"
+                android:text="📦 Soạn &amp; Quét Serial Xuất"
                 android:textColor="@color/primary_dark"
                 android:textSize="11sp"
                 app:backgroundTint="@color/accent_gold" />
