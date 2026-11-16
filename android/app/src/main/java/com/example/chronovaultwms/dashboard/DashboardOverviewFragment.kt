@@ -37,10 +37,18 @@ class DashboardOverviewFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, state: Bundle?) {
+        binding.tvDashboardUser.text = com.example.chronovaultwms.core.auth.SessionManager(requireContext()).getFullName() ?: "Trần Công Tú"
         binding.rvTopProducts.apply { layoutManager = LinearLayoutManager(requireContext()); adapter = topProductAdapter }
         binding.rvActivities.apply { layoutManager = LinearLayoutManager(requireContext()); adapter = activityAdapter }
+        binding.btnDashboardLogout.setOnClickListener {
+            com.example.chronovaultwms.core.auth.SessionManager(requireContext()).clearSession()
+            val manager = parentFragmentManager
+            manager.popBackStackImmediate(null, androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE)
+            manager.beginTransaction()
+                .replace(R.id.fragmentContainer, ProductListFragment())
+                .commit()
+        }
         binding.btnDashboardReports.setOnClickListener { open(ReportContainerFragment()) }
-        binding.btnDashboardProducts.setOnClickListener { open(ProductListFragment()) }
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.dashboard.collect { it?.let(::render) }
@@ -53,7 +61,7 @@ class DashboardOverviewFragment : Fragment() {
     }
 
     private fun render(snapshot: DashboardSnapshot) = with(binding) {
-        tvPeriod.text = snapshot.periodLabel
+        tvPeriod.text = "Tổng hợp doanh thu, tồn kho và hiệu quả vận hành"
         tvInventoryValue.text = money(snapshot.kpis.inventoryAssetValue)
         tvRevenue.text = money(snapshot.kpis.wholesaleRevenue)
         tvNewOrders.text = snapshot.kpis.newWholesaleOrders.toString()

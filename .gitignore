@@ -16,6 +16,7 @@ Thumbs.db
 # IDE / Editor
 .vscode/
 .idea/
+.codex/
 
 
 # Microsoft Office temporary lock files
