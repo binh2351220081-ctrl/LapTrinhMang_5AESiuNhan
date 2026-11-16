@@ -622,7 +622,9 @@ object DatabaseSeeder {
             remainingDebt = 375000000.0,
             status = "DRAFT",
             createdDate = "10/11/2026 14:10",
-            dispatchedSerials = ""
+            dispatchedSerials = "",
+            note = "Xuất bán buôn đợt 1",
+            createdBy = "Tô Đức Thảo"
         ),
         OutboundOrderEntity(
             orderCode = "DS-2026-002",
@@ -640,7 +642,13 @@ object DatabaseSeeder {
             remainingDebt = 131000000.0,
             status = "COMPLETED",
             createdDate = "09/11/2026 16:45",
-            dispatchedSerials = "OMG-SPEED-2026-001, OMG-SPEED-2026-002"
+            dispatchedSerials = "OMG-SPEED-2026-001, OMG-SPEED-2026-002",
+            note = "Xuất giao đại lý Hải Triều - Chi nhánh Bạch Đằng",
+            createdBy = "Tô Đức Thảo",
+            approvedBy = "Phan Bá Hải Bình",
+            approvedAt = "09/11/2026 16:50",
+            dispatchedBy = "Tô Đức Thảo",
+            dispatchedAt = "09/11/2026 17:15"
         ),
         OutboundOrderEntity(
             orderCode = "DS-2026-003",
@@ -658,7 +666,9 @@ object DatabaseSeeder {
             remainingDebt = 85000000.0,
             status = "DRAFT",
             createdDate = "10/11/2026 15:20",
-            dispatchedSerials = ""
+            dispatchedSerials = "",
+            note = "Đơn đặt hàng VIP chi nhánh",
+            createdBy = "Tô Đức Thảo"
         )
     )
 

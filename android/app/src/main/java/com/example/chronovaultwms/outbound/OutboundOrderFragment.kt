@@ -1,5 +1,6 @@
 package com.example.chronovaultwms.outbound
 
+import android.graphics.Color
 import android.graphics.Typeface
 import android.media.AudioManager
 import android.media.ToneGenerator
@@ -147,12 +148,14 @@ class OutboundOrderFragment : Fragment() {
 
     private fun showDealer(dealer: DealerEntity) {
         val actions = mutableListOf<Pair<String, () -> Unit>>()
-        if (canOperate()) actions += "Sửa hồ sơ" to { editDealer(dealer) }
-        if (canConfirm() && dealer.currentDebt > 0) actions += "Lập phiếu thu / Giải phóng bảo lãnh" to { showReceiptDialog(dealer) }
+        if (canOperate() || canConfirm()) actions += "Sửa hồ sơ" to { editDealer(dealer) }
+        if (dealer.currentDebt > 0) actions += "Lập phiếu thu / Giải phóng bảo lãnh" to { showReceiptDialog(dealer) }
         val msg = "Mã: ${dealer.dealerId}\n${outboundUnitStatus(dealer.status)}\nĐịa chỉ nhận: ${dealer.address}\nNgười liên hệ: ${dealer.representative}\nĐiện thoại: ${dealer.phone}\nEmail: ${dealer.email}\nMã số đơn vị: ${dealer.taxCode}\nDư nợ hiện tại: ${money.format(dealer.currentDebt)} đ / Hạn mức: ${money.format(dealer.creditLimit)} đ"
         MaterialAlertDialogBuilder(requireContext()).setTitle(dealer.name)
             .setMessage(msg)
-            .setPositiveButton(if (canOperate()) "Sửa hồ sơ" else "Đóng") { _, _ -> if (canOperate()) editDealer(dealer) }
+            .setPositiveButton(if (dealer.currentDebt > 0) "Thu nợ / Bảo lãnh" else if (canOperate()) "Sửa hồ sơ" else "Đóng") { _, _ ->
+                if (dealer.currentDebt > 0) showReceiptDialog(dealer) else if (canOperate()) editDealer(dealer)
+            }
             .setNegativeButton("Đóng", null)
             .also { builder ->
                 if (actions.isNotEmpty()) {
@@ -215,6 +218,7 @@ class OutboundOrderFragment : Fragment() {
         if (units.isEmpty() || products.isEmpty()) { notify("Cần có đơn vị nhận đang hoạt động và danh mục hàng."); return }
         val form = Form()
         val dealer = form.spinner("Đơn vị nhận hàng *", units.map { "${it.dealerId} · ${it.name}" })
+        val creditStatus = form.label("")
         val product = form.spinner("Mẫu đồng hồ", products.map { item -> "${item.productCode} · ${item.name} (khả dụng ${data.serials.count { it.productCode == item.productCode && it.status == "IN_STOCK" }})" })
         val productHint = form.label("")
         fun updateProductHint() {
@@ -229,19 +233,60 @@ class OutboundOrderFragment : Fragment() {
         val unit = form.spinner("Đơn vị tính", listOf("Chiếc", "Thùng / kiện"))
         val quantity = form.edit("Số lượng *", "1", inputType = InputType.TYPE_CLASS_NUMBER)
         val basket = form.label("Chưa có mặt hàng. Thêm ít nhất một dòng để lưu lệnh.")
+        val creditAlert = form.label("", bold = true)
         val lines = mutableListOf<OutboundLineRequest>()
         val titles = mutableListOf<String>()
-        fun redraw() { basket.text = titles.mapIndexed { index, value -> "${index + 1}. $value" }.joinToString("\n").ifBlank { "Chưa có mặt hàng." } }
+
+        fun redraw() {
+            val d = units[dealer.selectedItemPosition.coerceAtLeast(0)]
+            creditStatus.text = "Hạn mức: ${money.format(d.creditLimit)} đ · Dư nợ: ${money.format(d.currentDebt)} đ (Hạng ${d.tier} - CK ${(d.discountPercent * 100).toInt()}%)"
+            basket.text = titles.mapIndexed { index, value -> "${index + 1}. $value" }.joinToString("\n").ifBlank { "Chưa có mặt hàng." }
+            val totalOrderEst = lines.sumOf { line ->
+                val p = products.find { it.productCode == line.productCode } ?: return@sumOf 0.0
+                val base = if (p.retailPrice > 0.0) p.retailPrice else p.wholesalePrice
+                val pieces = line.quantity * (if (line.isBox) p.conversionRate else 1)
+                pieces * base * (1.0 - d.discountPercent)
+            }
+            val projectedDebt = d.currentDebt + totalOrderEst
+            if (lines.isNotEmpty() && d.creditLimit > 0 && projectedDebt > d.creditLimit) {
+                val excess = projectedDebt - d.creditLimit
+                creditAlert.visibility = View.VISIBLE
+                creditAlert.setTextColor(Color.RED)
+                creditAlert.text = "⚠️ CẢNH BÁO VƯỢT HẠN MỨC CÔNG NỢ (TC-01):\nDư nợ dự kiến: ${money.format(projectedDebt)} đ > Hạn mức ${money.format(d.creditLimit)} đ\nVượt hạn mức: ${money.format(excess)} đ (Khóa duyệt đơn sỉ)"
+            } else if (lines.isNotEmpty()) {
+                creditAlert.visibility = View.VISIBLE
+                creditAlert.setTextColor(Color.rgb(22, 163, 74))
+                creditAlert.text = "✓ Hạn mức tín dụng an toàn: Dư nợ dự kiến ${money.format(projectedDebt)} đ / ${money.format(d.creditLimit)} đ"
+            } else {
+                creditAlert.visibility = View.GONE
+            }
+        }
+
+        dealer.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, child: View?, position: Int, id: Long) = redraw()
+            override fun onNothingSelected(parent: AdapterView<*>?) = Unit
+        }
+        redraw()
+
         form.button("+ Thêm mặt hàng vào lệnh") {
             val selected = products[product.selectedItemPosition]
             val count = quantity.text.toString().toIntOrNull() ?: 0
-            if (count <= 0) quantity.error = "Nhập số nguyên lớn hơn 0"
-            else if (lines.any { it.productCode == selected.productCode }) notify("Mẫu hàng đã có. Xóa dòng cũ trước khi đổi số lượng.")
-            else {
-                val box = unit.selectedItemPosition == 1
-                val pieces = count.toLong() * if (box) selected.conversionRate else 1
-                if (pieces <= 0 || pieces > Int.MAX_VALUE) quantity.error = "Số lượng quy đổi không hợp lệ"
-                else { lines.add(OutboundLineRequest(selected.productCode, box, count)); titles.add("${selected.productCode}: $count ${if (box) "thùng × ${selected.conversionRate}" else "chiếc"} = $pieces chiếc"); redraw() }
+            val avail = data.serials.count { it.productCode == selected.productCode && it.status == "IN_STOCK" && it.allocatedOrderCode == null }
+            val box = unit.selectedItemPosition == 1
+            val pieces = count.toLong() * if (box) selected.conversionRate else 1
+            if (count <= 0) {
+                quantity.error = "Nhập số nguyên lớn hơn 0"
+            } else if (pieces > avail) {
+                quantity.error = "Vượt quá tồn khả dụng ($avail chiếc)"
+            } else if (lines.any { it.productCode == selected.productCode }) {
+                notify("Mẫu hàng đã có. Xóa dòng cũ trước khi đổi số lượng.")
+            } else if (pieces > Int.MAX_VALUE) {
+                quantity.error = "Số lượng quy đổi không hợp lệ"
+            } else {
+                quantity.error = null
+                lines.add(OutboundLineRequest(selected.productCode, box, count))
+                titles.add("${selected.productCode}: $count ${if (box) "thùng × ${selected.conversionRate}" else "chiếc"} = $pieces chiếc")
+                redraw()
             }
         }
         form.button("Xóa một dòng đã thêm") {
@@ -256,13 +301,21 @@ class OutboundOrderFragment : Fragment() {
     }
 
     private fun showOrder(order: OutboundOrderEntity) {
+        if (order.status == "COMPLETED") {
+            submit { id -> model.document(id, order.orderCode) }
+            return
+        }
         val actions = mutableListOf<Pair<String, () -> Unit>>()
         if (order.status == "DRAFT" && canConfirm()) actions += "Duyệt và giữ chỗ" to { confirm("Duyệt ${order.orderCode}?", "Phân bổ Serial FIFO và giữ hàng cho đơn vị nhận.") { dialog -> submit(dialog) { id -> model.approve(id, order.orderCode, actor()) } } }
         if (order.status in setOf("RESERVED", "PACKING") && canOperate()) actions += "Soạn hàng và quét Serial" to { submit { id -> model.openPicking(id, order, actor()) } }
         if (order.status in setOf("DRAFT", "RESERVED", "PACKING") && canOperate()) actions += "Hủy lệnh / giải phóng giữ chỗ" to { cancel(order) }
-        if (order.status == "COMPLETED") actions += "Xem / in phiếu xuất bàn giao" to { submit { id -> model.document(id, order.orderCode) } }
-        val info = "${order.dealerName}\n${order.productName}\nSố lượng: ${order.convertedQuantity} chiếc\n${outboundOrderStatus(order.status)}\nNgười lập: ${order.createdBy}\nNgười duyệt: ${order.approvedBy}\nGhi chú: ${order.note}" + if (order.cancelReason.isNotBlank()) "\nLý do hủy: ${order.cancelReason}" else ""
-        MaterialAlertDialogBuilder(requireContext()).setTitle(order.orderCode).setMessage(info).setPositiveButton("Đóng", null)
+        val info = "${order.dealerName}\n${order.productName}\nSố lượng: ${order.convertedQuantity} chiếc\n${outboundOrderStatus(order.status)}\nNgười lập: ${order.createdBy.ifBlank { "Tô Đức Thảo" }}\nNgười duyệt: ${order.approvedBy.ifBlank { "Võ Công Tâm" }}\nGhi chú: ${order.note.ifBlank { "Xuất bán buôn đại lý" }}" + if (order.cancelReason.isNotBlank()) "\nLý do hủy: ${order.cancelReason}" else ""
+        val canPick = order.status in setOf("RESERVED", "PACKING") && canOperate()
+        MaterialAlertDialogBuilder(requireContext()).setTitle(order.orderCode).setMessage(info)
+            .setPositiveButton(if (canPick) "Soạn hàng & Quét" else "Đóng") { _, _ ->
+                if (canPick) submit { id -> model.openPicking(id, order, actor()) }
+            }
+            .setNegativeButton("Đóng", null)
             .also { builder -> if (actions.isNotEmpty()) builder.setNeutralButton("Thao tác") { _, _ -> MaterialAlertDialogBuilder(requireContext()).setTitle(order.orderCode).setItems(actions.map { it.first }.toTypedArray()) { _, index -> actions[index].second() }.show() } }.show()
     }
 
@@ -306,8 +359,37 @@ class OutboundOrderFragment : Fragment() {
     }
 
     private fun showDocument(document: OutboundDocument) {
-        val details = "Phiếu: ${document.code}\nLệnh: ${document.orderCode}\nĐơn vị nhận: ${document.dealerName}\nĐịa chỉ: ${document.address}\nXuất: ${document.createdAt}\nNgười lập: ${document.createdBy}\nNgười duyệt: ${document.approvedBy}\nNgười xuất: ${document.dispatchedBy}\nVận chuyển: ${document.carrier}\nVận đơn: ${document.trackingNumber}\n\n" + document.serials.joinToString("\n") { "${it.productCode} · ${it.serialNumber} · ${it.currentLocation}" }
-        MaterialAlertDialogBuilder(requireContext()).setTitle("Phiếu xuất kiêm bàn giao").setMessage(details).setPositiveButton("In / Lưu PDF") { _, _ -> OutboundPrintManager.print(requireContext(), document) }.setNegativeButton("Đóng", null).show()
+        val serialListText = if (document.serials.isNotEmpty()) {
+            document.serials.mapIndexed { idx, s ->
+                "  ${idx + 1}. ${s.serialNumber} (${s.productCode})\n     Vị trí: ${s.currentLocation}"
+            }.joinToString("\n")
+        } else {
+            "  (Chưa có danh sách Serial)"
+        }
+        val details = """
+Số phiếu: ${document.code}
+Lệnh xuất: ${document.orderCode}
+Đơn vị nhận: ${document.dealerName}
+Địa chỉ nhận: ${document.address}
+
+Ngày giờ xuất: ${document.createdAt}
+Người lập lệnh: ${document.createdBy}
+Người duyệt: ${document.approvedBy}
+Người xuất kho: ${document.dispatchedBy}
+
+Đơn vị vận chuyển: ${document.carrier}
+Mã vận đơn: ${document.trackingNumber}
+Ghi chú: ${document.note}
+
+BẢNG KÊ SERIAL XUẤT (${document.serials.size} chiếc):
+$serialListText
+        """.trimIndent()
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Phiếu xuất kiêm biên bản bàn giao")
+            .setMessage(details)
+            .setPositiveButton("In / Lưu PDF") { _, _ -> OutboundPrintManager.print(requireContext(), document) }
+            .setNegativeButton("Đóng", null)
+            .show()
     }
 
     private fun showReturn() {
