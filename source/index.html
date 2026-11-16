@@ -154,7 +154,7 @@
 
           <div class="kpi-card">
             <div class="kpi-header">
-              <span class="kpi-label">Đơn Hàng Sỉ</span>
+              <span class="kpi-label">Đơn Hàng Xuất Đại Lý</span>
               <div class="kpi-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
               </div>
@@ -341,7 +341,7 @@
         <!-- Action Header -->
         <div class="section-title-wrap">
           <div class="section-title">
-            <span class="title-accent"></span> Đơn Bán Sỉ & Phân Phối (Outbound)
+            <span class="title-accent"></span> Đơn Xuất Kho Đại Lý & Phân Phối (Outbound)
           </div>
           <button class="btn-primary-action" style="width:auto; padding:6px 14px; font-size:12px;" onclick="openCreateOrderModal()">
             + Lên Đơn Sỉ
@@ -357,7 +357,7 @@
             <span class="title-accent"></span> Danh Sách Đại Lý & Hạn Mức Tín Dụng
           </div>
           <button class="btn-toggle-view" style="font-size:11px;" onclick="openDealerReceiptModal('DL01')">
-            + Thu Tiền Sỉ
+            + Thu Thu Nợ Đại Lý
           </button>
         </div>
         <div id="dealersOverviewList"></div>
@@ -446,14 +446,14 @@
         <span>Nhập kho</span>
       </button>
 
-      <!-- Tab 4: Xuất sỉ (Phân hệ 3) -->
+      <!-- Tab 4: Xuất kho đại lý (Phân hệ 3) -->
       <button class="nav-item-btn" data-tab="outbound" onclick="switchTab('outbound')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
           <polyline points="17 8 12 3 7 8"/>
           <line x1="12" y1="3" x2="12" y2="15"/>
         </svg>
-        <span>Xuất sỉ</span>
+        <span>Xuất kho đại lý</span>
       </button>
 
       <!-- Tab 5: Kho & Kệ (Phân hệ 4) -->
@@ -529,7 +529,7 @@
               👉 [Rolex Submariner] Serial: <b>RLX-SUB-2026-9901</b> (Trong kho)
             </button>
             <button class="btn-secondary-action" style="text-align:left; font-size:11px; padding:8px;" onclick="onBarcodeDetected('RLX-SUB-2026-9902')">
-              👉 [Rolex Submariner] Serial: <b>RLX-SUB-2026-9902</b> (Giữ chỗ đơn sỉ)
+              👉 [Rolex Submariner] Serial: <b>RLX-SUB-2026-9902</b> (Giữ chỗ lệnh xuất đại lý)
             </button>
             <button class="btn-secondary-action" style="text-align:left; font-size:11px; padding:8px;" onclick="onBarcodeDetected('TIS-PRX-2026-1102')">
               👉 [Tissot PRX] Serial: <b>TIS-PRX-2026-1102</b> (Kho Hàng Lỗi)
@@ -613,7 +613,7 @@
     </div>
 
     <!-- ==================================================================
-         MODAL 3: KHỞI TẠO ĐƠN BÁN SỈ B2B (PHÂN HỆ 3 - 3.2)
+         MODAL 3: KHỞI TẠO LỆNH XUẤT KHO ĐẠI LÝ B2B (PHÂN HỆ 3 - 3.2)
          ================================================================== -->
     <div class="modal-backdrop" id="createOrderModal">
       <div class="modal-sheet">
@@ -621,7 +621,7 @@
         <div class="modal-header">
           <h2>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gold-primary)" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-            Khởi Tạo Đơn Bán Sỉ Cho Đại Lý
+            Khởi Tạo Đơn Xuất Kho Đại Lý Cho Đại Lý
           </h2>
           <button class="modal-close-btn" onclick="closeModal('createOrderModal')">✕</button>
         </div>
@@ -774,7 +774,7 @@
           <span>📥 TV2: NCC & Nhập Hàng</span>
         </li>
         <li class="drawer-menu-item" onclick="window.location.href='tv3_xuat_kho.html'">
-          <span>📤 TV3: Bán Sỉ & Xuất Hàng</span>
+          <span>📤 TV3: Đối Tác Đại Lý & Quản Lý Xuất Kho</span>
         </li>
         <li class="drawer-menu-item" onclick="window.location.href='tv4_ton_kho.html'">
           <span>📦 TV4: Tồn Kho & Kệ</span>

@@ -123,7 +123,7 @@ def generate_report():
     r_main_title.font.name = "Arial"; r_main_title.font.size = Pt(19); r_main_title.font.bold = True
     r_main_title.font.color.rgb = RGBColor(27, 54, 93) # Navy
 
-    r_sub = cover_p.add_run("MÔ HÌNH PHÂN PHỐI BÁN SỈ B2B (WHOLESALE DISTRIBUTION)\n")
+    r_sub = cover_p.add_run("MÔ HÌNH PHÂN PHỐI XUẤT KHO ĐẠI LÝ B2B (WHOLESALE DISTRIBUTION)\n")
     r_sub.font.name = "Arial"; r_sub.font.size = Pt(12); r_sub.font.bold = True
     r_sub.font.color.rgb = RGBColor(197, 155, 39) # Warm Gold
 
@@ -142,7 +142,7 @@ def generate_report():
     
     meta_info = [
         ("Tên dự án:", "Hệ thống Quản lý Kho Hàng Hóa Cửa Hàng Đồng Hồ (ChronoVault B2B WMS)"),
-        ("Phạm vi nghiệp vụ:", "Phân phối bán sỉ B2B Wholesale (Quản lý Serial đích danh, Giá vốn thực tế, Hạn mức tín dụng)"),
+        ("Phạm vi nghiệp vụ:", "Phân phối phân phối đại lý B2B Wholesale (Quản lý Serial đích danh, Giá vốn thực tế, Hạn mức tín dụng)"),
         ("Quy mô phân hệ:", "06 Phân hệ chức năng • Phân công độc lập và tích hợp cho nhóm 05 thành viên"),
         ("Mô hình dữ liệu:", "23 Bảng cơ sở dữ liệu quan hệ vật lý đạt chuẩn hóa 3NF"),
         ("Tài liệu tham chiếu:", "phantichLTM.txt (Đặc tả phân tích và thiết kế hệ thống chi tiết)"),
@@ -182,14 +182,14 @@ def generate_report():
     p_intro = doc.add_paragraph()
     p_intro.paragraph_format.line_spacing = 1.15
     p_intro.paragraph_format.space_after = Pt(6)
-    r = p_intro.add_run("Hệ thống ChronoVault B2B được nghiên cứu và xây dựng nhằm giải quyết bài toán quản trị vận hành kho hàng hóa đồng hồ phân phối sỉ quy mô lớn. Không phục vụ mô hình bán lẻ nhỏ giọt (B2C), toàn bộ quy trình thiết kế bám sát ")
+    r = p_intro.add_run("Hệ thống ChronoVault B2B được nghiên cứu và xây dựng nhằm giải quyết bài toán quản trị vận hành kho hàng hóa đồng hồ phân phối đại lý quy mô lớn. Không phục vụ mô hình bán lẻ nhỏ giọt (B2C), toàn bộ quy trình thiết kế bám sát ")
     r.font.name = "Arial"; r.font.size = Pt(10)
     r_b = p_intro.add_run("4 nguyên lý quản trị bắt buộc:")
     r_b.font.name = "Arial"; r_b.font.size = Pt(10); r_b.font.bold = True
 
     core_pillars = [
-        ("1. Quản lý định danh Serial / Số máy đích danh 100%: ", "Mọi chiếc đồng hồ trong kho đều mang một mã Serial duy nhất do nhà sản xuất khắc chìm. Hệ thống truy vết vòng đời trọn vẹn: Lô hàng nhập NCC -> Vị trí ngăn kệ vật lý -> Đơn hàng sỉ B2B -> Khóa giữ chỗ -> Quét xuất đại lý -> Lịch sử tiếp nhận bảo hành, đổi trả."),
-        ("2. Quản lý ĐVT đa cấp & Quy cách đóng gói sỉ: ", "Hỗ trợ lập chứng từ linh hoạt theo Thùng / Kiện / Hộp / Lô và tự động quy đổi ra Chiếc lẻ theo hệ số chuẩn (Ví dụ: 1 Thùng = 20 Chiếc). Kiểm soát nghiêm ngặt số lượng đặt hàng sỉ tối thiểu (MOQ) theo từng mẫu mã."),
+        ("1. Quản lý định danh Serial / Số máy đích danh 100%: ", "Mọi chiếc đồng hồ trong kho đều mang một mã Serial duy nhất do nhà sản xuất khắc chìm. Hệ thống truy vết vòng đời trọn vẹn: Lô hàng nhập NCC -> Vị trí ngăn kệ vật lý -> Đơn hàng xuất đại lý B2B -> Khóa giữ chỗ -> Quét xuất đại lý -> Lịch sử tiếp nhận bảo hành, đổi trả."),
+        ("2. Quản lý ĐVT đa cấp & Quy cách đóng gói xuất kho: ", "Hỗ trợ lập chứng từ linh hoạt theo Thùng / Kiện / Hộp / Lô và tự động quy đổi ra Chiếc lẻ theo hệ số chuẩn (Ví dụ: 1 Thùng = 20 Chiếc). Kiểm soát nghiêm ngặt số lượng đặt hàng đại lý tối thiểu (MOQ) theo từng mẫu mã."),
         ("3. Cơ chế tính Giá vốn Đích danh (Specific Identification): ", "Không áp dụng phương pháp bình quân giản đơn cho tài sản giá trị cao. Mỗi mã Serial mang một giá vốn đích danh riêng biệt, được cộng dồn chi phí vận chuyển quốc tế, thuế quan và phí bảo hiểm phân bổ, đảm bảo tính toán lợi nhuận gộp chính xác 100%."),
         ("4. Chu trình Quản lý Công nợ B2B khép kín: ", "Tích hợp Phiếu Chi thanh toán tiền hàng NCC và Phiếu Thu tiền hàng/tiền cọc đại lý. Tự động kiểm tra hạn mức công nợ tối đa (Credit Limit) và kỳ hạn nợ (Net 15, Net 30), ngăn chặn duyệt đơn xuất khi đại lý có nợ quá hạn.")
     ]
@@ -239,7 +239,7 @@ def generate_report():
         ("Quản trị hệ thống", "Quản trị tài khoản người dùng, ma trận phân quyền RBAC, cấu hình tham số hệ thống, giám sát nhật ký truy vết Audit Log, sao lưu và bảo mật dữ liệu.", "Không mặc định can thiệp hoặc tự duyệt các chứng từ nghiệp vụ nhập/xuất, thu/chi hay công nợ."),
         ("Chủ cửa hàng", "Giám sát toàn diện hoạt động vận hành qua Dashboard KPI thời gian thực; phê duyệt các ngoại lệ nghiệp vụ vượt ngưỡng (chi phí lô hàng lớn, vượt hạn mức tín dụng đại lý, cân bằng sai lệch kiểm kê giá trị cao).", "Không trực tiếp cấu hình kỹ thuật tài khoản/phân quyền và không xử lý các thao tác nhập xuất, kiểm đếm vật lý thường ngày."),
         ("Thủ kho (quản lý điều hành)", "Quản lý điều hành toàn diện kho hàng; quản trị sơ đồ vị trí kệ (Bin Location); tổ chức điều phối xuất/nhập; bảo quản an toàn hàng hóa; xác nhận giao nhận vật lý; chủ trì kiểm kê và duyệt cân bằng chênh lệch kho trong hạn mức.", "Không lập chứng từ thu chi tài chính, không can thiệp chính sách giá/hạn mức tín dụng và không tự duyệt sai lệch kiểm kê vượt ngưỡng thẩm quyền."),
-        ("Nhân viên nhập - xuất kho", "Trực tiếp tác nghiệp hiện trường: lập phiếu nhập kho từ đơn PO, quét nạp dải Serial; lập đơn bán sỉ nháp, soạn hàng từ kệ, quét Serial đóng kiện xuất kho; tiếp nhận xử lý đổi trả và bảo hành.", "Không có quyền phê duyệt thu/chi tài chính, không tự duyệt đơn vượt hạn mức nợ và không tự ý điều chỉnh tồn kho."),
+        ("Nhân viên nhập - xuất kho", "Trực tiếp tác nghiệp hiện trường: lập phiếu nhập kho từ đơn PO, quét nạp dải Serial; lập lệnh xuất kho đại lý nháp, soạn hàng từ kệ, quét Serial đóng kiện xuất kho; tiếp nhận xử lý đổi trả và bảo hành.", "Không có quyền phê duyệt thu/chi tài chính, không tự duyệt đơn vượt hạn mức nợ và không tự ý điều chỉnh tồn kho."),
         ("Kế toán", "Kiểm soát dòng tiền và số liệu tài chính; phân bổ chi phí phụ trợ vào giá vốn đích danh của từng Serial; thẩm định hạn mức tín dụng; lập phiếu thu (cọc/tiền hàng), phiếu chi (NCC); đối soát chứng từ và Sổ Thẻ kho.", "Không thay thế Thủ kho (quản lý điều hành) trong việc xác nhận giao nhận vật lý; mọi ngoại lệ tài chính vượt ngưỡng bắt buộc phải trình Chủ cửa hàng phê duyệt.")
     ]
 
@@ -294,10 +294,10 @@ def generate_report():
         run.font.name = "Arial"; run.font.size = Pt(8.5); run.font.bold = True; run.font.color.rgb = RGBColor(255, 255, 255)
 
     tv_data = [
-        ("Module 1", "Quản lý Hàng hóa, Serial & ĐVT", "Thành viên 1", "Master thương hiệu, động cơ, mặt kính, dây đeo; cấu hình ĐVT quy đổi; MOQ; bảng giá sỉ; tra cứu vòng đời Serial."),
+        ("Module 1", "Quản lý Hàng hóa, Serial & ĐVT", "Thành viên 1", "Master thương hiệu, động cơ, mặt kính, dây đeo; cấu hình ĐVT quy đổi; MOQ; bảng giá phân phối đại lý; tra cứu vòng đời Serial."),
         ("Module 2", "Quản trị Hệ thống & Phân quyền", "Thành viên 1", "Quản lý tài khoản và ma trận RBAC cho 5 vai trò: Quản trị hệ thống, Chủ cửa hàng, Thủ kho (quản lý điều hành), Nhân viên nhập - xuất kho và Kế toán; thu hồi Token, Audit Log."),
         ("Module 3", "Đối tác NCC, Nhập kho & Chi phí", "Thành viên 2", "Hồ sơ NCC, đơn PO, lập phiếu nhập kho, quy đổi ĐVT, nạp Serial (quét/Excel), phân bổ chi phí lô vào giá vốn, trả hàng lỗi NCC, phiếu chi."),
-        ("Module 4", "Khách sỉ, Bán sỉ & Xuất kho", "Thành viên 3", "Hồ sơ đại lý, phân hạng VIP/Bạc/Đồng, hạn mức nợ, đơn sỉ, thẩm định nợ, duyệt khóa giữ chỗ (Reserved), quét Serial xuất kho, phiếu thu."),
+        ("Module 4", "Đối Tác Đại Lý & Quản Lý Xuất Kho", "Thành viên 3", "Hồ sơ đại lý, phân hạng VIP/Bạc/Đồng, hạn mức nợ, lệnh xuất đại lý, thẩm định nợ, duyệt khóa giữ chỗ (Reserved), quét Serial xuất kho, phiếu thu."),
         ("Module 5", "Tồn kho, Vị trí Kệ & Kiểm kê", "Thành viên 4", "Giám sát tồn kho 3 trạng thái (Mới/Trưng bày/Lỗi), sơ đồ vị trí kệ (Bin), điều chuyển nội bộ, cảnh báo Min/Max, kiểm kê đối soát, Sổ Thẻ kho."),
         ("Module 6", "Báo cáo, Dòng tiền & Dashboard", "Thành viên 5", "KPI Cards thời gian thực, biểu đồ doanh thu/chi phí, sổ chi tiết công nợ 2 chiều, báo cáo dòng tiền thực, phân tích Dead Stock, lợi nhuận gộp B2B.")
     ]
@@ -343,7 +343,7 @@ def generate_report():
 
     settings_list = [
         ("Múi giờ & Đồng bộ hệ thống: ", "Thiết lập múi giờ UTC+7 (Asia/Ho_Chi_Minh), tự động đồng bộ thời gian máy chủ phục vụ ghi nhận thời điểm biến động xuất nhập và Audit Log."),
-        ("Quy cách ĐVT cơ sở và ĐVT sỉ: ", "Đơn vị tính cơ sở là Chiếc / Cái. Đơn vị tính bán sỉ gồm Hộp (5 chiếc), Thùng carton (20 chiếc), Kiện (50 chiếc), Lô (100 chiếc) với hệ số quy đổi linh hoạt theo từng SKU."),
+        ("Quy cách ĐVT cơ sở và ĐVT đóng gói: ", "Đơn vị tính cơ sở là Chiếc / Cái. Đơn vị tính đóng gói xuất kho gồm Hộp (5 chiếc), Thùng carton (20 chiếc), Kiện (50 chiếc), Lô (100 chiếc) với hệ số quy đổi linh hoạt theo từng SKU."),
         ("Danh mục phân loại kỹ thuật: ", "Động cơ: Pin (Quartz), Cơ tự động (Automatic), Năng lượng ánh sáng (Solar/Eco-Drive). Kính: Sapphire chống trầy, Khoáng cường lực (Mineral), Hardlex. Dây: Thép 316L, Da thật, Cao su, NATO."),
         ("Cấu trúc địa chỉ ngăn kệ vật lý: ", "Phân khu (Khu A, Khu B, Khu Hàng Lỗi) -> Dãy kệ (01 - 10) -> Tầng kệ (1 - 4) -> Ngăn/Hộc chứa (Bin)."),
         ("Phương pháp tính giá vốn: ", "Áp dụng phương pháp Đích danh theo Serial Number (Specific Identification Method) cho 100% đồng hồ có quản lý Serial.")
@@ -381,8 +381,8 @@ def generate_report():
         run.font.name = "Arial"; run.font.size = Pt(8.5); run.font.bold = True; run.font.color.rgb = RGBColor(255, 255, 255)
 
     b2b_data = [
-        ("Hạng VIP", "30.00%", "1.000.000.000 VNĐ", "Net 30 (30 ngày)", "Doanh số sỉ >= 2 tỷ VNĐ/quý"),
-        ("Hạng Bạc (Cấp 1)", "25.00%", "500.000.000 VNĐ", "Net 15 (15 ngày)", "Doanh số sỉ >= 500 triệu VNĐ/quý"),
+        ("Hạng VIP", "30.00%", "1.000.000.000 VNĐ", "Net 30 (30 ngày)", "Doanh số xuất kho đại lý >= 2 tỷ VNĐ/quý"),
+        ("Hạng Bạc (Cấp 1)", "25.00%", "500.000.000 VNĐ", "Net 15 (15 ngày)", "Doanh số xuất kho đại lý >= 500 triệu VNĐ/quý"),
         ("Hạng Đồng (Cấp 2)", "20.00%", "100.000.000 VNĐ", "Thanh toán ngay", "Đại lý mới tham gia mạng lưới")
     ]
     for row_idx, rvals in enumerate(b2b_data, start=1):
@@ -408,7 +408,7 @@ def generate_report():
 
     doc.add_paragraph().paragraph_format.space_after = Pt(4)
     add_callout(
-        "Quy tắc chặn tín dụng tự động: Nếu đại lý có bất kỳ hóa đơn nào quá thời hạn quy định (Net 15 / Net 30) hoặc số dư nợ mới vượt quá hạn mức công nợ tối đa, hệ thống sẽ tự động khóa nút duyệt đơn sỉ, bắt buộc đại lý thanh toán nợ cũ hoặc nộp tiền đặt cọc.",
+        "Quy tắc chặn tín dụng tự động: Nếu đại lý có bất kỳ hóa đơn nào quá thời hạn quy định (Net 15 / Net 30) hoặc số dư nợ mới vượt quá hạn mức công nợ tối đa, hệ thống sẽ tự động khóa nút duyệt lệnh xuất đại lý, bắt buộc đại lý thanh toán nợ cũ hoặc nộp tiền đặt cọc.",
         bold_prefix="QUY TẮC RỦI RO CÔNG NỢ B2B:"
     )
 
@@ -440,16 +440,16 @@ def generate_report():
 
     rbac_data = [
         ("Danh mục Master SKU, Thương hiệu, ĐVT", "Quản lý cấu hình", "Xem", "Chỉ xem", "Chỉ xem", "Chỉ xem"),
-        ("Cấu hình Bảng giá sỉ & Giá vốn đích danh", "Không mặc định", "Xem", "Không có quyền", "Chỉ xem giá áp dụng", "Phân bổ / đối soát"),
+        ("Cấu hình Bảng giá phân phối đại lý & Giá vốn đích danh", "Không mặc định", "Xem", "Không có quyền", "Chỉ xem giá áp dụng", "Phân bổ / đối soát"),
         ("Quản trị Tài khoản, Role & Audit Log", "Toàn quyền", "Xem log hoạt động", "Không có quyền", "Không có quyền", "Xem log tài chính"),
         ("Hồ sơ Nhà cung cấp & Đơn đặt mua PO", "Cấu hình hệ thống", "Xem / duyệt ngoại lệ", "Xác nhận giao nhận", "Lập đề nghị / PO", "Thẩm định chứng từ"),
         ("Khởi tạo phiếu nhập & Quét/Nạp Serial", "Không thao tác thường ngày", "Giám sát", "Xác nhận nhận hàng", "Lập phiếu & quét Serial", "Kiểm tra số liệu"),
         ("Phân bổ chi phí lô hàng & Duyệt nhập kho", "Không mặc định", "Duyệt ngoại lệ vượt ngưỡng", "Xác nhận vật lý", "Không duyệt chi phí", "Phân bổ / đối soát"),
         ("Phiếu Chi thanh toán nợ Nhà cung cấp", "Không mặc định", "Duyệt vượt ngưỡng", "Không có quyền", "Không có quyền", "Lập phiếu / đối soát"),
         ("Hồ sơ Đại lý, Cấp bậc & Hạn mức nợ", "Không quản trị thương mại", "Duyệt hạn mức / ngoại lệ", "Không xem công nợ", "Cập nhật hồ sơ giao dịch", "Thẩm định hạn mức"),
-        ("Khởi tạo Đơn bán sỉ & Duyệt giữ chỗ", "Không thao tác thường ngày", "Duyệt ngoại lệ tín dụng", "Xác nhận khả năng giao", "Lập đơn nháp / đề nghị giữ chỗ", "Thẩm định công nợ"),
+        ("Khởi tạo Lệnh xuất kho đại lý & Duyệt giữ chỗ", "Không thao tác thường ngày", "Duyệt ngoại lệ tín dụng", "Xác nhận khả năng giao", "Lập đơn nháp / đề nghị giữ chỗ", "Thẩm định công nợ"),
         ("Quét Serial đóng kiện & Thực xuất kho sỉ", "Không thao tác thường ngày", "Giám sát", "Xác nhận xuất vật lý", "Soạn hàng / quét Serial", "Đối soát hóa đơn"),
-        ("Phiếu Thu tiền bán sỉ & Thu nợ đại lý", "Không mặc định", "Xem báo cáo", "Không có quyền", "Không có quyền", "Lập phiếu thu / đối soát"),
+        ("Phiếu Thu hồi công nợ đại lý & Thu nợ đại lý", "Không mặc định", "Xem báo cáo", "Không có quyền", "Không có quyền", "Lập phiếu thu / đối soát"),
         ("Sơ đồ Kệ & Điều chuyển nội bộ kho", "Không thao tác thường ngày", "Xem", "Quản lý vị trí / điều chuyển", "Đề nghị điều chuyển", "Xem vị trí"),
         ("Kiểm kê kho & Duyệt cân bằng thừa/thiếu", "Quản lý cấu hình", "Duyệt vượt ngưỡng", "Kiểm đếm / cân bằng trong ngưỡng", "Hỗ trợ quét / đếm", "Đối soát chứng từ"),
         ("Dashboard KPI, Báo cáo Lợi nhuận & Dòng tiền", "Xem log hệ thống", "Toàn quyền xem / xuất", "Xem tồn kho", "Xem tiến độ giao dịch", "Báo cáo tài chính")
@@ -505,13 +505,13 @@ def generate_report():
         },
         {
             "code": "UC-02",
-            "name": "Tạo Đơn Bán Sỉ & Duyệt Khóa Giữ Chỗ Tồn Kho (Reserved Allocation)",
+            "name": "Tạo Đơn Xuất Kho Đại Lý & Duyệt Khóa Giữ Chỗ Tồn Kho (Reserved Allocation)",
             "actors": "Nhân viên nhập - xuất kho (Lập đơn nháp và xử lý xuất), Kế toán (Thẩm định công nợ / tiền cọc), Chủ cửa hàng (Duyệt ngoại lệ tín dụng), Thủ kho (quản lý điều hành) (Xác nhận giao nhận)",
             "pre": "Đại lý B2B có tài khoản kích hoạt; Sản phẩm đồng hồ có tồn kho khả dụng > 0.",
             "steps": [
-                "1. Nhân viên nhập - xuất kho chọn đại lý đặt hàng và lập đơn bán sỉ nháp theo Thùng hoặc Chiếc lẻ.",
+                "1. Nhân viên nhập - xuất kho chọn đại lý đặt hàng và lập lệnh xuất kho đại lý nháp theo Thùng hoặc Chiếc lẻ.",
                 "2. Hệ thống kiểm tra điều kiện sỉ: Số lượng đặt >= MOQ quy định (5 - 10 chiếc/mẫu); Số lượng đặt <= Tồn kho khả dụng (Tồn khả dụng = Tồn thực tế - Tồn đang giữ chỗ).",
-                "3. Hệ thống tự động áp dụng giá sỉ và tỷ lệ chiết khấu theo cấp đại lý (VIP 30%, Bạc 25%, Đồng 20%) để tính Tổng giá trị đơn hàng.",
+                "3. Hệ thống tự động áp dụng giá phân phối đại lý và tỷ lệ chiết khấu theo cấp đại lý (VIP 30%, Bạc 25%, Đồng 20%) để tính Tổng giá trị đơn hàng.",
                 "4. Hệ thống thẩm định hạn mức tín dụng: Dư nợ hiện tại + Giá trị đơn mới - Tiền cọc <= Hạn mức nợ cho phép, đồng thời kiểm tra đại lý không có hóa đơn quá hạn Net 15 / Net 30.",
                 "5. Kế toán xác nhận hạn mức còn khả dụng; đơn được trình duyệt theo quy trình. Nếu vượt hạn mức, chỉ Chủ cửa hàng mới được duyệt ngoại lệ có ghi lý do. Sau khi duyệt, hệ thống tăng so_luong_giu_cho và giảm so_luong_kha_dung tại bảng tong_hop_ton_kho."
             ],
@@ -519,11 +519,11 @@ def generate_report():
         },
         {
             "code": "UC-03",
-            "name": "Quét Serial Đóng Kiện & Thực Xuất Kho Bán Sỉ",
+            "name": "Quét Serial Đóng Kiện & Thực Xuất Kho Xuất Kho Đại Lý",
             "actors": "Nhân viên nhập - xuất kho (Soạn hàng, quét Serial và lập phiếu xuất), Thủ kho (quản lý điều hành) (Xác nhận giao nhận vật lý)",
-            "pre": "Đơn bán sỉ đã ở trạng thái DA_DUYET (đã giữ chỗ tồn kho thành công).",
+            "pre": "Lệnh xuất kho đại lý đã ở trạng thái DA_DUYET (đã giữ chỗ tồn kho thành công).",
             "steps": [
-                "1. Nhân viên nhập - xuất kho mở đơn bán sỉ đã duyệt, tạo Phiếu xuất kho đóng hàng (phieu_xuat_kho).",
+                "1. Nhân viên nhập - xuất kho mở lệnh xuất kho đại lý đã duyệt, tạo Phiếu xuất kho đóng hàng (phieu_xuat_kho).",
                 "2. Nhân viên nhập - xuất kho đến vị trí ngăn kệ, quét từng mã Serial để đóng vào kiện hàng.",
                 "3. Hệ thống đối soát thời gian thực: Serial quét vào phải thuộc đúng mã SKU trên đơn; Serial phải đang ở trạng thái HANG_MOI và TRONG_KHO; không bị quét trùng trong cùng kiện.",
                 "4. Khi số lượng Serial quét đủ 100% số lượng theo đơn, hệ thống bật sáng nút 'Xác nhận xuất kho'.",
@@ -620,7 +620,7 @@ def generate_report():
         ("2", "nguoi_dung", "ma_nguoi_dung", "FK ma_vai_tro, UNIQUE ten_dang_nhap, email", "Tài khoản nhân viên, mật khẩu băm Bcrypt/Argon2"),
         ("3", "thuong_hieu", "ma_thuong_hieu", "Tên hãng, xuất xứ, cờ đang phân phối", "Danh mục hãng đồng hồ: Rolex, Seiko, Casio..."),
         ("4", "san_pham", "ma_san_pham", "FK ma_thuong_hieu, UNIQUE ma_vach", "Hồ sơ kỹ thuật Master SKU, động cơ, kính, dây"),
-        ("5", "quy_doi_don_vi", "ma_quy_doi", "FK ma_san_pham (1 Thùng = N Chiếc)", "Cấu hình hệ số đóng gói quy đổi bán sỉ ra chiếc lẻ"),
+        ("5", "quy_doi_don_vi", "ma_quy_doi", "FK ma_san_pham (1 Thùng = N Chiếc)", "Cấu hình hệ số đóng gói quy đổi xuất kho đại lý ra chiếc lẻ"),
         ("6", "vi_tri_ngan_ke", "ma_ngan_ke", "Phân khu, Dãy, Tầng, Hộc (Bin)", "Sơ đồ địa chỉ vật lý lưu trữ trong kho"),
         ("7", "tong_hop_ton_kho", "ma_tong_hop", "FK ma_san_pham, UNIQUE(SP, TrangThai)", "Quản lý tồn kho 3 trạng thái: Mới, Trưng bày, Lỗi"),
         ("8", "nha_cung_cap", "ma_nha_cung_cap", "UNIQUE ma_so_thue, du_no_hien_tai", "Hồ sơ NCC đồng hồ và theo dõi công nợ phải trả"),
@@ -630,7 +630,7 @@ def generate_report():
         ("12", "phieu_nhap_kho", "ma_phieu_nhap", "FK ma_don_mua_po, FK ma_nha_cung_cap", "Chứng từ nghiệm thu nhập kho hàng hóa chính hãng"),
         ("13", "chi_tiet_phieu_nhap", "ma_chi_tiet_nhap", "FK ma_phieu_nhap, FK ma_san_pham", "Chi tiết số lượng và phân bổ chi phí lô vào từng chiếc"),
         ("14", "serial_san_pham", "so_serial", "FK san_pham, FK phieu_nhap, FK ngan_ke", "Bảng lõi: Định danh từng Serial, giá vốn đích danh"),
-        ("15", "don_ban_si", "ma_don_ban_si", "FK ma_dai_ly, chiết khấu, tiền cọc", "Đơn bán sỉ, thẩm định công nợ và duyệt giữ chỗ"),
+        ("15", "don_ban_si", "ma_don_ban_si", "FK ma_dai_ly, chiết khấu, tiền cọc", "Lệnh xuất kho đại lý, thẩm định công nợ và duyệt giữ chỗ"),
         ("16", "chi_tiet_don_ban_si", "ma_chi_tiet_don_si", "FK ma_don_ban_si, FK ma_san_pham", "Chi tiết SKU và số lượng chiếc khóa giữ chỗ"),
         ("17", "phieu_xuat_kho", "ma_phieu_xuat", "FK ma_don_ban_si, FK ma_dai_ly", "Phiếu xuất kho kiêm biên bản giao nhận sỉ B2B A4"),
         ("18", "chi_tiet_serial_xuat", "ma_chi_tiet_serial_xuat", "FK phieu_xuat, FK so_serial", "Danh sách Serial thực tế quét đóng kiện xuất bán"),
@@ -681,7 +681,7 @@ def generate_report():
         r.font.name = "Arial"; r.font.size = Pt(10.5); r.font.bold = True; r.font.color.rgb = RGBColor(30, 41, 59)
 
     sm_text = (
-        "Luồng chuẩn xuất bán: Nhập kho (PN) -> TRONG_KHO (HANG_MOI) -> Khóa giữ chỗ (Duyệt đơn sỉ) -> Quét xuất kho (PX) -> DA_BAN.\n\n"
+        "Luồng chuẩn xuất bán: Nhập kho (PN) -> TRONG_KHO (HANG_MOI) -> Khóa giữ chỗ (Duyệt lệnh xuất đại lý) -> Quét xuất kho (PX) -> DA_BAN.\n\n"
         "Luồng điều chuyển nội bộ: TRONG_KHO (HANG_MOI) -> TRONG_KHO (HANG_TRUNG_BAY) -> Xuất bán thanh lý (DA_BAN).\n\n"
         "Luồng xử lý lỗi kỹ thuật: TRONG_KHO (HANG_MOI / HANG_TRUNG_BAY) hoặc Đại lý bảo hành trả về -> TRONG_KHO (HANG_LOI) -> Xuất trả NCC (DA_TRA_NCC) hoặc Xuất tiêu hủy (DA_TIEU_HUY)."
     )
@@ -699,7 +699,7 @@ def generate_report():
     r.font.name = "Arial"; r.font.size = Pt(9.5)
 
     sql_steps = [
-        ("Tại bước Duyệt đơn bán sỉ: ", "SELECT so_luong_kha_dung FROM tong_hop_ton_kho WHERE ma_san_pham = @sku AND trang_thai_chat_luong = 'HANG_MOI' FOR UPDATE;\nNếu khả dụng >= số lượng đặt, tăng ngay số lượng giữ chỗ và giảm tồn khả dụng trong cùng 1 Transaction."),
+        ("Tại bước Duyệt lệnh xuất kho đại lý: ", "SELECT so_luong_kha_dung FROM tong_hop_ton_kho WHERE ma_san_pham = @sku AND trang_thai_chat_luong = 'HANG_MOI' FOR UPDATE;\nNếu khả dụng >= số lượng đặt, tăng ngay số lượng giữ chỗ và giảm tồn khả dụng trong cùng 1 Transaction."),
         ("Tại bước Quét Serial xuất kho: ", "SELECT so_serial, trang_thai_vong_doi FROM serial_san_pham WHERE so_serial = @serial FOR UPDATE;\nNếu trạng thái != 'TRONG_KHO', lập tức Rollback giao dịch và báo lỗi, triệt tiêu nguy cơ xuất âm kho hoặc bán trùng 1 chiếc đồng hồ cho 2 đơn khác nhau.")
     ]
     for stitle, scontent in sql_steps:
@@ -717,7 +717,7 @@ def generate_report():
         r.font.name = "Arial"; r.font.size = Pt(10.5); r.font.bold = True; r.font.color.rgb = RGBColor(30, 41, 59)
 
     fin_text = (
-        "• Doanh thu thuần đơn sỉ = ∑ [Đơn giá sỉ niêm yết × (1 - Tỷ lệ chiết khấu đại lý)]\n"
+        "• Doanh thu thuần lệnh xuất đại lý = ∑ [Đơn giá phân phối đại lý niêm yết × (1 - Tỷ lệ chiết khấu đại lý)]\n"
         "• Tổng giá vốn hàng bán (COGS) = ∑ [Giá vốn đích danh(Serial_i)]\n"
         "• Lợi nhuận gộp B2B = Doanh thu thuần - Tổng COGS - Chi phí vận chuyển kho chịu\n\n"
         "Mô hình đảm bảo tính minh bạch tài chính tuyệt đối, bóc tách chính xác tỷ suất lợi nhuận trên từng chiếc đồng hồ và từng đại lý phân phối trong hệ thống."

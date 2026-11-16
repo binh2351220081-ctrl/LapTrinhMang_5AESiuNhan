@@ -22,6 +22,24 @@
             android:paddingTop="36dp"
             android:paddingBottom="20dp">
 
+            <TextView
+                android:id="@+id/btnBackDashboard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/bg_search_input"
+                android:backgroundTint="#334155"
+                android:clickable="true"
+                android:focusable="true"
+                android:paddingStart="12dp"
+                android:paddingTop="7dp"
+                android:paddingEnd="12dp"
+                android:paddingBottom="7dp"
+                android:text="← Dashboard TV5"
+                android:textColor="@color/white"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
             <!-- User Status & Admin Toolbar -->
             <LinearLayout
                 android:layout_width="match_parent"

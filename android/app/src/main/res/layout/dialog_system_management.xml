@@ -217,7 +217,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="3dp"
-                        android:text="• Trách nhiệm: Quản lý sơ đồ kệ Bin/Rack, xác nhận giao nhận vật lý, chủ trì kiểm kê &amp; cân bằng trong hạn mức.\n• Ranh giới: Không lập phiếu thu/chi tiền, không can thiệp giá bán và hạn mức nợ sỉ."
+                        android:text="• Trách nhiệm: Quản lý sơ đồ kệ Bin/Rack, xác nhận giao nhận vật lý, chủ trì kiểm kê &amp; cân bằng trong hạn mức.\n• Ranh giới: Không lập phiếu thu/chi tiền, không can thiệp đơn giá và hạn mức nợ đại lý."
                         android:textColor="@color/text_secondary"
                         android:textSize="11sp" />
                 </LinearLayout>
@@ -252,7 +252,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="3dp"
-                        android:text="• Trách nhiệm: Tác nghiệp tiền tuyến: quét Barcode nạp Serial nhập kho, soạn hàng, đóng gói xuất bán sỉ B2B.\n• Ranh giới: Không có quyền duyệt thu/chi, không tự duyệt đơn vượt hạn mức nợ."
+                        android:text="• Trách nhiệm: Tác nghiệp tiền tuyến: quét Barcode nạp Serial nhập kho, soạn hàng, đóng gói xuất kho phân phối đại lý B2B.\n• Ranh giới: Không có quyền duyệt thu/chi, không tự duyệt lệnh xuất vượt hạn mức nợ."
                         android:textColor="@color/text_secondary"
                         android:textSize="11sp" />
                 </LinearLayout>

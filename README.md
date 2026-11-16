@@ -12,7 +12,7 @@
 2. **Nguyễn Đắc Quân** & **Tô Đức Thảo** — **📦 Nhân Viên Nhập - Xuất Kho (`OPERATIONS_STAFF`)**
    - **Phân hệ phụ trách (TV2 & TV3):** 
      - *TV2 (Quân):* Đối tác Nhà cung cấp & Quản lý Nhập kho (Nhánh `feature/inbound`).
-     - *TV3 (Thảo):* Khách sỉ & Phân phối xuất hàng B2B (Nhánh `feature/outbound`).
+     - *TV3 (Thảo):* Đối tác đại lý & Phân phối xuất hàng B2B (Nhánh `feature/outbound`).
      - *Nghiệp vụ tiền tuyến:* Cầm máy quét Barcode Serial nạp kho, soạn hàng, đóng kiện xuất bến.
    - **Tài khoản Demo:** `@quan_thao_ops` (Mật khẩu: `123`)
 
@@ -38,17 +38,17 @@ Hệ thống áp dụng triệt để nguyên tắc **Kiểm soát bốn mắt (
 | :--- | :--- | :--- | :--- |
 | **1. Quản trị hệ thống** 🛡️ | `SYSTEM_ADMIN` | Cấu hình tham số, cấp tài khoản, thiết lập ma trận RBAC, giám sát Audit Log. | Không thao tác hoặc phê duyệt các chứng từ nhập/xuất kho, phiếu thu/chi hay công nợ. |
 | **2. Chủ cửa hàng** 👑 | `STORE_OWNER` | Giám sát KPI doanh thu, dòng tiền; phê duyệt ngoại lệ công nợ vượt hạn mức, chi phí lớn. | Không can thiệp cấu hình kỹ thuật, không làm các thao tác nhập xuất thường nhật. |
-| **3. Thủ kho điều hành** 🏢 | `WAREHOUSE_MANAGER` | Quản lý sơ đồ kệ Bin/Rack, xác nhận giao nhận vật lý, chủ trì kiểm kê & cân bằng kho. | Không lập chứng từ thu/chi tiền, không can thiệp giá bán & hạn mức nợ sỉ. |
-| **4. NV Nhập - Xuất kho** 📦 | `OPERATIONS_STAFF` | Tác nghiệp quét Barcode Serial nạp kho, soạn hàng, đóng kiện xuất bán sỉ B2B. | Không duyệt thu/chi tiền, không tự duyệt đơn bán sỉ vượt hạn mức nợ. |
+| **3. Thủ kho điều hành** 🏢 | `WAREHOUSE_MANAGER` | Quản lý sơ đồ kệ Bin/Rack, xác nhận giao nhận vật lý, chủ trì kiểm kê & cân bằng kho. | Không lập chứng từ thu/chi tiền, không can thiệp giá bán & hạn mức nợ đại lý. |
+| **4. NV Nhập - Xuất kho** 📦 | `OPERATIONS_STAFF` | Tác nghiệp quét Barcode Serial nạp kho, soạn hàng, đóng kiện xuất phân phối đại lý B2B. | Không duyệt thu/chi tiền, không tự duyệt lệnh xuất kho đại lý vượt hạn mức nợ. |
 | **5. Kế toán kho** 💰 | `ACCOUNTANT` | Phân bổ giá vốn đích danh, kiểm soát công nợ 2 chiều, lập phiếu thu/chi tiền. | Không ký nhận bàn giao vật lý thay Thủ kho, không tự duyệt chi vượt ngưỡng. |
 
 ---
 
 ## 📖 3. Giới thiệu đề tài & 4 Nguyên lý quản trị cốt lõi
 
-Hệ thống phần mềm quản lý kho chuyên biệt cho mô hình **B2B Wholesale Distribution** (Phân phối bán sỉ cho các chuỗi đại lý cửa hàng đồng hồ xa xỉ cao cấp như Rolex, Omega, Patek Philippe, Audemars Piguet...).
+Hệ thống phần mềm quản lý kho chuyên biệt cho mô hình **B2B Wholesale Distribution** (Phân phối xuất kho đại lý cho các chuỗi đại lý cửa hàng đồng hồ xa xỉ cao cấp như Rolex, Omega, Patek Philippe, Audemars Piguet...).
 
-1. **Quản lý định danh Serial/IMEI 100%:** Mỗi chiếc đồng hồ sở hữu duy nhất một mã Serial độc bản. Truy vết xuyên suốt vòng đời 6 bước: *Nhập mới $\rightarrow$ Lưu kho Kệ Bin $\rightarrow$ Khóa giữ chỗ đơn sỉ $\rightarrow$ Đóng gói xuất kho $\rightarrow$ Bàn giao đại lý $\rightarrow$ Bảo hành / Đổi trả*.
+1. **Quản lý định danh Serial/IMEI 100%:** Mỗi chiếc đồng hồ sở hữu duy nhất một mã Serial độc bản. Truy vết xuyên suốt vòng đời 6 bước: *Nhập mới $\rightarrow$ Lưu kho Kệ Bin $\rightarrow$ Khóa giữ chỗ lệnh xuất đại lý $\rightarrow$ Đóng gói xuất kho $\rightarrow$ Bàn giao đại lý $\rightarrow$ Bảo hành / Đổi trả*.
 2. **Quy cách đóng gói đa cấp:** Nhập/xuất theo **Thùng / Kiện** và tự động quy đổi ra **Chiếc lẻ**; kiểm soát số lượng đặt tối thiểu (**MOQ**).
 3. **Giá vốn đích danh (Specific Identification):** Cộng dồn chi phí vận chuyển quốc tế, thuế hải quan, bảo hiểm trực tiếp vào từng mã Serial cụ thể.
 4. **Quản lý công nợ khép kín:** Kiểm soát hạn mức tín dụng (**Credit Limit**) đại lý, đối soát công nợ 2 chiều qua Phiếu Thu / Phiếu Chi.
@@ -77,7 +77,7 @@ Hệ thống phần mềm quản lý kho chuyên biệt cho mô hình **B2B Whol
 ## ✅ 5. Tiến độ hoàn thành phân hệ TV1 (Phan Bá Hải Bình)
 
 Phân hệ TV1 đã được cài đặt và kiểm thử hoàn chỉnh 100% trên máy ảo Pixel 7 Pro (Android 14):
-- [x] **Quản lý Danh mục Hàng hóa:** Danh sách 10 mẫu đồng hồ cao cấp với ảnh minh họa, nhãn thương hiệu, phân cấp đóng gói Thùng/Chiếc, giá niêm yết, giá sỉ B2B.
+- [x] **Quản lý Danh mục Hàng hóa:** Danh sách 10 mẫu đồng hồ cao cấp với ảnh minh họa, nhãn thương hiệu, phân cấp đóng gói Thùng/Chiếc, giá niêm yết, giá phân phối đại lý B2B.
 - [x] **Bộ lọc & Tìm kiếm Real-time:** Tìm kiếm tức thời theo SKU, Model, Thương hiệu, Bộ sưu tập; chip lọc nhanh theo Hãng.
 - [x] **Thêm mới Hàng hóa & Auto Serial:** Form thêm sản phẩm với đầy đủ 12 trường dữ liệu, tự động sinh mã Serial đầu tiên và cập nhật tức thì vào Room Database.
 - [x] **Truy vết Vòng đời Serial (Lifecycle Timeline):** Stepper 6 bước trực quan biểu diễn trạng thái vật lý của chiếc đồng hồ.
@@ -117,7 +117,7 @@ Mỗi thành viên chỉ viết code trong đúng thư mục phân hệ của m�
 - `core/`: **Dùng chung** (Chứa `ChronoVaultDatabase`, Entity, DAO, `RetrofitClient`, `SessionManager`, `SystemEnums`).
 - `product/`: **TV1 (Phan Bá Hải Bình)** - Quản lý Danh mục Hàng hóa & Quản trị Hệ thống.
 - `inbound/`: **TV2 (Nguyễn Đắc Quân)** - Quản lý Đối tác NCC & Nhập kho.
-- `outbound/`: **TV3 (Tô Đức Thảo)** - Quản lý Đại lý sỉ & Xuất hàng B2B.
+- `outbound/`: **TV3 (Tô Đức Thảo)** - Quản lý Đại lý B2B & Xuất hàng B2B.
 - `inventory/`: **TV4 (Võ Công Tâm)** - Quản lý Vị trí kệ Bin/Rack & Kiểm kê kho.
 - `dashboard/`: **TV5 (Trần Công Tú)** - Báo cáo thống kê, Biểu đồ & Dashboard.
 

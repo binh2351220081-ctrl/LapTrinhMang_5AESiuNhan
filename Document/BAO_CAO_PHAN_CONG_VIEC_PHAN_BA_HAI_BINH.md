@@ -1,7 +1,7 @@
 # BÁO CÁO PHÂN TÍCH HỆ THỐNG THÔNG TIN — PHẦN CÔNG VIỆC CỦA PHAN BÁ HẢI BÌNH
 > **Học phần:** Phân Tích Hệ Thống Thông Tin | **Khoa:** Công Nghệ Thông Tin — Đại học Kiến trúc Đà Nẵng (DAU)  
 > **Giảng viên hướng dẫn:** TS. Đặng Hùng Vĩ  
-> **Đề tài:** Hệ Thống Quản Lý Kho & Phân Phối Bán Sỉ Đồng Hồ Cao Cấp B2B (ChronoVault WMS)  
+> **Đề tài:** Hệ Thống Quản Lý Kho & Phân Phối Đồng Hồ Cao Cấp B2B (ChronoVault WMS)  
 > **Sinh viên thực hiện:** Phan Bá Hải Bình (Nhóm trưởng / System Architect / Phụ trách Phân hệ 1)  
 > **Nhóm:** 5 AE Siêu Nhân (Bình, Quân, Thảo, Tâm, Tú)
 
@@ -10,7 +10,7 @@
 ## 1. ĐẶT TÊN ĐỀ TÀI & PHÂN TÍCH BÀI TOÁN
 
 ### 1.1. Tên đề tài đề xuất
-**Hệ Thống Quản Lý Kho & Phân Phối Bán Sỉ Đồng Hồ Cao Cấp B2B (ChronoVault WMS)**
+**Hệ Thống Quản Lý Kho & Phân Phối Đồng Hồ Cao Cấp B2B (ChronoVault WMS)**
 
 ### 1.2. Phân tích 3 thành phần cấu thành tên đề tài:
 - **Loại hình / Hành động:** Hệ thống Quản trị Kho vận đa cấp & Điều phối Chuỗi cung ứng sỉ B2B (Warehouse Management System - WMS).
@@ -20,7 +20,7 @@
 ### 1.3. Bảng 1.1: So sánh ChronoVault WMS với các giải pháp trên thị trường:
 | Tiêu chí so sánh | Phần mềm bán lẻ phổ thông (KiotViet, Sapo) | ERP Quốc tế cao cấp (SAP B1, Oracle NetSuite) | ERP Mã nguồn mở (Odoo WMS) | **Hệ thống ChronoVault WMS (Đề tài)** |
 |:---|:---|:---|:---|:---|
-| **Mô hình mục tiêu** | Bán lẻ B2C / Tạp hóa / POS | Doanh nghiệp sản xuất đa quốc gia | Quản trị doanh nghiệp tổng thể | **Bán sỉ B2B phân phối độc quyền Đồng hồ Xa xỉ** |
+| **Mô hình mục tiêu** | Bán lẻ B2C / Tạp hóa / POS | Doanh nghiệp sản xuất đa quốc gia | Quản trị doanh nghiệp tổng thể | **Phân phối Đại lý B2B phân phối độc quyền Đồng hồ Xa xỉ** |
 | **Quản lý Serial/IMEI** | Tùy chọn (chủ yếu quản lý số lượng tổng) | Hỗ trợ đầy đủ nhưng cấu hình cực kỳ phức tạp | Cần cài thêm module trả phí | **Bắt buộc 100% định danh từng chiếc, chống trùng tuyệt đối** |
 | **Quy đổi ĐVT đa cấp** | Chỉ nhân chia số lượng giản đơn | Hỗ trợ đa cấp UoM | Hỗ trợ UoM | **Nhập Thùng tự động ép quét đủ N mã Serial lẻ bằng Camera** |
 | **Phương pháp Giá vốn** | Bình quân gia quyền / FIFO giản đơn | Bình quân / FIFO / Đích danh | Bình quân gia quyền | **Giá vốn Đích danh cộng dồn chi phí vận chuyển & thuế vào từng Serial** |
@@ -38,7 +38,7 @@
 | **FR-03** | Quản lý Danh mục Đồng hồ Cao cấp | Khai báo và quản lý hồ sơ Master Data từng mẫu đồng hồ xa xỉ: Mã SKU duy nhất, Tên mẫu, Hãng (Rolex, Omega, Patek...), Bộ sưu tập, Loại máy (Automatic, Quartz, Solar), Chất liệu vỏ (Vàng 18K, Thép, Titanium), Mặt kính Sapphire, Độ chống nước, Upload ảnh sản phẩm. | **Cao** | Store Owner / System Admin |
 | **FR-04** | Quản lý ĐVT Đa cấp & Tỷ lệ Quy đổi | Thiết lập cấu trúc Đơn vị tính 2 cấp bắt buộc: ĐVT Cơ sở ("Chiếc") và ĐVT Đóng gói ("Thùng" hoặc "Hộp"). Lưu trữ tỷ lệ quy đổi `conversionRate` (1 Thùng = N Chiếc) làm căn cứ tự động cho phân hệ Nhập kho (TV2) và Xuất kho (TV3). | **Cao** | Warehouse Manager |
 | **FR-05** | Định mức Tồn kho & Cảnh báo an toàn | Thiết lập mức tồn kho tối thiểu (`minStockAlert`) và tối đa (`maxStockAlert`) cho từng mẫu đồng hồ. Hiển thị cảnh báo trực quan màu vàng/đỏ khi tồn khả dụng chạm ngưỡng an toàn. | **Trung bình** | Store Owner / Quản lý kho |
-| *FR-06 → FR-20* | *[Các phân hệ của TV2, TV3, TV4, TV5]* | *Bao gồm các yêu cầu chức năng về Nhập kho NCC (TV2 Quân), Phân phối Bán sỉ & Khóa giữ chỗ (TV3 Thảo), Ma trận Kệ Bin & Kiểm kê (TV4 Tâm), Executive Dashboard & 9 Báo cáo (TV5 Tú).* | *Cao* | *Nhóm 5 AE Siêu Nhân* |
+| *FR-06 → FR-20* | *[Các phân hệ của TV2, TV3, TV4, TV5]* | *Bao gồm các yêu cầu chức năng về Đối tác NCC & Nhập kho (TV2 Quân), Đối tác Đại lý & Quản lý Xuất kho (TV3 Thảo), Ma trận Kệ Bin & Kiểm kê (TV4 Tâm), Executive Dashboard & 9 Báo cáo (TV5 Tú).* | *Cao* | *Nhóm 5 AE Siêu Nhân* |
 
 ---
 
@@ -56,7 +56,7 @@
 ### 3.2. Bảng 5 Phân hệ của Hệ thống:
 - **MOD-01: Quản trị Hệ thống & Danh mục Luxury Horology (Phan Bá Hải Bình phụ trách):** Quản lý bảo mật, xác thực người dùng, phân quyền RBAC 5 Roles, danh mục thông số đồng hồ xa xỉ, thiết lập ĐVT 2 cấp và cấu trúc CSDL Room Core.
 - **MOD-02: Quản lý Đối tác NCC & Nhập kho Quy đổi ĐVT (Nguyễn Đắc Quân phụ trách)**
-- **MOD-03: Quản lý Đại lý B2B & Phân phối Xuất kho (Tô Đức Thảo phụ trách)**
+- **MOD-03: Đối Tác Đại Lý & Quản Lý Xuất Kho (Tô Đức Thảo phụ trách)**
 - **MOD-04: Quản trị Tồn kho Nội bộ & Kiểm kê Kệ hàng (Võ Công Tâm phụ trách)**
 - **MOD-05: Executive Dashboard & Hệ thống 9 Báo cáo (Trần Công Tú phụ trách)**
 
@@ -80,8 +80,8 @@ MOD-01: Phân hệ Quản trị Hệ thống & Danh mục Luxury Horology (Phan 
 ### 4.2. Bảng Mô tả Module IPO: MOD-01-02 (Khai báo Sản phẩm & Tỷ lệ Quy đổi ĐVT)
 | Hạng mục | Nội dung chi tiết |
 |:---|:---|
-| **Input** | • Dữ liệu đầu vào: Mã SKU, Tên mẫu mã, Hãng, Bộ sưu tập, Loại máy, Chất liệu vỏ, Đường kính (mm), Kháng nước (ATM), Đơn giá sỉ, ĐVT Cơ sở ('Chiếc'), ĐVT Đóng gói ('Thùng'), Hệ số quy đổi (`conversionRate`), Ngưỡng tồn Min/Max, Ảnh mẫu.<br>• Nguồn dữ liệu: Form nhập `AddEditProductActivity`.<br>• Điều kiện tiên quyết: Đăng nhập với quyền `SYSTEM_ADMIN` hoặc `STORE_OWNER`. |
-| **Process** | 1. Kiểm tra tính hợp lệ dữ liệu (SKU không trống, không ký tự đặc biệt, Giá sỉ > 0, Tỷ lệ quy đổi >= 1).<br>2. Kiểm tra tính duy nhất của Mã SKU trong Room Database (chặn trùng hoàn toàn).<br>3. Tải ảnh mẫu đồng hồ, nén và lưu trữ cục bộ.<br>4. Tạo `ProductEntity` và gọi hàm DAO `insertProduct()`.<br>5. Ghi nhật ký kiểm toán hệ thống (Audit Log). |
+| **Input** | • Dữ liệu đầu vào: Mã SKU, Tên mẫu mã, Hãng, Bộ sưu tập, Loại máy, Chất liệu vỏ, Đường kính (mm), Kháng nước (ATM), Đơn giá phân phối đại lý, ĐVT Cơ sở ('Chiếc'), ĐVT Đóng gói ('Thùng'), Hệ số quy đổi (`conversionRate`), Ngưỡng tồn Min/Max, Ảnh mẫu.<br>• Nguồn dữ liệu: Form nhập `AddEditProductActivity`.<br>• Điều kiện tiên quyết: Đăng nhập với quyền `SYSTEM_ADMIN` hoặc `STORE_OWNER`. |
+| **Process** | 1. Kiểm tra tính hợp lệ dữ liệu (SKU không trống, không ký tự đặc biệt, Giá phân phối đại lý > 0, Tỷ lệ quy đổi >= 1).<br>2. Kiểm tra tính duy nhất của Mã SKU trong Room Database (chặn trùng hoàn toàn).<br>3. Tải ảnh mẫu đồng hồ, nén và lưu trữ cục bộ.<br>4. Tạo `ProductEntity` và gọi hàm DAO `insertProduct()`.<br>5. Ghi nhật ký kiểm toán hệ thống (Audit Log). |
 | **Output** | • Bản ghi mẫu đồng hồ mới được lưu thành công vào bảng `products` của Room Database.<br>• Hiển thị SnackBar thông báo thành công.<br>• Danh mục `ProductListFragment` tự động cập nhật qua Flow / LiveData. |
 | **Actor** | Chủ cửa hàng (`STORE_OWNER`) và Quản trị viên (`SYSTEM_ADMIN`). |
 | **Quyền hạn** | Toàn quyền thêm/sửa đối với Admin và Chủ cửa hàng (các vai trò khác chỉ có quyền Xem). |
@@ -127,9 +127,9 @@ MOD-01: Phân hệ Quản trị Hệ thống & Danh mục Luxury Horology (Phan 
 | `movement_type` | VARCHAR(50) | No | 'AUTOMATIC' | Loại bộ máy cơ học / điện tử | CHECK in ('AUTOMATIC', 'MANUAL', 'QUARTZ', 'SOLAR') |
 | `case_material` | VARCHAR(100) | No | 'STAINLESS_STEEL' | Chất liệu vỏ chế tác | CHECK in ('GOLD_18K', 'STEEL', 'TITANIUM', 'PLATINUM') |
 | `dial_size_mm` | DOUBLE | No | 40.0 | Đường kính mặt số (mm) | dial_size_mm > 0 |
-| `wholesale_price`| DOUBLE | No | 0.0 | Đơn giá bán sỉ niêm yết (VNĐ) | wholesale_price >= 0 |
+| `wholesale_price`| DOUBLE | No | 0.0 | Đơn giá phân phối đại lý niêm yết (VNĐ) | wholesale_price >= 0 |
 | `base_unit` | VARCHAR(20) | No | 'Chiếc' | Đơn vị tính cơ sở nhỏ nhất | Mặc định là 'Chiếc' |
-| `pack_unit` | VARCHAR(20) | No | 'Thùng' | ĐVT đóng gói bán sỉ | Mặc định là 'Thùng' hoặc 'Hộp' |
+| `pack_unit` | VARCHAR(20) | No | 'Thùng' | ĐVT đóng gói xuất kho | Mặc định là 'Thùng' hoặc 'Hộp' |
 | `conversion_rate`| INT | No | 1 | Hệ số quy đổi (1 Thùng = N Chiếc) | **conversion_rate >= 1** |
 | `min_stock_alert`| INT | No | 5 | Ngưỡng tồn kho tối thiểu | min_stock_alert >= 0 |
 | `max_stock_alert`| INT | No | 100 | Ngưỡng tồn kho tối đa | max_stock_alert >= min_stock_alert |
@@ -152,7 +152,7 @@ MOD-01: Phân hệ Quản trị Hệ thống & Danh mục Luxury Horology (Phan 
 ### 7.1. Phân công 5 vai trò thành viên
 1. **Phan Bá Hải Bình (TV1):** Trưởng nhóm / Quản trị hệ thống (`SYSTEM_ADMIN`) — Điều phối toàn bộ dự án, kiến trúc MVVM Core, Room DB v4, phân quyền RBAC 5 Roles, Phân hệ Quản trị Danh mục Luxury Horology, tổng hợp báo cáo.
 2. **Nguyễn Đắc Quân (TV2):** Nhân viên Nhập kho (`OPERATIONS_STAFF`) — Lập trình phân hệ Nhà cung cấp, công nợ phải trả, phiếu nhập kho quy đổi ĐVT, tích hợp Camera quét mã Serial và tính giá vốn đích danh.
-3. **Tô Đức Thảo (TV3):** Nhân viên Xuất kho (`OPERATIONS_STAFF`) — Lập trình phân hệ Đại lý B2B, hạn mức nợ, khóa giữ chỗ tồn kho (Reservation), xuất kho 2 bước và in hóa đơn B2B.
+3. **Tô Đức Thảo (TV3):** Nhân viên Xuất kho (`OPERATIONS_STAFF`) — Lập trình phân hệ Đối tác Đại lý & Quản lý Xuất kho, hạn mức tín dụng, khóa giữ chỗ tồn kho (Reservation), xuất kho 2 bước và in phiếu xuất kho B2B.
 4. **Võ Công Tâm (TV4):** Thủ kho (`WAREHOUSE_MANAGER`) — Lập trình phân hệ Phân loại tồn kho 3 chất lượng, ma trận kệ tủ chống trộm K1/K2, kiểm kê đối soát tự động và Sổ Thẻ kho điện tử.
 5. **Trần Công Tú (TV5):** Kế toán kho (`ACCOUNTANT`) — Lập trình Executive Dashboard KPI thời gian thực, MPAndroidChart doanh thu 6 tháng, hệ thống 9 báo cáo chuyên sâu và báo cáo dòng tiền thuần Cashflow.
 

@@ -33,6 +33,7 @@ import com.example.chronovaultwms.databinding.FragmentProductListBinding
 import com.example.chronovaultwms.databinding.ItemAuditLogBinding
 import com.example.chronovaultwms.databinding.ItemProductTimelineStepBinding
 import com.example.chronovaultwms.databinding.ItemUserAccountBinding
+import com.example.chronovaultwms.dashboard.DashboardOverviewFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -114,6 +115,8 @@ class ProductListFragment : Fragment() {
     }
 
     private fun setupListeners() {
+        binding.btnBackDashboard.setOnClickListener { returnToDashboard() }
+
         binding.tvFilterReset.setOnClickListener {
             binding.searchView.setQuery("", false)
             adapter.updateList(allProducts)
@@ -121,10 +124,28 @@ class ProductListFragment : Fragment() {
         }
 
         binding.fabAddProduct.setOnClickListener {
+            val role = sessionManager.getRole() ?: "SYSTEM_ADMIN"
+            if (role != "SYSTEM_ADMIN" && role != "STORE_OWNER") {
+                Toast.makeText(
+                    requireContext(),
+                    "⛔ Bạn không có quyền khai báo mẫu đồng hồ mới! (Chỉ dành cho Quản Trị Viên hoặc Chủ Cửa Hàng)",
+                    Toast.LENGTH_LONG
+                ).show()
+                return@setOnClickListener
+            }
             showAddProductDialog()
         }
 
         binding.btnSystemSettings.setOnClickListener {
+            val role = sessionManager.getRole() ?: "SYSTEM_ADMIN"
+            if (role != "SYSTEM_ADMIN" && role != "STORE_OWNER") {
+                Toast.makeText(
+                    requireContext(),
+                    "⛔ Chỉ Quản trị hệ thống hoặc Chủ cửa hàng mới được truy cập Cài đặt & Audit Log!",
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@setOnClickListener
+            }
             showSystemManagementDialog()
         }
 
@@ -150,6 +171,14 @@ class ProductListFragment : Fragment() {
             sessionManager.clearSession()
             Toast.makeText(requireContext(), "Đã đăng xuất khỏi hệ thống", Toast.LENGTH_SHORT).show()
             showLoginDialog()
+        }
+    }
+
+    private fun returnToDashboard() {
+        if (!parentFragmentManager.popBackStackImmediate()) {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainer, DashboardOverviewFragment())
+                .commit()
         }
     }
 
@@ -195,6 +224,13 @@ class ProductListFragment : Fragment() {
             else -> role
         }
         binding.tvLoggedInUser.text = "👤 $name ($roleTitle) • ✏️ Đổi Gmail"
+
+        // Phân quyền RBAC cho chức năng Khai báo Mẫu đồng hồ mới (F1.1) & Quản trị hệ thống:
+        // Chỉ Quản trị hệ thống (SYSTEM_ADMIN) hoặc Chủ cửa hàng (STORE_OWNER) mới có quyền tạo mã SKU mới và vào Cài đặt.
+        // Nhân viên kho (OPERATIONS_STAFF), Kế toán (ACCOUNTANT) và Thủ kho (WAREHOUSE_MANAGER) sẽ bị ẩn hoàn toàn để bảo vệ Master Data.
+        val isAdminOrOwner = (role == "SYSTEM_ADMIN" || role == "STORE_OWNER")
+        binding.fabAddProduct.visibility = if (isAdminOrOwner) View.VISIBLE else View.GONE
+        binding.btnSystemSettings.visibility = if (isAdminOrOwner) View.VISIBLE else View.GONE
     }
 
     private fun filterProducts(query: String?) {
@@ -534,6 +570,12 @@ class ProductListFragment : Fragment() {
         }
 
         dialogBinding.btnSaveProduct.setOnClickListener {
+            val currentRole = sessionManager.getRole() ?: "SYSTEM_ADMIN"
+            if (currentRole != "SYSTEM_ADMIN" && currentRole != "STORE_OWNER") {
+                Toast.makeText(requireContext(), "⛔ Bạn không có quyền khai báo mẫu đồng hồ mới!", Toast.LENGTH_SHORT).show()
+                dialog.dismiss()
+                return@setOnClickListener
+            }
             val sku = dialogBinding.etSku.text.toString().trim()
             val name = dialogBinding.etName.text.toString().trim()
             val brand = dialogBinding.actvBrand.text.toString().trim()

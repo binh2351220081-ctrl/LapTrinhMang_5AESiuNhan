@@ -67,7 +67,7 @@ def create_report_for_binh():
     for p in doc.paragraphs:
         txt = p.text
         if "ĐỀ TÀI:" in txt:
-            p.text = "ĐỀ TÀI: HỆ THỐNG QUẢN LÝ KHO & PHÂN PHỐI BÁN SỈ ĐỒNG HỒ CAO CẤP B2B (CHRONOVAULT WMS)"
+            p.text = "ĐỀ TÀI: HỆ THỐNG QUẢN LÝ KHO & PHÂN PHỐI ĐỒNG HỒ CAO CẤP B2B (CHRONOVAULT WMS)"
             p.alignment = WD_ALIGN_PARAGRAPH.CENTER
             for r in p.runs:
                 r.font.name = "Arial"; r.font.size = Pt(13); r.font.bold = True; r.font.color.rgb = C_NAVY
@@ -93,7 +93,7 @@ def create_report_for_binh():
     # -------------------------------------------------------------
     for i, p in enumerate(doc.paragraphs):
         if "Tên ứng dụng (đề xuất):" in p.text:
-            p.text = "Tên ứng dụng: Hệ Thống Quản Lý Kho & Phân Phối Bán Sỉ Đồng Hồ Cao Cấp B2B (ChronoVault WMS)"
+            p.text = "Tên ứng dụng: Hệ Thống Quản Lý Kho & Phân Phối Đồng Hồ Cao Cấp B2B (ChronoVault WMS)"
             for r in p.runs:
                 r.font.name = "Arial"; r.font.size = Pt(11); r.font.bold = True; r.font.color.rgb = C_NAVY
         elif "Bao gồm 3 thành phần:" in p.text:
@@ -176,7 +176,7 @@ def create_report_for_binh():
         ("FR-03", "Quản lý Danh mục Đồng hồ Cao cấp", "Khai báo và quản lý hồ sơ Master Data từng mẫu đồng hồ xa xỉ: Mã SKU duy nhất, Tên mẫu, Hãng (Rolex, Omega, Patek...), Bộ sưu tập, Loại máy (Automatic, Quartz, Solar), Chất liệu vỏ (Vàng 18K, Thép, Titanium), Mặt kính Sapphire, Độ chống nước, Upload ảnh sản phẩm.", "Cao", "Store Owner / System Admin"),
         ("FR-04", "Quản lý ĐVT Đa cấp & Tỷ lệ Quy đổi", "Thiết lập cấu trúc Đơn vị tính 2 cấp bắt buộc: ĐVT Cơ sở ('Chiếc') và ĐVT Đóng gói ('Thùng' hoặc 'Hộp'). Lưu trữ tỷ lệ quy đổi conversionRate (1 Thùng = N Chiếc) làm căn cứ tự động cho phân hệ Nhập kho (TV2) và Xuất kho (TV3).", "Cao", "Warehouse Manager"),
         ("FR-05", "Định mức Tồn kho & Cảnh báo an toàn", "Thiết lập mức tồn kho tối thiểu (minStockAlert) và tối đa (maxStockAlert) cho từng mẫu đồng hồ. Hiển thị cảnh báo trực quan màu vàng/đỏ khi tồn khả dụng chạm ngưỡng an toàn.", "Trung bình", "Store Owner / Quản lý kho"),
-        ("FR-06 -> FR-20", "[Các phân hệ của TV2, TV3, TV4, TV5]", "Bao gồm các yêu cầu chức năng về Nhập kho NCC (TV2), Phân phối Bán sỉ & Khóa giữ chỗ (TV3), Ma trận Kệ Bin & Kiểm kê (TV4), Executive Dashboard & 9 Báo cáo (TV5) do các thành viên tương ứng hoàn thiện.", "Cao", "Nhóm 5 AE Siêu Nhân")
+        ("FR-06 -> FR-20", "[Các phân hệ của TV2, TV3, TV4, TV5]", "Bao gồm các yêu cầu chức năng về Đối tác NCC & Nhập kho (TV2 Quân), Đối tác Đại lý & Quản lý Xuất kho (TV3 Thảo), Ma trận Kệ Bin & Kiểm kê (TV4 Tâm), Executive Dashboard & 9 Báo cáo (TV5 Tú) do các thành viên tương ứng hoàn thiện.", "Cao", "Nhóm 5 AE Siêu Nhân")
     ]
     for row_idx, item in enumerate(t1_data):
         row = t1.add_row()
@@ -220,7 +220,7 @@ def create_report_for_binh():
     t3_data = [
         ("MOD-01", "Quản trị Hệ thống & Danh mục Luxury Horology\n(Phan Bá Hải Bình phụ trách)", "Quản lý bảo mật, xác thực người dùng, phân quyền RBAC 5 Roles, danh mục thông số đồng hồ xa xỉ, thiết lập ĐVT 2 cấp và cấu trúc CSDL Room Core.", "User, Role, Product, Brand, UnitOfMeasure", "Đăng nhập, Quản lý tài khoản, Phân quyền RBAC, Quản lý mẫu đồng hồ (SKU), Thiết lập tỷ lệ quy đổi ĐVT, Cảnh báo tồn kho an toàn."),
         ("MOD-02", "Quản lý Đối tác NCC & Nhập kho Quy đổi ĐVT\n(Nguyễn Đắc Quân phụ trách)", "Quản lý hồ sơ NCC, nhập kho quy đổi Thùng ra Chiếc, quét camera Serial, phân bổ chi phí & tính giá vốn đích danh, xuất trả hàng lỗi NCC.", "Supplier, InboundReceipt, SerialEntity, PaymentVoucher", "Quản lý NCC, Lập phiếu nhập kho, Quét Serial camera ML Kit, Phân bổ chi phí, Tính giá vốn đích danh, Lập phiếu chi nợ NCC."),
-        ("MOD-03", "Quản lý Đại lý B2B & Phân phối Xuất kho\n(Tô Đức Thảo phụ trách)", "Quản lý hồ sơ đại lý sỉ, hạn mức nợ, chiết khấu hạng đại lý, đơn đặt hàng sỉ, cơ chế khóa giữ chỗ kho và quét camera Serial xuất kho.", "Dealer, OutboundOrder, ReservationEngine, ReceiptVoucher", "Quản lý đại lý, Kiểm soát hạn mức nợ, Tạo đơn sỉ, Khóa giữ chỗ tồn kho, Quét Serial xuất đóng thùng, Lập phiếu thu nợ đại lý."),
+        ("MOD-03", "Đối Tác Đại Lý & Quản Lý Xuất Kho\n(Tô Đức Thảo phụ trách)", "Quản lý hồ sơ đại lý tiếp nhận, hạn mức tín dụng, lệnh yêu cầu xuất hàng, cơ chế khóa giữ chỗ tồn kho và quét camera Serial xuất kho bàn giao.", "Dealer, OutboundOrder, ReservationEngine, ReceiptVoucher", "Quản lý đại lý tiếp nhận, Kiểm soát hạn mức tín dụng, Tạo lệnh xuất kho, Khóa giữ chỗ tồn kho, Quét Serial xuất đóng thùng, Lập phiếu thu nợ đại lý."),
         ("MOD-04", "Quản trị Tồn kho Nội bộ & Kiểm kê Kệ hàng\n(Võ Công Tâm phụ trách)", "Phân loại tồn kho 3 cấp chất lượng, trực quan hóa sơ đồ ma trận kệ tủ chống trộm K1/K2, quy trình kiểm kê đối soát tự động, Sổ Thẻ kho điện tử.", "SerialQuality, BinMatrix, StockAudit, StockCardLedger", "Phân loại 3 chất lượng hàng, Tra cứu ma trận ô kệ Bin K1/K2, Quét mã điều chuyển kệ, Kiểm kê đối soát Thừa/Thiếu, Tra cứu Sổ thẻ kho."),
         ("MOD-05", "Executive Dashboard & Hệ thống 9 Báo cáo\n(Trần Công Tú phụ trách)", "Bảng chỉ số KPI điều hành thời gian thực, biểu đồ doanh thu 6 tháng MPAndroidChart, 9 báo cáo chuyên sâu và báo cáo dòng tiền thuần Cashflow.", "DashboardKPI, ChartEngine, ReportContainer, CashflowData", "Executive Dashboard 5 thẻ KPI, Biểu đồ doanh thu 6 tháng, Biểu đồ chi phí, Top 10 sản phẩm bán chạy, 9 báo cáo chuyên sâu đa phân hệ, Xuất CSV/In ấn A4.")
     ]
@@ -239,8 +239,8 @@ def create_report_for_binh():
     format_row(t4.rows[0], "1B365D", is_header=True)
     
     t4_data = [
-        ("Input", "• Dữ liệu đầu vào: Mã SKU đồng hồ, Tên mẫu mã, Thương hiệu, Bộ sưu tập, Loại máy (Automatic/Quartz/Solar), Chất liệu vỏ (Vàng 18K/Thép/Titanium), Đường kính mặt (mm), Độ kháng nước (ATM), Giá bán sỉ niêm yết (VNĐ), ĐVT Cơ sở ('Chiếc'), ĐVT Đóng gói ('Thùng'), Hệ số quy đổi (Ví dụ: 10 chiếc/thùng), Ngưỡng tồn an toàn (Min/Max).\n• Nguồn dữ liệu: Form nhập liệu AddEditProductActivity hoặc file Excel Master Data nhập khẩu ban đầu.\n• Điều kiện tiên quyết: Người dùng đã đăng nhập với vai trò SYSTEM_ADMIN hoặc STORE_OWNER."),
-        ("Process", "• Bước 1: Hệ thống kiểm tra tính hợp lệ dữ liệu (Mã SKU không được để trống, không được chứa ký tự đặc biệt, Giá sỉ > 0, Hệ số quy đổi >= 1).\n• Bước 2: Truy vấn cơ sở dữ liệu Room Database để kiểm tra tính duy nhất của Mã SKU (chặn trùng lặp SKU tuyệt đối).\n• Bước 3: Tải ảnh đại diện mẫu đồng hồ, nén kích thước và lưu trữ đường dẫn ảnh cục bộ.\n• Bước 4: Tạo đối tượng ProductEntity và gọi hàm `productDao.insertProduct(product)`.\n• Bước 5: Ghi nhận nhật ký kiểm toán hệ thống (Audit Log): 'Người dùng [username] đã khởi tạo mẫu đồng hồ [SKU]'."),
+        ("Input", "• Dữ liệu đầu vào: Mã SKU đồng hồ, Tên mẫu mã, Thương hiệu, Bộ sưu tập, Loại máy (Automatic/Quartz/Solar), Chất liệu vỏ (Vàng 18K/Thép/Titanium), Đường kính mặt (mm), Độ kháng nước (ATM), Giá phân phối đại lý niêm yết (VNĐ), ĐVT Cơ sở ('Chiếc'), ĐVT Đóng gói ('Thùng'), Hệ số quy đổi (Ví dụ: 10 chiếc/thùng), Ngưỡng tồn an toàn (Min/Max).\n• Nguồn dữ liệu: Form nhập liệu AddEditProductActivity hoặc file Excel Master Data nhập khẩu ban đầu.\n• Điều kiện tiên quyết: Người dùng đã đăng nhập với vai trò SYSTEM_ADMIN hoặc STORE_OWNER."),
+        ("Process", "• Bước 1: Hệ thống kiểm tra tính hợp lệ dữ liệu (Mã SKU không được để trống, không được chứa ký tự đặc biệt, Giá phân phối đại lý > 0, Hệ số quy đổi >= 1).\n• Bước 2: Truy vấn cơ sở dữ liệu Room Database để kiểm tra tính duy nhất của Mã SKU (chặn trùng lặp SKU tuyệt đối).\n• Bước 3: Tải ảnh đại diện mẫu đồng hồ, nén kích thước và lưu trữ đường dẫn ảnh cục bộ.\n• Bước 4: Tạo đối tượng ProductEntity và gọi hàm `productDao.insertProduct(product)`.\n• Bước 5: Ghi nhận nhật ký kiểm toán hệ thống (Audit Log): 'Người dùng [username] đã khởi tạo mẫu đồng hồ [SKU]'."),
         ("Output", "• Bản ghi sản phẩm mới được lưu thành công vào bảng `products` của Room Database.\n• Giao diện hiển thị SnackBar / Toast thông báo: 'Đã lưu mẫu đồng hồ [SKU] thành công'.\n• Danh mục sản phẩm tại ProductListFragment tự động cập nhật hiển thị mẫu đồng hồ mới qua Flow / LiveData."),
         ("Actor", "Chủ cửa hàng (STORE_OWNER) và Quản trị viên hệ thống (SYSTEM_ADMIN)."),
         ("Quyền hạn", "Quyền Quản trị viên và Chủ cửa hàng (Các vai trò khác chỉ có quyền Xem - Read Only)."),
@@ -291,7 +291,7 @@ def create_report_for_binh():
         ("DF-01", "Xác thực Đăng nhập & Cấp quyền phiên", "Người dùng", "LoginActivity -> SessionManager", "Username, Password băm", "Tài khoản ở trạng thái Hoạt động (is_active = true)"),
         ("DF-02", "Khai báo Mẫu đồng hồ & Cấu hình ĐVT", "Owner / Admin", "AddEditProductActivity -> Room DB", "Thông số SKU, ĐVT, Tỷ lệ quy đổi, Min/Max stock", "Mã SKU duy nhất chưa tồn tại trong hệ thống"),
         ("DF-03", "Cập nhật Phân quyền Nhân viên nội bộ", "Admin", "UserManagementFragment -> UserDao", "User ID, Vai trò mới (UserRole enum)", "Chỉ SYSTEM_ADMIN được thực hiện"),
-        ("DF-04 -> DF-10", "[Các luồng Nhập kho, Xuất sỉ, Kiểm kê, Báo cáo]", "[TV2 - TV5]", "[Inbound / Outbound / Inventory / Dashboard]", "[Do các thành viên tương ứng hoàn thiện]", "")
+        ("DF-04 -> DF-10", "[Các luồng Nhập kho, Xuất kho đại lý, Kiểm kê, Báo cáo]", "[TV2 - TV5]", "[Inbound / Outbound / Inventory / Dashboard]", "[Do các thành viên tương ứng hoàn thiện]", "")
     ]
     for row_idx, item in enumerate(t6_data):
         row = t6.add_row()
@@ -339,9 +339,9 @@ def create_report_for_binh():
         ("movement_type", "VARCHAR(50)", "No", "'AUTOMATIC'", "Loại bộ máy cơ học / điện tử", "CHECK in ('AUTOMATIC', 'MANUAL', 'QUARTZ', 'SOLAR')"),
         ("case_material", "VARCHAR(100)", "No", "'STAINLESS_STEEL'", "Chất liệu vỏ chế tác", "CHECK in ('GOLD_18K', 'STEEL', 'TITANIUM', 'PLATINUM')"),
         ("dial_size_mm", "DOUBLE", "No", "40.0", "Đường kính mặt số (mm)", "dial_size_mm > 0"),
-        ("wholesale_price", "DOUBLE", "No", "0.0", "Đơn giá bán sỉ niêm yết (VNĐ)", "wholesale_price >= 0"),
+        ("wholesale_price", "DOUBLE", "No", "0.0", "Đơn giá phân phối đại lý niêm yết (VNĐ)", "wholesale_price >= 0"),
         ("base_unit", "VARCHAR(20)", "No", "'Chiếc'", "Đơn vị tính cơ sở nhỏ nhất", "Mặc định là 'Chiếc'"),
-        ("pack_unit", "VARCHAR(20)", "No", "'Thùng'", "Đơn vị tính đóng gói bán sỉ", "Mặc định là 'Thùng' hoặc 'Hộp'"),
+        ("pack_unit", "VARCHAR(20)", "No", "'Thùng'", "Đơn vị tính đóng gói xuất kho", "Mặc định là 'Thùng' hoặc 'Hộp'"),
         ("conversion_rate", "INT", "No", "1", "Hệ số quy đổi (1 Thùng = N Chiếc)", "conversion_rate >= 1"),
         ("min_stock_alert", "INT", "No", "5", "Ngưỡng tồn kho tối thiểu cần cảnh báo", "min_stock_alert >= 0"),
         ("max_stock_alert", "INT", "No", "100", "Ngưỡng tồn kho tối đa an toàn", "max_stock_alert >= min_stock_alert"),
@@ -367,7 +367,7 @@ def create_report_for_binh():
     t9_data = [
         ("1", "Trưởng nhóm / Quản trị hệ thống\n(SYSTEM_ADMIN)", "Điều phối toàn bộ dự án, thiết kế kiến trúc MVVM Core, thiết kế Room Database v4 cốt lõi, quản trị Git Repository, phát triển Module Quản trị Hệ thống & Danh mục Đồng hồ Luxury Horology, tổng hợp báo cáo chung.", "Phan Bá Hải Bình (TV1)"),
         ("2", "Nhân viên Nhập kho\n(OPERATIONS_STAFF)", "Phát triển phân hệ Quản lý Nhà cung cấp, công nợ phải trả, lập phiếu nhập kho quy đổi ĐVT, tích hợp Camera quét mã Serial và thuật toán tính giá vốn đích danh.", "Nguyễn Đắc Quân (TV2)"),
-        ("3", "Nhân viên Xuất kho\n(OPERATIONS_STAFF)", "Phát triển phân hệ Quản lý Đại lý sỉ B2B, kiểm soát hạn mức nợ tự động, cơ chế khóa giữ chỗ tồn kho (Reservation), quy trình xuất kho 2 bước và in hóa đơn B2B.", "Tô Đức Thảo (TV3)"),
+        ("3", "Nhân viên Xuất kho\n(OPERATIONS_STAFF)", "Phát triển phân hệ Đối tác Đại lý & Quản lý Xuất kho, kiểm soát hạn mức tín dụng tự động, cơ chế khóa giữ chỗ tồn kho (Reservation), quy trình xuất kho 2 bước và in phiếu xuất kho B2B.", "Tô Đức Thảo (TV3)"),
         ("4", "Thủ kho\n(WAREHOUSE_MANAGER)", "Phát triển phân hệ Phân loại tồn kho 3 trạng thái chất lượng, trực quan hóa sơ đồ ma trận kệ tủ chống trộm K1/K2, quy trình kiểm kê đối soát tự động và Sổ Thẻ kho điện tử.", "Võ Công Tâm (TV4)"),
         ("5", "Kế toán kho\n(ACCOUNTANT)", "Phát triển Executive Dashboard với 5 thẻ KPI thời gian thực, trực quan hóa biểu đồ doanh thu 6 tháng bằng MPAndroidChart, hệ thống 9 báo cáo chuyên sâu và báo cáo dòng tiền thuần Cashflow.", "Trần Công Tú (TV5)")
     ]

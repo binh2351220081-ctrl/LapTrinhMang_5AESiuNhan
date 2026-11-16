@@ -157,7 +157,7 @@ def build_actor_document():
     set_table_borders(meta_table, color="CBD5E1", sz="4")
     meta_data = [
         ("Tên dự án:", "Hệ thống Quản lý Kho Hàng Hóa Cửa Hàng Đồng Hồ (ChronoVault B2B WMS)"),
-        ("Mô hình hoạt động:", "Phân phối bán sỉ B2B Wholesale (Định danh Serial 100%, Giá vốn đích danh, Hạn mức tín dụng)"),
+        ("Mô hình hoạt động:", "Phân phối phân phối đại lý B2B Wholesale (Định danh Serial 100%, Giá vốn đích danh, Hạn mức tín dụng)"),
         ("Nhóm tác nhân chuẩn hóa:", "05 Tác nhân nội bộ (Admin, Chủ cửa hàng, Thủ kho điều hành, NV nhập - xuất kho, Kế toán)"),
         ("Mục tiêu tài liệu:", "Quy định rõ ràng 'Ai làm việc gì, ở màn hình nào, dữ liệu đầu vào/ra là gì và bị ràng buộc bởi quyền hạn nào'"),
         ("Phiên bản / Ngày ban hành:", "Phiên bản 2.1 Enterprise Release • Tháng 11/2026")
@@ -228,7 +228,7 @@ def build_actor_document():
         ("1. Quản trị hệ thống", "Quản lý tài khoản người dùng, phân quyền vai trò RBAC, cấu hình tham số hệ thống, giám sát nhật ký Audit Log, thu hồi Token và bảo mật dữ liệu.", "Không thao tác hoặc phê duyệt các chứng từ nhập/xuất kho, phiếu thu/chi hay công nợ thương mại."),
         ("2. Chủ cửa hàng", "Giám sát Dashboard KPI điều hành (doanh thu, dòng tiền, nợ 2 chiều); phê duyệt ngoại lệ chi phí lớn, vượt hạn mức nợ đại lý và cân bằng kiểm kê giá trị cao.", "Không can thiệp cấu hình tài khoản kỹ thuật và không làm các thao tác nhập xuất, kiểm đếm kho thường nhật."),
         ("3. Thủ kho (quản lý điều hành)", "Điều hành toàn diện hoạt động kho; quản lý sơ đồ ngăn kệ (Bin); kiểm soát bảo quản an toàn; xác nhận giao nhận vật lý; chủ trì kiểm kê và cân bằng trong hạn mức.", "Không lập chứng từ thu/chi tiền, không can thiệp giá bán/hạn mức nợ đại lý và không tự duyệt sai lệch kiểm kê vượt ngưỡng."),
-        ("4. Nhân viên nhập - xuất kho", "Tác nghiệp kho trực tiếp: lập phiếu nhập từ PO, quét nạp Serial; lập đơn sỉ nháp, soạn hàng, quét Serial đóng kiện xuất kho; tiếp nhận xử lý đổi trả và bảo hành.", "Không duyệt thu/chi, không tự duyệt đơn vượt hạn mức nợ của khách và không tự ý điều chỉnh tồn kho."),
+        ("4. Nhân viên nhập - xuất kho", "Tác nghiệp kho trực tiếp: lập phiếu nhập từ PO, quét nạp Serial; lập lệnh xuất đại lý nháp, soạn hàng, quét Serial đóng kiện xuất kho; tiếp nhận xử lý đổi trả và bảo hành.", "Không duyệt thu/chi, không tự duyệt đơn vượt hạn mức nợ của khách và không tự ý điều chỉnh tồn kho."),
         ("5. Kế toán", "Kiểm soát số liệu tài chính; phân bổ chi phí phụ trợ vào giá vốn đích danh của từng Serial; quản lý công nợ 2 chiều; lập phiếu thu/chi; đối soát Sổ Thẻ kho.", "Không thay thế Thủ kho xác nhận giao nhận vật lý; không tự duyệt các khoản nợ hoặc chi phí phát sinh vượt ngưỡng.")
     ]
     for row_idx, rvals in enumerate(actors_ov_data, start=1):
@@ -275,7 +275,7 @@ def build_actor_document():
         ("Công việc 1.2: Cấu hình Vai trò & Thiết lập Ma trận Phân quyền (RBAC Matrix): ", "Khai báo và duy trì 5 vai trò người dùng chuẩn mực trong hệ thống. Gán các quyền thao tác mức nguyên tử (Xem [V], Tạo mới [C], Chỉnh sửa [E], Xóa [D], Duyệt [A], Tài chính [F], Kiểm kê [K]) cho từng phân hệ, ngăn chặn việc leo thang đặc quyền (Privilege Escalation)."),
         ("Công việc 1.3: Thu hồi Phiên Làm Việc Từ Xa (Session & Token Revocation): ", "Giám sát danh sách các phiên đăng nhập đang hoạt động; thực hiện thu hồi Token xác thực (JWT Revocation / Blacklist) tức thời đối với các phiên làm việc bất thường, thiết bị thất lạc hoặc khi tài khoản bị khóa."),
         ("Công việc 1.4: Giám sát Nhật ký Kiểm toán Hệ thống (Audit Trail Viewer): ", "Theo dõi toàn bộ nhật ký ghi vết của hệ thống: thời gian, người thực hiện, địa chỉ IP, hành động (Tạo, Sửa, Xóa, Duyệt, Xuất file) và đối tượng tác động. Định kỳ sao lưu dữ liệu Audit Log sang kho lưu trữ lạnh (Cold Storage) để phục vụ thanh tra compliance."),
-        ("Công việc 1.5: Khai báo Danh mục Master Data & Cấu hình Tham số Toàn cục: ", "Khai báo danh mục thương hiệu đồng hồ (Rolex, Omega, Tissot, Seiko, Casio...), bộ sưu tập, chất liệu vỏ/kính, kiểu động cơ; cấu hình ĐVT cơ bản (Chiếc lẻ), ĐVT đóng gói sỉ (Thùng/Kiện) và hệ số quy đổi đóng gói (ví dụ: 1 Thùng = 10 Chiếc). Thiết lập cờ bắt buộc quản lý mã Serial."),
+        ("Công việc 1.5: Khai báo Danh mục Master Data & Cấu hình Tham số Toàn cục: ", "Khai báo danh mục thương hiệu đồng hồ (Rolex, Omega, Tissot, Seiko, Casio...), bộ sưu tập, chất liệu vỏ/kính, kiểu động cơ; cấu hình ĐVT cơ bản (Chiếc lẻ), ĐVT đóng gói xuất kho (Thùng/Kiện) và hệ số quy đổi đóng gói (ví dụ: 1 Thùng = 10 Chiếc). Thiết lập cờ bắt buộc quản lý mã Serial."),
         ("Công việc 1.6: Quản trị Cơ sở Dữ liệu & Sao lưu Định kỳ (Database Backup & Maintenance): ", "Thiết lập lịch sao lưu tự động cho 23 bảng cơ sở dữ liệu quan hệ (Hàng ngày / Hàng tuần); kiểm tra tính toàn vẹn của các bảng chỉ mục (Index) trên các trường tra cứu tần suất cao như `so_serial`, `ma_san_pham`, `ma_dai_ly`.")
     ]
     for t_title, t_desc in admin_tasks:
@@ -338,8 +338,8 @@ def build_actor_document():
     r.font.name = "Arial"; r.font.size = Pt(9.5); r.font.bold = True
 
     owner_tasks = [
-        ("Công việc 2.1: Giám sát Chỉ số Điều hành Thời Gian Thực (Executive Dashboard): ", "Theo dõi trực quan 5 thẻ chỉ số cốt lõi: Tổng giá trị tồn kho đích danh, Doanh số bán sỉ trong kỳ, Tỷ lệ nợ đại lý quá hạn, Tồn kho khả dụng và Tỷ lệ đổi trả hàng sỉ. Đọc biểu đồ trực quan dòng tiền và xu hướng nhập/xuất để điều tiết chiến lược kinh doanh."),
-        ("Công việc 2.2: Phê duyệt Ngoại lệ Hạn mức Tín dụng & Đơn Bán Sỉ (Credit Override Approval): ", "Khi hệ thống tự động khóa nút duyệt đơn bán sỉ do Đại lý vượt hạn mức nợ (Credit Limit) hoặc có hóa đơn quá hạn (Net 15/Net 30), Chủ cửa hàng là người duy nhất có thẩm quyền xem xét uy tín đại lý, kiểm tra lý do và ký phê duyệt ngoại lệ (Override Approval) kèm ghi chú trách nhiệm."),
+        ("Công việc 2.1: Giám sát Chỉ số Điều hành Thời Gian Thực (Executive Dashboard): ", "Theo dõi trực quan 5 thẻ chỉ số cốt lõi: Tổng giá trị tồn kho đích danh, Doanh số xuất kho đại lý trong kỳ, Tỷ lệ nợ đại lý quá hạn, Tồn kho khả dụng và Tỷ lệ tiếp nhận trả hàng đại lý. Đọc biểu đồ trực quan dòng tiền và xu hướng nhập/xuất để điều tiết chiến lược kinh doanh."),
+        ("Công việc 2.2: Phê duyệt Ngoại lệ Hạn mức Tín dụng & Đơn Xuất Kho Đại Lý (Credit Override Approval): ", "Khi hệ thống tự động khóa nút duyệt lệnh xuất kho đại lý do Đại lý vượt hạn mức nợ (Credit Limit) hoặc có hóa đơn quá hạn (Net 15/Net 30), Chủ cửa hàng là người duy nhất có thẩm quyền xem xét uy tín đại lý, kiểm tra lý do và ký phê duyệt ngoại lệ (Override Approval) kèm ghi chú trách nhiệm."),
         ("Công việc 2.3: Phê duyệt Chi Phí Nhập Kho Phụ Trội Vượt Ngưỡng: ", "Xem xét và phê duyệt các khoản chi phụ trợ (cước bay quốc tế, phí hải quan, lưu kho bến bãi) có giá trị phát sinh vượt quá định mức ngân sách (ví dụ: vượt quá 10% giá trị hợp đồng mua), đảm bảo giá vốn hàng bán không bị đội lên bất hợp lý."),
         ("Công việc 2.4: Phê duyệt Xử lý Chênh lệch Kiểm kê Giá trị Cao (Inventory Discrepancy Approval): ", "Tiếp nhận 'Biên bản đối soát kiểm kê' từ Thủ kho và Kế toán khi phát hiện sai lệch số lượng hoặc mất mát mã Serial có giá trị vượt hạn mức phân quyền của Thủ kho (ví dụ: chênh lệch > 20 triệu VNĐ hoặc mất đồng hồ xa xỉ). Phê duyệt quyết định cân bằng kho và chỉ đạo truy cứu trách nhiệm."),
         ("Công việc 2.5: Phê duyệt Xuất trả Hàng lỗi Giá trị lớn & Xuất Tiêu hủy: ", "Phê duyệt các phiếu xuất trả lô đồng hồ lỗi cho Nhà cung cấp chính hãng và phê duyệt biên bản xuất tiêu hủy (Discard Stock) đối với các sản phẩm hỏng hóc nghiêm trọng không thể phục hồi."),
@@ -366,11 +366,11 @@ def build_actor_document():
 
     own_table_data = [
         ("Giám sát Dashboard KPI", "Hàng ngày / Thời gian thực", "Dữ liệu tổng hợp từ 4 phân hệ", "Quyết định điều hành tồn kho & tín dụng", "Số liệu cập nhật thời gian thực"),
-        ("Duyệt ngoại lệ tín dụng sỉ", "Khi phát sinh đơn vượt nợ", "Đơn hàng sỉ, Lịch sử nợ đại lý", "Lệnh duyệt ngoại lệ (Status: DA_DUYET)", "Bắt buộc ghi nhận lý do vào Audit Log"),
+        ("Duyệt ngoại lệ tín dụng đại lý", "Khi phát sinh đơn vượt nợ", "Đơn hàng xuất đại lý, Lịch sử nợ đại lý", "Lệnh duyệt ngoại lệ (Status: DA_DUYET)", "Bắt buộc ghi nhận lý do vào Audit Log"),
         ("Duyệt chi phí phụ trội lô", "Khi có lô hàng nhập phát sinh lớn", "Phiếu nhập nháp, chứng từ cước/thuế", "Lệnh duyệt hạch toán chi phí", "Khoản chi phụ trợ > 10% giá trị hợp đồng"),
         ("Duyệt chênh lệch kiểm kê", "Sau mỗi đợt kiểm kê lớn", "Biên bản đối soát kiểm kê Serial", "Lệnh cân bằng kho (Adjust Stock)", "Áp dụng khi sai lệch vượt ngưỡng thẩm quyền"),
         ("Duyệt trả hàng NCC / Hủy", "Khi phát sinh hàng lỗi máy/vỡ", "Biên bản giám định lỗi kỹ thuật", "Phiếu xuất trả NCC / Lệnh tiêu hủy", "Có chữ ký xác nhận của kỹ thuật & thủ kho"),
-        ("Phân tích báo cáo Dead Stock", "Định kỳ hàng tháng / quý", "Báo cáo tuổi kho Aging Inventory", "Kế hoạch khuyến mãi / Giảm giá sỉ", "Nhận diện mẫu đồng hồ tồn kho > 90 ngày")
+        ("Phân tích báo cáo Dead Stock", "Định kỳ hàng tháng / quý", "Báo cáo tuổi kho Aging Inventory", "Kế hoạch khuyến mãi / Giảm giá phân phối đại lý", "Nhận diện mẫu đồng hồ tồn kho > 90 ngày")
     ]
     for row_idx, rvals in enumerate(own_table_data, start=1):
         row = tbl_own.rows[row_idx]; make_row_cant_split(row)
@@ -404,7 +404,7 @@ def build_actor_document():
 
     wh_tasks = [
         ("Công việc 3.1: Quản trị Sơ đồ Vị trí Ngăn Kệ Vật lý (Warehouse Bin Management): ", "Thiết lập và quản lý danh mục địa chỉ kệ lưu trữ trong kho theo cấu trúc phân cấp chuẩn: Phân Khu (Zone) - Dãy (Aisle) - Kệ (Rack) - Tầng (Shelf) - Ngăn/Hộc (Bin). Cấu hình sức chứa tối đa và theo dõi trực quan tỷ lệ lấp đầy của từng ngăn kệ."),
-        ("Công việc 3.2: Điều hành Phân loại 3 Kho Chất Lượng (Quality Stock Segregation): ", "Tổ chức và giám sát nghiêm ngặt việc phân luồng hàng hóa theo 3 trạng thái chất lượng: (1) Kho Hàng Mới (nguyên seal, đủ tiêu chuẩn xuất sỉ); (2) Kho Trưng Bày (hàng mẫu cho khách xem); (3) Kho Hàng Lỗi (cách ly riêng biệt tại khu vực C-01 để chờ xuất trả NCC hoặc bảo hành)."),
+        ("Công việc 3.2: Điều hành Phân loại 3 Kho Chất Lượng (Quality Stock Segregation): ", "Tổ chức và giám sát nghiêm ngặt việc phân luồng hàng hóa theo 3 trạng thái chất lượng: (1) Kho Hàng Mới (nguyên seal, đủ tiêu chuẩn xuất kho đại lý); (2) Kho Trưng Bày (hàng mẫu cho khách xem); (3) Kho Hàng Lỗi (cách ly riêng biệt tại khu vực C-01 để chờ xuất trả NCC hoặc bảo hành)."),
         ("Công việc 3.3: Xác nhận Nghiệm thu & Nhập Kho Vật lý (Physical Inbound Confirmation): ", "Tiếp nhận xe vận chuyển từ NCC, kiểm tra niêm phong kẹp chì của thùng kiện; đối chiếu số lượng thùng thực nhận với vận đơn; ký xác nhận bàn giao nhận hàng và chỉ định ngăn kệ lưu trữ cho nhân viên xếp dỡ."),
         ("Công việc 3.4: Kiểm tra & Xác nhận Xuất Kho Vật lý (Physical Outbound Confirmation): ", "Trước khi bàn giao hàng cho đơn vị vận chuyển hoặc đại lý đến nhận, Thủ kho trực tiếp kiểm tra kiện hàng đã đóng gói, đối chiếu danh sách mã Serial dán trên kiện với Phiếu xuất kho B2B trên hệ thống; xác nhận hoàn tất xuất kho vật lý."),
         ("Công việc 3.5: Quản lý & Phê duyệt Điều chuyển Nội bộ Kho (Bin-to-Bin Transfer): ", "Khởi tạo hoặc phê duyệt các lệnh điều chuyển sản phẩm giữa các ngăn kệ để tối ưu hóa không gian lưu trữ, hoặc điều chuyển giữa Kho Trưng Bày và Kho Hàng Mới sau khi phục hồi tình trạng đóng gói."),
@@ -432,7 +432,7 @@ def build_actor_document():
 
     wh_table_data = [
         ("Quản lý sơ đồ ngăn kệ (Bin)", "Định kỳ / khi bố trí lại kho", "Khu, Dãy, Kệ, Tầng, Hộc, Sức chứa", "Sơ đồ mặt bằng kệ, Tỷ lệ lấp đầy (%)", "Mỗi kệ gắn mã định danh vật lý duy nhất"),
-        ("Phân luồng 3 kho chất lượng", "Liên tục", "Serial, Trạng thái (New/Display/Defect)", "Phân bổ Serial vào đúng khu vực kho", "Chỉ xuất sỉ đồng hồ thuộc Kho Hàng Mới"),
+        ("Phân luồng 3 kho chất lượng", "Liên tục", "Serial, Trạng thái (New/Display/Defect)", "Phân bổ Serial vào đúng khu vực kho", "Chỉ xuất kho đại lý đồng hồ thuộc Kho Hàng Mới"),
         ("Xác nhận nhập kho vật lý", "Khi có lô hàng NCC giao đến", "Thùng kiện thực tế, Phiếu nhập nháp", "Biên bản bàn giao ký nhận, Vị trí lưu kệ", "Kiểm tra kỹ niêm phong thùng kiện của hãng"),
         ("Xác nhận xuất kho vật lý", "Khi kiện hàng đóng gói xong", "Kiện hàng, Danh sách Serial quét", "Phiếu xuất kho B2B có chữ ký xác nhận", "Chỉ xác nhận khi đối chiếu khớp 100% Serial"),
         ("Điều chuyển ngăn kệ nội bộ", "Khi cần sắp xếp / gom hàng", "Serial cần chuyển, Ngăn nguồn, Ngăn đích", "Phiếu điều chuyển, Cập nhật vị trí Serial", "Ngăn đích phải còn sức chứa khả dụng"),
@@ -460,7 +460,7 @@ def build_actor_document():
     doc.add_heading("4. TÁC NHÂN: NHÂN VIÊN NHẬP - XUẤT KHO (OPERATIONS STAFF)", level=2)
     add_callout(
         doc,
-        "Lực lượng tác nghiệp tiền tuyến tại kho hàng; trực tiếp sử dụng thiết bị quét mã vạch (Barcode/QR HID) để nhập liệu, nạp đối soát dải Serial, soạn hàng theo đơn, đóng gói xuất bán sỉ và xử lý các luồng hàng đổi trả, bảo hành.",
+        "Lực lượng tác nghiệp tiền tuyến tại kho hàng; trực tiếp sử dụng thiết bị quét mã vạch (Barcode/QR HID) để nhập liệu, nạp đối soát dải Serial, soạn hàng theo đơn, đóng gói xuất kho đại lý và xử lý các luồng hàng đổi trả, bảo hành.",
         bold_prefix="MỤC TIÊU VAI TRÒ:"
     )
 
@@ -473,10 +473,10 @@ def build_actor_document():
         ("Công việc 4.1: Khởi tạo Phiếu Nhập Kho & Quy đổi ĐVT Thùng ra Chiếc: ", "Tiếp nhận đơn mua hàng (PO) đã duyệt; tạo phiếu nhập kho mới; chọn ĐVT nhập là Thùng/Kiện; nhập số lượng thùng thực nhận; hệ thống tự động nhân hệ số quy đổi để ra tổng số lượng chiếc lẻ cần nạp Serial."),
         ("Công việc 4.2: Nạp & Quét Đối soát Dải Serial Lúc Nhập Kho: ", "Sử dụng súng quét mã vạch hoặc camera Barcode scanner để quét mã Serial từng chiếc đồng hồ khi khui thùng, hoặc import file Excel chứa dải Serial do nhà sản xuất phát hành. Hệ thống kiểm tra đối soát 2 chiều: (1) Số Serial nạp vào = Tổng số chiếc sau quy đổi; (2) Toàn bộ Serial chưa từng tồn tại trên hệ thống."),
         ("Công việc 4.3: Lưu Phiếu Nhập Nháp & Chuyển Trình Duyệt: ", "Lưu trữ phiếu nhập ở trạng thái bản nháp (DRAFT) sau khi hoàn tất nạp Serial; bàn giao thông tin cho Kế toán để nhập chi phí phân bổ và thông báo cho Thủ kho xác nhận vật lý."),
-        ("Công việc 4.4: Lập Đơn Bán Sỉ Nháp Theo Đặt Hàng Của Đại Lý: ", "Tiếp nhận đơn đặt hàng từ đại lý B2B; kiểm tra số lượng đặt theo từng mẫu mã đảm bảo >= MOQ quy định; kiểm tra số lượng tồn kho khả dụng; áp dụng bảng giá sỉ theo cấp đại lý (VIP/Bạc/Đồng); lập đơn bán sỉ nháp và chuyển sang Kế toán thẩm định công nợ."),
-        ("Công việc 4.5: Soạn Hàng Từ Ngăn Kệ Theo Lệnh Giữ Chỗ (Reserved): ", "Khi đơn bán sỉ đã được duyệt và khóa hàng giữ chỗ trên hệ thống, nhân viên in phiếu soạn hàng (Pick List), đến đúng các vị trí ngăn kệ (Bin) được chỉ định để lấy đồng hồ ra bàn đóng gói."),
-        ("Công việc 4.6: Quét Serial Đóng Kiện & Thực Xuất Kho Bán Sỉ: ", "Dùng máy quét quét từng mã Serial đích danh trên sản phẩm trước khi đóng vào kiện hàng. Hệ thống kiểm tra thời gian thực: mã Serial phải đúng SKU, phải đang ở trạng thái 'HANG_MOI' và 'TRONG_KHO', không bị quét trùng. Khi quét đủ 100%, chuyển kiện hàng cho Thủ kho xác nhận bàn giao."),
-        ("Công việc 4.7: Tiếp nhận Hàng Đổi Trả Sỉ & Xuất Kho Bảo Hành / Tiêu Hủy: ", "Tiếp nhận sản phẩm đổi trả từ đại lý; quét kiểm tra Serial để xác định nguồn gốc bán ra; phân loại sơ bộ (hàng nguyên seal đưa về Kho Mới, hàng lỗi đưa về Kho Lỗi C-01). Thực hiện đóng gói xuất kho đồng hồ lỗi đi gửi bảo hành chính hãng theo lệnh xuất kho khác.")
+        ("Công việc 4.4: Lập Đơn Xuất Kho Đại Lý Nháp Theo Đặt Hàng Của Đại Lý: ", "Tiếp nhận đơn đặt hàng từ đại lý B2B; kiểm tra số lượng đặt theo từng mẫu mã đảm bảo >= MOQ quy định; kiểm tra số lượng tồn kho khả dụng; áp dụng bảng giá phân phối đại lý theo cấp đại lý (VIP/Bạc/Đồng); lập lệnh xuất kho đại lý nháp và chuyển sang Kế toán thẩm định công nợ."),
+        ("Công việc 4.5: Soạn Hàng Từ Ngăn Kệ Theo Lệnh Giữ Chỗ (Reserved): ", "Khi lệnh xuất kho đại lý đã được duyệt và khóa hàng giữ chỗ trên hệ thống, nhân viên in phiếu soạn hàng (Pick List), đến đúng các vị trí ngăn kệ (Bin) được chỉ định để lấy đồng hồ ra bàn đóng gói."),
+        ("Công việc 4.6: Quét Serial Đóng Kiện & Thực Xuất Kho Phân Phối Đại Lý: ", "Dùng máy quét quét từng mã Serial đích danh trên sản phẩm trước khi đóng vào kiện hàng. Hệ thống kiểm tra thời gian thực: mã Serial phải đúng SKU, phải đang ở trạng thái 'HANG_MOI' và 'TRONG_KHO', không bị quét trùng. Khi quét đủ 100%, chuyển kiện hàng cho Thủ kho xác nhận bàn giao."),
+        ("Công việc 4.7: Tiếp nhận Hàng Đại Lý Hoàn Trả & Xuất Kho Bảo Hành / Tiêu Hủy: ", "Tiếp nhận sản phẩm đổi trả từ đại lý; quét kiểm tra Serial để xác định nguồn gốc bán ra; phân loại sơ bộ (hàng nguyên seal đưa về Kho Mới, hàng lỗi đưa về Kho Lỗi C-01). Thực hiện đóng gói xuất kho đồng hồ lỗi đi gửi bảo hành chính hãng theo lệnh xuất kho khác.")
     ]
     for t_title, t_desc in op_tasks:
         bp = doc.add_paragraph(style='List Bullet')
@@ -500,10 +500,10 @@ def build_actor_document():
     op_table_data = [
         ("Khởi tạo phiếu nhập kho", "Khi có đợt hàng về", "Đơn mua PO, Số lượng thùng kiện", "Phiếu nhập nháp, Số chiếc quy đổi", "Áp dụng đúng hệ số quy đổi chuẩn"),
         ("Nạp & Quét Serial nhập", "Sau khi khui thùng kiện", "Mã Serial quét bằng súng / File Excel", "Danh sách Serial nạp vào chi tiết phiếu", "Khớp 100% số chiếc, không trùng lặp"),
-        ("Lập đơn bán sỉ nháp", "Khi đại lý gửi yêu cầu đặt", "Mã đại lý, SKU, Số lượng thùng/chiếc", "Đơn bán sỉ nháp (DRAFT Order)", "Số lượng >= MOQ, Số lượng <= Khả dụng"),
-        ("Soạn hàng tại ngăn kệ", "Sau khi đơn sỉ được duyệt", "Lệnh soạn hàng Pick List, Vị trí Bin", "Lô đồng hồ đưa về bàn đóng gói", "Lấy đúng vị trí kệ được hệ thống chỉ định"),
+        ("Lập lệnh xuất kho đại lý nháp", "Khi đại lý gửi yêu cầu đặt", "Mã đại lý, SKU, Số lượng thùng/chiếc", "Lệnh xuất kho đại lý nháp (DRAFT Order)", "Số lượng >= MOQ, Số lượng <= Khả dụng"),
+        ("Soạn hàng tại ngăn kệ", "Sau khi lệnh xuất đại lý được duyệt", "Lệnh soạn hàng Pick List, Vị trí Bin", "Lô đồng hồ đưa về bàn đóng gói", "Lấy đúng vị trí kệ được hệ thống chỉ định"),
         ("Quét Serial đóng kiện xuất", "Tại bàn đóng gói", "Mã Serial trên từng chiếc đồng hồ", "Kiện hàng dán tem, Phiếu xuất kho B2B", "Serial phải thuộc HANG_MOI & TRONG_KHO"),
-        ("Tiếp nhận hàng đổi trả sỉ", "Khi đại lý gửi trả hàng", "Mã đại lý, Mã Serial sản phẩm trả", "Phiếu nhận đổi trả, Đánh giá phân loại", "Serial phải tồn tại lịch sử xuất bán cho đại lý"),
+        ("Tiếp nhận hàng nhận trả hàng đại lý", "Khi đại lý gửi trả hàng", "Mã đại lý, Mã Serial sản phẩm trả", "Phiếu nhận đổi trả, Đánh giá phân loại", "Serial phải tồn tại lịch sử xuất bán cho đại lý"),
         ("Đóng gói xuất bảo hành/hủy", "Theo lệnh xử lý hàng lỗi", "Lệnh xuất bảo hành/tiêu hủy từ quản lý", "Kiện hàng bảo hành gửi hãng", "Chỉ xuất các Serial nằm trong Kho Hàng Lỗi")
     ]
     for row_idx, rvals in enumerate(op_table_data, start=1):
@@ -539,8 +539,8 @@ def build_actor_document():
     acc_tasks = [
         ("Công việc 5.1: Phân bổ Chi phí Lô Hàng & Thiết lập Giá vốn Đích danh: ", "Tiếp nhận phiếu nhập kho nháp từ nhân viên; thu thập hóa đơn chi phí phát sinh thực tế (cước vận chuyển quốc tế, thuế nhập khẩu hải quan, phí bảo hiểm hàng xa xỉ); nhập vào hệ thống để tự động phân bổ bình quân vào từng chiếc: Giá vốn Serial = Giá mua hóa đơn + (Tổng chi phí phân bổ / Tổng số chiếc). Gán giá vốn đích danh này vào từng mã Serial lưu kho."),
         ("Công việc 5.2: Theo dõi Công nợ NCC & Lập Phiếu Chi Thanh Toán: ", "Theo dõi số dư nợ phải trả Nhà cung cấp theo từng lô hàng nhập; đối soát hóa đơn; lập Phiếu Chi tiền (ủy nhiệm chi ngân hàng / tiền mặt) để thanh toán cho NCC theo kỳ hạn thanh toán cam kết; cập nhật giảm dư nợ NCC."),
-        ("Công việc 5.3: Thẩm định Hạn mức Tín dụng (Credit Limit) Đơn Bán Sỉ: ", "Khi nhân viên lập đơn bán sỉ nháp, Kế toán kiểm tra điều kiện tín dụng của đại lý: Dư nợ hiện tại + Giá trị đơn mới - Tiền cọc <= Hạn mức nợ cho phép, đồng thời kiểm tra đại lý không có hóa đơn quá hạn (Net 15 / Net 30). Nếu hợp lệ, ký xác nhận để hệ thống khóa giữ chỗ tồn kho; nếu vượt ngưỡng, chuyển hồ sơ trình Chủ cửa hàng duyệt."),
-        ("Công việc 5.4: Lập Phiếu Thu Tiền Bán Sỉ & Thu Hồi Nợ Đại Lý: ", "Tiếp nhận chứng từ nộp tiền cọc đơn sỉ hoặc chứng từ thanh toán tiền hàng của đại lý qua ngân hàng; lập Phiếu Thu tiền trên hệ thống; giảm số dư nợ của đại lý và tự động khôi phục hạn mức tín dụng khả dụng của đại lý."),
+        ("Công việc 5.3: Thẩm định Hạn mức Tín dụng (Credit Limit) Đơn Xuất Kho Đại Lý: ", "Khi nhân viên lập lệnh xuất kho đại lý nháp, Kế toán kiểm tra điều kiện tín dụng của đại lý: Dư nợ hiện tại + Giá trị đơn mới - Tiền cọc <= Hạn mức nợ cho phép, đồng thời kiểm tra đại lý không có hóa đơn quá hạn (Net 15 / Net 30). Nếu hợp lệ, ký xác nhận để hệ thống khóa giữ chỗ tồn kho; nếu vượt ngưỡng, chuyển hồ sơ trình Chủ cửa hàng duyệt."),
+        ("Công việc 5.4: Lập Phiếu Thu Tiền Xuất Kho Đại Lý & Thu Hồi Nợ Đại Lý: ", "Tiếp nhận chứng từ nộp tiền cọc đơn xuất kho hoặc chứng từ thanh toán tiền hàng của đại lý qua ngân hàng; lập Phiếu Thu tiền trên hệ thống; giảm số dư nợ của đại lý và tự động khôi phục hạn mức tín dụng khả dụng của đại lý."),
         ("Công việc 5.5: Đối soát Sổ Thẻ Kho Điện tử & Chứng từ Giao Dịch: ", "Định kỳ hàng tuần đối chiếu giữa số lượng và giá trị trên Sổ Thẻ kho điện tử (`so_the_kho`), Phiếu nhập kho (PN), Phiếu xuất kho (PX) và Phiếu cân bằng kiểm kê (KK); phát hiện và xử lý kịp thời các sai lệch số liệu."),
         ("Công việc 5.6: Kết xuất Báo cáo Tài chính Kho & Dòng Tiền Thuần: ", "Lập và kết xuất định kỳ các báo cáo chuyên sâu: Báo cáo Doanh thu - Giá vốn (COGS) - Lợi nhuận gộp B2B; Sổ chi tiết công nợ 2 chiều; Báo cáo dòng tiền thu chi thực tế (Cashflow Report); xuất dữ liệu ra định dạng Excel/PDF phục vụ thanh kiểm tra thuế.")
     ]
@@ -566,8 +566,8 @@ def build_actor_document():
     acc_table_data = [
         ("Phân bổ chi phí lô nhập", "Theo từng phiếu nhập kho", "Chi phí vận chuyển, thuế hải quan, bảo hiểm", "Giá vốn Đích danh của từng mã Serial", "Giá vốn = Giá mua + Chi phí phân bổ/chiếc"),
         ("Lập Phiếu Chi trả nợ NCC", "Theo kỳ hạn thanh toán", "Mã NCC, Hóa đơn NCC, Số tiền chi", "Phiếu chi (PC-xxxx), Giảm dư nợ NCC", "Số tiền chi không vượt quá dư nợ thực tế"),
-        ("Thẩm định tín dụng đơn sỉ", "Khi nhân viên lên đơn nháp", "Đơn hàng sỉ, Dư nợ & Hạn mức nợ đại lý", "Xác nhận hạn mức khả dụng / Trình duyệt", "Không cho nợ nếu có hóa đơn quá hạn"),
-        ("Lập Phiếu Thu tiền sỉ / cọc", "Khi phát sinh thanh toán", "Mã đại lý, Giấy báo Có ngân hàng", "Phiếu thu (PT-xxxx), Tăng hạn mức khả dụng", "Khớp đúng số tiền và nội dung chuyển khoản"),
+        ("Thẩm định tín dụng lệnh xuất đại lý", "Khi nhân viên lên đơn nháp", "Đơn hàng xuất đại lý, Dư nợ & Hạn mức nợ đại lý", "Xác nhận hạn mức khả dụng / Trình duyệt", "Không cho nợ nếu có hóa đơn quá hạn"),
+        ("Lập Phiếu Thu nợ đại lý / cọc", "Khi phát sinh thanh toán", "Mã đại lý, Giấy báo Có ngân hàng", "Phiếu thu (PT-xxxx), Tăng hạn mức khả dụng", "Khớp đúng số tiền và nội dung chuyển khoản"),
         ("Đối soát Sổ Thẻ kho", "Hàng tuần / Cuối tháng", "Sổ Thẻ kho, Chứng từ PN, PX, KK", "Biên bản đối soát cân đối kho tài chính", "Khớp số lượng và giá trị 100%"),
         ("Báo cáo Tài chính & Dòng tiền", "Định kỳ tháng/quý/năm", "Toàn bộ giao dịch PN, PX, PT, PC", "Báo cáo Lợi nhuận gộp B2B, Sổ công nợ", "Xuất file chuẩn khổ A4 / Excel / PDF")
     ]
@@ -607,18 +607,18 @@ def build_actor_document():
             ]
         },
         {
-            "name": "2. Luồng Bán Sỉ & Duyệt Khóa Giữ Chỗ Tồn Kho (Reserved Allocation)",
+            "name": "2. Luồng Xuất Kho Đại Lý & Duyệt Khóa Giữ Chỗ Tồn Kho (Reserved Allocation)",
             "steps": [
-                ("Bước 1 (Nhân viên nhập - xuất kho): ", "Tiếp nhận yêu cầu từ đại lý B2B, lập đơn bán sỉ nháp theo Thùng hoặc Chiếc lẻ; hệ thống tự động kiểm tra điều kiện sỉ: Số lượng đặt >= MOQ, Số lượng đặt <= Tồn khả dụng."),
+                ("Bước 1 (Nhân viên nhập - xuất kho): ", "Tiếp nhận yêu cầu từ đại lý B2B, lập lệnh xuất kho đại lý nháp theo Thùng hoặc Chiếc lẻ; hệ thống tự động kiểm tra điều kiện sỉ: Số lượng đặt >= MOQ, Số lượng đặt <= Tồn khả dụng."),
                 ("Bước 2 (Kế toán): ", "Thẩm định hạn mức tín dụng và thời hạn nợ của đại lý. Nếu đại lý còn hạn mức và không có nợ quá hạn, Kế toán ký duyệt chấp thuận đơn."),
                 ("Bước 3 (Chủ cửa hàng): ", "Trường hợp đại lý vượt hạn mức tín dụng, đơn được chuyển lên Chủ cửa hàng. Chỉ Chủ cửa hàng mới có thẩm quyền duyệt ngoại lệ tín dụng có ghi nhận lý do."),
                 ("Bước 4 (Hệ thống): ", "Chuyển trạng thái đơn sang DA_DUYET; tự động tăng so_luong_giu_cho và giảm so_luong_kha_dung tại bảng tổng hợp tồn kho, triệt tiêu nguy cơ bán trùng hàng.")
             ]
         },
         {
-            "name": "3. Luồng Quét Serial Đóng Kiện & Thực Xuất Kho Bán Sỉ",
+            "name": "3. Luồng Quét Serial Đóng Kiện & Thực Xuất Kho Xuất Kho Đại Lý",
             "steps": [
-                ("Bước 1 (Nhân viên nhập - xuất kho): ", "Mở đơn bán sỉ đã duyệt giữ chỗ, tạo Phiếu xuất kho đóng hàng, in lệnh soạn hàng Pick List."),
+                ("Bước 1 (Nhân viên nhập - xuất kho): ", "Mở lệnh xuất kho đại lý đã duyệt giữ chỗ, tạo Phiếu xuất kho đóng hàng, in lệnh soạn hàng Pick List."),
                 ("Bước 2 (Nhân viên nhập - xuất kho): ", "Đến đúng ngăn kệ (Bin), lấy đồng hồ và dùng súng quét từng mã Serial vào kiện hàng. Hệ thống kiểm soát tính hợp lệ: đúng SKU, thuộc HANG_MOI, đang TRONG_KHO và không bị quét trùng."),
                 ("Bước 3 (Thủ kho điều hành): ", "Đối chiếu số lượng và danh sách Serial dán trên kiện hàng thực tế so với phiếu xuất điện tử; xác nhận xuất kho vật lý."),
                 ("Bước 4 (Hệ thống): ", "Trừ tồn kho thực tế, giải phóng tồn giữ chỗ; chuyển trạng thái Serial sang 'DA_BAN'; tăng công nợ đại lý; ghi Sổ Thẻ kho (-) và in Phiếu xuất kho kiêm Biên bản bàn giao A4.")
@@ -674,11 +674,11 @@ def build_actor_document():
         ("Xác nhận nghiệm thu & nhập kho vật lý", "I", "I", "R / A", "C", "I"),
         ("Phê duyệt chi phí nhập phát sinh vượt định mức", "I", "A", "I", "I", "R"),
         ("Lập Phiếu Chi thanh toán công nợ Nhà cung cấp", "I", "A (vượt)", "I", "I", "R / A"),
-        ("Tiếp nhận đặt hàng & Lập Đơn bán sỉ nháp", "I", "I", "I", "R", "C"),
+        ("Tiếp nhận đặt hàng & Lập Lệnh xuất kho đại lý nháp", "I", "I", "I", "R", "C"),
         ("Thẩm định hạn mức tín dụng & Duyệt giữ chỗ", "I", "A (vượt)", "C", "I", "R / A"),
-        ("Soạn hàng tại kệ & Quét Serial đóng kiện xuất sỉ", "I", "I", "C", "R", "I"),
+        ("Soạn hàng tại kệ & Quét Serial đóng kiện xuất kho đại lý", "I", "I", "C", "R", "I"),
         ("Xác nhận bàn giao & xuất kho vật lý B2B", "I", "I", "R / A", "C", "I"),
-        ("Lập Phiếu Thu tiền bán sỉ & Thu nợ đại lý", "I", "I", "I", "I", "R / A"),
+        ("Lập Phiếu Thu hồi công nợ đại lý & Thu nợ đại lý", "I", "I", "I", "I", "R / A"),
         ("Bố trí ngăn kệ & Điều chuyển kho nội bộ", "I", "I", "R / A", "C", "I"),
         ("Kiểm kê thực tế & Đối soát sai lệch Serial", "I", "A (vượt)", "R / A (trong)", "R", "C"),
         ("Theo dõi Dashboard KPI & Báo cáo Tài chính dòng tiền", "I (Log)", "R / A (All)", "I (Kho)", "I (Tiến độ)", "R / A (TC)")
