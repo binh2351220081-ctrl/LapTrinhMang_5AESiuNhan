@@ -54,6 +54,7 @@ class ProductListFragment : Fragment() {
     private var _binding: FragmentProductListBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var database: ChronoVaultDatabase
     private lateinit var productDao: ProductDao
     private lateinit var serialDao: SerialDao
     private lateinit var userDao: UserDao
@@ -76,7 +77,7 @@ class ProductListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Khởi tạo Database DAO & Session
-        val database = ChronoVaultDatabase.getInstance(requireContext())
+        database = ChronoVaultDatabase.getInstance(requireContext())
         productDao = database.productDao()
         serialDao = database.serialDao()
         userDao = database.userDao()
@@ -148,6 +149,13 @@ class ProductListFragment : Fragment() {
             showSystemManagementDialog()
         }
 
+        binding.btnNavOutbound.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainer, com.example.chronovaultwms.outbound.OutboundOrderFragment())
+                .addToBackStack(null)
+                .commit()
+        }
+
         // Bấm vào tên người dùng ở Header để đổi ngay Gmail / Hồ sơ cá nhân
         binding.tvLoggedInUser.setOnClickListener {
             viewLifecycleOwner.lifecycleScope.launch {
@@ -176,8 +184,16 @@ class ProductListFragment : Fragment() {
 
     private fun loadProductsAndCheckAuth() {
         viewLifecycleOwner.lifecycleScope.launch {
-            // Nạp dữ liệu mẫu ban đầu gồm Sản phẩm, Serials, 5 Tài khoản và Nhật ký nếu CSDL rỗng
-            DatabaseSeeder.checkAndSeed(productDao, serialDao, userDao, auditLogDao)
+            // Nạp dữ liệu mẫu ban đầu gồm Sản phẩm, Serials, 5 Tài khoản, Đại lý, Đơn sỉ và Nhật ký nếu CSDL rỗng
+            DatabaseSeeder.checkAndSeed(
+                productDao,
+                serialDao,
+                userDao,
+                auditLogDao,
+                database.dealerDao(),
+                database.outboundOrderDao(),
+                database.dealerReceiptDao()
+            )
 
             // Lấy danh sách sản phẩm từ Room
             allProducts = withContext(Dispatchers.IO) {
@@ -732,19 +748,19 @@ class ProductListFragment : Fragment() {
                         "Đã lưu trữ an toàn tại vị trí ${serial.currentLocation}. Kích hoạt mã định danh RFID/Barcode theo dõi."
                     ),
                     Triple(
-                        "4. 🔒 Khóa Hàng Giữ Chỗ Đơn Sỉ B2B (Allocation)",
-                        if (serial.status == "ALLOCATED" || serial.status == "DELIVERED") "Đã xác nhận" else "Sẵn sàng",
-                        if (serial.dealerName != null) "Đã khóa tự động giữ chỗ cho: ${serial.dealerName}." else "Hàng khả dụng sẵn sàng phân bổ cho các đại lý bán buôn."
+                        "4. 🔒 Khóa Giữ Chỗ Lệnh Điều Phối (Allocation)",
+                        if (serial.status == "ALLOCATED" || serial.status == "DELIVERED" || serial.status == "DISPATCHED") "Đã xác nhận" else "Sẵn sàng",
+                        if (serial.dealerName != null) "Đã khóa tự động giữ chỗ cho: ${serial.dealerName}." else "Hàng khả dụng sẵn sàng phân bổ theo lệnh điều phối kho."
                     ),
                     Triple(
                         "5. 🚚 Quét Barcode Xuất Bến & Bàn Giao Vận Chuyển",
-                        if (serial.status == "DELIVERED") "Hoàn thành" else "Chờ xuất bến",
-                        if (serial.status == "DELIVERED") "Đã quét xuất kho Serial ${serial.serialNumber}, bàn giao xe vận tải có niêm phong bảo mật." else "Đang chờ lệnh xuất kho và phiếu xuất kho được duyệt."
+                        if (serial.status == "DELIVERED" || serial.status == "DISPATCHED") "Hoàn thành" else "Chờ xuất bến",
+                        if (serial.status == "DELIVERED" || serial.status == "DISPATCHED") "Đã quét xuất kho Serial ${serial.serialNumber}, bàn giao xe vận tải có niêm phong bảo mật." else "Đang chờ lệnh điều phối và phiếu xuất kho được duyệt."
                     ),
                     Triple(
-                        "6. 🛡️ Bàn Giao Đại Lý & Kích Hoạt Bảo Hành Điện Tử",
-                        if (serial.status == "DELIVERED") "Đã kích hoạt" else "Chưa kích hoạt",
-                        if (serial.status == "DELIVERED") "Đại lý đã ký nhận biên bản bàn giao. Đã kích hoạt bảo hành chính hãng toàn cầu 5 năm." else "Bảo hành sẽ được tự động kích hoạt ngay khi hoàn tất giao hàng."
+                        "6. 🛡️ Bàn Giao Đơn Vị Nhận & Kích Hoạt Bảo Hành Điện Tử",
+                        if (serial.status == "DELIVERED" || serial.status == "DISPATCHED") "Đã kích hoạt" else "Chưa kích hoạt",
+                        if (serial.status == "DELIVERED" || serial.status == "DISPATCHED") "Đơn vị tiếp nhận đã ký biên bản bàn giao. Đã kích hoạt bảo hành chính hãng toàn cầu 5 năm." else "Bảo hành sẽ được tự động kích hoạt ngay khi hoàn tất bàn giao xuất kho."
                     )
                 )
 

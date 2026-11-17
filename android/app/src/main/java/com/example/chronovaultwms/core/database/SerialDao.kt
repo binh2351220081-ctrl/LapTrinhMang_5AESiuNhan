@@ -28,5 +28,14 @@ interface SerialDao {
 
     @Update
     suspend fun update(serial: SerialEntity)
+
+    @Query("UPDATE serials SET status = 'ALLOCATED', allocatedOrderCode = :orderCode WHERE serialNumber = :serialNumber AND status = 'IN_STOCK' AND allocatedOrderCode IS NULL")
+    suspend fun reserve(serialNumber: String, orderCode: String): Int
+
+    @Query("SELECT COUNT(*) FROM serials WHERE productCode = :productCode AND status IN ('IN_STOCK', 'ALLOCATED')")
+    suspend fun newPhysicalCount(productCode: String): Int
+
+    @Query("SELECT COUNT(*) FROM serials WHERE productCode = :productCode AND status IN ('IN_STOCK', 'ALLOCATED', 'DISPLAY', 'DEFECTIVE', 'DEFECT')")
+    suspend fun warehouseCount(productCode: String): Int
 }
 

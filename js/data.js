@@ -25,6 +25,17 @@ const STORAGE_KEYS = {
   STOCK_CARDS: 'chrono_stock_cards_v2'
 };
 
+// A single committed snapshot keeps TV3 documents, serials and stock movements together.
+// Existing v2 keys remain intact for migration and recovery; they are never reseeded.
+const OUTBOUND_STORE_KEY = 'chrono_outbound_state_v3';
+const OUTBOUND_SESSION_KEY = 'chrono_outbound_demo_session_v1';
+const OUTBOUND_COLLECTIONS = {
+  [STORAGE_KEYS.SERIALS]: 'serials', [STORAGE_KEYS.ORDERS]: 'orders',
+  [STORAGE_KEYS.DEALERS]: 'dealers', [STORAGE_KEYS.CUSTOMER_RETURNS]: 'returns',
+  [STORAGE_KEYS.OTHER_DISPATCHES]: 'otherDispatches', [STORAGE_KEYS.STOCK_CARDS]: 'stockCards',
+  [STORAGE_KEYS.AUDIT_LOGS]: 'logs'
+};
+
 // ==========================================
 // SEED DATA 1: DANH MỤC ĐỒNG HỒ (TV1)
 // ==========================================
@@ -47,10 +58,10 @@ const INITIAL_WATCHES = [
     wholesaleUnit: 'Thùng',
     conversionRate: 10, // 1 Thùng = 10 Chiếc
     costPriceMethod: 'Đích danh theo Serial',
-    baseCost: 265000000,
-    wholesalePriceVip: 295000000,
-    wholesalePriceSilver: 310000000,
-    wholesalePriceBronze: 325000000,
+    baseCost: 285000000,
+    wholesalePriceVip: 350000000,
+    wholesalePriceSilver: 365000000,
+    wholesalePriceBronze: 380000000,
     moq: 2,
     minStock: 5,
     maxStock: 30,
@@ -210,66 +221,218 @@ const INITIAL_WATCHES = [
 // ==========================================
 const INITIAL_SERIALS = [
   {
-    serialNumber: 'RLX-SUB-2026-9901',
+    serialNumber: 'RLX-SUB-2026-001',
     sku: 'RLX-SUB-126610LN',
     watchName: 'Rolex Submariner Date 41mm',
-    costPrice: 265000000,
-    status: 'IN_STOCK', // IN_STOCK, RESERVED, SOLD, DEFECT, RETURNED_SUPPLIER, WARRANTY
+    costPrice: 285000000,
+    status: 'IN_STOCK', // IN_STOCK, RESERVED, DISPATCHED, DEFECT, RETURNED_SUPPLIER, WARRANTY
     qualityType: 'NEW', // NEW (Kho Mới), DISPLAY (Trưng Bày), DEFECT (Hàng Lỗi)
-    shelfLocation: 'A-01-T2-N03',
+    shelfLocation: 'Kệ K1-A02-B03',
     supplierId: 'NCC01',
     receiptCode: 'PN-2026-001',
-    receivedDate: '2026-08-15',
+    receivedDate: '2026-03-01',
     dealerId: null,
     orderCode: null,
     soldDate: null,
-    warrantyExpire: '2031-08-15',
+    warrantyExpire: '2031-03-01',
     timeline: [
-      { date: '2026-08-15 09:30', title: 'Nhập kho thành công', desc: 'Từ NCC: Rolex Authorized Asia theo PN-2026-001. Giá vốn: 265.000.000đ' },
-      { date: '2026-08-15 11:00', title: 'Định vị vị trí kệ', desc: 'Chuyển vào Kho Hàng Mới: Vị trí Kệ A-01-T2-N03' },
-      { date: '2026-09-01 14:20', title: 'Kiểm kê định kỳ tháng 9', desc: 'Khớp 100% số liệu thực tế tại kệ' }
+      { date: '2026-03-01 09:30', title: 'Nhập kho Lô 1 (FIFO)', desc: 'Từ Rolex Authorized Asia theo PN-2026-001. Giá vốn đích danh: 285.000.000đ' },
+      { date: '2026-03-01 11:00', title: 'Định vị 5 cấp', desc: 'Lưu tại Kho Mới: Kệ K1-A02-B03' }
     ]
   },
   {
-    serialNumber: 'RLX-SUB-2026-9902',
+    serialNumber: 'RLX-SUB-2026-004',
     sku: 'RLX-SUB-126610LN',
     watchName: 'Rolex Submariner Date 41mm',
-    costPrice: 265500000,
-    status: 'RESERVED',
+    costPrice: 285000000,
+    status: 'IN_STOCK',
     qualityType: 'NEW',
-    shelfLocation: 'A-01-T2-N04',
+    shelfLocation: 'Kệ K1-A02-B04',
     supplierId: 'NCC01',
     receiptCode: 'PN-2026-001',
-    receivedDate: '2026-08-15',
-    dealerId: 'DL01',
-    orderCode: 'DS-2026-104',
+    receivedDate: '2026-03-01',
+    dealerId: null,
+    orderCode: null,
     soldDate: null,
-    warrantyExpire: '2031-08-15',
+    warrantyExpire: '2031-03-01',
     timeline: [
-      { date: '2026-08-15 09:30', title: 'Nhập kho thành công', desc: 'Từ NCC: Rolex Authorized Asia theo PN-2026-001' },
-      { date: '2026-08-15 11:00', title: 'Định vị vị trí kệ', desc: 'Vị trí Kệ A-01-T2-N04' },
-      { date: '2026-09-28 10:15', title: 'Khóa giữ chỗ (Reserved)', desc: 'Lệnh xuất đại lý DS-2026-104 của Đại lý Hoàng Kim Watch VIP (Đã cọc 30%)' }
+      { date: '2026-03-01 09:30', title: 'Nhập kho Lô 1 (FIFO)', desc: 'Từ Rolex Authorized Asia theo PN-2026-001. Giá vốn đích danh: 285.000.000đ' },
+      { date: '2026-03-01 11:00', title: 'Định vị 5 cấp', desc: 'Lưu tại Kho Mới: Kệ K1-A02-B04' }
+    ]
+  },
+  {
+    serialNumber: 'RLX-SUB-2026-002',
+    sku: 'RLX-SUB-126610LN',
+    watchName: 'Rolex Submariner Date 41mm',
+    costPrice: 295000000,
+    status: 'IN_STOCK',
+    qualityType: 'NEW',
+    shelfLocation: 'Két VIP-02',
+    supplierId: 'NCC01',
+    receiptCode: 'PN-2026-004',
+    receivedDate: '2026-03-15',
+    dealerId: null,
+    orderCode: null,
+    soldDate: null,
+    warrantyExpire: '2031-03-15',
+    timeline: [
+      { date: '2026-03-15 10:00', title: 'Nhập kho Lô 2 (Sau FIFO)', desc: 'Từ Rolex Authorized Asia theo PN-2026-004. Giá vốn đích danh: 295.000.000đ' },
+      { date: '2026-03-15 10:30', title: 'Định vị két bảo mật', desc: 'Lưu tại Két VIP-02 (Không gộp xuất với Lô 1)' }
+    ]
+  },
+  {
+    serialNumber: 'RLX-SUB-2026-005',
+    sku: 'RLX-SUB-126610LN',
+    watchName: 'Rolex Submariner Date 41mm',
+    costPrice: 295000000,
+    status: 'IN_STOCK',
+    qualityType: 'NEW',
+    shelfLocation: 'Két VIP-02',
+    supplierId: 'NCC01',
+    receiptCode: 'PN-2026-004',
+    receivedDate: '2026-03-15',
+    dealerId: null,
+    orderCode: null,
+    soldDate: null,
+    warrantyExpire: '2031-03-15',
+    timeline: [
+      { date: '2026-03-15 10:00', title: 'Nhập kho Lô 2 (Sau FIFO)', desc: 'Lưu tại Két VIP-02 theo PN-2026-004. Giá vốn: 295.000.000đ' }
+    ]
+  },
+  {
+    serialNumber: 'RLX-SUB-2026-006',
+    sku: 'RLX-SUB-126610LN',
+    watchName: 'Rolex Submariner Date 41mm',
+    costPrice: 295000000,
+    status: 'IN_STOCK',
+    qualityType: 'NEW',
+    shelfLocation: 'Két VIP-02',
+    supplierId: 'NCC01',
+    receiptCode: 'PN-2026-004',
+    receivedDate: '2026-03-15',
+    dealerId: null,
+    orderCode: null,
+    soldDate: null,
+    warrantyExpire: '2031-03-15',
+    timeline: [
+      { date: '2026-03-15 10:00', title: 'Nhập kho Lô 2 (Sau FIFO)', desc: 'Lưu tại Két VIP-02 theo PN-2026-004. Giá vốn: 295.000.000đ' }
+    ]
+  },
+  {
+    serialNumber: 'RLX-SUB-2026-007',
+    sku: 'RLX-SUB-126610LN',
+    watchName: 'Rolex Submariner Date 41mm',
+    costPrice: 295000000,
+    status: 'IN_STOCK',
+    qualityType: 'NEW',
+    shelfLocation: 'Két VIP-02',
+    supplierId: 'NCC01',
+    receiptCode: 'PN-2026-004',
+    receivedDate: '2026-03-15',
+    dealerId: null,
+    orderCode: null,
+    soldDate: null,
+    warrantyExpire: '2031-03-15',
+    timeline: [
+      { date: '2026-03-15 10:00', title: 'Nhập kho Lô 2 (Sau FIFO)', desc: 'Lưu tại Két VIP-02 theo PN-2026-004. Giá vốn: 295.000.000đ' }
+    ]
+  },
+  {
+    serialNumber: 'RLX-SUB-2026-008',
+    sku: 'RLX-SUB-126610LN',
+    watchName: 'Rolex Submariner Date 41mm',
+    costPrice: 295000000,
+    status: 'IN_STOCK',
+    qualityType: 'NEW',
+    shelfLocation: 'Két VIP-02',
+    supplierId: 'NCC01',
+    receiptCode: 'PN-2026-004',
+    receivedDate: '2026-03-15',
+    dealerId: null,
+    orderCode: null,
+    soldDate: null,
+    warrantyExpire: '2031-03-15',
+    timeline: [
+      { date: '2026-03-15 10:00', title: 'Nhập kho Lô 2 (Sau FIFO)', desc: 'Lưu tại Két VIP-02 theo PN-2026-004. Giá vốn: 295.000.000đ' }
+    ]
+  },
+  {
+    serialNumber: 'RLX-SUB-2026-ERR',
+    sku: 'RLX-SUB-126610LN',
+    watchName: 'Rolex Submariner Date 41mm',
+    costPrice: 285000000,
+    status: 'DEFECT',
+    qualityType: 'DEFECT',
+    shelfLocation: 'C-01-KHO-LOI',
+    supplierId: 'NCC01',
+    receiptCode: 'PN-2026-001',
+    receivedDate: '2026-03-01',
+    dealerId: null,
+    orderCode: null,
+    soldDate: null,
+    warrantyExpire: '2031-03-01',
+    timeline: [
+      { date: '2026-03-05 14:00', title: 'Cách ly Kho Lỗi C-01', desc: 'Sai số kim giây vượt chuẩn COSC - Chặn xuất điều phối' }
+    ]
+  },
+  {
+    serialNumber: 'RLX-SUB-2026-9901',
+    sku: 'RLX-SUB-126610LN',
+    watchName: 'Rolex Submariner Date 41mm',
+    costPrice: 285000000,
+    status: 'IN_STOCK',
+    qualityType: 'NEW',
+    shelfLocation: 'A-01-T2-N03',
+    supplierId: 'NCC01',
+    receiptCode: 'PN-2026-001',
+    receivedDate: '2026-03-02',
+    dealerId: null,
+    orderCode: null,
+    soldDate: null,
+    warrantyExpire: '2031-03-02',
+    timeline: [
+      { date: '2026-03-02 09:30', title: 'Nhập kho thành công', desc: 'Từ NCC: Rolex Authorized Asia theo PN-2026-001. Giá vốn: 285.000.000đ' },
+      { date: '2026-03-02 11:00', title: 'Định vị vị trí kệ', desc: 'Chuyển vào Kho Hàng Mới: Vị trí Kệ A-01-T2-N03' }
     ]
   },
   {
     serialNumber: 'RLX-SUB-2026-9888',
     sku: 'RLX-SUB-126610LN',
     watchName: 'Rolex Submariner Date 41mm',
-    costPrice: 264000000,
-    status: 'SOLD',
+    costPrice: 285000000,
+    status: 'DISPATCHED',
     qualityType: 'NEW',
-    shelfLocation: 'Đã xuất kho',
+    shelfLocation: 'Đã xuất bàn giao Galle Watch',
     supplierId: 'NCC01',
     receiptCode: 'PN-2026-001',
-    receivedDate: '2026-08-15',
-    dealerId: 'DL01',
+    receivedDate: '2026-03-01',
+    dealerId: 'DL-GALLE',
     orderCode: 'DS-2026-098',
-    soldDate: '2026-09-10',
-    warrantyExpire: '2031-09-10',
+    soldDate: '2026-03-18',
+    warrantyExpire: '2031-03-18',
     timeline: [
-      { date: '2026-08-15 09:30', title: 'Nhập kho thành công', desc: 'Nhập từ Rolex Authorized Asia' },
-      { date: '2026-09-08 14:00', title: 'Lên lệnh xuất đại lý DS-2026-098', desc: 'Đại lý Đồng Hồ Hoàng Kim đặt hàng đại lý' },
-      { date: '2026-09-10 16:30', title: 'Quét xuất kho & Bàn giao', desc: 'Xuất giao đại lý theo PX-2026-088. Kích hoạt bảo hành điện tử 5 năm' }
+      { date: '2026-03-01 09:30', title: 'Nhập kho thành công', desc: 'Nhập từ Rolex Authorized Asia' },
+      { date: '2026-03-18 14:00', title: 'Duyệt lệnh điều phối DS-2026-098', desc: 'Đơn vị Galle Watch Việt Nam yêu cầu xuất kho' },
+      { date: '2026-03-18 16:30', title: 'Quét xuất kho & Bàn giao', desc: 'Xuất bàn giao Galle Watch theo PX-2026-088' }
+    ]
+  },
+  {
+    serialNumber: 'OMG-SPEED-2026-001',
+    sku: 'OMG-SEA-220104121',
+    watchName: 'Omega Seamaster Aqua Terra 150M',
+    costPrice: 120000000,
+    status: 'DISPATCHED',
+    qualityType: 'NEW',
+    shelfLocation: 'Đã xuất bàn giao Hải Triều',
+    supplierId: 'NCC02',
+    receiptCode: 'PN-2026-002',
+    receivedDate: '2026-03-10',
+    dealerId: 'DL-HAITRIEU',
+    orderCode: 'DS-2026-002',
+    soldDate: '2026-03-22',
+    warrantyExpire: '2031-03-22',
+    timeline: [
+      { date: '2026-03-22 10:15', title: 'Xuất kho bàn giao', desc: 'Đã bàn giao Đồng Hồ Hải Triều theo DS-2026-002' }
     ]
   },
   {
@@ -342,15 +505,15 @@ const INITIAL_SERIALS = [
     supplierId: 'NCC02',
     receiptCode: 'PN-2026-002',
     receivedDate: '2026-08-20',
-    dealerId: 'DL02',
+    dealerId: 'DL-HAITRIEU',
     orderCode: 'DS-2026-095',
     soldDate: null,
     warrantyExpire: '2028-08-20',
     timeline: [
       { date: '2026-08-20 10:15', title: 'Nhập kho nguyên kiện', desc: 'Nhập từ Swatch Group' },
-      { date: '2026-09-02 11:00', title: 'Xuất kho đại lý Hải Triều', desc: 'Theo đơn DS-2026-095' },
-      { date: '2026-09-12 15:30', title: 'Tiếp nhận trả hàng đại lý', desc: 'Đại lý Hải Triều trả lại do hấp hơi nước mặt kính' },
-      { date: '2026-09-12 16:00', title: 'Cách ly Kho Hàng Lỗi', desc: 'Lưu tại Kệ C-01 chờ lập Phiếu xuất trả NCC hoàn tiền' }
+      { date: '2026-09-02 11:00', title: 'Xuất bàn giao Hải Triều', desc: 'Theo lệnh điều phối DS-2026-095' },
+      { date: '2026-09-12 15:30', title: 'Tiếp nhận hoàn trả kho', desc: 'Đơn vị Hải Triều hoàn trả kiểm định do hấp hơi nước mặt kính' },
+      { date: '2026-09-12 16:00', title: 'Cách ly Kho Hàng Lỗi', desc: 'Lưu tại Kệ C-01 chờ lập Phiếu xuất bảo hành / trả NCC' }
     ]
   },
   {
@@ -501,117 +664,147 @@ const INITIAL_SUPPLIER_RETURNS = [
 ];
 
 // ==========================================
-// SEED DATA 4: ĐẠI LÝ B2B & CÔNG NỢ SỈ (TV3)
+// SEED DATA 4: ĐƠN VỊ TIẾP NHẬN & BẢO LÃNH TÀI SẢN (TV3)
 // ==========================================
 const INITIAL_DEALERS = [
   {
-    id: 'DL01',
-    shopName: 'Đại Lý Đồng Hồ Hoàng Kim',
-    companyName: 'Công ty Cổ phần Thương mại Hoàng Kim Luxury',
-    representative: 'Ông Nguyễn Hoàng Kim',
-    taxCode: '0315998811',
-    phone: '0908 123 456',
-    address: '158 Lê Lợi, Phường Bến Thành, Quận 1, TP.HCM',
-    tier: 'VIP', // VIP: 15% discount, Silver: 10%, Bronze: 5%
-    discountRate: 0.15,
-    creditLimit: 2000000000, // Hạn mức tín dụng 2 tỷ
-    currentDebt: 650000000, // Dư nợ hiện tại
-    availableCredit: 1350000000,
+    id: 'DL-GALLE',
+    shopName: 'Galle Watch Việt Nam',
+    companyName: 'Công ty Cổ phần Phân phối Galle Watch',
+    representative: 'Ông Trần Quang Minh',
+    taxCode: '0106123456',
+    phone: '0908 111 222',
+    address: '41 Thi Sách, Quận Hai Bà Trưng, Hà Nội',
+    tier: 'VIP', // VIP: Hệ số 25%, SILVER: 15%, BRONZE: 10%
+    discountRate: 0.25,
+    creditLimit: 3000000000, // Hạn mức bảo lãnh tài sản 3 tỷ
+    currentDebt: 1800000000, // Tài sản đang giữ 1.8 tỷ
+    availableCredit: 1200000000,
     status: 'ACTIVE'
   },
   {
-    id: 'DL02',
-    shopName: 'Hệ Thống Showroom Hải Triều',
+    id: 'DL-HAITRIEU',
+    shopName: 'Đồng Hồ Hải Triều',
     companyName: 'Công ty TNHH Hải Triều Watch & Jewelry',
     representative: 'Bà Đặng Thị Thanh Thảo',
     taxCode: '0304991122',
-    phone: '0912 888 999',
-    address: '160 Âu Cơ, Phường 9, Quận Tân Bình, TP.HCM',
-    tier: 'SILVER',
-    discountRate: 0.10,
-    creditLimit: 1200000000,
-    currentDebt: 420000000,
-    availableCredit: 780000000,
+    phone: '0908 333 444',
+    address: '160 Âu Cơ, Quận Tân Bình, TP.HCM',
+    tier: 'VIP',
+    discountRate: 0.22,
+    creditLimit: 2500000000,
+    currentDebt: 950000000,
+    availableCredit: 1550000000,
     status: 'ACTIVE'
   },
   {
-    id: 'DL03',
-    shopName: 'Chuỗi Cửa Hàng WatchStore',
-    companyName: 'Công ty Cổ phần Bán lẻ WatchStore Việt Nam',
-    representative: 'Ông Vũ Tuấn Anh',
+    id: 'DL-BOSSLUX',
+    shopName: 'Boss Luxury Watch Hà Nội',
+    companyName: 'Công ty Cổ phần Boss Luxury Việt Nam',
+    representative: 'Ông Lê Hoàng Sơn',
+    taxCode: '0108992211',
+    phone: '0912 555 666',
+    address: '60 Ngô Quyền, Quận Hoàn Kiếm, Hà Nội',
+    tier: 'VIP',
+    discountRate: 0.25,
+    creditLimit: 4000000000,
+    currentDebt: 0,
+    availableCredit: 4000000000,
+    status: 'ACTIVE'
+  },
+  {
+    id: 'DL-DANGQUANG',
+    shopName: 'Đăng Quang Watch Store',
+    companyName: 'Công ty Cổ phần Đăng Quang Watch',
+    representative: 'Ông Nguyễn Mạnh Hùng',
     taxCode: '0107883344',
+    phone: '0912 777 888',
+    address: '55 Trần Đăng Ninh, Cầu Giấy, Hà Nội',
+    tier: 'SILVER',
+    discountRate: 0.15,
+    creditLimit: 1500000000,
+    currentDebt: 1200000000,
+    availableCredit: 300000000,
+    status: 'ACTIVE'
+  },
+  {
+    id: 'DL-XWATCH',
+    shopName: 'XWatch Luxury TP.HCM',
+    companyName: 'Công ty TNHH Phân phối XWatch Luxury',
+    representative: 'Ông Vũ Tuấn Anh',
+    taxCode: '0316554433',
     phone: '0933 667 788',
-    address: '58 Trần Phú, Quận Ba Đình, Hà Nội',
+    address: '472 Đường Láng, Đống Đa, Hà Nội',
     tier: 'BRONZE',
-    discountRate: 0.05,
+    discountRate: 0.10,
     creditLimit: 500000000,
-    currentDebt: 110000000,
-    availableCredit: 390000000,
+    currentDebt: 0,
+    availableCredit: 500000000,
     status: 'ACTIVE'
   }
 ];
 
-// Phiếu Thu Tiền Xuất Kho Đại Lý / Thu Hồi Nợ Đại Lý (TV3.1)
+// Phiếu Xác Nhận Bàn Giao & Giải Phóng Hạn Mức Bảo Lãnh (TV3 - FR-10)
 const INITIAL_DEALER_RECEIPTS = [
   {
     id: 'PT-2026-001',
-    dealerId: 'DL01',
-    dealerName: 'Đại Lý Đồng Hồ Hoàng Kim',
-    date: '2026-09-10',
-    amount: 150000000,
+    dealerId: 'DL-GALLE',
+    dealerName: 'Galle Watch Việt Nam',
+    date: '2026-03-26',
+    amount: 200000000,
     paymentMethod: 'CHUYEN_KHOAN',
-    referenceDoc: 'Thu tiền cọc đơn xuất kho DS-2026-104',
-    createdBy: 'Kế toán (Phạm Thị Lan)',
-    note: 'Chuyển khoản qua VCB tài khoản công ty'
+    referenceDoc: 'Biên bản bàn giao & UNC đợt 1 lệnh DS-2026-001',
+    createdBy: 'Điều phối viên (Tô Đức Thảo)',
+    note: 'Xác nhận bàn giao hoàn tất 200 triệu giá trị bảo lãnh tài sản'
   },
   {
     id: 'PT-2026-002',
-    dealerId: 'DL02',
-    dealerName: 'Hệ Thống Showroom Hải Triều',
-    date: '2026-09-20',
-    amount: 80000000,
+    dealerId: 'DL-HAITRIEU',
+    dealerName: 'Đồng Hồ Hải Triều',
+    date: '2026-03-24',
+    amount: 150000000,
     paymentMethod: 'CHUYEN_KHOAN',
-    referenceDoc: 'Thu hồi nợ kỳ 1 tháng 9',
-    createdBy: 'Kế toán (Phạm Thị Lan)',
-    note: 'Đại lý Hải Triều đối soát thanh toán'
+    referenceDoc: 'Giải phóng hạn mức bảo lãnh kỳ 1 tháng 3',
+    createdBy: 'Điều phối viên (Tô Đức Thảo)',
+    note: 'Đồng Hồ Hải Triều đối soát chứng từ bàn giao kho'
   }
 ];
 
-// Phiếu Nhận Đổi Trả Hàng Sỉ (TV3.1)
+// Phiếu Tiếp Nhận Hoàn Trả Vào Kho (TV3 - MOD-03-04)
 const INITIAL_CUSTOMER_RETURNS = [
   {
     id: 'TS-2026-001',
-    dealerId: 'DL02',
-    dealerName: 'Hệ Thống Showroom Hải Triều',
-    date: '2026-09-12',
+    dealerId: 'DL-HAITRIEU',
+    dealerName: 'Đồng Hồ Hải Triều',
+    date: '2026-03-25',
     serial: 'TIS-PRX-2026-1102',
     watchId: 'W003',
     watchName: 'Tissot PRX Powermatic 80 Blue',
     returnType: 'DEFECT_WAREHOUSE', // DEFECT_WAREHOUSE hoặc RESTOCK_NEW
     refundAmount: 16200000,
-    reason: 'Đồng hồ có dấu hiệu hơi nước trong kính khi đại lý kiểm tra giao khách',
+    reason: 'Đồng hồ có dấu hiệu hơi nước trong kính khi đơn vị kiểm tra bàn giao',
     status: 'COMPLETED',
-    createdBy: 'Nhân viên nhập/xuất kho (Nguyễn Phương)'
+    createdBy: 'Điều phối viên (Tô Đức Thảo)'
   }
 ];
 
-// Phiếu Xuất Khác: Bảo Hành / Hủy Hỏng (TV3.2)
+// Phiếu Xuất Khác Phi Thương Mại: Bảo Hành / Tiêu Hủy (TV3 - MOD-03-03)
 const INITIAL_OTHER_DISPATCHES = [
   {
     id: 'XK-2026-001',
-    type: 'WARRANTY', // WARRANTY (Xuất bảo hành hãng), DISPOSE (Xuất hủy hàng hỏng)
-    date: '2026-09-18',
+    type: 'WARRANTY', // WARRANTY (Xuất bảo hành hãng), DISPOSE (Xuất tiêu hủy)
+    date: '2026-03-23',
     watchId: 'W002',
     watchName: 'Omega Seamaster Aqua Terra 150M',
     serials: ['OMG-SEA-2026-4412'],
     destination: 'Trung tâm Bảo hành Quốc tế Swatch Group TP.HCM',
-    reason: 'Chuyển hãng cân chỉnh độ sai số cơ học định kỳ',
-    createdBy: 'Thủ kho (Lê Tuấn)'
+    reason: 'Chuyển Hãng cân chỉnh độ sai số cơ học từ Kho Lỗi C-01',
+    createdBy: 'Thủ kho (Võ Công Tâm)'
   }
 ];
 
 // ==========================================
-// SEED DATA 5: PHIẾU NHẬP KHO & LỆNH XUẤT KHO ĐẠI LÝ
+// SEED DATA 5: PHIẾU NHẬP KHO & LỆNH ĐIỀU PHỐI XUẤT KHO
 // ==========================================
 const INITIAL_RECEIPTS = [
   {
@@ -679,58 +872,85 @@ const INITIAL_RECEIPTS = [
 
 const INITIAL_ORDERS = [
   {
-    code: 'DS-2026-104',
-    dealerId: 'DL01',
-    dealerName: 'Đại Lý Đồng Hồ Hoàng Kim (VIP)',
-    date: '2026-09-28',
-    status: 'RESERVED', // DRAFT, RESERVED, COMPLETED, CANCELLED
+    code: 'DS-2026-001',
+    dealerId: 'DL-GALLE',
+    dealerName: 'Galle Watch Việt Nam (VIP)',
+    date: '2026-03-26',
+    status: 'RESERVED', // RESERVED, COMPLETED, CANCELLED
     items: [
       {
         watchId: 'W001',
         sku: 'RLX-SUB-126610LN',
         name: 'Rolex Submariner Date 41mm',
         unit: 'Chiếc',
-        quantity: 1,
-        convertedQty: 1,
-        unitPrice: 295000000,
-        discountPercent: 15,
-        finalUnitPrice: 250750000,
-        subtotal: 250750000,
-        reservedSerials: ['RLX-SUB-2026-9902']
+        quantity: 2,
+        convertedQty: 2,
+        unitPrice: 350000000,
+        discountPercent: 25,
+        finalUnitPrice: 262500000,
+        subtotal: 525000000,
+        reservedSerials: []
       }
     ],
-    totalAmount: 250750000,
-    depositAmount: 100000000,
-    remainingDebt: 150750000,
-    shippingFee: 2500000,
-    note: 'Đại lý VIP đã thanh toán cọc 100 triệu, giữ chỗ serial nguyên seal'
+    totalAmount: 525000000,
+    depositAmount: 150000000,
+    remainingDebt: 375000000,
+    shippingFee: 0,
+    note: 'Giữ chỗ 2 chiếc Rolex Submariner Lô 1 (FIFO: Kệ K1-A02-B03, K1-A02-B04)'
   },
   {
-    code: 'DS-2026-098',
-    dealerId: 'DL01',
-    dealerName: 'Đại Lý Đồng Hồ Hoàng Kim (VIP)',
-    date: '2026-09-08',
+    code: 'DS-2026-002',
+    dealerId: 'DL-HAITRIEU',
+    dealerName: 'Đồng Hồ Hải Triều (VIP)',
+    date: '2026-03-22',
     status: 'COMPLETED',
     items: [
       {
+        watchId: 'W002',
+        sku: 'OMG-SEA-220104121',
+        name: 'Omega Seamaster Aqua Terra 150M',
+        unit: 'Chiếc',
+        quantity: 3,
+        convertedQty: 3,
+        unitPrice: 165000000,
+        discountPercent: 22,
+        finalUnitPrice: 128700000,
+        subtotal: 386100000,
+        dispatchedSerials: ['OMG-SPEED-2026-001', 'OMG-SPEED-2026-002', 'OMG-SPEED-2026-003']
+      }
+    ],
+    totalAmount: 386100000,
+    depositAmount: 100000000,
+    remainingDebt: 286100000,
+    shippingFee: 0,
+    note: 'Đã hoàn tất đóng kiện bàn giao đủ 3 chiếc cho Đồng Hồ Hải Triều'
+  },
+  {
+    code: 'DS-2026-003',
+    dealerId: 'DL-DANGQUANG',
+    dealerName: 'Đăng Quang Watch Store (SILVER)',
+    date: '2026-03-26',
+    status: 'RESERVED',
+    items: [
+      {
         watchId: 'W001',
         sku: 'RLX-SUB-126610LN',
         name: 'Rolex Submariner Date 41mm',
         unit: 'Chiếc',
-        quantity: 1,
-        convertedQty: 1,
-        unitPrice: 295000000,
+        quantity: 2,
+        convertedQty: 2,
+        unitPrice: 365000000,
         discountPercent: 15,
-        finalUnitPrice: 250750000,
-        subtotal: 250750000,
-        dispatchedSerials: ['RLX-SUB-2026-9888']
+        finalUnitPrice: 310250000,
+        subtotal: 620500000,
+        reservedSerials: []
       }
     ],
-    totalAmount: 250750000,
-    depositAmount: 250750000,
-    remainingDebt: 0,
+    totalAmount: 620500000,
+    depositAmount: 450000000,
+    remainingDebt: 170500000,
     shippingFee: 0,
-    note: 'Đã hoàn tất thanh toán và xuất giao đại lý'
+    note: 'Giữ chỗ 2 chiếc Rolex Submariner điều phối cho Đăng Quang Watch'
   }
 ];
 
@@ -793,13 +1013,13 @@ const INITIAL_STOCK_CARDS = [
     watchId: 'W001',
     sku: 'RLX-SUB-126610LN',
     watchName: 'Rolex Submariner Date 41mm',
-    refType: 'XUẤT_SỈ',
+    refType: 'XUẤT_ĐIỀU_PHỐI',
     refCode: 'DS-2026-098',
     changeQty: -1,
     balanceAfter: 9,
     serialNumber: 'RLX-SUB-2026-9888',
-    user: 'Thủ kho (Lê Tuấn)',
-    note: 'Xuất giao 1 chiếc cho Đại lý Đồng Hồ Hoàng Kim'
+    user: 'Điều phối viên (Tô Đức Thảo)',
+    note: 'Xuất bàn giao 1 chiếc cho Đơn vị tiếp nhận Galle Watch Việt Nam'
   },
   {
     id: 'TK-003',
@@ -956,11 +1176,11 @@ const INITIAL_ROLES = [
 // SEED DATA 8: NHẬT KÝ AUDIT LOG (TV1.2 & TV5)
 // ==========================================
 const INITIAL_AUDIT_LOGS = [
-  { time: 'Hôm nay 10:15', user: 'Nhân viên nhập/xuất kho (Nguyễn Phương)', action: 'TẠO_ĐƠN_SỈ', target: 'Lệnh xuất đại lý DS-2026-104 cho Đại lý Hoàng Kim (Khóa giữ chỗ)' },
-  { time: 'Hôm nay 09:20', user: 'Kế toán (Phạm Thị Lan)', action: 'THU_TIỀN_SỈ', target: 'Lập phiếu thu PT-2026-001 thu 150.000.000đ từ Hoàng Kim Watch' },
-  { time: 'Hôm nay 08:30', user: 'Thủ kho (Lê Tuấn)', action: 'KIỂM_KÊ_KHO', target: 'Hoàn tất kiểm kê Kệ A-01 (18/18 chiếc khớp 100%)' },
-  { time: 'Hôm qua 16:30', user: 'Thủ kho (Lê Tuấn)', action: 'NHẬP_TRẢ_HÀNG', target: 'Tiếp nhận Tissot PRX lỗi hơi kính từ Hải Triều -> Kho Lỗi C-01' },
-  { time: 'Hôm qua 14:10', user: 'Kế toán (Phạm Thị Lan)', action: 'CHI_TRẢ_NCC', target: 'Lập phiếu chi PC-2026-002 thanh toán 1.320.800.000đ cho Swatch Group' }
+  { time: 'Hôm nay 10:15', user: 'Điều phối viên (Tô Đức Thảo)', action: 'DUYỆT_LỆNH_XUẤT_GIỮ_CHỖ', target: 'Lệnh DS-2026-001 cho Galle Watch Việt Nam (Khóa giữ chỗ 2 chiếc)' },
+  { time: 'Hôm nay 09:20', user: 'Điều phối viên (Tô Đức Thảo)', action: 'LẬP_PHIẾU_GIẢI_PHÓNG_BẢO_LÃNH', target: 'Chứng từ PT-2026-001 giải phóng 200.000.000đ bảo lãnh từ Galle Watch' },
+  { time: 'Hôm nay 08:30', user: 'Thủ kho (Võ Công Tâm)', action: 'KIỂM_KÊ_KHO', target: 'Hoàn tất kiểm kê Kệ K1 / A-01 (Khớp 100% Serial thực tế)' },
+  { time: 'Hôm qua 16:30', user: 'Điều phối viên (Tô Đức Thảo)', action: 'NHẬN_HOÀN_TRẢ_KHO', target: 'Tiếp nhận Tissot PRX lỗi hơi kính từ Hải Triều -> Kho Lỗi C-01' },
+  { time: 'Hôm qua 14:10', user: 'Kế toán kho (Trần Công Tú)', action: 'CHI_TRẢ_NCC', target: 'Lập chứng từ PC-2026-002 đối soát lô hàng Swatch Group' }
 ];
 
 // ==========================================
@@ -969,6 +1189,9 @@ const INITIAL_AUDIT_LOGS = [
 class ChronoDB {
   static get(key, defaultValue) {
     try {
+      const collection = OUTBOUND_COLLECTIONS[key];
+      const committed = collection && localStorage.getItem(OUTBOUND_STORE_KEY);
+      if (committed) return JSON.parse(committed)[collection];
       const data = localStorage.getItem(key);
       return data ? JSON.parse(data) : defaultValue;
     } catch (e) {
@@ -979,6 +1202,11 @@ class ChronoDB {
 
   static set(key, value) {
     try {
+      const collection = OUTBOUND_COLLECTIONS[key];
+      if (collection && localStorage.getItem(OUTBOUND_STORE_KEY)) {
+        this.outboundTransaction(state => { state[collection] = value; });
+        return;
+      }
       localStorage.setItem(key, JSON.stringify(value));
     } catch (e) {
       console.error('Error saving to localStorage for key', key, e);
@@ -1043,6 +1271,89 @@ class ChronoDB {
     if (!localStorage.getItem(STORAGE_KEYS.OTHER_DISPATCHES)) this.set(STORAGE_KEYS.OTHER_DISPATCHES, INITIAL_OTHER_DISPATCHES);
     if (!localStorage.getItem(STORAGE_KEYS.STOCK_AUDITS)) this.set(STORAGE_KEYS.STOCK_AUDITS, INITIAL_STOCK_AUDITS);
     if (!localStorage.getItem(STORAGE_KEYS.STOCK_CARDS)) this.set(STORAGE_KEYS.STOCK_CARDS, INITIAL_STOCK_CARDS);
+    this.initOutboundStore();
+  }
+
+  static initOutboundStore() {
+    if (!localStorage.getItem(OUTBOUND_STORE_KEY)) {
+      const read = (key, fallback) => JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback));
+      const state = {
+        version: 3, revision: 0,
+        serials: read(STORAGE_KEYS.SERIALS, INITIAL_SERIALS),
+        orders: read(STORAGE_KEYS.ORDERS, INITIAL_ORDERS),
+        dealers: read(STORAGE_KEYS.DEALERS, INITIAL_DEALERS),
+        returns: read(STORAGE_KEYS.CUSTOMER_RETURNS, INITIAL_CUSTOMER_RETURNS),
+        otherDispatches: read(STORAGE_KEYS.OTHER_DISPATCHES, INITIAL_OTHER_DISPATCHES),
+        stockCards: read(STORAGE_KEYS.STOCK_CARDS, INITIAL_STOCK_CARDS),
+        logs: read(STORAGE_KEYS.AUDIT_LOGS, INITIAL_AUDIT_LOGS), dispatches: []
+      };
+      // Adopt existing approved orders without changing completed documents or deleting history.
+      state.orders.filter(o => ['RESERVED', 'PACKING'].includes(o.status)).forEach(order => {
+        const selected = [];
+        const plan = [];
+        (order.items || []).forEach(item => {
+          const count = item.convertedQty || item.quantity;
+          const already = state.serials.filter(s => s.orderCode === order.code && ['RESERVED', 'ALLOCATED'].includes(s.status) && s.sku === item.sku);
+          const available = state.serials.filter(s => s.sku === item.sku && s.status === 'IN_STOCK' && !['DISPLAY', 'DEFECT', 'DEFECTIVE'].includes(s.qualityType))
+            .sort((a,b) => (a.receivedDate || '').localeCompare(b.receivedDate || '') || a.serialNumber.localeCompare(b.serialNumber));
+          const serials = already.concat(available).filter((s,i,a) => a.findIndex(v => v.serialNumber === s.serialNumber) === i).slice(0, count);
+          if (serials.length !== count) order.reservationIssue = 'Lệnh cũ chưa đủ Serial; thủ kho cần duyệt lại phân bổ.';
+          plan.push({item, serials}); selected.push(...serials);
+        });
+        if (!order.reservationIssue && new Set(selected.map(s => s.serialNumber)).size === selected.length) {
+          plan.forEach(({item, serials}) => {
+            item.reservedSerials = serials.map(s => s.serialNumber);
+            serials.forEach(serial => { serial.status = 'RESERVED'; serial.orderCode = order.code; });
+          });
+        }
+      });
+      localStorage.setItem(OUTBOUND_STORE_KEY, JSON.stringify(state));
+    }
+    const accounts = this.getAccounts();
+    const demos = [
+      {id:'TV3-OPS', username:'thao_outbound', fullName:'Tô Đức Thảo', role:'OPERATIONS_STAFF', roleName:'Nhân viên xuất kho'},
+      {id:'TV3-MANAGER', username:'tam_manager', fullName:'Võ Công Tâm', role:'WAREHOUSE_MANAGER', roleName:'Thủ kho'},
+      {id:'TV3-OWNER', username:'owner_boss', fullName:'Chủ kho', role:'STORE_OWNER', roleName:'Chủ kho'}
+    ];
+    let added = false;
+    demos.forEach(demo => {
+      if (!accounts.some(account => account.username === demo.username)) {
+        accounts.push({...demo, status:'ACTIVE', demoPassword:'123', email:'', phone:'', avatar:'CV'}); added = true;
+      }
+    });
+    if (added) this.setAccounts(accounts);
+  }
+
+  static readOutboundState() {
+    if (!localStorage.getItem(OUTBOUND_STORE_KEY)) this.initOutboundStore();
+    return JSON.parse(localStorage.getItem(OUTBOUND_STORE_KEY));
+  }
+
+  static outboundTransaction(work) {
+    const before = localStorage.getItem(OUTBOUND_STORE_KEY);
+    if (!before) { this.initOutboundStore(); return this.outboundTransaction(work); }
+    const state = JSON.parse(before);
+    const result = work(state);
+    if (result && typeof result.then === 'function') throw new Error('Giao dịch kho không được chờ thao tác mạng.');
+    if (localStorage.getItem(OUTBOUND_STORE_KEY) !== before) throw new Error('Dữ liệu vừa được cập nhật; vui lòng tải lại và thử lại.');
+    state.revision = (state.revision || 0) + 1;
+    // One setItem is atomic. Quota/write failures leave the old snapshot wholly intact.
+    localStorage.setItem(OUTBOUND_STORE_KEY, JSON.stringify(state));
+    return result;
+  }
+
+  static getDispatches() { return this.readOutboundState().dispatches || []; }
+  static getWatchBySku(sku) { return this.getWatches().find(watch => watch.sku === sku); }
+
+  static inventoryForSku(sku) {
+    const serials = this.getSerials().filter(s => s.sku === sku);
+    const healthy = serials.filter(s => ['IN_STOCK', 'RESERVED', 'ALLOCATED'].includes(s.status) && !['DISPLAY','DEFECT','DEFECTIVE'].includes(s.qualityType));
+    const requested = this.getOrders().filter(o => ['RESERVED','PACKING'].includes(o.status))
+      .reduce((sum,o) => sum + (o.items || []).filter(i => i.sku === sku).reduce((n,i) => n + (i.convertedQty || i.quantity || 0),0),0);
+    const linked = new Set(this.getOrders().filter(o => ['RESERVED','PACKING'].includes(o.status)).map(o => o.code));
+    const orphanReserved = healthy.filter(s => ['RESERVED','ALLOCATED'].includes(s.status) && !linked.has(s.orderCode)).length;
+    const reserved = requested + orphanReserved;
+    return {physical:healthy.length, reserved, available:Math.max(0, healthy.length-reserved)};
   }
 
   // --- Products (TV1) ---
@@ -1146,7 +1457,7 @@ class ChronoDB {
     this.setDealers(list);
   }
 
-  // --- Wholesale Orders (TV3) ---
+  // --- Outbound Orders (TV3) ---
   static getOrders() { return this.get(STORAGE_KEYS.ORDERS, INITIAL_ORDERS); }
   static setOrders(orders) { this.set(STORAGE_KEYS.ORDERS, orders); }
   static addOrder(order) {
@@ -1155,13 +1466,13 @@ class ChronoDB {
     this.setOrders(list);
   }
 
-  // --- Dealer Receipts (Thu hồi công nợ đại lý TV3) ---
+  // --- Clearance Vouchers / Phiếu Xác Nhận Bàn Giao & Giải Phóng Bảo Lãnh (TV3) ---
   static getDealerReceipts() { return this.get(STORAGE_KEYS.DEALER_RECEIPTS, INITIAL_DEALER_RECEIPTS); }
   static addDealerReceipt(rcpt) {
     const list = this.getDealerReceipts();
     list.unshift(rcpt);
     this.set(STORAGE_KEYS.DEALER_RECEIPTS, list);
-    // Giảm nợ đại lý & khôi phục hạn mức
+    // Giải phóng hạn mức bảo lãnh tài sản của đơn vị tiếp nhận
     const dealers = this.getDealers();
     const dealer = dealers.find(d => d.id === rcpt.dealerId);
     if (dealer) {
@@ -1169,10 +1480,10 @@ class ChronoDB {
       dealer.availableCredit = Math.min(dealer.creditLimit, (dealer.creditLimit - dealer.currentDebt));
       this.setDealers(dealers);
     }
-    this.logAction(rcpt.createdBy || 'Kế toán', 'THU_TIỀN_SỈ', `Lập phiếu thu ${rcpt.id} từ ${rcpt.dealerName}: ${formatShortVND(rcpt.amount)}`);
+    this.logAction(rcpt.createdBy || 'Điều phối viên (Tô Đức Thảo)', 'LẬP_PHIẾU_GIẢI_PHÓNG_BẢO_LÃNH', `Chứng từ ${rcpt.id} giải phóng bảo lãnh cho ${rcpt.dealerName}: ${formatShortVND(rcpt.amount)}`);
   }
 
-  // --- Customer Returns (Nhận trả hàng đại lý TV3) ---
+  // --- Warehouse Returns / Nhận hoàn trả vào kho (TV3) ---
   static getCustomerReturns() { return this.get(STORAGE_KEYS.CUSTOMER_RETURNS, INITIAL_CUSTOMER_RETURNS); }
   static addCustomerReturn(ret) {
     const list = this.getCustomerReturns();

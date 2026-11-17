@@ -6,7 +6,8 @@
   <title>ChronoVault B2B - Hệ Thống Quản Lý Kho Đồng Hồ</title>
   
   <!-- Favicon & Stylesheet -->
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/tv3_outbound.css">
   
   <!-- ZXing Barcode & QR Code Scanning Library -->
   <script src="https://unpkg.com/@zxing/library@latest/umd/index.min.js"></script>
@@ -154,13 +155,13 @@
 
           <div class="kpi-card">
             <div class="kpi-header">
-              <span class="kpi-label">Đơn Hàng Xuất Đại Lý</span>
+              <span class="kpi-label">Lệnh Xuất Kho</span>
               <div class="kpi-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
               </div>
             </div>
             <div class="kpi-value" id="kpiOrdersCount">0</div>
-            <div class="kpi-subtext" style="color:var(--gold-light);">Đại lý B2B đối tác</div>
+            <div class="kpi-subtext" style="color:var(--gold-light);">Đơn vị tiếp nhận</div>
           </div>
 
           <div class="kpi-card">
@@ -205,7 +206,7 @@
             <div class="quick-action-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
             </div>
-            <span class="quick-action-text">Lên Đơn Sỉ</span>
+            <span class="quick-action-text">Lệnh Xuất Kho</span>
           </button>
 
           <button class="quick-action-btn" onclick="openScannerModal('LOOKUP')">
@@ -335,29 +336,34 @@
       </section>
 
       <!-- ==================================================================
-           TAB 4: ĐẠI LÝ B2B & XUẤT HÀNG (PHÂN HỆ 3 - TV3)
+           TAB 4: ĐƠN VỊ TIẾP NHẬN & XUẤT KHO (PHÂN HỆ 3 - TV3)
            ================================================================== -->
       <section class="tab-view" id="tab-outbound">
         <!-- Action Header -->
         <div class="section-title-wrap">
           <div class="section-title">
-            <span class="title-accent"></span> Đơn Xuất Kho Đại Lý & Phân Phối (Outbound)
+            <span class="title-accent"></span> Điều Phối Xuất Kho (Outbound)
           </div>
-          <button class="btn-primary-action" style="width:auto; padding:6px 14px; font-size:12px;" onclick="openCreateOrderModal()">
-            + Lên Đơn Sỉ
-          </button>
+          <div style="display:flex; gap:6px;">
+            <button class="btn-toggle-view" style="font-size:11px;" onclick="openOtherDispatchModal()">
+              🛠️ Bảo Hành / Hủy
+            </button>
+            <button class="btn-primary-action" style="width:auto; padding:6px 12px; font-size:12px;" onclick="openCreateOrderModal()">
+              + Lệnh Xuất Kho
+            </button>
+          </div>
         </div>
 
         <!-- Orders List -->
         <div id="outboundOrdersList"></div>
 
-        <!-- Wholesale Dealers Overview -->
+        <!-- Receiving Units Overview -->
         <div class="section-title-wrap" style="margin-top:18px;">
           <div class="section-title">
-            <span class="title-accent"></span> Danh Sách Đại Lý & Hạn Mức Tín Dụng
+            <span class="title-accent"></span> Đơn Vị Tiếp Nhận & Bảo Lãnh Tài Sản
           </div>
-          <button class="btn-toggle-view" style="font-size:11px;" onclick="openDealerReceiptModal('DL01')">
-            + Thu Thu Nợ Đại Lý
+          <button class="btn-toggle-view" style="font-size:11px;" onclick="openDealerReceiptModal('DL-GALLE')">
+            + Giải Phóng Bảo Lãnh
           </button>
         </div>
         <div id="dealersOverviewList"></div>
@@ -446,14 +452,14 @@
         <span>Nhập kho</span>
       </button>
 
-      <!-- Tab 4: Xuất kho đại lý (Phân hệ 3) -->
+      <!-- Tab 4: Điều Phối Xuất (Phân hệ 3) -->
       <button class="nav-item-btn" data-tab="outbound" onclick="switchTab('outbound')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
           <polyline points="17 8 12 3 7 8"/>
           <line x1="12" y1="3" x2="12" y2="15"/>
         </svg>
-        <span>Xuất kho đại lý</span>
+        <span>Xuất kho</span>
       </button>
 
       <!-- Tab 5: Kho & Kệ (Phân hệ 4) -->
@@ -613,7 +619,7 @@
     </div>
 
     <!-- ==================================================================
-         MODAL 3: KHỞI TẠO LỆNH XUẤT KHO ĐẠI LÝ B2B (PHÂN HỆ 3 - 3.2)
+         MODAL 3: KHỞI TẠO LỆNH ĐIỀU PHỐI XUẤT KHO (PHÂN HỆ 3 - MOD-03-02)
          ================================================================== -->
     <div class="modal-backdrop" id="createOrderModal">
       <div class="modal-sheet">
@@ -621,32 +627,32 @@
         <div class="modal-header">
           <h2>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gold-primary)" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-            Khởi Tạo Đơn Xuất Kho Đại Lý Cho Đại Lý
+            Khởi Tạo Lệnh Điều Phối Xuất Kho
           </h2>
           <button class="modal-close-btn" onclick="closeModal('createOrderModal')">✕</button>
         </div>
 
         <div class="modal-body-scroll">
           <div class="form-group">
-            <label class="form-label">Đại Lý Mua Hàng Sỉ (B2B)</label>
+            <label class="form-label">Đơn Vị / Chi Nhánh Tiếp Nhận</label>
             <select class="form-select" id="orderDealerSelect" onchange="updateOrderCalculationPreview()"></select>
           </div>
 
           <div class="form-group">
-            <label class="form-label">Chọn Mẫu Đồng Hồ Đặt Hàng</label>
+            <label class="form-label">Chọn Mẫu Đồng Hồ Lưu Kho</label>
             <select class="form-select" id="orderWatchSelect" onchange="updateOrderCalculationPreview()"></select>
           </div>
 
           <div class="form-row">
             <div class="form-group">
-              <label class="form-label">ĐVT Đặt Hàng</label>
+              <label class="form-label">ĐVT Xuất Kho</label>
               <select class="form-select" id="orderUnitSelect" onchange="updateOrderCalculationPreview()">
                 <option value="PIECE">Cái / Chiếc lẻ</option>
                 <option value="BOX">Thùng / Kiện sỉ</option>
               </select>
             </div>
             <div class="form-group">
-              <label class="form-label">Số Lượng Đặt</label>
+              <label class="form-label">Số Lượng Xuất</label>
               <input type="number" id="orderQtyInput" class="form-input" min="1" value="2" oninput="updateOrderCalculationPreview()">
             </div>
           </div>
@@ -655,13 +661,13 @@
           <div id="orderCalculationPreview" style="margin-bottom:12px;"></div>
 
           <div class="form-group">
-            <label class="form-label">Số Tiền Đặt Cọc Thu Trước (VND)</label>
-            <input type="number" id="orderDepositInput" class="form-input" step="10000000">
+            <label class="form-label">Giá Trị Ký Quỹ / Bảo Lãnh Đối Ứng Trước (VND)</label>
+            <input type="number" id="orderDepositInput" class="form-input" step="10000000" oninput="this.dataset.manual='true'; updateOrderCalculationPreview()">
           </div>
         </div>
 
         <button class="btn-primary-action" onclick="submitCreateOrder()">
-          ✓ Duyệt Đơn & Khóa Giữ Chỗ (Reserved)
+          ✓ Duyệt Lệnh & Khóa Giữ Chỗ (Reserved)
         </button>
       </div>
     </div>
@@ -774,7 +780,7 @@
           <span>📥 TV2: NCC & Nhập Hàng</span>
         </li>
         <li class="drawer-menu-item" onclick="window.location.href='tv3_xuat_kho.html'">
-          <span>📤 TV3: Đối Tác Đại Lý & Quản Lý Xuất Kho</span>
+          <span>📤 TV3: Điều Phối & Xuất Kho</span>
         </li>
         <li class="drawer-menu-item" onclick="window.location.href='tv4_ton_kho.html'">
           <span>📦 TV4: Tồn Kho & Kệ</span>
@@ -793,14 +799,14 @@
   </main><!-- End phone-wrapper -->
 
   <!-- Modular Scripts theo 5 Phân Hệ -->
-  <script src="js/data.js"></script>
-  <script src="js/scanner.js"></script>
-  <script src="js/tv1_products.js"></script>
-  <script src="js/tv1_system.js"></script>
-  <script src="js/tv2_inbound.js"></script>
-  <script src="js/tv3_outbound.js"></script>
-  <script src="js/tv4_warehouse.js"></script>
-  <script src="js/tv5_reports.js"></script>
-  <script src="js/app.js"></script>
+  <script src="../js/data.js"></script>
+  <script src="../js/scanner.js"></script>
+  <script src="../js/tv1_products.js"></script>
+  <script src="../js/tv1_system.js"></script>
+  <script src="../js/tv2_inbound.js"></script>
+  <script src="../js/tv3_outbound.js"></script>
+  <script src="../js/tv4_warehouse.js"></script>
+  <script src="../js/tv5_reports.js"></script>
+  <script src="../js/app.js"></script>
 </body>
 </html>
