@@ -175,7 +175,7 @@ class OutboundOrderFragment : Fragment() {
         val method = form.spinner("Hình thức thanh toán", listOf("Chuyển khoản (UNC)", "Tiền mặt"))
         val refDoc = form.edit("Chứng từ tham chiếu / Số UNC *")
         val note = form.edit("Ghi chú thu hồi công nợ")
-        formDialog("Phiếu thu tiền sỉ / Giải phóng bảo lãnh", form, "Tạo phiếu thu") { dialog ->
+        formDialog("Phiếu thu nợ đại lý / Giải phóng bảo lãnh", form, "Tạo phiếu thu") { dialog ->
             val amtVal = amount.text.toString().toDoubleOrNull() ?: 0.0
             if (amtVal <= 0.0) { amount.error = "Số tiền phải lớn hơn 0"; return@formDialog }
             if (amtVal > dealer.currentDebt) { amount.error = "Không vượt quá dư nợ (${money.format(dealer.currentDebt)} đ)"; return@formDialog }
@@ -252,7 +252,7 @@ class OutboundOrderFragment : Fragment() {
                 val excess = projectedDebt - d.creditLimit
                 creditAlert.visibility = View.VISIBLE
                 creditAlert.setTextColor(Color.RED)
-                creditAlert.text = "⚠️ CẢNH BÁO VƯỢT HẠN MỨC CÔNG NỢ (TC-01):\nDư nợ dự kiến: ${money.format(projectedDebt)} đ > Hạn mức ${money.format(d.creditLimit)} đ\nVượt hạn mức: ${money.format(excess)} đ (Khóa duyệt đơn sỉ)"
+                creditAlert.text = "⚠️ CẢNH BÁO VƯỢT HẠN MỨC CÔNG NỢ (TC-01):\nDư nợ dự kiến: ${money.format(projectedDebt)} đ > Hạn mức ${money.format(d.creditLimit)} đ\nVượt hạn mức: ${money.format(excess)} đ (Khóa duyệt lệnh xuất kho)"
             } else if (lines.isNotEmpty()) {
                 creditAlert.visibility = View.VISIBLE
                 creditAlert.setTextColor(Color.rgb(22, 163, 74))

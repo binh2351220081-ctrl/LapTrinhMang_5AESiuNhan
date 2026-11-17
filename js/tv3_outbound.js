@@ -272,7 +272,7 @@ function printDispatchA4(code) {
     <div style="display:flex; justify-content:space-between; border-bottom:2px solid #0f172a; padding-bottom:8px; margin-bottom:12px;">
       <div>
         <h3 style="margin:0; font-size:16px;">CHRONOVAULT WMS — HỆ THỐNG QUẢN LÝ TỔNG KHO ĐỒNG HỒ</h3>
-        <p style="margin:2px 0 0; font-size:12px; color:#475569;">Phân Hệ 3: Bán Sỉ & Phân Phối Đại Lý — Xuất Hàng (TV3: Tô Đức Thảo)</p>
+        <p style="margin:2px 0 0; font-size:12px; color:#475569;">Phân Hệ 3: Đối Tác Đại Lý & Quản Lý Xuất Kho B2B (TV3: Tô Đức Thảo)</p>
       </div>
       <div style="text-align:right; font-size:12px;">
         <b>Mã phiếu: ${d.id || 'PX-' + code}</b><br>
@@ -298,7 +298,7 @@ function printDispatchA4(code) {
       </div>
     </div>
 
-    <h4 style="margin:12px 0 6px; font-size:14px;">1. Danh mục sản phẩm xuất sỉ</h4>
+    <h4 style="margin:12px 0 6px; font-size:14px;">1. Danh mục sản phẩm xuất kho</h4>
     <table style="width:100%; border-collapse:collapse; font-size:12px; margin-bottom:16px;">
       <thead><tr style="background:#f1f5f9;">
         <th style="border:1px solid #cbd5e1; padding:6px; text-align:left;">Mã SKU</th>
@@ -385,7 +385,7 @@ function openCustomerReturnModal(dealerId) {
     ${_outboundField('Lý do / Biên bản kiểm định hoàn trả *', 'returnReasonInput', 'Đại lý gửi hoàn trả theo điều khoản hợp đồng')}
     <button type="button" data-outbound-submit class="btn-primary-action" onclick="submitCustomerReturn()">Lập phiếu nhận hoàn trả (F3.1.5)</button>`;
 
-    _outboundModal('Lập phiếu nhận hàng sỉ trả lại', html);
+    _outboundModal('Lập phiếu nhận hàng đại lý trả lại', html);
   } catch (e) {
     if (typeof showToast === 'function') showToast(e.message, 'warning');
   }
@@ -477,7 +477,7 @@ function openDealerReceiptModal(dealerId) {
     ${_outboundField('Ghi chú phiếu thu', 'receiptNoteInput', 'Giải phóng bảo lãnh & khôi phục hạn mức tín dụng cho đại lý')}
     <button type="button" data-outbound-submit class="btn-primary-action" onclick="submitDealerReceipt('${_outboundEsc(d.id)}')">✓ Lập Phiếu Thu & Khôi Phục Hạn Mức (F3.1.9)</button>`;
 
-    _outboundModal('Lập phiếu Thu tiền sỉ / Thu hồi công nợ đại lý', html);
+    _outboundModal('Lập phiếu Thu nợ đại lý / Thu hồi công nợ', html);
   } catch (e) {
     if (typeof showToast === 'function') showToast(e.message, 'warning');
   }
