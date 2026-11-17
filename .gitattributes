@@ -1,3 +1,13 @@
+# Loại bỏ các script Python trợ giúp khỏi thống kê ngôn ngữ dự án
 tools/** linguist-vendored
-tests/** linguist-vendored
+*.py linguist-detectable=false
+
+# Chặn triệt để các tệp Web nếu có cache
+*.html linguist-detectable=false
+*.js linguist-detectable=false
+*.css linguist-detectable=false
+
+# Nhận diện toàn bộ tài liệu đặc tả
 Document/** linguist-documentation
+*.docx linguist-documentation
+*.xlsx linguist-documentation

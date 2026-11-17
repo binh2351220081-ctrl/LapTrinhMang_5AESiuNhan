@@ -1,5 +1,6 @@
 # Đề tài: Lập Trình Mạng - Nhóm 5 AE Siêu Nhân
-### Hệ Thống Quản Lý Kho Hàng Hóa Cửa Hàng Đồng Hồ (ChronoVault B2B Wholesale WMS)
+### Hệ Thống Quản Lý Kho & Phân Phối Đồng Hồ Cao Cấp B2B (ChronoVault WMS)
+**Nền tảng công nghệ:** 100% Native Android (Kotlin, Jetpack Room Database, Coroutines, MVVM Architecture)
 
 ---
 
