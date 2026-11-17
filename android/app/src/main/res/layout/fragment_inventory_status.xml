@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="#F8F9FA">
+
+    <!-- Tab chuyển đổi 3 trạng thái chất lượng -->
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayoutQuality"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp" />
+
+    <!-- Danh sách hiển thị Serial (bắt buộc phải có ID này) -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerInventory"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginBottom="12dp" />
+
+    <!-- Nút mở Dialog đổi trạng thái chất lượng -->
+    <Button
+        android:id="@+id/btnOpenChangeQualityDialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Chuyển Đổi Trạng Thái Serial"
+        android:backgroundTint="#1976D2" />
+
+</LinearLayout>

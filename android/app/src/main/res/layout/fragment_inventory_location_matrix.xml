@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="#F8F9FA">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sơ Đồ Tủ Kệ Kho Đồng Hồ"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:layout_marginBottom="12dp" />
+
+        <!-- Chú thích màu sắc trạng thái kệ -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="■ Trống"
+                android:textColor="#4CAF50"
+                android:layout_marginEnd="12dp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="■ Chứa hàng"
+                android:textColor="#FFC107"
+                android:layout_marginEnd="12dp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="■ Đầy định mức"
+                android:textColor="#F44336"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
+        <!-- Khu vực Kệ K1 (Dòng Thể thao Rolex, AP) -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Kệ K1 (Dòng Thể Thao)"
+            android:textStyle="bold"
+            android:textColor="#333333"
+            android:layout_marginBottom="8dp" />
+
+        <GridLayout
+            android:id="@+id/gridK1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="3"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Khu vực Kệ K2 (Dòng Dress Watch Patek, Cartier) -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Kệ K2 (Dòng Dress Watch)"
+            android:textStyle="bold"
+            android:textColor="#333333"
+            android:layout_marginBottom="8dp" />
+
+        <GridLayout
+            android:id="@+id/gridK2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="3"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Nút mở Dialog điều chuyển vị trí kệ -->
+        <Button
+            android:id="@+id/btnRelocateBin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Điều Chuyển Vị Trí Ngăn Kệ (Relocate)"
+            android:backgroundTint="#D32F2F" />
+
+    </LinearLayout>
+</ScrollView>

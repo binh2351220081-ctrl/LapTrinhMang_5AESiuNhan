@@ -37,5 +37,17 @@ interface SerialDao {
 
     @Query("SELECT COUNT(*) FROM serials WHERE productCode = :productCode AND status IN ('IN_STOCK', 'ALLOCATED', 'DISPLAY', 'DEFECTIVE', 'DEFECT')")
     suspend fun warehouseCount(productCode: String): Int
+
+    @Query("SELECT * FROM serials WHERE status = :status")
+    suspend fun getSerialsByQuality(status: String): List<SerialEntity>
+
+    @Query("SELECT * FROM serials WHERE currentLocation = :bin")
+    suspend fun getSerialsByBin(bin: String): List<SerialEntity>
+
+    @Query("UPDATE serials SET status = :newQuality WHERE serialNumber = :serialNumber")
+    suspend fun updateSerialQuality(serialNumber: String, newQuality: String)
+
+    @Query("UPDATE serials SET currentLocation = :newBin WHERE serialNumber = :serialNumber")
+    suspend fun updateSerialBin(serialNumber: String, newBin: String)
 }
 
