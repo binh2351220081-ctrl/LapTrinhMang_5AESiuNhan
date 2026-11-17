@@ -20,7 +20,7 @@ class StockAuditActivity : AppCompatActivity() {
         sessionManager = SessionManager(this)
         
         // Kiểm tra quyền hạn Quản lý kho hoặc Nhân viên vận hành
-        val currentUser = sessionManager.getCurrentUser() 
+        val currentUser = sessionManager.getFullName() ?: "System User"
 
         val btnStartAudit = findViewById<Button>(R.id.btnStartAudit)
         val txtAuditSummary = findViewById<TextView>(R.id.txtAuditSummary)

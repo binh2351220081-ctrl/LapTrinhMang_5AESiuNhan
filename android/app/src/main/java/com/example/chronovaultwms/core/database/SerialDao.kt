@@ -29,12 +29,16 @@ interface SerialDao {
     @Update
     suspend fun update(serial: SerialEntity)
 
-    @Query("SELECT * FROM serials WHERE qualityStatus = :status")
+    @Query("SELECT * FROM serials WHERE status = :status")
     suspend fun getSerialsByQuality(status: String): List<SerialEntity>
 
-    @Query("SELECT * FROM serials WHERE locationBin = :bin")
+    @Query("SELECT * FROM serials WHERE currentLocation = :bin")
     suspend fun getSerialsByBin(bin: String): List<SerialEntity>
 
+    @Query("UPDATE serials SET status = :newQuality WHERE serialNumber = :serialNumber")
+    suspend fun updateSerialQuality(serialNumber: String, newQuality: String)
 
+    @Query("UPDATE serials SET currentLocation = :newBin WHERE serialNumber = :serialNumber")
+    suspend fun updateSerialBin(serialNumber: String, newBin: String)
 }
 

@@ -3,19 +3,44 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="20dp"
+    android:background="#F8F9FA">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Quy Trình Kiểm Kê &amp; Đối Soát Tồn Kho"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Nút bắt đầu đợt kiểm kê -->
     <Button
         android:id="@+id/btnStartAudit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Bắt đầu quét kiểm kê kệ K1-A01" />
+        android:text="Bắt Đầu Kiểm Kê Ngăn Kệ K1-A01"
+        android:backgroundTint="#1976D2"
+        android:layout_marginBottom="16dp" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Kết Quả Đối Soát Thời Gian Thực:"
+        android:textStyle="bold"
+        android:textColor="#333333"
+        android:layout_marginBottom="8dp" />
+
+    <!-- Vùng hiển thị tổng kết Khớp / Thừa / Thiếu -->
     <TextView
         android:id="@+id/txtAuditSummary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:text="Chưa có dữ liệu kiểm kê..."
         android:textSize="16sp"
-        android:text="Kết quả đối soát sẽ hiển thị tại đây..." />
+        android:textColor="#555555"
+        android:padding="12dp"
+        android:background="@android:color/white" />
+
 </LinearLayout>

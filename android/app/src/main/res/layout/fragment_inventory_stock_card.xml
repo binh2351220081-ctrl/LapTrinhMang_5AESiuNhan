@@ -3,18 +3,52 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="#F8F9FA">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Sổ Thẻ Kho Điện Tử (Stock Card)"
+        android:text="Sổ Thẻ Kho Điện Tử (Stock Card Ledger)"
         android:textSize="18sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        android:layout_marginBottom="12dp" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewStockCard"
+    <!-- Ô nhập tra cứu theo mã SKU hoặc Serial -->
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="12dp" />
+        android:layout_height="wrap_content"
+        android:hint="Nhập mã SKU hoặc Serial để tra cứu lịch sử"
+        android:layout_marginBottom="12dp">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtSearchCardKey"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/btnSearchStockCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tra Cứu Lịch Sử Biến Động"
+        android:backgroundTint="#1976D2"
+        android:layout_marginBottom="16dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nhật Ký Luân Chuyển / Audit Trail:"
+        android:textStyle="bold"
+        android:textColor="#333333"
+        android:layout_marginBottom="8dp" />
+
+    <!-- Danh sách hiển thị lịch sử biến động thẻ kho -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerStockCard"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
 </LinearLayout>

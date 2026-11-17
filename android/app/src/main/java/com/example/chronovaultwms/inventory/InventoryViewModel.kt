@@ -11,10 +11,12 @@ import com.example.chronovaultwms.core.database.SerialEntity
 import com.example.chronovaultwms.core.database.AuditLogEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 import java.util.Date
+import java.util.Locale
 
 class InventoryViewModel(application: Application) : AndroidViewModel(application) {
-    private val database = ChronoVaultDatabase.getDatabase(application)
+    private val database = ChronoVaultDatabase.getInstance(application)
     private val productDao = database.productDao()
     private val serialDao = database.serialDao()
     private val auditLogDao = database.auditLogDao()
@@ -25,9 +27,12 @@ class InventoryViewModel(application: Application) : AndroidViewModel(applicatio
     private val _auditResult = MutableLiveData<AuditComparisonResult>()
     val auditResult: LiveData<AuditComparisonResult> get() = _auditResult
 
+    private fun getCurrentTimestamp(): String {
+        return SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault()).format(Date())
+    }
+
     fun loadSerialsByQuality(qualityStatus: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            // Lọc danh sách serial theo trạng thái chất lượng: HANG_MOI, TRUNG_BAY, HANG_LOI
             val list = serialDao.getSerialsByQuality(qualityStatus)
             _serialList.postValue(list)
         }
@@ -45,10 +50,11 @@ class InventoryViewModel(application: Application) : AndroidViewModel(applicatio
             serialDao.updateSerialQuality(serialNumber, newQuality)
             auditLogDao.insert(
                 AuditLogEntity(
-                    username = username,
+                    timestamp = getCurrentTimestamp(),
+                    actorName = username,
+                    role = "STAFF",
                     action = "CHANGE_QUALITY",
-                    details = "Serial: $serialNumber chuyển sang $newQuality. Lý do: $reason",
-                    timestamp = Date().time
+                    details = "Serial: $serialNumber chuyển sang $newQuality. Lý do: $reason"
                 )
             )
         }
@@ -59,10 +65,11 @@ class InventoryViewModel(application: Application) : AndroidViewModel(applicatio
             serialDao.updateSerialBin(serialNumber, newBin)
             auditLogDao.insert(
                 AuditLogEntity(
-                    username = username,
+                    timestamp = getCurrentTimestamp(),
+                    actorName = username,
+                    role = "STAFF",
                     action = "RELOCATE_BIN",
-                    details = "Điều chuyển Serial: $serialNumber sang kệ $newBin",
-                    timestamp = Date().time
+                    details = "Điều chuyển Serial: $serialNumber sang kệ $newBin"
                 )
             )
         }
@@ -71,7 +78,7 @@ class InventoryViewModel(application: Application) : AndroidViewModel(applicatio
     fun performStockAudit(targetBinOrCategory: String, scannedSerials: List<String>, username: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val systemSerials = serialDao.getSerialsByBin(targetBinOrCategory).map { it.serialNumber }
-            
+
             val matched = scannedSerials.intersect(systemSerials.toSet()).toList()
             val surplus = scannedSerials.subtract(systemSerials.toSet()).toList()
             val deficit = systemSerials.subtract(scannedSerials.toSet()).toList()
@@ -80,10 +87,11 @@ class InventoryViewModel(application: Application) : AndroidViewModel(applicatio
 
             auditLogDao.insert(
                 AuditLogEntity(
-                    username = username,
+                    timestamp = getCurrentTimestamp(),
+                    actorName = username,
+                    role = "STAFF",
                     action = "STOCK_AUDIT",
-                    details = "Kiểm kê khu vực $targetBinOrCategory. Khớp: ${matched.size}, Thừa: ${surplus.size}, Thiếu: ${deficit.size}",
-                    timestamp = Date().time
+                    details = "Kiểm kê khu vực $targetBinOrCategory. Khớp: ${matched.size}, Thừa: ${surplus.size}, Thiếu: ${deficit.size}"
                 )
             )
         }
