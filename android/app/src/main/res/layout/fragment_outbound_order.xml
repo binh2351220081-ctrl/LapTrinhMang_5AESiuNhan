@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:background="#F3F5F7">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:background="@color/primary" android:padding="16dp">
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="TV3 · ĐIỀU PHỐI XUẤT KHO" android:textColor="@color/accent_gold" android:textSize="12sp" android:textStyle="bold" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:text="Lệnh xuất &amp; đơn vị nhận" android:textColor="@color/white" android:textSize="21sp" android:textStyle="bold" />
+        <TextView android:id="@+id/tvSessionOutbound" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="6dp" android:textColor="#E4EAF0" android:textSize="12sp" />
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:orientation="horizontal">
+            <Button android:id="@+id/btnBackToProducts" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Danh mục" android:textAllCaps="false" android:textSize="12sp" />
+            <Button android:id="@+id/btnRefreshOutbound" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Tải lại" android:textAllCaps="false" android:textSize="12sp" />
+            <Button android:id="@+id/btnSyncOutbound" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Đồng bộ" android:textAllCaps="false" android:textSize="12sp" />
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingHorizontal="16dp" android:paddingVertical="10dp" android:orientation="horizontal" android:background="#FFFFFF">
+        <TextView android:id="@+id/tvKpiTotalOrders" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="0 lệnh" android:textColor="@color/primary" android:textSize="12sp" android:textStyle="bold" />
+        <TextView android:id="@+id/tvKpiCompletedOrders" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="0 đã xuất" android:textColor="#137A55" android:textSize="12sp" android:textStyle="bold" />
+        <TextView android:id="@+id/tvKpiReservedItems" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="0 giữ chỗ" android:textColor="#996000" android:textSize="12sp" android:textStyle="bold" />
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:paddingHorizontal="12dp">
+        <Button android:id="@+id/tabOrders" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Lệnh xuất" android:textAllCaps="false" />
+        <Button android:id="@+id/tabDealers" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Đơn vị nhận" android:textAllCaps="false" />
+    </LinearLayout>
+    <EditText android:id="@+id/etOutboundSearch" android:layout_width="match_parent" android:layout_height="48dp" android:layout_marginHorizontal="16dp" android:hint="Tìm mã lệnh, đơn vị, SKU…" android:inputType="text" android:singleLine="true" android:textSize="14sp" android:importantForAutofill="no" />
+    <Spinner android:id="@+id/spOutboundStatus" android:layout_width="match_parent" android:layout_height="44dp" android:layout_marginHorizontal="16dp" android:contentDescription="Lọc trạng thái" />
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingHorizontal="12dp" android:orientation="horizontal">
+        <Button android:id="@+id/btnNewOutbound" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Lập lệnh" android:textAllCaps="false" android:textSize="12sp" />
+        <Button android:id="@+id/btnCustomerReturn" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Nhận trả" android:textAllCaps="false" android:textSize="12sp" />
+        <Button android:id="@+id/btnOtherDispatch" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Xuất khác" android:textAllCaps="false" android:textSize="12sp" />
+    </LinearLayout>
+    <ProgressBar android:id="@+id/progressOutbound" style="?android:attr/progressBarStyleHorizontal" android:layout_width="match_parent" android:layout_height="3dp" android:indeterminate="true" android:visibility="gone" />
+    <TextView android:id="@+id/tvEmptyOutbound" android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="20dp" android:text="Chưa có dữ liệu phù hợp." android:gravity="center" android:textColor="#657789" android:visibility="gone" />
+    <androidx.recyclerview.widget.RecyclerView android:id="@+id/rvOutboundContent" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:padding="16dp" android:clipToPadding="false" />
+</LinearLayout>

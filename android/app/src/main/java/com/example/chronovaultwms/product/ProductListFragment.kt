@@ -33,6 +33,7 @@ import com.example.chronovaultwms.databinding.FragmentProductListBinding
 import com.example.chronovaultwms.databinding.ItemAuditLogBinding
 import com.example.chronovaultwms.databinding.ItemProductTimelineStepBinding
 import com.example.chronovaultwms.databinding.ItemUserAccountBinding
+import com.example.chronovaultwms.dashboard.DashboardOverviewFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -52,7 +53,10 @@ class ProductListFragment : Fragment() {
 
     private var _binding: FragmentProductListBinding? = null
     private val binding get() = _binding!!
+    private var loginDialog: AlertDialog? = null
+    private var loginInProgress = false
 
+    private lateinit var database: ChronoVaultDatabase
     private lateinit var productDao: ProductDao
     private lateinit var serialDao: SerialDao
     private lateinit var userDao: UserDao
@@ -75,7 +79,7 @@ class ProductListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Khởi tạo Database DAO & Session
-        val database = ChronoVaultDatabase.getInstance(requireContext())
+        database = ChronoVaultDatabase.getInstance(requireContext())
         productDao = database.productDao()
         serialDao = database.serialDao()
         userDao = database.userDao()
@@ -113,6 +117,8 @@ class ProductListFragment : Fragment() {
     }
 
     private fun setupListeners() {
+        binding.btnBackDashboard.setOnClickListener { returnToDashboard() }
+
         binding.tvFilterReset.setOnClickListener {
             binding.searchView.setQuery("", false)
             adapter.updateList(allProducts)
@@ -145,6 +151,13 @@ class ProductListFragment : Fragment() {
             showSystemManagementDialog()
         }
 
+        binding.btnNavOutbound.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainer, com.example.chronovaultwms.outbound.OutboundOrderFragment())
+                .addToBackStack(null)
+                .commit()
+        }
+
         // Bấm vào tên người dùng ở Header để đổi ngay Gmail / Hồ sơ cá nhân
         binding.tvLoggedInUser.setOnClickListener {
             viewLifecycleOwner.lifecycleScope.launch {
@@ -159,14 +172,35 @@ class ProductListFragment : Fragment() {
         binding.btnLogout.setOnClickListener {
             sessionManager.clearSession()
             Toast.makeText(requireContext(), "Đã đăng xuất khỏi hệ thống", Toast.LENGTH_SHORT).show()
-            showLoginDialog()
+            val manager = parentFragmentManager
+            manager.popBackStackImmediate(null, androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE)
+            manager.beginTransaction()
+                .replace(R.id.fragmentContainer, ProductListFragment())
+                .commit()
+        }
+    }
+
+    private fun returnToDashboard() {
+        if (!sessionManager.isLoggedIn() || sessionManager.getRole() != "ACCOUNTANT") return
+        if (!parentFragmentManager.popBackStackImmediate()) {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainer, DashboardOverviewFragment())
+                .commit()
         }
     }
 
     private fun loadProductsAndCheckAuth() {
         viewLifecycleOwner.lifecycleScope.launch {
-            // Nạp dữ liệu mẫu ban đầu gồm Sản phẩm, Serials, 5 Tài khoản và Nhật ký nếu CSDL rỗng
-            DatabaseSeeder.checkAndSeed(productDao, serialDao, userDao, auditLogDao)
+            // Nạp dữ liệu mẫu ban đầu gồm Sản phẩm, Serials, 5 Tài khoản, Đại lý, Đơn sỉ và Nhật ký nếu CSDL rỗng
+            DatabaseSeeder.checkAndSeed(
+                productDao,
+                serialDao,
+                userDao,
+                auditLogDao,
+                database.dealerDao(),
+                database.outboundOrderDao(),
+                database.dealerReceiptDao()
+            )
 
             // Lấy danh sách sản phẩm từ Room
             allProducts = withContext(Dispatchers.IO) {
@@ -179,7 +213,10 @@ class ProductListFragment : Fragment() {
             // Kiểm tra trạng thái phiên đăng nhập
             val currentRole = sessionManager.getRole()
             if (!sessionManager.isLoggedIn() || currentRole == "DIRECTOR") {
-                sessionManager.saveSession("jwt_token_demo", "USR-001", "Phan Bá Hải Bình", "SYSTEM_ADMIN")
+                sessionManager.clearSession()
+                updateUserHeader()
+                showLoginDialog()
+                return@launch
             }
             updateUserHeader()
         }
@@ -201,7 +238,8 @@ class ProductListFragment : Fragment() {
         // Phân quyền RBAC cho chức năng Khai báo Mẫu đồng hồ mới (F1.1) & Quản trị hệ thống:
         // Chỉ Quản trị hệ thống (SYSTEM_ADMIN) hoặc Chủ cửa hàng (STORE_OWNER) mới có quyền tạo mã SKU mới và vào Cài đặt.
         // Nhân viên kho (OPERATIONS_STAFF), Kế toán (ACCOUNTANT) và Thủ kho (WAREHOUSE_MANAGER) sẽ bị ẩn hoàn toàn để bảo vệ Master Data.
-        val isAdminOrOwner = (role == "SYSTEM_ADMIN" || role == "STORE_OWNER")
+        binding.btnBackDashboard.visibility = if (sessionManager.isLoggedIn() && role == "ACCOUNTANT") View.VISIBLE else View.GONE
+        val isAdminOrOwner = sessionManager.isLoggedIn() && (role == "SYSTEM_ADMIN" || role == "STORE_OWNER")
         binding.fabAddProduct.visibility = if (isAdminOrOwner) View.VISIBLE else View.GONE
         binding.btnSystemSettings.visibility = if (isAdminOrOwner) View.VISIBLE else View.GONE
     }
@@ -225,53 +263,76 @@ class ProductListFragment : Fragment() {
      * F1.6: Hộp thoại Đăng Nhập & Đăng Nhập Nhanh 1-Chạm Demo
      */
     private fun showLoginDialog() {
+        if (_binding == null || sessionManager.isLoggedIn() || loginDialog?.isShowing == true) return
         val dialogBinding = DialogLoginBinding.inflate(layoutInflater)
         val dialog = AlertDialog.Builder(requireContext())
             .setView(dialogBinding.root)
             .setCancelable(false)
             .create()
 
+        loginDialog = dialog
+        dialog.setOnDismissListener {
+            if (loginDialog === dialog) loginDialog = null
+        }
+        val loginButtons = listOf(dialogBinding.btnLoginSubmit, dialogBinding.btnQuickBinh,
+            dialogBinding.btnQuickOwner, dialogBinding.btnQuickTam, dialogBinding.btnQuickOps, dialogBinding.btnQuickTu)
+
         fun performLogin(usernameInput: String, passwordInput: String) {
+            if (loginInProgress) return
+            loginInProgress = true
+            loginButtons.forEach { it.isEnabled = false }
             viewLifecycleOwner.lifecycleScope.launch {
-                val user = withContext(Dispatchers.IO) {
-                    userDao.login(usernameInput, passwordInput)
-                }
-
-                if (user != null) {
-                    sessionManager.saveSession(
-                        token = "jwt_${user.userId}",
-                        userId = user.userId,
-                        fullName = user.fullName,
-                        role = user.role
-                    )
-
-                    // Ghi vết vào Audit Log
-                    val currentTime = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault()).format(Date())
-                    val log = AuditLogEntity(
-                        timestamp = currentTime,
-                        actorName = user.fullName,
-                        role = user.role,
-                        action = "ĐĂNG_NHẬP",
-                        details = "Đăng nhập thành công với chức danh ${user.department}.",
-                        ipAddress = "192.168.1.100 - Mobile Terminal"
-                    )
-                    withContext(Dispatchers.IO) {
-                        auditLogDao.insertLog(log)
+                try {
+                    val user = withContext(Dispatchers.IO) {
+                        userDao.login(usernameInput, passwordInput)
                     }
 
-                    updateUserHeader()
-                    dialog.dismiss()
-                    Toast.makeText(
-                        requireContext(),
-                        "Xin chào ${user.fullName} (${user.role})!",
-                        Toast.LENGTH_LONG
-                    ).show()
-                } else {
-                    Toast.makeText(
-                        requireContext(),
-                        "Sai tên đăng nhập hoặc mật khẩu!",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    if (user != null) {
+                        // Ghi vết vào Audit Log
+                        val currentTime = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault()).format(Date())
+                        val log = AuditLogEntity(
+                            timestamp = currentTime,
+                            actorName = user.fullName,
+                            role = user.role,
+                            action = "ĐĂNG_NHẬP",
+                            details = "Đăng nhập thành công với chức danh ${user.department}.",
+                            ipAddress = "192.168.1.100 - Mobile Terminal"
+                        )
+                        withContext(Dispatchers.IO) {
+                            auditLogDao.insertLog(log)
+                        }
+
+                        sessionManager.saveSession("jwt_${user.userId}", user.userId, user.fullName, user.role)
+                        updateUserHeader()
+                        // Close the owned window before replacing its fragment.
+                        loginDialog?.dismiss()
+                        dialog.dismiss()
+                        if (user.role == "ACCOUNTANT") {
+                            val manager = parentFragmentManager
+                            manager.popBackStackImmediate(null, androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE)
+                            manager.beginTransaction()
+                                .replace(R.id.fragmentContainer, DashboardOverviewFragment())
+                                .commit()
+                        }
+                        Toast.makeText(
+                            requireContext(),
+                            "Xin chào ${user.fullName} (${user.role})!",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    } else {
+                        Toast.makeText(
+                            requireContext(),
+                            "Sai tên đăng nhập hoặc mật khẩu!",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                } catch (cancelled: kotlinx.coroutines.CancellationException) {
+                    throw cancelled
+                } catch (_: Exception) {
+                    if (isAdded) Toast.makeText(requireContext(), "Không thể đăng nhập. Vui lòng thử lại.", Toast.LENGTH_LONG).show()
+                } finally {
+                    loginInProgress = false
+                    loginButtons.forEach { it.isEnabled = true }
                 }
             }
         }
@@ -721,19 +782,19 @@ class ProductListFragment : Fragment() {
                         "Đã lưu trữ an toàn tại vị trí ${serial.currentLocation}. Kích hoạt mã định danh RFID/Barcode theo dõi."
                     ),
                     Triple(
-                        "4. 🔒 Khóa Hàng Giữ Chỗ Đơn Sỉ B2B (Allocation)",
-                        if (serial.status == "ALLOCATED" || serial.status == "DELIVERED") "Đã xác nhận" else "Sẵn sàng",
-                        if (serial.dealerName != null) "Đã khóa tự động giữ chỗ cho: ${serial.dealerName}." else "Hàng khả dụng sẵn sàng phân bổ cho các đại lý bán buôn."
+                        "4. 🔒 Khóa Giữ Chỗ Lệnh Điều Phối (Allocation)",
+                        if (serial.status == "ALLOCATED" || serial.status == "DELIVERED" || serial.status == "DISPATCHED") "Đã xác nhận" else "Sẵn sàng",
+                        if (serial.dealerName != null) "Đã khóa tự động giữ chỗ cho: ${serial.dealerName}." else "Hàng khả dụng sẵn sàng phân bổ theo lệnh điều phối kho."
                     ),
                     Triple(
                         "5. 🚚 Quét Barcode Xuất Bến & Bàn Giao Vận Chuyển",
-                        if (serial.status == "DELIVERED") "Hoàn thành" else "Chờ xuất bến",
-                        if (serial.status == "DELIVERED") "Đã quét xuất kho Serial ${serial.serialNumber}, bàn giao xe vận tải có niêm phong bảo mật." else "Đang chờ lệnh xuất kho và phiếu xuất kho được duyệt."
+                        if (serial.status == "DELIVERED" || serial.status == "DISPATCHED") "Hoàn thành" else "Chờ xuất bến",
+                        if (serial.status == "DELIVERED" || serial.status == "DISPATCHED") "Đã quét xuất kho Serial ${serial.serialNumber}, bàn giao xe vận tải có niêm phong bảo mật." else "Đang chờ lệnh điều phối và phiếu xuất kho được duyệt."
                     ),
                     Triple(
-                        "6. 🛡️ Bàn Giao Đại Lý & Kích Hoạt Bảo Hành Điện Tử",
-                        if (serial.status == "DELIVERED") "Đã kích hoạt" else "Chưa kích hoạt",
-                        if (serial.status == "DELIVERED") "Đại lý đã ký nhận biên bản bàn giao. Đã kích hoạt bảo hành chính hãng toàn cầu 5 năm." else "Bảo hành sẽ được tự động kích hoạt ngay khi hoàn tất giao hàng."
+                        "6. 🛡️ Bàn Giao Đơn Vị Nhận & Kích Hoạt Bảo Hành Điện Tử",
+                        if (serial.status == "DELIVERED" || serial.status == "DISPATCHED") "Đã kích hoạt" else "Chưa kích hoạt",
+                        if (serial.status == "DELIVERED" || serial.status == "DISPATCHED") "Đơn vị tiếp nhận đã ký biên bản bàn giao. Đã kích hoạt bảo hành chính hãng toàn cầu 5 năm." else "Bảo hành sẽ được tự động kích hoạt ngay khi hoàn tất bàn giao xuất kho."
                     )
                 )
 
@@ -791,6 +852,9 @@ class ProductListFragment : Fragment() {
     }
 
     override fun onDestroyView() {
+        loginDialog?.dismiss()
+        loginDialog = null
+        loginInProgress = false
         super.onDestroyView()
         _binding = null
     }

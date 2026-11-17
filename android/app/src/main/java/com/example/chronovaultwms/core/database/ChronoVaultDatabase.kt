@@ -10,9 +10,19 @@ import androidx.room.RoomDatabase
         ProductEntity::class,
         SerialEntity::class,
         UserEntity::class,
-        AuditLogEntity::class
+        AuditLogEntity::class,
+        DealerEntity::class,
+        OutboundOrderEntity::class,
+        DealerReceiptEntity::class,
+        OutboundLineEntity::class,
+        OutboundAllocationEntity::class,
+        OutboundDispatchEntity::class,
+        OutboundReturnEntity::class,
+        OutboundOtherDispatchEntity::class,
+        StockMovementEntity::class,
+        OutboundSyncEventEntity::class
     ],
-    version = 4,
+    version = 6,
     exportSchema = false
 )
 abstract class ChronoVaultDatabase : RoomDatabase() {
@@ -20,6 +30,10 @@ abstract class ChronoVaultDatabase : RoomDatabase() {
     abstract fun serialDao(): SerialDao
     abstract fun userDao(): UserDao
     abstract fun auditLogDao(): AuditLogDao
+    abstract fun dealerDao(): DealerDao
+    abstract fun outboundOrderDao(): OutboundOrderDao
+    abstract fun dealerReceiptDao(): DealerReceiptDao
+    abstract fun outboundWorkflowDao(): OutboundWorkflowDao
 
     companion object {
         @Volatile
@@ -32,7 +46,7 @@ abstract class ChronoVaultDatabase : RoomDatabase() {
                     ChronoVaultDatabase::class.java,
                     "chronovault_wms.db"
                 )
-                .fallbackToDestructiveMigration()
+                .addMigrations(OutboundMigrations.MIGRATION_5_6)
                 .build()
                 INSTANCE = instance
                 instance

@@ -22,6 +22,24 @@
             android:paddingTop="36dp"
             android:paddingBottom="20dp">
 
+            <TextView
+                android:id="@+id/btnBackDashboard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/bg_search_input"
+                android:backgroundTint="#334155"
+                android:clickable="true"
+                android:focusable="true"
+                android:paddingStart="12dp"
+                android:paddingTop="7dp"
+                android:paddingEnd="12dp"
+                android:paddingBottom="7dp"
+                android:text="← Dashboard TV5"
+                android:textColor="@color/white"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
             <!-- User Status & Admin Toolbar -->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -54,6 +72,23 @@
                     android:text="⚙️ Hệ Thống"
                     android:textColor="@color/white"
                     android:textSize="11sp"
+                    android:layout_marginEnd="6dp" />
+
+                <!-- Nút Chuyển Sang TV3: Điều Phối Xuất Kho -->
+                <TextView
+                    android:id="@+id/btnNavOutbound"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_search_input"
+                    android:backgroundTint="@color/accent_gold"
+                    android:paddingStart="8dp"
+                    android:paddingTop="4dp"
+                    android:paddingEnd="8dp"
+                    android:paddingBottom="4dp"
+                    android:text="📤 TV3: Xuất Kho"
+                    android:textColor="@color/primary_dark"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
                     android:layout_marginEnd="6dp" />
 
                 <!-- Nút Đăng Xuất -->

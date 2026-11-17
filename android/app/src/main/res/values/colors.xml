@@ -21,4 +21,11 @@
     <color name="badge_stock_text">#059669</color>
     <color name="badge_low_bg">#FEF3C7</color>
     <color name="badge_low_text">#D97706</color>
+
+    <!-- TV5 Dashboard palette -->
+    <color name="dashboard_canvas">#F6F4EF</color>
+    <color name="dashboard_gold_soft">#F3E6B3</color>
+    <color name="dashboard_danger">#B42318</color>
+    <color name="dashboard_success">#067647</color>
+    <color name="dashboard_divider">#E4E7EC</color>
 </resources>

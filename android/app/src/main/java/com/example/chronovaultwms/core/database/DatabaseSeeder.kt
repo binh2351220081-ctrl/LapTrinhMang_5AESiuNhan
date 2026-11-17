@@ -4,19 +4,21 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 object DatabaseSeeder {
-    private val sampleProducts = listOf(
+    private val initialProductCatalog = listOf(
         ProductEntity(
             productCode = "RLX-126610LN",
             name = "Rolex Submariner Date 41mm",
             brand = "Rolex",
             category = "Diver",
-            wholesalePrice = 320000000.0,
+            wholesalePrice = 350000000.0,
             retailPrice = 365000000.0,
             stockQuantity = 14,
             caseDiameter = "41mm",
             dialColor = "Đen Cerachrom",
             movementType = "Automatic Cal. 3235",
-            waterResistance = "300m / 30ATM"
+            waterResistance = "300m / 30ATM",
+            conversionRate = 10,
+            minDispatchQuantity = 2
         ),
         ProductEntity(
             productCode = "RLX-116500LN",
@@ -137,39 +139,193 @@ object DatabaseSeeder {
         )
     )
 
-    private val sampleSerials = listOf(
+    val sampleSerials = listOf(
         SerialEntity(
             serialNumber = "RLX-SUB-2026-001",
             productCode = "RLX-126610LN",
             status = "IN_STOCK",
-            currentLocation = "Két Sắt VIP-01 (Kho A)",
+            currentLocation = "Kệ K1-A02-B03",
             importDate = "15/10/2026 09:30",
             unitCost = 285000000.0,
             supplierName = "Rolex Geneva SA (Thụy Sĩ)",
             dealerName = null,
-            qcNotes = "Đạt chuẩn COSC (+1s/ngày), Thẻ NFC kích hoạt 5 năm bảo hành"
+            qcNotes = "Lô 1 (Hàng mới nguyên seal): Đạt chuẩn COSC (+1s/ngày), Thẻ NFC kích hoạt 5 năm bảo hành"
+        ),
+        SerialEntity(
+            serialNumber = "RLX-SUB-2026-004",
+            productCode = "RLX-126610LN",
+            status = "IN_STOCK",
+            currentLocation = "Kệ K1-A02-B04",
+            importDate = "15/10/2026 09:35",
+            unitCost = 285000000.0,
+            supplierName = "Rolex Geneva SA (Thụy Sĩ)",
+            dealerName = null,
+            qcNotes = "Lô 1 (Hàng mới nguyên seal): Chuẩn COSC (0s/ngày), sẵn sàng xuất kho theo FIFO"
         ),
         SerialEntity(
             serialNumber = "RLX-SUB-2026-002",
             productCode = "RLX-126610LN",
-            status = "ALLOCATED",
-            currentLocation = "Kệ A1-02 (Khay xuất hàng)",
-            importDate = "18/10/2026 14:15",
-            unitCost = 285000000.0,
+            status = "IN_STOCK",
+            currentLocation = "Két VIP-02",
+            importDate = "25/10/2026 14:15",
+            unitCost = 295000000.0,
             supplierName = "Rolex Geneva SA (Thụy Sĩ)",
-            dealerName = "Đại lý LuxWatch Sài Gòn (Đơn #SO-2026-88)",
-            qcNotes = "Chuẩn COSC (0s/ngày), Đã khóa giữ chỗ chờ thanh toán"
+            dealerName = null,
+            qcNotes = "Lô 2 (Giá vốn 295tr): Lưu Két VIP-02, đối soát chống xuất nhầm lô (TC-06)"
+        ),
+        SerialEntity(
+            serialNumber = "RLX-SUB-2026-005",
+            productCode = "RLX-126610LN",
+            status = "IN_STOCK",
+            currentLocation = "Kệ K1-A02-B05",
+            importDate = "25/10/2026 14:20",
+            unitCost = 295000000.0,
+            supplierName = "Rolex Geneva SA (Thụy Sĩ)",
+            dealerName = null,
+            qcNotes = "Lô 2 (Hàng mới nguyên seal): Chuẩn COSC (+1s/ngày), sẵn sàng phân bổ"
+        ),
+        SerialEntity(
+            serialNumber = "RLX-SUB-2026-006",
+            productCode = "RLX-126610LN",
+            status = "IN_STOCK",
+            currentLocation = "Kệ K1-A02-B06",
+            importDate = "25/10/2026 14:22",
+            unitCost = 295000000.0,
+            supplierName = "Rolex Geneva SA (Thụy Sĩ)",
+            dealerName = null,
+            qcNotes = "Lô 2: Nguyên seal, đầy đủ thẻ bảo hành NFC"
+        ),
+        SerialEntity(
+            serialNumber = "RLX-SUB-2026-007",
+            productCode = "RLX-126610LN",
+            status = "IN_STOCK",
+            currentLocation = "Kệ K1-A02-B07",
+            importDate = "25/10/2026 14:25",
+            unitCost = 295000000.0,
+            supplierName = "Rolex Geneva SA (Thụy Sĩ)",
+            dealerName = null,
+            qcNotes = "Lô 2: Nguyên seal nhà máy"
+        ),
+        SerialEntity(
+            serialNumber = "RLX-SUB-2026-008",
+            productCode = "RLX-126610LN",
+            status = "IN_STOCK",
+            currentLocation = "Kệ K1-A02-B08",
+            importDate = "25/10/2026 14:28",
+            unitCost = 295000000.0,
+            supplierName = "Rolex Geneva SA (Thụy Sĩ)",
+            dealerName = null,
+            qcNotes = "Lô 2: Nguyên seal, chuẩn COSC"
+        ),
+        SerialEntity(
+            serialNumber = "RLX-SUB-2026-009",
+            productCode = "RLX-126610LN",
+            status = "IN_STOCK",
+            currentLocation = "Kệ K1-A02-B09",
+            importDate = "25/10/2026 14:30",
+            unitCost = 295000000.0,
+            supplierName = "Rolex Geneva SA (Thụy Sĩ)",
+            dealerName = null,
+            qcNotes = "Lô 2: Nguyên seal nhà máy"
+        ),
+        SerialEntity(
+            serialNumber = "RLX-SUB-2026-010",
+            productCode = "RLX-126610LN",
+            status = "IN_STOCK",
+            currentLocation = "Kệ K1-A02-B10",
+            importDate = "25/10/2026 14:32",
+            unitCost = 295000000.0,
+            supplierName = "Rolex Geneva SA (Thụy Sĩ)",
+            dealerName = null,
+            qcNotes = "Lô 2: Nguyên seal nhà máy"
+        ),
+        SerialEntity(
+            serialNumber = "RLX-SUB-2026-011",
+            productCode = "RLX-126610LN",
+            status = "IN_STOCK",
+            currentLocation = "Kệ K1-A03-B01",
+            importDate = "25/10/2026 14:35",
+            unitCost = 295000000.0,
+            supplierName = "Rolex Geneva SA (Thụy Sĩ)",
+            dealerName = null,
+            qcNotes = "Lô 2: Nguyên seal nhà máy"
+        ),
+        SerialEntity(
+            serialNumber = "RLX-SUB-2026-012",
+            productCode = "RLX-126610LN",
+            status = "IN_STOCK",
+            currentLocation = "Kệ K1-A03-B02",
+            importDate = "25/10/2026 14:38",
+            unitCost = 295000000.0,
+            supplierName = "Rolex Geneva SA (Thụy Sĩ)",
+            dealerName = null,
+            qcNotes = "Lô 2: Nguyên seal nhà máy"
+        ),
+        SerialEntity(
+            serialNumber = "RLX-SUB-2026-013",
+            productCode = "RLX-126610LN",
+            status = "IN_STOCK",
+            currentLocation = "Kệ K1-A03-B03",
+            importDate = "25/10/2026 14:40",
+            unitCost = 295000000.0,
+            supplierName = "Rolex Geneva SA (Thụy Sĩ)",
+            dealerName = null,
+            qcNotes = "Lô 2: Nguyên seal nhà máy"
+        ),
+        SerialEntity(
+            serialNumber = "RLX-SUB-2026-014",
+            productCode = "RLX-126610LN",
+            status = "IN_STOCK",
+            currentLocation = "Kệ K1-A03-B04",
+            importDate = "25/10/2026 14:42",
+            unitCost = 295000000.0,
+            supplierName = "Rolex Geneva SA (Thụy Sĩ)",
+            dealerName = null,
+            qcNotes = "Lô 2: Nguyên seal nhà máy"
+        ),
+        SerialEntity(
+            serialNumber = "RLX-SUB-2026-015",
+            productCode = "RLX-126610LN",
+            status = "IN_STOCK",
+            currentLocation = "Kệ K1-A03-B05",
+            importDate = "25/10/2026 14:45",
+            unitCost = 295000000.0,
+            supplierName = "Rolex Geneva SA (Thụy Sĩ)",
+            dealerName = null,
+            qcNotes = "Lô 2: Nguyên seal nhà máy"
         ),
         SerialEntity(
             serialNumber = "RLX-SUB-2026-003",
             productCode = "RLX-126610LN",
             status = "DELIVERED",
-            currentLocation = "Đã bàn giao cho Đại lý",
+            currentLocation = "Đã bàn giao cho Đơn vị nhận",
             importDate = "05/10/2026 10:00",
             unitCost = 285000000.0,
             supplierName = "Rolex Geneva SA (Thụy Sĩ)",
-            dealerName = "Đồng Hồ Hải Triều (Đơn #SO-2026-45)",
-            qcNotes = "Bàn giao thành công, kích hoạt BH điện tử chính hãng"
+            dealerName = "Đồng Hồ Hải Triều (Lệnh #PX-2026-45)",
+            qcNotes = "Bàn giao kho vận thành công, kèm biên bản niêm phong"
+        ),
+        SerialEntity(
+            serialNumber = "RLX-SUB-2026-ERR",
+            productCode = "RLX-126610LN",
+            status = "DEFECTIVE",
+            currentLocation = "Kho Lỗi C-01 (Cách ly)",
+            importDate = "12/10/2026 08:00",
+            unitCost = 285000000.0,
+            supplierName = "Rolex Geneva SA (Thụy Sĩ)",
+            dealerName = null,
+            qcNotes = "Hấp hơi mặt kính - Cách ly chờ xuất bảo hành hãng (TC-04)"
+        ),
+        SerialEntity(
+            serialNumber = "RX-9921",
+            productCode = "RLX-126610LN",
+            status = "DEFECTIVE",
+            currentLocation = "Kho Lỗi C-01 (Cách ly)",
+            importDate = "12/10/2026 08:00",
+            unitCost = 285000000.0,
+            supplierName = "Rolex Geneva SA (Thụy Sĩ)",
+            dealerName = null,
+            qcNotes = "Hàng trầy xước vỏ - Cách ly chờ xuất bảo hành hãng (TC-05)"
         ),
         SerialEntity(
             serialNumber = "RLX-DTN-2026-001",
@@ -185,24 +341,57 @@ object DatabaseSeeder {
         SerialEntity(
             serialNumber = "RLX-DTN-2026-002",
             productCode = "RLX-116500LN",
-            status = "ALLOCATED",
+            status = "IN_STOCK",
             currentLocation = "Két Sắt VIP-02",
             importDate = "22/10/2026 16:40",
             unitCost = 680000000.0,
             supplierName = "Rolex Geneva SA (Thụy Sĩ)",
-            dealerName = "Đại lý Galle Watch Hà Nội",
-            qcNotes = "Đã nhận cọc 50%, kiểm định seal hoàn hảo"
+            dealerName = null,
+            qcNotes = "Hàng mới nguyên seal, sẵn sàng phân bổ theo lệnh xuất kho"
         ),
         SerialEntity(
-            serialNumber = "OMG-SPD-2026-001",
+            serialNumber = "OMG-SPEED-2026-001",
             productCode = "OMG-310304250",
-            status = "IN_STOCK",
-            currentLocation = "Kệ K2-B04",
+            status = "DISPATCHED",
+            currentLocation = "Đã bàn giao (Lệnh #DS-2026-002)",
             importDate = "10/10/2026 08:45",
             unitCost = 145000000.0,
             supplierName = "Omega Bienne HQ (Thụy Sĩ)",
+            dealerName = "Đồng Hồ Hải Triều",
+            qcNotes = "METAS Master Chronometer kháng từ 15,000 Gauss - Đã xuất kho DS-2026-002"
+        ),
+        SerialEntity(
+            serialNumber = "OMG-SPEED-2026-002",
+            productCode = "OMG-310304250",
+            status = "DISPATCHED",
+            currentLocation = "Đã bàn giao (Lệnh #DS-2026-002)",
+            importDate = "10/10/2026 08:50",
+            unitCost = 145000000.0,
+            supplierName = "Omega Bienne HQ (Thụy Sĩ)",
+            dealerName = "Đồng Hồ Hải Triều",
+            qcNotes = "METAS Master Chronometer - Đã xuất kho DS-2026-002"
+        ),
+        SerialEntity(
+            serialNumber = "OMG-SPEED-2026-003",
+            productCode = "OMG-310304250",
+            status = "IN_STOCK",
+            currentLocation = "Kệ K2-B04",
+            importDate = "11/10/2026 09:00",
+            unitCost = 145000000.0,
+            supplierName = "Omega Bienne HQ (Thụy Sĩ)",
             dealerName = null,
-            qcNotes = "METAS Master Chronometer kháng từ 15,000 Gauss"
+            qcNotes = "METAS Master Chronometer, hàng mới nguyên seal sẵn sàng điều phối"
+        ),
+        SerialEntity(
+            serialNumber = "CAR-SAN-2026-001",
+            productCode = "CAR-WSSA0029",
+            status = "IN_STOCK",
+            currentLocation = "Kệ K3-C01",
+            importDate = "08/11/2026 09:00",
+            unitCost = 155000000.0,
+            supplierName = "Cartier Manufacture (Thụy Sĩ)",
+            dealerName = null,
+            qcNotes = "Hàng mới nguyên seal, sẵn sàng xuất cho Lệnh DS-2026-003"
         ),
         SerialEntity(
             serialNumber = "PP-NAU-2026-001",
@@ -302,7 +491,7 @@ object DatabaseSeeder {
         )
     )
 
-    private val sampleAuditLogs = listOf(
+    val sampleAuditLogs = listOf(
         AuditLogEntity(
             timestamp = "10/11/2026 08:00:12",
             actorName = "Phan Bá Hải Bình",
@@ -342,20 +531,202 @@ object DatabaseSeeder {
             action = "PHÂN_BỔ_GIÁ_VỐN",
             details = "Hạch toán chi phí logistics và gán giá vốn đích danh cho Serial RLX-SUB-2026-002.",
             ipAddress = "192.168.1.105 - Accounting Terminal"
+        ),
+        AuditLogEntity(
+            timestamp = "10/11/2026 14:10:15",
+            actorName = "Tô Đức Thảo",
+            role = "OPERATIONS_STAFF",
+            action = "LẬP_LỆNH_XUẤT_NHÁP",
+            details = "Lập nháp lệnh điều phối DS-2026-001 cho Chi nhánh Galle Watch: 2 chiếc Rolex Submariner, chờ Thủ kho duyệt.",
+            ipAddress = "192.168.1.103 - Outbound Terminal"
         )
     )
+
+    val sampleDealers = listOf(
+        DealerEntity(
+            dealerId = "DL-GALLE",
+            name = "Galle Watch Việt Nam",
+            tier = "VIP",
+            discountPercent = 0.25,
+            creditLimit = 3000000000.0,
+            currentDebt = 1800000000.0,
+            phone = "0988.123.456",
+            address = "41 Thi Sách, Hai Bà Trưng, Hà Nội",
+            taxCode = "0101892831",
+            status = "ACTIVE"
+        ),
+        DealerEntity(
+            dealerId = "DL-HAITRIEU",
+            name = "Đồng Hồ Hải Triều",
+            tier = "VIP",
+            discountPercent = 0.30,
+            creditLimit = 2500000000.0,
+            currentDebt = 1200000000.0,
+            phone = "0977.654.321",
+            address = "160 Âu Cơ, P.9, Tân Bình, TP.HCM",
+            taxCode = "0312548910",
+            status = "ACTIVE"
+        ),
+        DealerEntity(
+            dealerId = "DL-BOSSLUX",
+            name = "Boss Luxury Watch",
+            tier = "SILVER",
+            discountPercent = 0.25,
+            creditLimit = 1500000000.0,
+            currentDebt = 600000000.0,
+            phone = "0944.888.999",
+            address = "60 Ngô Quyền, Hoàn Kiếm, Hà Nội",
+            taxCode = "0108923412",
+            status = "ACTIVE"
+        ),
+        DealerEntity(
+            dealerId = "DL-DANGQUANG",
+            name = "Đăng Quang Watch",
+            tier = "SILVER",
+            discountPercent = 0.25,
+            creditLimit = 1000000000.0,
+            currentDebt = 350000000.0,
+            phone = "0966.333.222",
+            address = "55 Trần Đăng Ninh, Cầu Giấy, Hà Nội",
+            taxCode = "0105829103",
+            status = "ACTIVE"
+        ),
+        DealerEntity(
+            dealerId = "DL-XWATCH",
+            name = "Xwatch Luxury",
+            tier = "BRONZE",
+            discountPercent = 0.20,
+            creditLimit = 500000000.0,
+            currentDebt = 0.0,
+            phone = "0933.777.111",
+            address = "472 Xã Đàn, Đống Đa, Hà Nội",
+            taxCode = "0106948271",
+            status = "ACTIVE"
+        )
+    )
+
+    val sampleOrders = listOf(
+        OutboundOrderEntity(
+            orderCode = "DS-2026-001",
+            dealerId = "DL-GALLE",
+            dealerName = "Galle Watch Việt Nam",
+            productCode = "RLX-126610LN",
+            productName = "Rolex Submariner Date 41mm",
+            unit = "PIECE",
+            quantity = 2,
+            convertedQuantity = 2,
+            unitPrice = 350000000.0,
+            discountPercent = 0.25,
+            totalAmount = 525000000.0,
+            depositAmount = 150000000.0,
+            remainingDebt = 375000000.0,
+            status = "DRAFT",
+            createdDate = "10/11/2026 14:10",
+            dispatchedSerials = "",
+            note = "Xuất bán buôn đợt 1",
+            createdBy = "Tô Đức Thảo"
+        ),
+        OutboundOrderEntity(
+            orderCode = "DS-2026-002",
+            dealerId = "DL-HAITRIEU",
+            dealerName = "Đồng Hồ Hải Triều",
+            productCode = "OMG-310304250",
+            productName = "Omega Speedmaster Professional Moonwatch",
+            unit = "PIECE",
+            quantity = 2,
+            convertedQuantity = 2,
+            unitPrice = 165000000.0,
+            discountPercent = 0.30,
+            totalAmount = 231000000.0,
+            depositAmount = 100000000.0,
+            remainingDebt = 131000000.0,
+            status = "COMPLETED",
+            createdDate = "09/11/2026 16:45",
+            dispatchedSerials = "OMG-SPEED-2026-001, OMG-SPEED-2026-002",
+            note = "Xuất giao đại lý Hải Triều - Chi nhánh Bạch Đằng",
+            createdBy = "Tô Đức Thảo",
+            approvedBy = "Phan Bá Hải Bình",
+            approvedAt = "09/11/2026 16:50",
+            dispatchedBy = "Tô Đức Thảo",
+            dispatchedAt = "09/11/2026 17:15"
+        ),
+        OutboundOrderEntity(
+            orderCode = "DS-2026-003",
+            dealerId = "DL-BOSSLUX",
+            dealerName = "Boss Luxury Watch",
+            productCode = "CAR-WSSA0029",
+            productName = "Cartier Santos de Cartier Medium",
+            unit = "PIECE",
+            quantity = 1,
+            convertedQuantity = 1,
+            unitPrice = 180000000.0,
+            discountPercent = 0.25,
+            totalAmount = 135000000.0,
+            depositAmount = 50000000.0,
+            remainingDebt = 85000000.0,
+            status = "DRAFT",
+            createdDate = "10/11/2026 15:20",
+            dispatchedSerials = "",
+            note = "Đơn đặt hàng VIP chi nhánh",
+            createdBy = "Tô Đức Thảo"
+        )
+    )
+
+    val sampleReceipts = listOf(
+        DealerReceiptEntity(
+            receiptId = "PT-2026-001",
+            dealerId = "DL-GALLE",
+            dealerName = "Galle Watch Việt Nam",
+            amount = 200000000.0,
+            paymentMethod = "CHUYEN_KHOAN",
+            referenceDoc = "UNC-VCB-88391",
+            date = "09/11/2026 15:30",
+            note = "Xác nhận bàn giao & giải phóng hạn mức bảo lãnh lô Rolex tháng 10 (TC-05)"
+        ),
+        DealerReceiptEntity(
+            receiptId = "PT-2026-002",
+            dealerId = "DL-HAITRIEU",
+            dealerName = "Đồng Hồ Hải Triều",
+            amount = 100000000.0,
+            paymentMethod = "CHUYEN_KHOAN",
+            referenceDoc = "UNC-TCB-99201",
+            date = "10/11/2026 09:15",
+            note = "Ký quỹ bảo lãnh điều phối xuất kho lô Omega Moonwatch"
+        )
+    )
+
+    /** Consistent warehouse demo: every new-stock unit has a real Serial; drafts do not reserve. */
+    val sampleWarehouseSerials: List<SerialEntity>
+        get() = sampleSerials.map { serial ->
+            if (serial.status == "ALLOCATED" && serial.allocatedOrderCode == null) {
+                serial.copy(status = "IN_STOCK", dealerName = null)
+            } else serial
+        }
+
+    val sampleWarehouseProducts: List<ProductEntity>
+        get() = initialProductCatalog.map { product ->
+            product.copy(stockQuantity = sampleWarehouseSerials.count {
+                it.productCode == product.productCode && it.status in setOf("IN_STOCK", "ALLOCATED")
+            })
+        }
+
+    val sampleProducts: List<ProductEntity>
+        get() = sampleWarehouseProducts
 
     suspend fun checkAndSeed(
         productDao: ProductDao,
         serialDao: SerialDao,
         userDao: UserDao,
-        auditLogDao: AuditLogDao
+        auditLogDao: AuditLogDao,
+        dealerDao: DealerDao? = null,
+        outboundOrderDao: OutboundOrderDao? = null,
+        dealerReceiptDao: DealerReceiptDao? = null
     ) = withContext(Dispatchers.IO) {
         if (productDao.getProductCount() == 0) {
-            productDao.insertAll(sampleProducts)
+            productDao.insertAll(sampleWarehouseProducts)
         }
         if (serialDao.countSerials() == 0) {
-            serialDao.insertAll(sampleSerials)
+            serialDao.insertAll(sampleWarehouseSerials)
         }
         val existingUsers = userDao.getAllUsers()
         if (existingUsers.isEmpty() || existingUsers.any { it.role == "DIRECTOR" }) {
@@ -363,6 +734,26 @@ object DatabaseSeeder {
         }
         if (auditLogDao.countLogs() == 0) {
             auditLogDao.insertAll(sampleAuditLogs)
+        }
+        dealerDao?.let {
+            if (it.countDealers() == 0) {
+                it.insertAll(sampleDealers)
+            }
+        }
+        outboundOrderDao?.let {
+            if (it.countOrders() == 0) {
+                it.insertAll(sampleOrders.map { order ->
+                    if (order.status == "RESERVED") order.copy(status = "DRAFT", createdBy = "Dữ liệu mẫu",
+                        note = "Lệnh mẫu cần Thủ kho duyệt trước khi giữ chỗ.", depositAmount = 0.0,
+                        remainingDebt = 0.0, discountPercent = 0.0)
+                    else order
+                })
+            }
+        }
+        dealerReceiptDao?.let {
+            if (it.countReceipts() == 0) {
+                it.insertAll(sampleReceipts)
+            }
         }
     }
 }
