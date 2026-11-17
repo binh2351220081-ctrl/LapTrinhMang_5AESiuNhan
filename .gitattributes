@@ -1,2 +1,3 @@
-tools/* linguist-documentation
-tests/* linguist-documentation
+tools/** linguist-vendored
+tests/** linguist-vendored
+Document/** linguist-documentation
