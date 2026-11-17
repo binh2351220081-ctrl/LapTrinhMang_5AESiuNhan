@@ -1,0 +1,3 @@
+tools/** linguist-vendored
+tests/** linguist-vendored
+Document/** linguist-documentation
