@@ -1,10 +1,15 @@
 # -*- coding: utf-8 -*-
 """
 Script: tools/build_master_report_docx.py
-Mục đích: Tích hợp toàn diện tài liệu từ 2 file báo cáo của Nguyễn Đắc Quân (TV2)
-và Trần Công Tú (TV5) cùng phần việc của Phan Bá Hải Bình (TV1) vào file Word chính thức:
+Mục đích: Tích hợp toàn diện tài liệu từ 3 file báo cáo của:
+- Nguyễn Đắc Quân (TV2 - Phân hệ Đối tác NCC & Nhập kho)
+- Tô Đức Thảo (TV3 - Phân hệ Đối tác Đại lý & Xuất kho B2B)
+- Trần Công Tú (TV5 - Phân hệ Executive Dashboard & 9 Báo cáo)
+cùng phần việc của Phan Bá Hải Bình (TV1 - Trưởng nhóm & Quản trị Danh mục Luxury)
+vào file Word chính thức:
 D:\\cntt\\pbhb\\Document\\BAO_CAO_PHAN_TICH_HE_THONG_THONG_TIN_CHRONOVAULT_WMS.docx
-theo đúng mẫu chuẩn của Khoa CNTT - Đại học Kiến trúc Đà Nẵng (Document/Mẫu báo cáo.docx).
+theo đúng chuẩn mẫu của Khoa CNTT - Đại học Kiến trúc Đà Nẵng (Document/Mẫu báo cáo.docx).
+Cam kết: 100% không còn từ "bán sỉ / sỉ", giữ nguyên 8 câu hỏi phụ lục hiện tại.
 """
 
 import os
@@ -117,8 +122,8 @@ def generate_master_report():
         elif "Lớp \t:" in txt:
             p.text = (
                 "Sinh viên phụ trách báo cáo\t: Phan Bá Hải Bình (Nhóm trưởng / System Architect / Phân hệ 1)\n"
-                "Thành viên tích hợp báo cáo\t: Nguyễn Đắc Quân (TV2 - NCC & Nhập kho), Trần Công Tú (TV5 - Dashboard & Báo cáo)\n"
-                "Thành viên liên kết\t\t: Tô Đức Thảo (TV3 - Đại lý & Xuất kho), Võ Công Tâm (TV4 - Kệ kho & Kiểm kê)"
+                "Thành viên tích hợp báo cáo\t: Nguyễn Đắc Quân (TV2 - NCC & Nhập kho), Tô Đức Thảo (TV3 - Đại lý & Xuất kho), Trần Công Tú (TV5 - Dashboard & Báo cáo)\n"
+                "Thành viên liên kết\t\t: Võ Công Tâm (TV4 - Kệ kho & Kiểm kê thẻ kho)"
             )
             for r in p.runs:
                 r.font.name = "Arial"; r.font.size = Pt(10)
@@ -134,7 +139,7 @@ def generate_master_report():
             p.text = (
                 "Phân tích 3 thành phần cấu thành tên đề tài theo chuẩn khoa học:\n"
                 "• Loại hình / Hành động: Hệ thống Quản trị Kho vận đa cấp & Điều phối Chuỗi cung ứng đại lý B2B (Warehouse Management System - WMS).\n"
-                "• Chức năng chính: Quản lý định danh Serial Number 100%, Tự động quy đổi Đơn vị tính (ĐVT) đa cấp (Thùng - Chiếc lẻ), Kiểm soát hạn mức công nợ & khóa giữ chỗ, Hạch toán giá vốn đích danh (Specific Identification Costing).\n"
+                "• Chức năng chính: Quản lý định danh Serial Number 100%, Tự động quy đổi Đơn vị tính (ĐVT) đa cấp (Thùng - Chiếc lẻ), Kiểm soát hạn mức công nợ & khóa giữ chỗ tồn kho (Reservation), Hạch toán giá vốn đích danh (Specific Identification Costing).\n"
                 "• Đối tượng / Lĩnh vực: Ngành phân phối đồng hồ cao cấp xa xỉ (Luxury Horology Wholesale Distribution)."
             )
             for r in p.runs:
@@ -148,7 +153,7 @@ def generate_master_report():
                 r.font.name = "Arial"; r.font.size = Pt(10.5); r.font.bold = True; r.font.color.rgb = C_NAVY
         elif "Phân hệ" == txt.strip():
             p.text = (
-                "HỆ THỐNG PHÂN RÃ CHỨC NĂNG TÍCH HỢP (FUNCTIONAL DECOMPOSITION TREE):\n\n"
+                "HỆ THỐNG PHÂN RÃ CHỨC NĂNG TÍCH HỢP 4 PHÂN HỆ (FUNCTIONAL DECOMPOSITION TREE):\n\n"
                 "MOD-01: Phân hệ Quản trị Hệ thống & Danh mục Luxury Horology (Phan Bá Hải Bình)\n"
                 "├── F1.1: Quản trị Xác thực & Kiểm soát Phân quyền Người dùng (RBAC 5 Roles)\n"
                 "│    ├── F1.1.1: Đăng nhập bảo mật & Khởi tạo phiên làm việc (SessionManager)\n"
@@ -167,6 +172,16 @@ def generate_master_report():
                 "     ├── F2.2.2: Quét mã vạch Serial 100% bằng Camera ML Kit, chặn trùng lặp mã tuyệt đối\n"
                 "     ├── F2.2.3: Thuật toán Phân bổ Chi phí Logistics (vận chuyển, hải quan, bảo hiểm) vào từng Serial\n"
                 "     └── F2.2.4: Lập phiếu xuất trả hàng lỗi kỹ thuật cho Nhà cung cấp và giảm trừ công nợ\n\n"
+                "MOD-03: Phân hệ Đối tác Đại lý & Quản lý Xuất kho B2B (Tô Đức Thảo)\n"
+                "├── F3.1: Quản lý Đại lý B2B & Kiểm soát Hạn mức Tín dụng (Credit Limit Enforcement)\n"
+                "│    ├── F3.1.1: Khai báo danh bạ đại lý pháp nhân (Galle Watch, Donghochinhhang), phân cấp VIP\n"
+                "│    ├── F3.1.2: Thiết lập hạn mức tín dụng công nợ và tự động khóa nút duyệt đơn khi vượt hạn mức\n"
+                "│    └── F3.1.3: Lập phiếu thu tiền đại lý, cấn trừ công nợ và tiếp nhận đổi trả đại lý\n"
+                "└── F3.2: Quy trình Tạo Lệnh Xuất kho & Quét Camera Serial Thực Xuất B2B\n"
+                "     ├── F3.2.1: Tạo đơn xuất kho đại lý B2B và kích hoạt cơ chế Khóa giữ chỗ tồn kho (Reservation Engine)\n"
+                "     ├── F3.2.2: Quy trình xuất kho 2 bước (Picking List soạn hàng & Dispatch đóng kiện)\n"
+                "     ├── F3.2.3: Quét mã vạch Serial 100% bằng Camera ML Kit đối soát khớp với danh sách giữ chỗ, chặn hàng lỗi DEFECTIVE\n"
+                "     └── F3.2.4: Kết xuất và in ấn Chứng từ giao hàng B2B kiêm Phiếu xuất kho chuẩn khổ A4\n\n"
                 "MOD-05: Phân hệ Executive Dashboard & Hệ thống 9 Báo cáo Quản trị (Trần Công Tú)\n"
                 "├── F5.1: Executive Dashboard 5 Thẻ Chỉ số KPI Điều hành Thời gian thực\n"
                 "│    ├── F5.1.1: Tổng giá trị tài sản tồn kho theo giá vốn đích danh\n"
@@ -179,7 +194,7 @@ def generate_master_report():
                 "     └── F5.2.3: Xuất báo cáo ra tệp CSV (Downloads/ChronoVault) và In ấn chuẩn khổ A4 qua Android PrintManager"
             )
             for r in p.runs:
-                r.font.name = "Consolas"; r.font.size = Pt(8.5); r.font.color.rgb = C_NAVY
+                r.font.name = "Consolas"; r.font.size = Pt(8); r.font.color.rgb = C_NAVY
         elif "└── Chức năng" in txt or "└── Chức năng cấp 1" in txt or "└── Chức năng cấp n (Module)" in txt:
             p.text = ""
         elif "Mã Module: [MOD-XX-YY]" in txt:
@@ -234,10 +249,10 @@ def generate_master_report():
         ("FR-08", "Quét Serial Camera ML Kit & Chống trùng 100%", "Sử dụng Camera đọc mã vạch/QR của từng chiếc hộp đồng hồ. Kiểm tra đối soát trùng lặp 2 tầng (trùng trong phiếu và trùng trong toàn bộ cơ sở dữ liệu), chặn trùng tuyệt đối.", "Cao", "TV2: Quân"),
         ("FR-09", "Phân bổ Chi phí Logistics & Giá vốn Đích danh", "Tính giá vốn đích danh từng Serial: Giá vốn = Đơn giá mua + (Phí vận chuyển + Thuế quan + Bảo hiểm)/Tổng số chiếc. Đảm bảo phản ánh chính xác giá trị tài sản từng chiếc.", "Cao", "TV2: Quân"),
         ("FR-10", "Quản lý Công nợ NCC & Xuất trả hàng lỗi", "Ghi nhận công nợ phải trả khi duyệt phiếu nhập, giảm nợ khi duyệt phiếu chi (Ủy nhiệm chi). Quy trình 4 bước cách ly hàng lỗi và xuất trả NCC để hoàn tiền hoặc cấn trừ nợ.", "Cao", "TV2: Quân"),
-        ("FR-11", "Quản lý Hồ sơ Đại lý tiếp nhận & Hạn mức nợ", "Khai báo hồ sơ đại lý B2B, thiết lập hạn mức tín dụng công nợ (Credit Limit). Tự động cảnh báo và chặn duyệt lệnh xuất khi đại lý vượt hạn mức nợ cho phép.", "Cao", "TV3: Thảo"),
-        ("FR-12", "Tạo Lệnh xuất kho & Khóa giữ chỗ tồn kho", "Tạo lệnh xuất kho đại lý B2B. Kích hoạt cơ chế Reservation: tự động khóa giữ chỗ các mã Serial khả dụng, ngăn chặn tranh chấp tồn kho giữa các nhân viên.", "Cao", "TV3: Thảo"),
-        ("FR-13", "Quy trình Xuất kho 2 bước & Đóng gói bàn giao", "Thủ kho kiểm tra lệnh xuất, quét mã Serial từng chiếc để đối soát khớp 100% với danh sách đã giữ chỗ, đóng thùng niêm phong và in phiếu xuất kho kiêm biên bản bàn giao.", "Cao", "TV3: Thảo"),
-        ("FR-14", "Ma trận Kệ Bin K1/K2 & Phân loại chất lượng", "Trực quan hóa sơ đồ vị trí lưu kho tại các ô kệ K1 (Tủ kính bảo mật cao) và K2 (Két sắt chống trộm). Phân loại 3 trạng thái chất lượng: Hàng mới 100%, Trưng bày, Lỗi chờ trả.", "Trung bình", "TV4: Tâm"),
+        ("FR-11", "Quản lý Hồ sơ Đại lý & Hạn mức Tín dụng", "Khai báo hồ sơ đại lý B2B (Galle Watch, Donghochinhhang), phân cấp đối tác VIP, thiết lập hạn mức tín dụng công nợ (Credit Limit). Tự động khóa nút duyệt đơn khi nợ vượt hạn mức.", "Cao", "TV3: Thảo"),
+        ("FR-12", "Tạo Lệnh xuất kho & Khóa giữ chỗ tồn kho", "Tạo đơn xuất kho đại lý B2B. Kích hoạt cơ chế Reservation Engine: tự động khóa giữ chỗ các mã Serial khả dụng, ngăn chặn tranh chấp tồn kho giữa các nhân viên.", "Cao", "TV3: Thảo"),
+        ("FR-13", "Quy trình Xuất kho 2 bước & Quét Serial 100%", "Thực hiện quy trình 2 bước: Bước 1 Soạn hàng theo Smart Picking List; Bước 2 Quét mã Serial camera đối soát khớp 100% với danh sách giữ chỗ, chặn hàng lỗi DEFECTIVE, đóng thùng niêm phong.", "Cao", "TV3: Thảo"),
+        ("FR-14", "Lập Phiếu Thu tiền đại lý & In chứng từ A4", "Quản lý thu hồi công nợ đại lý qua phiếu thu tiền mặt/chuyển khoản. Kết xuất và in ấn Chứng từ giao hàng B2B kiêm Phiếu xuất kho chuẩn khổ A4 qua Android PrintManager.", "Cao", "TV3: Thảo"),
         ("FR-15", "Kiểm kê kho đối soát Thừa/Thiếu & Sổ Thẻ kho", "Tổ chức đợt kiểm kê định kỳ, quét mã Serial thực tế tại từng ô kệ để so sánh với số liệu hệ thống. Tự động lập biên bản thừa/thiếu và cập nhật Sổ thẻ kho điện tử.", "Cao", "TV4: Tâm"),
         ("FR-16", "Executive Dashboard 5 Thẻ Chỉ số KPI", "Hiển thị 5 chỉ số điều hành then chốt theo thời gian thực: Giá trị tài sản tồn kho, Doanh thu xuất kho đại lý, Số đơn xuất kho mới, Tồn kho khả dụng, Tỷ lệ đổi trả hàng.", "Cao", "TV5: Tú"),
         ("FR-17", "Trực quan hóa Biểu đồ Doanh thu 6 tháng", "Vẽ biểu đồ cột/đường trực quan xu hướng doanh thu và chi phí 6 tháng gần nhất bằng thư viện MPAndroidChart, hỗ trợ phóng to/thu nhỏ và chạm điểm dữ liệu xem chi tiết.", "Cao", "TV5: Tú"),
@@ -271,8 +286,8 @@ def generate_master_report():
         ("ENT-07", "InboundReceipt (Phiếu nhập)", "Lưu trữ thông tin chứng từ lô hàng nhập khẩu từ nhà cung cấp.", "receipt_id, receipt_code, supplier_id, invoice_number, receipt_date, total_packages, total_quantity, total_goods_amount, shipping_fee, tax_fee, insurance_fee, total_cost, status, created_by", "Thuộc 1 Supplier (N-1); Chứa nhiều SerialEntity (1-N)"),
         ("ENT-08", "SerialEntity (Mã Serial)", "Định danh duy nhất 100% từng chiếc đồng hồ xa xỉ trong kho.", "serial_id, serial_number, product_sku, inbound_receipt_id, unit_cost, allocated_cost, specific_cost, status, bin_location_id, quality_state, warranty_months, created_at", "Thuộc 1 Product (N-1); Thuộc 1 InboundReceipt (N-1); Nằm tại 1 BinLocation (N-1)"),
         ("ENT-09", "PaymentVoucher (Phiếu chi)", "Chứng từ ủy nhiệm chi thanh toán nợ cho nhà cung cấp.", "voucher_id, voucher_code, supplier_id, payment_date, amount, payment_method, bank_reference, notes, created_by", "Thuộc 1 Supplier (N-1); Giảm trừ current_debt của NCC"),
-        ("ENT-10", "Dealer (Đại lý B2B)", "Quản lý hồ sơ đối tác đại lý tiếp nhận phân phối độc quyền.", "dealer_id, dealer_code, name, tax_code, credit_limit, current_debt, address, phone, email, is_active", "Tiếp nhận nhiều OutboundOrder (1-N)"),
-        ("ENT-11", "OutboundOrder (Lệnh xuất)", "Lưu trữ thông tin xuất kho phân phối đại lý B2B và trạng thái khóa giữ chỗ.", "order_id, order_code, dealer_id, order_date, total_amount, reservation_status, order_status, created_by", "Thuộc 1 Dealer (N-1); Khóa giữ chỗ nhiều Serial (1-N)"),
+        ("ENT-10", "Dealer (Đại lý B2B)", "Quản lý hồ sơ đối tác đại lý tiếp nhận phân phối độc quyền và hạn mức tín dụng.", "dealer_id, dealer_code, name, tier, discount_rate, credit_limit, current_debt, tax_code, contact_person, phone, address, is_active", "Tiếp nhận nhiều OutboundOrder (1-N); Nhận nhiều ReceiptVoucher (1-N)"),
+        ("ENT-11", "OutboundOrder (Lệnh xuất)", "Lưu trữ thông tin xuất kho phân phối đại lý B2B và trạng thái khóa giữ chỗ.", "order_id, order_code, dealer_id, order_date, total_packages, total_quantity, subtotal_amount, discount_amount, total_amount, reservation_status, order_status, created_by", "Thuộc 1 Dealer (N-1); Khóa giữ chỗ nhiều Serial (1-N)"),
         ("ENT-12", "DashboardKPI (Chỉ số điều hành)", "Tập hợp các số liệu đo lường hiệu năng hoạt động của toàn kho.", "kpi_id, total_inventory_value, wholesale_revenue, new_orders_count, available_stock, return_rate, recorded_at", "Tổng hợp từ bảng Serials, OutboundOrders, Products"),
         ("ENT-13", "ReportTable (Bảng dữ liệu báo cáo)", "Cấu trúc dữ liệu trung gian phục vụ hiển thị 9 báo cáo và xuất file.", "report_id, report_code, report_title, time_range, headers_json, rows_json, summary_metrics, generated_at", "Được tạo động từ Room Database bởi ReportEngine")
     ]
@@ -294,7 +309,7 @@ def generate_master_report():
     t3_data = [
         ("MOD-01", "Quản trị Hệ thống & Danh mục Luxury Horology\n(Phan Bá Hải Bình phụ trách)", "Quản lý bảo mật, xác thực người dùng, phân quyền RBAC 5 Roles, danh mục thông số đồng hồ xa xỉ, thiết lập ĐVT 2 cấp và cấu trúc CSDL Room Core.", "User, Role, Product, Brand, UnitOfMeasure", "Đăng nhập, Quản lý tài khoản, Phân quyền RBAC, Quản lý mẫu đồng hồ (SKU), Thiết lập tỷ lệ quy đổi ĐVT, Cảnh báo tồn kho an toàn."),
         ("MOD-02", "Quản lý Đối tác NCC & Nhập kho Quy đổi ĐVT\n(Nguyễn Đắc Quân phụ trách)", "Quản lý hồ sơ NCC quốc tế, công nợ phải trả, lập phiếu nhập kho quy đổi Thùng ra Chiếc, quét camera ML Kit Serial 100%, phân bổ chi phí logistics & tính giá vốn đích danh, xuất trả hàng lỗi.", "Supplier, InboundReceipt, SerialEntity, PaymentVoucher", "Quản lý hồ sơ NCC, Lập phiếu nhập kho, Quét Serial camera ML Kit chống trùng, Phân bổ chi phí logistics, Tính giá vốn đích danh từng Serial, Lập ủy nhiệm chi thanh toán, Lập phiếu xuất trả hàng lỗi NCC."),
-        ("MOD-03", "Đối Tác Đại Lý & Quản Lý Xuất Kho\n(Tô Đức Thảo phụ trách)", "Quản lý hồ sơ đại lý B2B tiếp nhận, hạn mức tín dụng, lệnh yêu cầu xuất hàng, cơ chế khóa giữ chỗ tồn kho (Reservation) và quét camera Serial xuất kho bàn giao.", "Dealer, OutboundOrder, ReservationEngine, ReceiptVoucher", "Quản lý đại lý tiếp nhận, Kiểm soát hạn mức tín dụng, Tạo lệnh xuất kho, Khóa giữ chỗ tồn kho tự động, Quét Serial xuất đóng thùng, Lập phiếu thu nợ đại lý."),
+        ("MOD-03", "Đối Tác Đại Lý & Quản Lý Xuất Kho B2B\n(Tô Đức Thảo phụ trách)", "Quản lý hồ sơ đại lý B2B tiếp nhận, hạn mức tín dụng công nợ (Credit Limit), lệnh yêu cầu xuất hàng, cơ chế khóa giữ chỗ tồn kho (Reservation Engine), quy trình xuất kho 2 bước, quét camera Serial đối soát 100% và in phiếu xuất kho B2B khổ A4.", "Dealer, OutboundOrder, ReservationEngine, ReceiptVoucher", "Quản lý danh bạ đại lý B2B, Kiểm soát hạn mức tín dụng tự động, Tạo lệnh xuất kho đại lý, Khóa giữ chỗ tồn kho tự động, Quét Serial xuất đóng thùng bằng Camera, Lập phiếu thu nợ đại lý, In biên bản giao hàng A4."),
         ("MOD-04", "Quản trị Tồn kho Nội bộ & Kiểm kê Kệ hàng\n(Võ Công Tâm phụ trách)", "Phân loại tồn kho 3 cấp chất lượng, trực quan hóa sơ đồ ma trận kệ tủ an toàn K1/K2, quy trình kiểm kê đối soát tự động Thừa/Thiếu, Sổ Thẻ kho điện tử.", "SerialQuality, BinMatrix, StockAudit, StockCardLedger", "Phân loại 3 chất lượng hàng, Tra cứu ma trận ô kệ Bin K1/K2, Quét mã điều chuyển kệ, Kiểm kê đối soát Thừa/Thiếu, Tra cứu Sổ thẻ kho điện tử."),
         ("MOD-05", "Executive Dashboard & Hệ thống 9 Báo cáo\n(Trần Công Tú phụ trách)", "Bảng chỉ số KPI điều hành thời gian thực, biểu đồ doanh thu 6 tháng MPAndroidChart, 9 báo cáo chuyên sâu đa phân hệ, xuất tệp CSV và in ấn A4 qua Android PrintManager.", "DashboardKPI, ChartEngine, ReportContainer, CashflowData", "Executive Dashboard 5 thẻ KPI, Biểu đồ doanh thu 6 tháng, Biểu đồ cơ cấu xuất hàng, 9 báo cáo chuyên sâu đa phân hệ, Bộ lọc thời gian động, Xuất tệp CSV vào Downloads/ChronoVault, In ấn và xuất PDF khổ A4.")
     ]
@@ -342,8 +357,10 @@ def generate_master_report():
         ("UnitOfMeasure (ĐVT)", "Admin, Quản lý kho", "Tất cả các Actor", "Admin, Quản lý kho", "Cấm xóa khi đã có SKU liên kết", "Bắt buộc có ĐVT Cơ sở ('Chiếc') và ĐVT Đóng gói ('Thùng')"),
         ("Supplier (Nhà cung cấp)", "Staff (Nhập), Kế toán", "Tất cả các Actor", "Staff (Nhập), Kế toán, Owner", "Admin, Owner (Khóa hoạt động)", "Theo dõi số dư nợ phải trả theo thời gian thực (TV2 Quân)"),
         ("InboundReceipt (Phiếu nhập)", "Staff (Nhập kho)", "Staff, Quản lý kho, Kế toán, Owner", "Staff (khi còn là bản nháp)", "Admin (Hủy phiếu nháp)", "Phiếu đã DUYỆT thì KHÓA hoàn toàn, không thể sửa/xóa (TV2 Quân)"),
-        ("SerialEntity (Mã Serial)", "Staff (Quét camera nhập)", "Tất cả các Actor", "Thủ kho (chuyển kệ/sửa trạng thái)", "Cấm xóa hoàn toàn", "Định danh 100% từng chiếc, lưu giá vốn đích danh (TV2 Quân)"),
+        ("SerialEntity (Mã Serial)", "Staff (Quét camera nhập)", "Tất cả các Actor", "Thủ kho (chuyển kệ/sửa trạng thái)", "Cấm xóa hoàn toàn", "Định danh 100% từng chiếc, lưu giá vốn đích danh (TV2 Quân & Hệ thống)"),
         ("PaymentVoucher (Phiếu chi)", "Kế toán kho", "Kế toán, Owner, Admin", "Kế toán (bản nháp)", "Admin, Owner (Hủy nháp)", "Giảm trừ công nợ NCC và ghi nhận dòng tiền ra (TV2 Quân)"),
+        ("Dealer (Đại lý B2B)", "Staff (Xuất kho), Kế toán", "Tất cả các Actor", "Staff (Xuất kho), Kế toán, Owner", "Admin, Owner (Khóa hợp tác)", "Quản lý hạn mức tín dụng và phân cấp VIP (TV3 Thảo)"),
+        ("OutboundOrder (Lệnh xuất)", "Staff (Xuất kho)", "Staff, Quản lý kho, Kế toán, Owner", "Staff (khi còn là bản nháp)", "Admin, Owner (Hủy lệnh)", "Khóa giữ chỗ tồn kho (RESERVED) và hạch toán xuất (TV3 Thảo)"),
         ("DashboardKPI (Chỉ số KPI)", "Hệ thống (Tự động tính)", "Owner, Kế toán, Quản lý kho", "Hệ thống (Recalculate)", "Không áp dụng", "Hiển thị thời gian thực qua StateFlow (TV5 Tú)"),
         ("ReportTable (Bảng báo cáo)", "Hệ thống (ReportEngine)", "Owner, Kế toán, Admin", "Hệ thống (Khi lọc thời gian)", "Tự động dọn Cache", "Hỗ trợ 9 loại báo cáo chuyên sâu, xuất CSV/In A4 (TV5 Tú)")
     ]
@@ -357,7 +374,7 @@ def generate_master_report():
         for col in [1, 2, 3, 4]:
             row.cells[col].paragraphs[0].alignment = WD_ALIGN_PARAGRAPH.CENTER
 
-    # TABLE 6 (orig_tables[5]): MÔ TẢ LUỒNG DỮ LIỆU CHÍNH (Mục 5.2) - DF-01 -> DF-08
+    # TABLE 6 (orig_tables[5]): MÔ TẢ LUỒNG DỮ LIỆU CHÍNH (Mục 5.2) - DF-01 -> DF-10
     t6 = orig_tables[5]
     format_row(t6.rows[0], HEX_NAVY, is_header=True)
     while len(t6.rows) > 1:
@@ -371,8 +388,10 @@ def generate_master_report():
         ("DF-04", "Lập Phiếu Nhập kho & Quét mã Serial Camera", "Staff (Nhập kho)", "InboundActivity -> InboundDao -> SerialDao", "Thông tin hóa đơn, Số thùng, SKU, Danh sách mã Serial quét camera", "Quét đủ 100% số lượng quy đổi; không trùng mã Serial (Quân)"),
         ("DF-05", "Duyệt Phiếu chi thanh toán nợ Nhà cung cấp", "Kế toán kho", "PaymentActivity -> PaymentVoucherDao -> SupplierDao", "Mã NCC, Số tiền chi, Phương thức, Mã giao dịch ngân hàng", "Số tiền chi <= Số dư nợ hiện tại của NCC (Quân)"),
         ("DF-06", "Xuất trả hàng lỗi kỹ thuật cho NCC", "Thủ kho / Staff", "ReturnActivity -> ReturnDao -> SerialDao -> SupplierDao", "Danh sách Serial lỗi, Lý do lỗi, Mã phiếu nhập gốc", "Serial đang ở trạng thái DEFECTIVE; NCC chấp nhận trả (Quân)"),
-        ("DF-07", "Tổng hợp 5 Chỉ số KPI & Biểu đồ Điều hành", "Kế toán / Owner", "DashboardFragment -> DashboardViewModel -> Room DB", "Bộ lọc thời gian (Hôm nay/Tuần/Tháng)", "Tổng hợp dữ liệu bất đồng bộ qua Coroutines & StateFlow (Tú)"),
-        ("DF-08", "Truy vấn 9 Báo cáo Chuyên sâu & Xuất CSV/In A4", "Kế toán / Owner", "ReportFragment -> ReportEngine -> FileStorage / PrintManager", "Mã báo cáo (BC01-BC09), Khoảng thời gian từ ngày - đến ngày", "Định dạng bảng ReportTable chuẩn, cấp quyền ghi bộ nhớ (Tú)")
+        ("DF-07", "Tạo Lệnh xuất kho & Khóa giữ chỗ Reservation", "Staff (Xuất kho)", "OutboundOrderActivity -> OutboundDao -> SerialDao", "Mã đại lý, Danh sách SKU, Số lượng thùng/chiếc đặt mua", "Dư nợ dự kiến <= Hạn mức tín dụng; Tồn khả dụng >= Số lượng đặt (Thảo)"),
+        ("DF-08", "Quét mã Serial xuất kho & In phiếu giao hàng A4", "Thủ kho / Staff", "DispatchActivity -> SerialDao -> OutboundDao -> PrintManager", "Mã đơn hàng, Danh sách mã Serial quét camera thực xuất", "Quét khớp 100% mã Serial đã giữ chỗ, không trầy xước (Thảo)"),
+        ("DF-09", "Tổng hợp 5 Chỉ số KPI & Biểu đồ Điều hành", "Kế toán / Owner", "DashboardFragment -> DashboardViewModel -> Room DB", "Bộ lọc thời gian (Hôm nay/Tuần/Tháng)", "Tổng hợp dữ liệu bất đồng bộ qua Coroutines & StateFlow (Tú)"),
+        ("DF-10", "Truy vấn 9 Báo cáo Chuyên sâu & Xuất CSV/In A4", "Kế toán / Owner", "ReportFragment -> ReportEngine -> FileStorage / PrintManager", "Mã báo cáo (BC01-BC09), Khoảng thời gian từ ngày - đến ngày", "Định dạng bảng ReportTable chuẩn, cấp quyền ghi bộ nhớ (Tú)")
     ]
     for row_idx, item in enumerate(t6_data):
         row = t6.add_row()
@@ -398,8 +417,8 @@ def generate_master_report():
         ("inbound_receipts", "Chứng từ các lô hàng đồng hồ nhập khẩu từ nhà cung cấp.", "receipt_id (INT, PK)", "supplier_id (FK)", "Lưu trữ chi phí vận chuyển, hải quan, bảo hiểm (Quân)"),
         ("serials", "Định danh 100% từng chiếc đồng hồ, giá vốn đích danh và trạng thái chất lượng.", "serial_id (INT, PK)", "product_sku (FK), inbound_receipt_id (FK)", "Khóa chính và ràng buộc Unique ngăn chặn trùng lặp tuyệt đối (Quân & Hệ thống)"),
         ("payment_vouchers", "Chứng từ ủy nhiệm chi thanh toán nợ cho nhà cung cấp.", "voucher_id (INT, PK)", "supplier_id (FK)", "Ghi nhận dòng tiền ra và giảm trừ công nợ NCC (Quân)"),
-        ("dealers", "Hồ sơ đối tác đại lý tiếp nhận phân phối độc quyền và hạn mức tín dụng.", "dealer_id (INT, PK)", "Không", "Quản lý hạn mức nợ và lệnh xuất phân phối (Thảo)"),
-        ("outbound_orders", "Lệnh xuất kho phân phối đại lý B2B và trạng thái khóa giữ chỗ tồn kho.", "order_id (INT, PK)", "dealer_id (FK)", "Quản lý Reservation và giao dịch xuất kho (Thảo)"),
+        ("dealers", "Hồ sơ đối tác đại lý tiếp nhận phân phối độc quyền và hạn mức tín dụng.", "dealer_id (INT, PK)", "tax_code (UNIQUE)", "Quản lý hạn mức nợ, chiết khấu VIP và thông tin giao hàng (Thảo)"),
+        ("outbound_orders", "Lệnh xuất kho phân phối đại lý B2B và trạng thái khóa giữ chỗ tồn kho.", "order_id (INT, PK)", "dealer_id (FK)", "Quản lý Reservation và giao dịch thực xuất kho (Thảo)"),
         ("system_audit_logs", "Lưu vết toàn bộ thao tác thêm, sửa, xóa, duyệt chứng từ trong toàn hệ thống.", "log_id (INT, PK)", "user_id (FK)", "Dữ liệu chỉ ghi (Append-Only), phục vụ kiểm toán nội bộ (Bình & Toàn nhóm)")
     ]
     for row_idx, item in enumerate(t7_data):
@@ -451,9 +470,9 @@ def generate_master_report():
         tr.getparent().remove(tr)
 
     t9_data = [
-        ("1", "Trưởng nhóm / Quản trị hệ thống\n(SYSTEM_ADMIN)", "Điều phối toàn bộ dự án, thiết kế kiến trúc MVVM Core, thiết kế Room Database v4 cốt lõi, quản trị Git Repository, phát triển Module Quản trị Hệ thống & Danh mục Đồng hồ Luxury Horology, tổng hợp báo cáo chung.", "Phan Bá Hải Bình (TV1)"),
+        ("1", "Trưởng nhóm / Quản trị hệ thống\n(SYSTEM_ADMIN & STORE_OWNER)", "Điều phối toàn bộ dự án, thiết kế kiến trúc MVVM Core, thiết kế Room Database v4 cốt lõi, quản trị Git Repository, phát triển Module Quản trị Hệ thống & Danh mục Đồng hồ Luxury Horology, tổng hợp báo cáo chung.", "Phan Bá Hải Bình (TV1)"),
         ("2", "Nhân viên Nhập kho\n(OPERATIONS_STAFF)", "Phát triển phân hệ Quản lý Nhà cung cấp, công nợ phải trả, lập phiếu nhập kho quy đổi ĐVT, tích hợp Camera ML Kit quét mã Serial 100%, phân bổ chi phí logistics & thuật toán tính giá vốn đích danh, xuất trả hàng lỗi.", "Nguyễn Đắc Quân (TV2)"),
-        ("3", "Nhân viên Xuất kho\n(OPERATIONS_STAFF)", "Phát triển phân hệ Đối tác Đại lý & Quản lý Xuất kho, kiểm soát hạn mức tín dụng tự động, cơ chế khóa giữ chỗ tồn kho (Reservation), quy trình xuất kho 2 bước và in phiếu xuất kho B2B.", "Tô Đức Thảo (TV3)"),
+        ("3", "Nhân viên Xuất kho\n(OPERATIONS_STAFF)", "Phát triển phân hệ Đối tác Đại lý & Quản lý Xuất kho B2B, kiểm soát hạn mức tín dụng tự động (Credit Limit), cơ chế khóa giữ chỗ tồn kho (Reservation Engine), quy trình xuất kho 2 bước, quét camera Serial đối soát và in phiếu giao hàng A4.", "Tô Đức Thảo (TV3)"),
         ("4", "Thủ kho\n(WAREHOUSE_MANAGER)", "Phát triển phân hệ Phân loại tồn kho 3 trạng thái chất lượng, trực quan hóa sơ đồ ma trận kệ tủ chống trộm K1/K2, quy trình kiểm kê đối soát tự động và Sổ Thẻ kho điện tử.", "Võ Công Tâm (TV4)"),
         ("5", "Kế toán kho\n(ACCOUNTANT)", "Phát triển Executive Dashboard với 5 thẻ KPI thời gian thực, trực quan hóa biểu đồ doanh thu 6 tháng bằng MPAndroidChart, hệ thống 9 báo cáo chuyên sâu và báo cáo dòng tiền thuần Cashflow, xuất CSV và in A4.", "Trần Công Tú (TV5)")
     ]
@@ -477,7 +496,7 @@ def generate_master_report():
     t10_data = [
         ("Giai đoạn 1: Khảo sát nghiệp vụ & Thiết kế Core", "Xác định bài toán B2B Luxury Horology, thiết lập cấu trúc Room DB v4, viết Base ViewModel/Repository, xây dựng khung MVVM chuẩn trên nhánh `main`.", "Phan Bá Hải Bình (TV1)", "Cả 4 thành viên", "1.5 tuần"),
         ("Giai đoạn 2: Phát triển độc lập các phân hệ con", "Mỗi thành viên tạo nhánh Git riêng (`feature/...`), sử dụng bộ Prompt kỹ thuật để phát triển giao diện và nghiệp vụ phân hệ của mình kết nối với Room DB.", "Quân (TV2), Thảo (TV3), Tâm (TV4), Tú (TV5)", "Phan Bá Hải Bình hỗ trợ kỹ thuật", "2.5 tuần"),
-        ("Giai đoạn 3: Tích hợp (Merge) & Kiểm thử chéo", "Review mã nguồn, duyệt Pull Requests, gộp các nhánh vào `main`, thực hiện 4 kịch bản kiểm thử tích hợp chéo liên phân hệ (Nhập -> Kệ -> Giữ chỗ -> Xuất bán -> Dashboard).", "Phan Bá Hải Bình (chủ trì)", "Cả 5 thành viên", "1.0 tuần"),
+        ("Giai đoạn 3: Tích hợp (Merge) & Kiểm thử chéo", "Review mã nguồn, duyệt Pull Requests, gộp các nhánh vào `main`, thực hiện các kịch bản kiểm thử tích hợp chéo liên phân hệ (Nhập -> Kệ -> Giữ chỗ -> Xuất bán -> Dashboard).", "Phan Bá Hải Bình (chủ trì)", "Cả 5 thành viên", "1.0 tuần"),
         ("Giai đoạn 4: Hoàn thiện Báo cáo Word & Chuẩn bị Vấn đáp", "Từng thành viên viết phần Word của mình theo hướng dẫn, Bình tổng hợp thành cuốn Báo cáo Đồ án hoàn chỉnh nộp Khoa, chuẩn bị dữ liệu test demo và câu hỏi vấn đáp.", "Phan Bá Hải Bình (tổng hợp)", "Cả 5 thành viên", "1.0 tuần")
     ]
     for row_idx, item in enumerate(t10_data):
@@ -489,7 +508,7 @@ def generate_master_report():
         row.cells[0].paragraphs[0].runs[0].font.bold = True
         row.cells[4].paragraphs[0].alignment = WD_ALIGN_PARAGRAPH.CENTER
 
-    # TABLE 11 (orig_tables[10]): THEO DÕI TIẾN ĐỘ CÔNG VIỆC (Mục 7.3 - Tích hợp TV1, TV2, TV5)
+    # TABLE 11 (orig_tables[10]): THEO DÕI TIẾN ĐỘ CÔNG VIỆC (Mục 7.3 - Tích hợp TV1, TV2, TV3, TV5)
     t11 = orig_tables[10]
     format_row(t11.rows[0], HEX_NAVY, is_header=True)
     while len(t11.rows) > 1:
@@ -501,11 +520,12 @@ def generate_master_report():
         ("06/10 - 15/10/2026", "Phan Bá Hải Bình", "Thiết kế kiến trúc Android MVVM, khởi tạo Room Database v4 (UserEntity, ProductEntity, SerialEntity, TransactionEntity) và SessionManager.", "100%", "Hoàn thành"),
         ("16/10 - 25/10/2026", "Phan Bá Hải Bình", "Lập trình hoàn chỉnh Phân hệ 1 (ProductListFragment, ProductDetailFragment, AddEditProductActivity, LoginActivity, RBAC 5 Roles).", "100%", "Hoàn thành"),
         ("16/10 - 28/10/2026", "Nguyễn Đắc Quân", "Xây dựng giao diện và nghiệp vụ Phân hệ 2 (Quản lý NCC, công nợ, quy đổi ĐVT, tích hợp Camera ML Kit quét Serial, tính giá vốn đích danh, xuất trả hàng lỗi).", "100%", "Hoàn thành"),
+        ("17/10 - 30/10/2026", "Tô Đức Thảo", "Xây dựng Phân hệ 3 (Quản lý đại lý B2B, kiểm soát hạn mức tín dụng Credit Limit, khóa giữ chỗ Reservation, quy trình xuất kho 2 bước, in phiếu A4).", "100%", "Hoàn thành"),
         ("18/10 - 30/10/2026", "Trần Công Tú", "Xây dựng Phân hệ 5 (Executive Dashboard 5 KPI thời gian thực, biểu đồ MPAndroidChart 6 tháng, hệ thống 9 báo cáo chuyên sâu, xuất CSV và in ấn A4).", "100%", "Hoàn thành"),
         ("26/10 - 05/11/2026", "Phan Bá Hải Bình", "Soạn thảo Bộ Prompt chi tiết cho 5 thành viên, thiết lập quy chuẩn phân nhánh Git và xây dựng tài liệu Hướng dẫn viết Báo cáo Word & Vấn đáp.", "100%", "Hoàn thành"),
-        ("06/11 - 10/11/2026", "Quân, Tú & Bình", "Hoàn thành báo cáo chuyên sâu từng phân hệ (BaoCao_TV2_NguyenDacQuan.docx và BaoCao_TV5_TranCongTu.docx), tiến hành kiểm thử 8 Test Cases.", "100%", "Hoàn thành"),
-        ("11/11 - 15/11/2026", "Phan Bá Hải Bình", "Tích hợp toàn bộ nội dung của Quân (TV2) và Tú (TV5) vào Báo cáo Master của nhóm, rà soát thuật ngữ, chuẩn bị bộ câu hỏi vấn đáp với TS. Đặng Hùng Vĩ.", "100%", "Hoàn thành"),
-        ("Hiện tại -> Nộp bài", "Cả nhóm 5 thành viên", "Họp tổng duyệt kịch bản demo trên thiết bị thật, kiểm tra chéo luồng dữ liệu 5 phân hệ và hoàn thiện hồ sơ đồ án nộp Khoa CNTT.", "Đang thực hiện", "Theo lịch thi Khoa")
+        ("06/11 - 12/11/2026", "Quân, Thảo, Tú & Bình", "Hoàn thành báo cáo chuyên sâu từng phân hệ, tiến hành kiểm thử các kịch bản thực nghiệm độc lập và kiểm tra đối soát chéo.", "100%", "Hoàn thành"),
+        ("13/11 - 17/11/2026", "Phan Bá Hải Bình", "Tích hợp toàn bộ nội dung của Quân (TV2), Thảo (TV3) và Tú (TV5) vào Báo cáo Master của nhóm, hoàn thiện 4/5 phân hệ lớn, chuẩn bị demo bảo vệ.", "100%", "Hoàn thành"),
+        ("Hiện tại -> Nộp bài", "Cả nhóm 5 thành viên", "Họp tổng duyệt kịch bản demo trên thiết bị thật, hoàn thiện nốt phân hệ TV4 (Kệ kho & Kiểm kê) và nộp hồ sơ đồ án lên Khoa CNTT.", "Đang thực hiện", "Theo lịch thi Khoa")
     ]
     for row_idx, item in enumerate(t11_data):
         row = t11.add_row()
@@ -540,7 +560,7 @@ def generate_master_report():
         comp_data = [
             ("Mô hình mục tiêu", "Bán lẻ B2C / Tạp hóa / POS", "Doanh nghiệp sản xuất đa quốc gia", "Quản trị doanh nghiệp tổng thể", "Phân phối Đại lý B2B Đồng hồ Xa xỉ"),
             ("Quản lý Serial/IMEI", "Tùy chọn (chủ yếu quản lý số lượng tổng)", "Hỗ trợ nhưng cấu hình cực kỳ phức tạp", "Cần cài thêm module trả phí", "Bắt buộc 100% định danh từng chiếc, chống trùng tuyệt đối"),
-            ("Quy đổi ĐVT đa cấp", "Chỉ nhân chia số lượng giản đơn", "Hỗ trợ đa cấp UoM", "Hỗ trợ UoM", "Nhập Thùng tự động ép quét đủ N mã Serial lẻ bằng Camera ML Kit"),
+            ("Quy đổi ĐVT đa cấp", "Chỉ nhân chia số lượng giản đơn", "Hỗ trợ đa cấp UoM", "Hỗ trợ UoM", "Nhập/Xuất Thùng tự động ép quét đủ N mã Serial lẻ bằng Camera ML Kit"),
             ("Phương pháp Giá vốn", "Bình quân gia quyền / FIFO giản đơn", "Bình quân / FIFO / Đích danh", "Bình quân gia quyền", "Giá vốn Đích danh cộng dồn chi phí vận chuyển & thuế vào từng Serial"),
             ("Nền tảng vận hành", "Web / POS máy tính bảng", "Desktop Client nặng nề", "Web App", "Android Studio Native (Kotlin MVVM), quét mã vạch bằng Camera điện thoại"),
             ("Chi phí đầu tư", "Vài trăm ngàn/tháng (thiếu nghiệp vụ phân phối)", "Hàng chục ngàn USD phí bản quyền", "Tốn chi phí tùy biến lớn", "Tối ưu chi phí, triển khai gọn nhẹ trên thiết bị di động nội bộ")
@@ -554,7 +574,7 @@ def generate_master_report():
             row.cells[0].paragraphs[0].runs[0].font.bold = True
             row.cells[4].paragraphs[0].runs[0].font.bold = True
 
-    # 3.2. Chèn IPO 2 (Quân), IPO 3 (Tú), Mục 4.3 (Quân) và Mục 4.4 (Tú) NGAY SAU Table 4 gốc (orig_tbl_xmls[3])
+    # 3.2. Chèn IPO 2 (Quân), IPO 3 (Thảo), IPO 4 (Thảo), IPO 5 (Tú), Mục 4.3 (Quân), Mục 4.4 (Thảo) và Mục 4.5 (Tú) NGAY SAU Table 4 gốc
     anchor_elem = orig_tbl_xmls[3]
     
     # --- IPO 2: MOD-02-01 (Quân) ---
@@ -583,15 +603,67 @@ def generate_master_report():
         row.cells[0].paragraphs[0].runs[0].font.bold = True
         set_cell_background(row.cells[0], "F1F5F9")
 
-    # --- IPO 3: MOD-05-01 (Tú) ---
+    # --- IPO 3: MOD-03-01 (Thảo) ---
     p_ipo3_title, anchor_elem = add_p_after(anchor_elem, 
-        "\nModule IPO 3: MOD-05-01 — Tổng hợp 5 Thẻ Chỉ số KPI Điều hành & Hệ thống 9 Báo cáo Chuyên sâu\n"
-        "Thuộc phân hệ: MOD-05 (Executive Dashboard & Hệ thống 9 Báo cáo — Trần Công Tú phụ trách)\n"
+        "\nModule IPO 3: MOD-03-01 — Khởi Tạo Đơn Xuất Kho Đại Lý B2B & Khóa Giữ Chỗ Tồn Kho (Reservation)\n"
+        "Thuộc phân hệ: MOD-03 (Đối Tác Đại Lý & Quản Lý Xuất Kho B2B — Tô Đức Thảo phụ trách)\n"
         "Mức độ ưu tiên: Cao (Bắt buộc hoàn thành)",
         bold=True, font_size=10, color_rgb=C_NAVY, space_before=12, space_after=4)
         
     tbl_ipo3, anchor_elem = add_table_after(anchor_elem, 8, 2)
     ipo3_data = [
+        ("Input", "• Dữ liệu đầu vào: Đại lý đối tác tiếp nhận (Dealer), Danh mục SKU đồng hồ đặt mua, Đơn vị tính (Thùng hoặc Chiếc lẻ), Số lượng đặt mua, Tỷ lệ chiết khấu thương mại VIP (15% - 30%), Hạn mức tín dụng tối đa (Credit Limit), Dư nợ hiện tại của đại lý.\n• Nguồn dữ liệu: Form tạo đơn OutboundOrderActivity / Hộp thoại dialog_create_outbound_order.xml.\n• Điều kiện tiên quyết: Đăng nhập với vai trò OPERATIONS_STAFF (Xuất kho) hoặc STORE_OWNER."),
+        ("Process", "• Bước 1: Hệ thống kiểm tra số lượng tồn khả dụng: Available Stock = Physical In Stock - Reserved Quantity. Nếu số lượng đặt > Tồn khả dụng, lập tức từ chối và báo thiếu hàng.\n• Bước 2: Thẩm định Hạn mức Tín dụng (Credit Limit Enforcement): Dư nợ dự kiến = Dư nợ hiện tại + Giá trị đơn hàng sau chiết khấu. Nếu Dư nợ dự kiến > Hạn mức nợ tối đa, khóa hoàn toàn nút duyệt đơn và hiển thị viền đỏ cảnh báo vi phạm trần nợ.\n• Bước 3: Áp dụng đơn giá phân phối đại lý chuẩn theo cấp bậc (VIP Kim Cương, Vàng, Chuẩn), tự động tính số tiền chiết khấu thương mại.\n• Bước 4: Khi Kế toán/Chủ kho phê duyệt: Tạo bản ghi OutboundOrder ở trạng thái RESERVED. Hệ thống kích hoạt Reservation Engine: tự động đánh dấu số lượng Serial khả dụng tương ứng sang trạng thái RESERVED, khóa giữ chỗ không cho các đơn khác tranh chấp."),
+        ("Output", "• Bản ghi đơn xuất kho được lưu với mã đơn duy nhất (PX-xxxx), trạng thái RESERVED trong CSDL Room Database.\n• Số lượng tồn khả dụng của SKU tự động giảm trừ ngay lập tức trên toàn hệ thống.\n• Giao diện hiển thị SnackBar thông báo: 'Đã duyệt đơn và khóa giữ chỗ N chiếc đồng hồ thành công'."),
+        ("Actor", "Nhân viên Điều phối Xuất kho (OPERATIONS_STAFF), Kế toán (ACCOUNTANT), Chủ kho (STORE_OWNER)."),
+        ("Quyền hạn", "Nhân viên tạo đơn nháp; Kế toán và Chủ kho có thẩm quyền duyệt hạn mức tín dụng và khóa giữ chỗ."),
+        ("Luồng dữ liệu liên quan", "Ghi vào bảng `outbound_orders`, cập nhật trạng thái `serials.status = 'RESERVED'`, ghi `system_audit_logs`, phát thông báo qua WebSocket."),
+        ("Ràng buộc", "Tuyệt đối không duyệt đơn khi vượt hạn mức tín dụng nợ đại lý; Không cho phép chọn mã Serial cụ thể ở bước này mà chỉ khóa số lượng chỉ định.")
+    ]
+    for r_idx, r_val in enumerate(ipo3_data):
+        row = tbl_ipo3.rows[r_idx]
+        row.cells[0].text = r_val[0]
+        row.cells[1].text = r_val[1]
+        bg = HEX_WHITE if r_idx % 2 == 0 else HEX_ALT
+        format_row(row, bg, is_header=False, font_size=9)
+        row.cells[0].paragraphs[0].runs[0].font.bold = True
+        set_cell_background(row.cells[0], "F1F5F9")
+
+    # --- IPO 4: MOD-03-02 (Thảo) ---
+    p_ipo4_title, anchor_elem = add_p_after(anchor_elem, 
+        "\nModule IPO 4: MOD-03-02 — Soạn Hàng Theo Smart Picking, Quét Camera Serial & Thực Xuất Kho B2B\n"
+        "Thuộc phân hệ: MOD-03 (Đối Tác Đại Lý & Quản Lý Xuất Kho B2B — Tô Đức Thảo phụ trách)\n"
+        "Mức độ ưu tiên: Cao (Bắt buộc hoàn thành)",
+        bold=True, font_size=10, color_rgb=C_NAVY, space_before=12, space_after=4)
+        
+    tbl_ipo4, anchor_elem = add_table_after(anchor_elem, 8, 2)
+    ipo4_data = [
+        ("Input", "• Dữ liệu đầu vào: Mã đơn xuất kho đã duyệt ở trạng thái RESERVED, Danh sách mã Serial thực tế tại ô kệ K1/K2, Luồng hình ảnh camera quét barcode/QR trên vỏ hộp đồng hồ.\n• Nguồn dữ liệu: Màn hình điều hành đóng gói DispatchActivity / Hộp thoại dialog_dispatch_package.xml.\n• Điều kiện tiên quyết: Thủ kho hoặc Nhân viên xuất kho đã nhận hàng từ danh sách soạn hàng (Picking List)."),
+        ("Process", "• Bước 1: Hệ thống hiển thị danh sách soạn hàng (Smart Picking List) tối ưu vị trí ô kệ kho K1/K2.\n• Bước 2: Camera tích hợp Google ML Kit quét mã vạch từng hộp đồng hồ. Hệ thống đối soát 3 lớp kiểm tra: (a) Mã Serial thuộc đúng SKU theo đơn; (b) Mã Serial đang ở trạng thái IN_STOCK hoặc RESERVED cho chính đơn này; (c) Trạng thái chất lượng là PERFECT (Hàng mới 100%), nếu quét nhầm hàng DEFECTIVE (trầy xước) lập tức rung chuông báo động và từ chối nhận.\n• Bước 3: Cập nhật thanh tiến độ quét (ví dụ: 5/5 chiếc). Nút 'Xác nhận xuất kho' chỉ mở khóa khi quét đủ 100% số lượng Serial hợp lệ.\n• Bước 4: Thực thi Room Database Transaction: Chuyển trạng thái các Serial sang SOLD (Đã xuất bán), giải phóng cờ giữ chỗ, trừ tồn vật lý kho, tăng công nợ phải thu đại lý (currentDebt) đúng bằng giá trị đơn hàng sau chiết khấu.\n• Bước 5: Gọi lớp ReportPrintManager kết nối Android PrintManager để in Chứng từ giao hàng B2B khổ A4."),
+        ("Output", "• Đơn xuất kho chuyển sang trạng thái COMPLETED.\n• N mã Serial đổi trạng thái thành SOLD, gỡ bỏ liên kết ô kệ lưu kho.\n• Số dư công nợ đại lý tăng chính xác; Biên bản giao hàng kiêm Phiếu xuất kho B2B được in ra chuẩn khổ A4."),
+        ("Actor", "Thủ kho (WAREHOUSE_MANAGER) và Nhân viên điều phối kho (OPERATIONS_STAFF)."),
+        ("Quyền hạn", "Thủ kho xác nhận số lượng vật lý và niêm phong kiện hàng; Hệ thống tự động ghi sổ kế toán."),
+        ("Luồng dữ liệu liên quan", "Cập nhật `outbound_orders.order_status = 'COMPLETED'`, cập nhật `serials.status = 'SOLD'`, cập nhật `dealers.current_debt`, ghi `system_audit_logs`."),
+        ("Ràng buộc", "Chỉ xuất đúng những chiếc đồng hồ đạt chuẩn chất lượng 100%; Toàn bộ thao tác trừ tồn và ghi nợ phải diễn ra trọn vẹn trong một giao dịch cơ sở dữ liệu duy nhất.")
+    ]
+    for r_idx, r_val in enumerate(ipo4_data):
+        row = tbl_ipo4.rows[r_idx]
+        row.cells[0].text = r_val[0]
+        row.cells[1].text = r_val[1]
+        bg = HEX_WHITE if r_idx % 2 == 0 else HEX_ALT
+        format_row(row, bg, is_header=False, font_size=9)
+        row.cells[0].paragraphs[0].runs[0].font.bold = True
+        set_cell_background(row.cells[0], "F1F5F9")
+
+    # --- IPO 5: MOD-05-01 (Tú) ---
+    p_ipo5_title, anchor_elem = add_p_after(anchor_elem, 
+        "\nModule IPO 5: MOD-05-01 — Tổng hợp 5 Thẻ Chỉ số KPI Điều hành & Hệ thống 9 Báo cáo Chuyên sâu\n"
+        "Thuộc phân hệ: MOD-05 (Executive Dashboard & Hệ thống 9 Báo cáo — Trần Công Tú phụ trách)\n"
+        "Mức độ ưu tiên: Cao (Bắt buộc hoàn thành)",
+        bold=True, font_size=10, color_rgb=C_NAVY, space_before=12, space_after=4)
+        
+    tbl_ipo5, anchor_elem = add_table_after(anchor_elem, 8, 2)
+    ipo5_data = [
         ("Input", "• Dữ liệu đầu vào: Bộ lọc thời gian (Hôm nay, 7 ngày qua, Tháng này, Khoảng ngày tùy chọn), Mã loại báo cáo (BC01 đến BC09), Thao tác người dùng (Chuyển tab, Bấm lọc, Bấm xuất CSV, Bấm in A4).\n• Nguồn dữ liệu: Dữ liệu giao dịch thực từ toàn bộ Room Database (bảng serials, inbound_receipts, outbound_orders, suppliers, dealers, audit_logs).\n• Điều kiện tiên quyết: Đăng nhập với vai trò ACCOUNTANT, STORE_OWNER hoặc SYSTEM_ADMIN."),
         ("Process", "• Bước 1: DashboardViewModel kích hoạt Coroutine chạy trên luồng nền (Dispatchers.IO) để truy vấn Room DB.\n• Bước 2: Tính toán 5 chỉ số KPI: Tổng tài sản tồn kho (cộng dồn specific_cost của Serial còn trong kho), Doanh thu xuất kho đại lý, Đếm đơn mới, Tính tồn khả dụng (Tồn thực - Giữ chỗ), Tính tỷ lệ đổi trả (Serial trả / Serial bán).\n• Bước 3: Nạp dữ liệu 6 tháng vào DataSet của MPAndroidChart để vẽ đồ thị cột/đường.\n• Bước 4: Khi chọn báo cáo (BC01-BC09), ReportEngine truy vấn và ánh xạ dữ liệu thành ReportTable.\n• Bước 5: Khi xuất file: ReportExportManager ghi tệp CSV vào thư mục Downloads/ChronoVault; ReportPrintManager tạo tài liệu gửi Android PrintManager."),
         ("Output", "• Giao diện Dashboard hiển thị 5 thẻ KPI với màu sắc cảnh báo trực quan (đổi sang màu đỏ nếu tỷ lệ trả > 2%).\n• Biểu đồ doanh thu 6 tháng hiển thị mượt mà trên MPAndroidChart.\n• Bảng báo cáo hiển thị chính xác theo kỳ lọc; Tệp CSV hoặc bản in PDF A4 được tạo thành công."),
@@ -600,8 +672,8 @@ def generate_master_report():
         ("Luồng dữ liệu liên quan", "Đọc từ toàn bộ Room DB qua DAO, phát dữ liệu qua StateFlow tới DashboardFragment và ReportFragment, ghi tệp ra File System."),
         ("Ràng buộc", "Tuyệt đối không chạy truy vấn nặng trên luồng giao diện chính (Main Thread); Khi xuất file phải kiểm tra quyền ghi bộ nhớ (WRITE_EXTERNAL_STORAGE).")
     ]
-    for r_idx, r_val in enumerate(ipo3_data):
-        row = tbl_ipo3.rows[r_idx]
+    for r_idx, r_val in enumerate(ipo5_data):
+        row = tbl_ipo5.rows[r_idx]
         row.cells[0].text = r_val[0]
         row.cells[1].text = r_val[1]
         bg = HEX_WHITE if r_idx % 2 == 0 else HEX_ALT
@@ -620,7 +692,7 @@ def generate_master_report():
         "Hồ sơ NCC lưu trữ: Mã đối tác duy nhất (NCC-RLX-01), Tên pháp nhân, Mã số thuế (kiểm tra UNIQUE), Người đại diện, Email, Hotline, Tài khoản ngân hàng và Ngân hàng thụ hưởng. Công nợ phải trả được hình thành từ chứng từ đã DUYỆT, tuyệt đối không lấy từ phiếu nháp. Bảng dưới đây mô tả chi tiết tác động của các sự kiện nghiệp vụ lên số dư nợ NCC:",
         font_size=9.5, color_rgb=C_SLATE, space_before=4, space_after=6)
 
-    # Bảng tác động công nợ của Quân (Table 1 từ docx Quân)
+    # Bảng tác động công nợ NCC của Quân
     tbl_debt, anchor_elem = add_table_after(anchor_elem, 5, 3)
     debt_headers = ["Sự kiện nghiệp vụ", "Tác động công nợ NCC", "Điều kiện kiểm soát chứng từ"]
     for c_idx, h in enumerate(debt_headers):
@@ -645,7 +717,7 @@ def generate_master_report():
         "Hệ thống ChronoVault WMS áp dụng nguyên tắc 'Không định danh Serial - Không nhập kho'. Khi tiếp nhận lô hàng theo Thùng/Kiện, hệ thống tự động tính số chiếc cần nhận: Tổng số chiếc = Số thùng × Hệ số quy đổi + Số chiếc lẻ. Camera điện thoại tích hợp thư viện Google ML Kit Barcode Scanning quét mã vạch trên từng hộp và phản hồi tức thời theo 6 kịch bản kiểm soát:",
         font_size=9.5, color_rgb=C_SLATE, space_before=6, space_after=6)
 
-    # Bảng quét serial của Quân (Table 2 từ docx Quân)
+    # Bảng quét serial của Quân
     tbl_scan, anchor_elem = add_table_after(anchor_elem, 7, 2)
     scan_headers = ["Trường hợp kiểm soát quét Serial", "Phản hồi và Xử lý của Hệ thống ChronoVault WMS"]
     for c_idx, h in enumerate(scan_headers):
@@ -676,7 +748,7 @@ def generate_master_report():
         "Bảng dưới đây minh họa lô hàng nhập khẩu thực tế gồm 2 Thùng đồng hồ Rolex Submariner (tổng 20 chiếc) từ Rolex Geneva SA:",
         font_size=9.5, color_rgb=C_SLATE, space_before=6, space_after=6)
 
-    # Bảng dữ liệu thực nghiệm của Quân (Table 3 từ docx Quân)
+    # Bảng dữ liệu thực nghiệm của Quân
     tbl_exp_quan, anchor_elem = add_table_after(anchor_elem, 13, 2)
     tbl_exp_quan.rows[0].cells[0].text = "Thông số nghiệp vụ nhập kho"
     tbl_exp_quan.rows[0].cells[1].text = "Giá trị minh họa thực nghiệm"
@@ -703,18 +775,121 @@ def generate_master_report():
         format_row(row, bg, is_header=False, font_size=8.5)
         row.cells[0].paragraphs[0].runs[0].font.bold = True
 
-    # --- TIỂU MỤC 4.4: PHÂN TÍCH NGHIỆP VỤ CHUYÊN SÂU TV5 (TRẦN CÔNG TÚ) ---
-    p_sec44, anchor_elem = add_p_after(anchor_elem,
-        "\n4.4. Phân tích Nghiệp vụ Chuyên sâu Phân hệ Dashboard & Báo cáo (TV5: Trần Công Tú)",
+    # --- TIỂU MỤC 4.4: PHÂN TÍCH NGHIỆP VỤ CHUYÊN SÂU TV3 (TÔ ĐỨC THẢO) ---
+    p_sec44_thao, anchor_elem = add_p_after(anchor_elem,
+        "\n4.4. Phân tích Nghiệp vụ Chuyên sâu Phân hệ Đối tác Đại lý & Xuất kho B2B (TV3: Tô Đức Thảo)",
         bold=True, font_size=11, color_rgb=C_NAVY, space_before=14, space_after=6)
         
-    p_sec44_1, anchor_elem = add_p_after(anchor_elem,
+    p_sec44_thao_1, anchor_elem = add_p_after(anchor_elem,
+        "Phân hệ TV3 do Tô Đức Thảo phụ trách đảm nhận vai trò là Cổng xuất kho (Outbound Fulfillment Gateway) và quản trị quan hệ đối tác thương mại B2B. Đối với mặt hàng đồng hồ xa xỉ, việc xuất kho không đơn thuần là giao nhận vật lý mà còn là quá trình kiểm soát rủi ro tín dụng công nợ và bảo vệ tài sản doanh nghiệp thông qua 4 trụ cột nghiệp vụ cốt lõi:\n\n"
+        "4.4.1. Cơ chế Kiểm soát Hạn mức Tín dụng (Credit Limit Enforcement) & Biến động Dư nợ Đại lý:\n"
+        "Hệ thống thiết lập trần nợ tối đa (Credit Limit từ 1 đến 5 tỷ VNĐ) cho từng đại lý phân phối dựa trên hợp đồng thương mại và phân cấp VIP (VIP Kim Cương, VIP Vàng, Đại lý Chuẩn). Số dư nợ (currentDebt) được hạch toán tức thời qua từng sự kiện tác nghiệp, tuyệt đối không để xảy ra tình trạng đại lý chiếm dụng vốn vượt thẩm quyền. Bảng dưới đây mô tả chi tiết cơ chế kiểm soát biến động nợ của TV3:",
+        font_size=9.5, color_rgb=C_SLATE, space_before=4, space_after=6)
+
+    # Bảng tác động công nợ đại lý của Thảo (Bảng 1.3 của Thảo)
+    tbl_dealer_debt, anchor_elem = add_table_after(anchor_elem, 6, 3)
+    dealer_debt_headers = ["Sự kiện tác nghiệp kho", "Tác động số dư nợ đại lý (currentDebt)", "Điều kiện kiểm soát an toàn tín dụng"]
+    for c_idx, h in enumerate(dealer_debt_headers):
+        tbl_dealer_debt.rows[0].cells[c_idx].text = h
+    format_row(tbl_dealer_debt.rows[0], HEX_NAVY, is_header=True, font_size=9)
+    dealer_debt_data = [
+        ("Duyệt đơn xuất kho đại lý (RESERVED)", "Dư nợ thực tế CHƯA tăng; Tăng 'Dư nợ cam kết giữ chỗ' (Committed Debt)", "Dư nợ hiện tại + Giá trị đơn mới <= Hạn mức tín dụng tối đa (Credit Limit). Nếu vượt trần, hệ thống khóa nút duyệt đơn."),
+        ("Thực xuất kho bàn giao (COMPLETED)", "TĂNG số dư nợ thực tế đúng bằng giá trị đơn hàng sau chiết khấu", "Đã quét camera đối soát đủ 100% mã Serial hợp lệ, ký biên bản bàn giao và in Phiếu xuất kho B2B khổ A4."),
+        ("Lập Phiếu Thu tiền đại lý (RECEIPT)", "GIẢM số dư nợ thực tế đúng bằng số tiền thực thu", "Tiền mặt nộp quỹ có phiếu thu hoặc chuyển khoản ngân hàng có mã giao dịch tham chiếu hợp lệ."),
+        ("Duyệt Phiếu đổi trả đại lý (RETURN)", "GIẢM số dư nợ thực tế theo giá trị hàng trả được chấp thuận", "Mã Serial phải được quét kiểm tra đúng lịch sử xuất bán của đại lý đó và được bộ phận kỹ thuật nghiệm thu."),
+        ("Hủy đơn xuất kho đại lý (CANCELLED)", "Giải phóng hạn mức cam kết, KHÔNG làm biến động nợ thực tế", "Giải phóng toàn bộ cờ khóa giữ chỗ (RESERVED) của các mã Serial, hoàn trả số lượng khả dụng về kho.")
+    ]
+    for r_idx, r_val in enumerate(dealer_debt_data):
+        row = tbl_dealer_debt.rows[r_idx + 1]
+        for c_idx, val in enumerate(r_val):
+            row.cells[c_idx].text = val
+        bg = HEX_WHITE if r_idx % 2 == 0 else HEX_ALT
+        format_row(row, bg, is_header=False, font_size=8.5)
+        row.cells[0].paragraphs[0].runs[0].font.bold = True
+
+    p_sec44_thao_2, anchor_elem = add_p_after(anchor_elem,
+        "\n4.4.2. Cơ chế Khóa Giữ Chỗ Tồn Kho (Reservation Engine) & Quy trình Xuất kho 2 bước:\n"
+        "• Cơ chế Khóa Giữ Chỗ (Reservation): Khi đơn hàng được duyệt, hệ thống tính toán: Tồn khả dụng = Tồn vật lý - Số lượng đang giữ chỗ. Các mã Serial khả dụng lập tức chuyển trạng thái sang RESERVED. Các nhân viên kinh doanh khác khi mở danh mục sẽ không thể đặt trùng vào số lượng đã được giữ chỗ, triệt tiêu 100% nguy cơ bán trùng một chiếc đồng hồ cho hai đại lý.\n"
+        "• Quy trình Xuất kho 2 bước (Picking & Dispatch): Bước 1 - Hệ thống tự động tạo danh sách soạn hàng thông minh (Smart Picking List) tối ưu đường đi lấy hàng tại các tủ an toàn K1/K2; Bước 2 - Đóng kiện tại bàn điều phối, thủ kho dùng Camera Google ML Kit quét mã vạch laser từng hộp đồng hồ để kiểm tra đối soát khớp 100% với đơn hàng, tự động chặn các sản phẩm có trạng thái lỗi DEFECTIVE (trầy xước, nứt kính).\n\n"
+        "4.4.3. Bộ Dữ liệu Thực nghiệm Kiểm thử Đại lý Galle Watch Vượt Hạn mức Nợ (Bảng 4.1 của TV3):\n"
+        "Bảng dưới đây minh họa kịch bản kiểm thử thực tế giải thuật thẩm định công nợ đối với đại lý VIP Galle Watch:",
+        font_size=9.5, color_rgb=C_SLATE, space_before=6, space_after=6)
+
+    # Bảng dữ liệu thực nghiệm Galle Watch của Thảo
+    tbl_exp_thao, anchor_elem = add_table_after(anchor_elem, 14, 2)
+    tbl_exp_thao.rows[0].cells[0].text = "Thông số kiểm thử nghiệp vụ xuất kho B2B"
+    tbl_exp_thao.rows[0].cells[1].text = "Giá trị dữ liệu mẫu thực tế"
+    format_row(tbl_exp_thao.rows[0], HEX_NAVY, is_header=True, font_size=9)
+    exp_thao_data = [
+        ("Đại lý đối tác B2B tiếp nhận", "Chuỗi Cửa Hàng Đồng Hồ Galle Watch (Mã: DL-GALLE | Hạng: VIP Kim Cương)"),
+        ("Tỷ lệ chiết khấu thương mại đại lý", "25% (Áp dụng tự động theo hợp đồng phân phối đại lý VIP)"),
+        ("Hạn mức tín dụng nợ đại lý tối đa (Credit Limit)", "3.000.000.000 VNĐ (3 Tỷ đồng)"),
+        ("Số dư công nợ hiện tại (currentDebt)", "1.800.000.000 VNĐ (1.8 Tỷ đồng)"),
+        ("Sản phẩm đặt xuất kho đại lý", "Rolex Submariner Date 41mm (Mã SKU: RLX-SUB-126610LN)"),
+        ("Số lượng đặt xuất", "5 chiếc (Đơn giá niêm yết: 350.000.000 VNĐ / chiếc)"),
+        ("Tổng giá trị đơn hàng trước chiết khấu", "5 × 350.000.000 = 1.750.000.000 VNĐ"),
+        ("Chiết khấu thương mại đại lý VIP (25%)", "-437.500.000 VNĐ"),
+        ("Giá trị đơn hàng xuất sau chiết khấu", "1.312.500.000 VNĐ (1.3125 Tỷ đồng)"),
+        ("Dư nợ dự kiến sau khi duyệt đơn mới", "1.800.000.000 + 1.312.500.000 = 3.112.500.000 VNĐ"),
+        ("So sánh với Hạn mức tín dụng tối đa", "3.112.500.000 VNĐ > 3.000.000.000 VNĐ (Vượt hạn mức nợ 112.500.000 VNĐ)"),
+        ("Kết quả xử lý tự động của hệ thống", "Khóa hoàn toàn nút 'Phê duyệt đơn hàng', hiển thị viền đỏ cảnh báo vượt hạn mức nợ"),
+        ("Giải pháp xử lý nghiệp vụ kho", "Đại lý nộp tiền qua Phiếu Thu tiền đại lý (giảm dư nợ) hoặc làm thủ tục xin duyệt ngoại lệ Chủ kho")
+    ]
+    for r_idx, r_val in enumerate(exp_thao_data):
+        row = tbl_exp_thao.rows[r_idx + 1]
+        for c_idx, val in enumerate(r_val):
+            row.cells[c_idx].text = val
+        bg = HEX_WHITE if r_idx % 2 == 0 else HEX_ALT
+        format_row(row, bg, is_header=False, font_size=8.5)
+        row.cells[0].paragraphs[0].runs[0].font.bold = True
+
+    p_sec44_thao_3, anchor_elem = add_p_after(anchor_elem,
+        "\n4.4.4. Bộ 6 Kịch bản Kiểm thử Nghiệp vụ Phân hệ Xuất kho B2B (TC-01 đến TC-06 của TV3):\n"
+        "Bảng dưới đây là kết quả kiểm thử thực nghiệm 6 ca kiểm thử cốt lõi do TV3 thực hiện:",
+        font_size=9.5, color_rgb=C_SLATE, space_before=6, space_after=6)
+
+    # Bảng 6 Test Cases của Thảo
+    tbl_tc_thao, anchor_elem = add_table_after(anchor_elem, 7, 4)
+    tc_thao_headers = ["Mã TC", "Mục tiêu kiểm thử", "Dữ liệu & Thao tác kiểm thử", "Kết quả mong đợi & Đánh giá"]
+    for c_idx, h in enumerate(tc_thao_headers):
+        tbl_tc_thao.rows[0].cells[c_idx].text = h
+    format_row(tbl_tc_thao.rows[0], HEX_NAVY, is_header=True, font_size=9)
+    tc_thao_data = [
+        ("TC-01", "Chặn duyệt đơn vượt Credit Limit", "Galle Watch nợ 1.8 tỷ, hạn mức 3 tỷ. Tạo đơn xuất kho 5 Rolex sau CK = 1.3125 tỷ.", "Dư nợ dự kiến 3.1125 tỷ > 3 tỷ. Hệ thống khóa nút Duyệt, viền đỏ cảnh báo vượt hạn mức. -> ĐẠT"),
+        ("TC-02", "Thu nợ đại lý khôi phục hạn mức", "Lập Phiếu Thu tiền đại lý thu 500 triệu VNĐ từ Galle Watch qua chuyển khoản ngân hàng.", "Dư nợ giảm còn 1.3 tỷ. Dư nợ dự kiến đơn Rolex = 1.3B + 1.3125B = 2.6125B <= 3B -> Mở nút Duyệt đơn. -> ĐẠT"),
+        ("TC-03", "Khóa giữ chỗ tồn kho (Reservation)", "Sản phẩm Omega Speedmaster tồn vật lý = 5 chiếc. Kế toán duyệt đơn 1 lấy 3 chiếc.", "reservedQuantity tăng lên 3, Tồn khả dụng còn 2 chiếc. Đơn 2 đặt 4 chiếc lập tức bị từ chối do thiếu hàng. -> ĐẠT"),
+        ("TC-04", "Quy đổi Thùng và kiểm tra MOQ", "Chọn ĐVT 'Thùng' (1 Thùng = 12 chiếc), số lượng = 1 Thùng, MOQ = 10 chiếc.", "convertedQuantity = 12 chiếc >= 10 chiếc MOQ -> Đạt điều kiện xuất, tính đúng giá phân phối lô. -> ĐẠT"),
+        ("TC-05", "Camera quét đối soát chặn hàng lỗi", "Thủ kho quét mã Serial RX-9921 có trạng thái chất lượng là DEFECTIVE (Hàng trầy xước).", "Ứng dụng rung cảnh báo, phát âm thanh lỗi, viền đỏ ô quét và chặn không cho thêm vào kiện xuất. -> ĐẠT"),
+        ("TC-06", "Transaction xuất kho và in biên bản A4", "Quét đủ 100% 5 Serial Rolex Submariner, bấm 'Xác nhận xuất kho'.", "Serial đổi sang SOLD, trừ tồn vật lý, giải phóng giữ chỗ, tăng nợ đại lý, in Phiếu xuất kho A4. -> ĐẠT")
+    ]
+    for r_idx, r_val in enumerate(tc_thao_data):
+        row = tbl_tc_thao.rows[r_idx + 1]
+        for c_idx, val in enumerate(r_val):
+            row.cells[c_idx].text = val
+        bg = HEX_WHITE if r_idx % 2 == 0 else HEX_ALT
+        format_row(row, bg, is_header=False, font_size=8.5)
+        row.cells[0].paragraphs[0].alignment = WD_ALIGN_PARAGRAPH.CENTER
+        row.cells[0].paragraphs[0].runs[0].font.bold = True
+
+    p_sec44_thao_4, anchor_elem = add_p_after(anchor_elem,
+        "\n4.4.5. Kiến trúc Lập trình Mạng Phân hệ Xuất kho (Retrofit 2 & WebSocket Real-time):\n"
+        "Phân hệ TV3 được thiết kế kiến trúc truyền thông mạng 2 tầng kết hợp chặt chẽ, tối ưu hóa cho môi trường vận hành kho phân phối đại lý B2B:\n"
+        "• Tầng 1 — RESTful API Client (Retrofit 2 + OkHttp Client): Đồng bộ các giao dịch CRUD có cấu trúc lớn lên máy chủ trung tâm: POST /api/v1/outbound/orders (Tạo đơn xuất kho), POST /api/v1/outbound/dispatch (Xác nhận xuất kho), POST /api/v1/dealers/receipt-vouchers (Lập phiếu thu tiền nợ đại lý).\n"
+        "• Tầng 2 — WebSocket Real-time Broadcaster (Mạng LAN Nội bộ Kho): Duy trì kênh kết nối Full-Duplex thời gian thực. Mỗi khi một đơn hàng được duyệt RESERVED hoặc xuất kho COMPLETED, sự kiện lập tức được broadcast tới tất cả thiết bị di động trong kho, giúp các nhân viên khác thấy ngay số lượng tồn khả dụng mới mà không cần kéo vuốt tải lại trang (Pull-to-refresh).",
+        font_size=9.5, color_rgb=C_SLATE, space_before=4, space_after=6)
+
+    # --- TIỂU MỤC 4.5: PHÂN TÍCH NGHIỆP VỤ CHUYÊN SÂU TV5 (TRẦN CÔNG TÚ) ---
+    p_sec45, anchor_elem = add_p_after(anchor_elem,
+        "\n4.5. Phân tích Nghiệp vụ Chuyên sâu Phân hệ Dashboard & Báo cáo (TV5: Trần Công Tú)",
+        bold=True, font_size=11, color_rgb=C_NAVY, space_before=14, space_after=6)
+        
+    p_sec45_1, anchor_elem = add_p_after(anchor_elem,
         "Phân hệ TV5 đóng vai trò trung tâm điều hành thông tin (Executive Dashboard) và cung cấp báo cáo quản trị toàn diện cho lãnh đạo doanh nghiệp. Được xây dựng trên nền tảng kiến trúc Android MVVM với Kotlin Coroutines và StateFlow, phân hệ đảm bảo toàn bộ các phép tính phức tạp diễn ra trên luồng nền (IO Dispatcher), giao diện người dùng luôn phản hồi tức thời dưới 16ms.\n\n"
-        "4.4.1. Bảng 5 Chỉ số KPI Điều hành Thời gian thực:\n"
+        "4.5.1. Bảng 5 Chỉ số KPI Điều hành Thời gian thực:\n"
         "Dashboard tổng hợp 5 chỉ số then chốt giúp Chủ cửa hàng và Kế toán nắm bắt sức khỏe tài chính và hoạt động vận hành kho ngay tức thì:",
         font_size=9.5, color_rgb=C_SLATE, space_before=4, space_after=6)
 
-    # Bảng 5 KPI của Tú (Table 1 từ docx Tú)
+    # Bảng 5 KPI của Tú
     tbl_kpi, anchor_elem = add_table_after(anchor_elem, 6, 3)
     kpi_headers = ["Chỉ số điều hành (KPI)", "Quy tắc & Công thức tính toán", "Giá trị minh họa thực tế"]
     for c_idx, h in enumerate(kpi_headers):
@@ -735,12 +910,12 @@ def generate_master_report():
         format_row(row, bg, is_header=False, font_size=8.5)
         row.cells[0].paragraphs[0].runs[0].font.bold = True
 
-    p_sec44_2, anchor_elem = add_p_after(anchor_elem,
-        "\n4.4.2. Hệ thống 9 Loại Báo cáo Quản trị Chuyên sâu (BC01 đến BC09):\n"
+    p_sec45_2, anchor_elem = add_p_after(anchor_elem,
+        "\n4.5.2. Hệ thống 9 Loại Báo cáo Quản trị Chuyên sâu (BC01 đến BC09):\n"
         "Phân hệ kết nối toàn bộ dữ liệu nghiệp vụ của 4 phân hệ còn lại để kết xuất 9 báo cáo chuyên sâu, đáp ứng yêu cầu thanh tra thuế, kiểm toán nội bộ và hoạch định chiến lược kinh doanh:",
         font_size=9.5, color_rgb=C_SLATE, space_before=6, space_after=6)
 
-    # Bảng 9 báo cáo của Tú (Table 2 từ docx Tú)
+    # Bảng 9 báo cáo của Tú
     tbl_rep9, anchor_elem = add_table_after(anchor_elem, 10, 3)
     rep9_headers = ["Mã BC", "Tên mẫu báo cáo quản trị", "Nội dung nghiệp vụ & Chỉ tiêu phân tích"]
     for c_idx, h in enumerate(rep9_headers):
@@ -765,16 +940,16 @@ def generate_master_report():
         format_row(row, bg, is_header=False, font_size=8.5)
         row.cells[0].paragraphs[0].runs[0].font.bold = True
 
-    p_sec44_3, anchor_elem = add_p_after(anchor_elem,
-        "\n4.4.3. Cơ chế Trực quan hóa Biểu đồ và Kết xuất Dữ liệu (CSV & In A4):\n"
+    p_sec45_3, anchor_elem = add_p_after(anchor_elem,
+        "\n4.5.3. Cơ chế Trực quan hóa Biểu đồ và Kết xuất Dữ liệu (CSV & In A4):\n"
         "• Biểu đồ Doanh thu 6 tháng (MPAndroidChart): Hiển thị chuỗi doanh thu thực tế qua các tháng: Tháng 6 (1,42 tỷ), Tháng 7 (1,68 tỷ), Tháng 8 (1,79 tỷ), Tháng 9 (2,03 tỷ), Tháng 10 (2,41 tỷ), Tháng 11 (3,15 tỷ đồng). Hỗ trợ Zoom mượt mà và tương tác xem chi tiết.\n"
         "• Cơ chế Xuất tệp CSV: Lớp `ReportExportManager` chuyển đổi dữ liệu từ cấu trúc `ReportTable` thành chuỗi CSV chuẩn hóa Unicode UTF-8 và ghi vào thư mục `Downloads/ChronoVault` trên thiết bị.\n"
         "• Cơ chế In ấn A4: Lớp `ReportPrintManager` tạo giao diện in động và gửi tới dịch vụ `Android PrintManager`, cho phép người dùng xem trước tài liệu (Print Preview), kết nối máy in Wi-Fi hoặc lưu dưới dạng tệp PDF chuẩn khổ giấy A4.\n\n"
-        "4.4.4. Bộ 8 Test Cases Kiểm thử Chức năng Phân hệ Dashboard & Báo cáo:\n"
+        "4.5.4. Bộ 8 Test Cases Kiểm thử Chức năng Phân hệ Dashboard & Báo cáo:\n"
         "Bảng dưới đây là kết quả kiểm thử thực nghiệm 8 ca kiểm thử cốt lõi do TV5 thực hiện:",
         font_size=9.5, color_rgb=C_SLATE, space_before=6, space_after=6)
 
-    # Bảng 8 Test Cases của Tú (Table 5 từ docx Tú)
+    # Bảng 8 Test Cases của Tú
     tbl_tc, anchor_elem = add_table_after(anchor_elem, 9, 5)
     tc_headers = ["Mã TC", "Mục tiêu kiểm thử", "Dữ liệu & Thao tác kiểm thử", "Kết quả mong đợi", "Đánh giá"]
     for c_idx, h in enumerate(tc_headers):
@@ -800,7 +975,7 @@ def generate_master_report():
         row.cells[4].paragraphs[0].alignment = WD_ALIGN_PARAGRAPH.CENTER
         row.cells[4].paragraphs[0].runs[0].font.bold = True
 
-    # 3.3. Chèn 2 bảng Schema bổ sung (suppliers của Quân và serials của Quân & Hệ thống) NGAY SAU Table 8 gốc (orig_tbl_xmls[7])
+    # 3.3. Chèn 4 bảng Schema bổ sung (suppliers của Quân, serials của Quân & Hệ thống, dealers của Thảo, outbound_orders của Thảo) NGAY SAU Table 8 gốc
     anchor_elem_schema = orig_tbl_xmls[7]
     
     # Bảng suppliers
@@ -866,7 +1041,73 @@ def generate_master_report():
         row.cells[0].paragraphs[0].runs[0].font.bold = True
         row.cells[2].paragraphs[0].alignment = WD_ALIGN_PARAGRAPH.CENTER
 
-    # 3.4. Chèn Mục 8: BỘ CÂU HỎI VẤN ĐÁP BẢO VỆ ĐỒ ÁN VỚI GIẢNG VIÊN NGAY SAU Table 11 gốc (orig_tbl_xmls[10])
+    # Bảng dealers (Thảo)
+    p_dlr_title, anchor_elem_schema = add_p_after(anchor_elem_schema,
+        "\n6.2.4. Chi tiết thuộc tính bảng `dealers` (Hồ sơ Đại lý Đối tác B2B & Hạn mức Tín dụng — TV3 Tô Đức Thảo thiết kế):",
+        bold=True, font_size=10.5, color_rgb=C_NAVY, space_before=10, space_after=4)
+        
+    tbl_dlr, anchor_elem_schema = add_table_after(anchor_elem_schema, 13, 6)
+    dlr_headers = ["Tên cột", "Kiểu dữ liệu", "Null", "Default", "Mô tả nghiệp vụ", "Ràng buộc kỹ thuật"]
+    for c_idx, h in enumerate(dlr_headers):
+        tbl_dlr.rows[0].cells[c_idx].text = h
+    format_row(tbl_dlr.rows[0], HEX_NAVY, is_header=True, font_size=9)
+    dlr_data = [
+        ("dealer_id", "INT", "No", "Auto", "Mã định danh nội bộ đại lý tiếp nhận", "PRIMARY KEY, AUTOINCREMENT"),
+        ("dealer_code", "VARCHAR(50)", "No", "Không", "Mã đối tác quy ước (DL-GALLE, DL-DONGHO)", "UNIQUE, NOT NULL, Viết hoa"),
+        ("name", "VARCHAR(255)", "No", "Không", "Tên pháp nhân chuỗi cửa hàng / đại lý", "NOT NULL"),
+        ("tier", "VARCHAR(50)", "No", "'STANDARD'", "Cấp bậc đối tác (VIP Kim Cương, VIP Vàng, Chuẩn)", "CHECK in ('VIP_DIAMOND', 'VIP_GOLD', 'STANDARD')"),
+        ("discount_rate", "DOUBLE", "No", "0.15", "Tỷ lệ chiết khấu thương mại đại lý (15% - 30%)", "discount_rate >= 0.0 AND discount_rate <= 0.50"),
+        ("credit_limit", "DOUBLE", "No", "1000000000.0", "Hạn mức tín dụng nợ tối đa (Credit Limit VNĐ)", "credit_limit >= 0"),
+        ("current_debt", "DOUBLE", "No", "0.0", "Số dư nợ thực tế hiện tại của đại lý (VNĐ)", "current_debt >= 0"),
+        ("tax_code", "VARCHAR(50)", "No", "Không", "Mã số thuế của doanh nghiệp đại lý", "UNIQUE, NOT NULL"),
+        ("contact_person", "VARCHAR(100)", "Yes", "NULL", "Người đại diện ký hợp đồng phân phối", "Có thể để trống"),
+        ("phone", "VARCHAR(20)", "No", "Không", "Số điện thoại hotline liên hệ giao dịch", "NOT NULL"),
+        ("address", "TEXT", "No", "Không", "Địa chỉ cửa hàng / kho nhận hàng đại lý", "NOT NULL"),
+        ("is_active", "BOOLEAN", "No", "TRUE", "Trạng thái hợp tác phân phối đại lý", "TRUE: Đang hợp tác, FALSE: Khóa nợ")
+    ]
+    for r_idx, r_val in enumerate(dlr_data):
+        row = tbl_dlr.rows[r_idx + 1]
+        for c_idx, val in enumerate(r_val):
+            row.cells[c_idx].text = val
+        bg = HEX_WHITE if r_idx % 2 == 0 else HEX_ALT
+        format_row(row, bg, is_header=False, font_size=8.5)
+        row.cells[0].paragraphs[0].runs[0].font.bold = True
+        row.cells[2].paragraphs[0].alignment = WD_ALIGN_PARAGRAPH.CENTER
+
+    # Bảng outbound_orders (Thảo)
+    p_ord_title, anchor_elem_schema = add_p_after(anchor_elem_schema,
+        "\n6.2.5. Chi tiết thuộc tính bảng `outbound_orders` (Lệnh Xuất Kho Phân Phối Đại Lý B2B — TV3 Tô Đức Thảo thiết kế):",
+        bold=True, font_size=10.5, color_rgb=C_NAVY, space_before=10, space_after=4)
+        
+    tbl_ord, anchor_elem_schema = add_table_after(anchor_elem_schema, 13, 6)
+    ord_headers = ["Tên cột", "Kiểu dữ liệu", "Null", "Default", "Mô tả nghiệp vụ", "Ràng buộc kỹ thuật"]
+    for c_idx, h in enumerate(ord_headers):
+        tbl_ord.rows[0].cells[c_idx].text = h
+    format_row(tbl_ord.rows[0], HEX_NAVY, is_header=True, font_size=9)
+    ord_data = [
+        ("order_id", "INT", "No", "Auto", "Mã định danh nội bộ đơn xuất kho", "PRIMARY KEY, AUTOINCREMENT"),
+        ("order_code", "VARCHAR(50)", "No", "Không", "Số chứng từ xuất kho quy ước (PX-20261117-01)", "UNIQUE, NOT NULL, Viết hoa"),
+        ("dealer_id", "INT", "No", "Không", "Mã đại lý tiếp nhận lô hàng", "FOREIGN KEY references dealers(dealer_id)"),
+        ("order_date", "DATETIME", "No", "CURRENT_TIMESTAMP", "Thời điểm khởi tạo đơn hàng", "NOT NULL"),
+        ("total_packages", "INT", "No", "0", "Số lượng thùng quy cách xuất đóng gói", "total_packages >= 0"),
+        ("total_quantity", "INT", "No", "1", "Tổng số lượng chiếc đồng hồ xuất thực tế", "total_quantity >= 1"),
+        ("subtotal_amount", "DOUBLE", "No", "0.0", "Tổng giá trị đơn hàng trước chiết khấu (VNĐ)", "subtotal_amount >= 0"),
+        ("discount_amount", "DOUBLE", "No", "0.0", "Số tiền chiết khấu thương mại đại lý (VNĐ)", "discount_amount >= 0"),
+        ("total_amount", "DOUBLE", "No", "0.0", "Tổng tiền thanh toán sau chiết khấu (VNĐ)", "total_amount = subtotal_amount - discount_amount"),
+        ("reservation_status", "VARCHAR(30)", "No", "'NONE'", "Trạng thái khóa giữ chỗ tồn kho", "CHECK in ('NONE', 'RESERVED', 'RELEASED')"),
+        ("order_status", "VARCHAR(30)", "No", "'DRAFT'", "Trạng thái tiến trình đơn xuất kho", "CHECK in ('DRAFT', 'APPROVED', 'PICKING', 'COMPLETED', 'CANCELLED')"),
+        ("created_by", "INT", "No", "Không", "Mã tài khoản nhân viên lập đơn", "FOREIGN KEY references users(id)")
+    ]
+    for r_idx, r_val in enumerate(ord_data):
+        row = tbl_ord.rows[r_idx + 1]
+        for c_idx, val in enumerate(r_val):
+            row.cells[c_idx].text = val
+        bg = HEX_WHITE if r_idx % 2 == 0 else HEX_ALT
+        format_row(row, bg, is_header=False, font_size=8.5)
+        row.cells[0].paragraphs[0].runs[0].font.bold = True
+        row.cells[2].paragraphs[0].alignment = WD_ALIGN_PARAGRAPH.CENTER
+
+    # 3.4. Mục 8: BỘ CÂU HỎI VẤN ĐÁP BẢO VỆ ĐỒ ÁN (GIỮ NGUYÊN 8 CÂU ĐÃ CÓ, KHÔNG THÊM CÂU MỚI)
     anchor_elem_end = orig_tbl_xmls[10]
     
     p_sec8_title, anchor_elem_end = add_p_after(anchor_elem_end,
@@ -909,7 +1150,7 @@ def generate_master_report():
     # =============================================================
     try:
         doc.save(output_path)
-        print(f"SUCCESS: Đã xuất file báo cáo Master tích hợp thành công tại:\n{output_path}")
+        print(f"SUCCESS: Đã xuất file báo cáo Master tích hợp 4 phân hệ thành công tại:\n{output_path}")
     except PermissionError:
         alt_path = r"D:\cntt\pbhb\Document\BAO_CAO_PHAN_TICH_HE_THONG_THONG_TIN_CHRONOVAULT_WMS_CAP_NHAT.docx"
         doc.save(alt_path)
